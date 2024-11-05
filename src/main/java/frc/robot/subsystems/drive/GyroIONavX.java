@@ -18,7 +18,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.OptionalDouble;
 import java.util.Queue;
 
@@ -42,7 +41,9 @@ public class GyroIONavX implements GyroIO {
     PhoenixOdometry thread objects running simultaneously. The yaw readings are
     stored in yawPositionQueue and then streamed to the GyroIOInputs in updateInputs(). */
     yawTimestampQueue = SparkMaxOdometryThread.getInstance().makeTimestampQueue();
-    yawPositionQueue = SparkMaxOdometryThread.getInstance().registerSignal(() -> OptionalDouble.of(-navX.getYaw()));
+    yawPositionQueue =
+        SparkMaxOdometryThread.getInstance()
+            .registerSignal(() -> OptionalDouble.of(-navX.getYaw()));
   }
 
   @Override
