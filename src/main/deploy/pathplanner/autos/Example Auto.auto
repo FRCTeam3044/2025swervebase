@@ -7,25 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "rush first pp"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "rush second pp"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "rush third pp"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "rush fourth and shoot pp"
+            "pathName": "Example Path"
           }
         }
       ]
