@@ -13,12 +13,17 @@
 
 package frc.robot.subsystems.drive;
 
+import static edu.wpi.first.units.Units.*;
+
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import org.ironmaple.simulation.drivesims.GyroSimulation;
+import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
+import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 
 public class DriveConstants {
   public static final double maxSpeedMetersPerSec = 1;
@@ -56,14 +61,17 @@ public class DriveConstants {
   public static final int driveMotorCurrentLimit = 40;
   public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
   public static final double driveMotorReduction =
-      (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion teeth and 22 spur teeth
+      (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion teeth
+  // and 22 spur teeth
   public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 
   // Drive encoder configuration
   public static final double driveEncoderPositionFactor =
-      2 * Math.PI / driveMotorReduction; // Rotor Rotations -> Wheel Radians
+      2 * Math.PI / driveMotorReduction; // Rotor Rotations ->
+  // Wheel Radians
   public static final double driveEncoderVelocityFactor =
-      (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM -> Wheel Rad/Sec
+      (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM ->
+  // Wheel Rad/Sec
 
   // Drive PID configuration
   public static final double driveKp = 0.0;
@@ -110,4 +118,22 @@ public class DriveConstants {
               driveMotorCurrentLimit,
               1),
           moduleTranslations);
+
+  public static final DriveTrainSimulationConfig mapleSimConfig =
+      DriveTrainSimulationConfig.Default()
+          .withCustomModuleTranslations(moduleTranslations)
+          .withRobotMass(Kilogram.of(robotMassKg))
+          .withGyro(GyroSimulation.getNav2X())
+          .withSwerveModule(
+              () ->
+                  new SwerveModuleSimulation(
+                      driveGearbox,
+                      turnGearbox,
+                      driveMotorReduction,
+                      turnMotorReduction,
+                      Volts.of(0.1),
+                      Volts.of(0.1),
+                      Meters.of(wheelRadiusMeters),
+                      KilogramSquareMeters.of(0.02),
+                      wheelCOF));
 }
