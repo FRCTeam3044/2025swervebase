@@ -7,6 +7,8 @@ import static frc.robot.subsystems.vision.apriltags.MapleMultiTagPoseEstimator.R
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
+import frc.robot.constants.RobotMode;
 import frc.robot.subsystems.MapleSubsystem;
 import frc.robot.subsystems.drive.HolonomicDriveSubsystem;
 import frc.robot.utils.Alert;
@@ -46,6 +48,12 @@ public class AprilTagVision extends MapleSubsystem {
 
     @Override
     public void periodic(double dt, boolean enabled) {
+        if (Robot.CURRENT_ROBOT_MODE == RobotMode.SIM) {
+            Logger.recordOutput(APRIL_TAGS_VISION_PATH + "Results/Estimated Pose", driveSubsystem.getPose());
+            SmartDashboard.putBoolean("Vision Result Trustable", true);
+            Logger.recordOutput(APRIL_TAGS_VISION_PATH + "Results/Presented", true);
+            return;
+        }
         io.updateInputs(inputs);
         Logger.processInputs(APRIL_TAGS_VISION_PATH + "Inputs", inputs);
 

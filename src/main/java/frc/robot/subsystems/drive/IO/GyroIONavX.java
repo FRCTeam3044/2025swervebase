@@ -7,11 +7,9 @@ package frc.robot.subsystems.drive.IO;
 import static edu.wpi.first.units.Units.Degrees;
 
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.SerialPort.Port;
-
 import java.util.Queue;
 
 /** IO implementation for Pigeon2 */

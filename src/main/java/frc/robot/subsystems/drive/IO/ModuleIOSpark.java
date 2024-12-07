@@ -12,7 +12,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -110,6 +109,7 @@ public class ModuleIOSpark implements ModuleIO {
 
         @Override
         public void updateInputs(ModuleIOInputs inputs) {
+                inputs.hardwareConnected = true;
                 inputs.driveWheelFinalRevolutions = drivingEncoder.getPosition() / DRIVE_GEAR_RATIO;
                 final double RPTO_REVOLUTIONS_PER_SECOND = 1.0 / 60.0;
                 inputs.driveWheelFinalVelocityRevolutionsPerSec = drivingEncoder.getVelocity() / DRIVE_GEAR_RATIO
@@ -134,6 +134,7 @@ public class ModuleIOSpark implements ModuleIO {
                                 .map(value -> Rotation2d.fromRotations(value / STEER_GEAR_RATIO)
                                                 .minus(angularOffset))
                                 .toArray(Rotation2d[]::new);
+
                 steerRelativeEncoderPositionUngeared.clear();
         }
 
