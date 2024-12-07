@@ -14,6 +14,7 @@
     "**/.factorypath": true,
     "**/*~": true
   },
+  "java.import.gradle.annotationProcessing.enabled": false,
   "java.test.config": [
     {
       "name": "WPIlibUnitTests",
@@ -28,14 +29,4 @@
     },
     null
   ],
-  "java.test.defaultConfig": "WPIlibUnitTests",
-  "spotlessGradle.format.enable": true,
-  "spotlessGradle.diagnostics.enable": false,
-  "editor.defaultFormatter": "richardwillis.vscode-spotless-gradle",
-  "[json]": {
-    "editor.defaultFormatter": "richardwillis.vscode-spotless-gradle"
-  },
-  "[java]": {
-    "editor.defaultFormatter": "redhat.java"
-  }
-}
+  "java.test.defaultConfig": "WPIlibUnitTests"}
