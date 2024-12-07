@@ -78,7 +78,8 @@ public class ModuleIOSpark implements ModuleIO {
                 SparkMaxConfig driveConfig = new SparkMaxConfig();
                 SparkMaxConfig turnConfig = new SparkMaxConfig();
 
-                driveConfig.smartCurrentLimit(40).voltageCompensation(12.0).idleMode(SparkBaseConfig.IdleMode.kBrake);
+                driveConfig.smartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit).voltageCompensation(12.0)
+                                .idleMode(ModuleConstants.kDrivingMotorIdleMode);
                 // TODO: Is this correct?
                 driveConfig.encoder.quadratureMeasurementPeriod(10).quadratureAverageDepth(2)
                                 .positionConversionFactor(ModuleConstants.kDrivingEncoderPositionFactor)
@@ -87,9 +88,9 @@ public class ModuleIOSpark implements ModuleIO {
 
                 turnConfig
                                 .inverted(isTurnMotorInverted)
-                                .smartCurrentLimit(30)
+                                .smartCurrentLimit(ModuleConstants.kTurningMotorCurrentLimit)
                                 .voltageCompensation(12.0)
-                                .idleMode(SparkBaseConfig.IdleMode.kBrake);
+                                .idleMode(ModuleConstants.kTurningMotorIdleMode);
                 // TODO: Is this correct?
                 turnConfig.absoluteEncoder.averageDepth(2).inverted(ModuleConstants.kTurningEncoderInverted)
                                 .positionConversionFactor(ModuleConstants.kTurningEncoderPositionFactor)
