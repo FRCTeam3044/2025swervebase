@@ -13,6 +13,8 @@
 
 package frc.robot;
 
+import static frc.robot.subsystems.vision.VisionConstants.*;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -33,6 +35,9 @@ import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceUtil;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -52,6 +57,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
         // Subsystems
         private final Drive drive;
+        private final Vision vision;
         private SwerveDriveSimulation driveSimulation = null;
 
         // Controller
@@ -78,6 +84,8 @@ public class RobotContainer {
                                                 new ModuleIOSpark(1),
                                                 new ModuleIOSpark(2),
                                                 new ModuleIOSpark(3));
+
+                                this.vision = new Vision(drive);
                                 break;
 
                         case SIM:
@@ -93,7 +101,15 @@ public class RobotContainer {
                                                 new ModuleIOSim(driveSimulation.getModules()[1]),
                                                 new ModuleIOSim(driveSimulation.getModules()[2]),
                                                 new ModuleIOSim(driveSimulation.getModules()[3]));
-                                drive.setPose(new Pose2d(3, 3, new Rotation2d()));
+                                vision = new Vision(
+                                                drive,
+                                                new VisionIOPhotonVisionSim(
+                                                                camera0Name, robotToCamera0,
+                                                                driveSimulation::getSimulatedDriveTrainPose),
+                                                new VisionIOPhotonVisionSim(
+                                                                camera1Name, robotToCamera1,
+                                                                driveSimulation::getSimulatedDriveTrainPose));
+                                vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
                                 break;
 
                         default:
@@ -109,6 +125,9 @@ public class RobotContainer {
                                                 },
                                                 new ModuleIO() {
                                                 });
+                                vision = new Vision(drive, new VisionIO() {
+                                }, new VisionIO() {
+                                });
                                 break;
                 }
 
