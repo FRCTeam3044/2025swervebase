@@ -14,8 +14,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Threads;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.AllianceUtil;
 import me.nabdev.oxconfig.OxConfig;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -99,12 +101,16 @@ public class Robot extends LoggedRobot {
     // Switch thread to high priority to improve loop timing
     Threads.setCurrentThreadPriority(true, 99);
 
+    robotContainer.stateMachine.periodic();
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
+    Logger.recordOutput("Alliance", AllianceUtil.getAlliance().toString());
     CommandScheduler.getInstance().run();
+    SmartDashboard.putData(CommandScheduler.getInstance());
 
     // Return to normal thread priority
     Threads.setCurrentThreadPriority(false, 10);
@@ -114,11 +120,13 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledInit() {
     robotContainer.resetSimulationField();
+    AllianceUtil.setAlliance();
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
+    AllianceUtil.setAlliance();
   }
 
   /**
@@ -127,6 +135,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void autonomousInit() {
+    AllianceUtil.setAlliance();
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -138,11 +147,13 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    AllianceUtil.setIfUnknown();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    AllianceUtil.setAlliance();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -155,6 +166,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    AllianceUtil.setIfUnknown();
   }
 
   /** This function is called once when test mode is enabled. */

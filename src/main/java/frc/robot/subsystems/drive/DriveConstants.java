@@ -21,6 +21,9 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
+import frc.robot.Constants;
+import frc.robot.Constants.Mode;
+import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
@@ -30,7 +33,8 @@ import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 
 public class DriveConstants {
-        public static final double maxSpeedMetersPerSec = 4.8;
+        public static final ConfigurableParameter<Double> maxSpeedMetersPerSec = new ConfigurableParameter<Double>(4.8,
+                        "Drive Speed (m/s)");
         public static final double odometryFrequency = 100.0; // Hz
         public static final double trackWidth = Units.inchesToMeters(26);
         public static final double wheelBase = Units.inchesToMeters(26);
@@ -108,12 +112,16 @@ public class DriveConstants {
         public static final Mass robotMassKg = Kilogram.of(74.088);
         public static final double wheelCOF = 1.43;
         public static final Distance bumperSize = Inches.of(26.5);
+        public static final Distance mapleBumperSize = Constants.currentMode == Mode.SIM
+                        ? bumperSize.plus(Inches.of(1.5))
+                        : bumperSize;
 
         public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
                         .withBumperSize(bumperSize, bumperSize)
                         .withCustomModuleTranslations(moduleTranslations)
                         .withRobotMass(robotMassKg)
                         .withGyro(GyroSimulation.getNav2X())
+                        .withTrackLengthTrackWidth(Meters.of(wheelBase), Meters.of(trackWidth))
                         .withSwerveModule(
                                         () -> new SwerveModuleSimulation(
                                                         driveGearbox,

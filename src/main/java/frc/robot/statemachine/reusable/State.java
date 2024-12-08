@@ -10,6 +10,7 @@ import java.util.function.BooleanSupplier;
 import org.json.JSONObject;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * A state in a state machine.
@@ -27,11 +28,12 @@ public abstract class State {
     List<TransitionInfo> entranceConditions = new ArrayList<>();
     List<State> children = new ArrayList<>();
 
+    List<Command> startCommands = new ArrayList<>();
+
     private final StateMachineBase stateMachine;
 
     private boolean hasDefaultChild = false;
     String name = this.getClass().getSimpleName();
-    protected boolean onEnter = false;
 
     /**
      * Create a new state under the given state machine.
@@ -227,31 +229,33 @@ public abstract class State {
      */
     public void onExit() {
         loop.stop();
-        System.out.println("Exiting " + getDeepName());
-        onEnter = false;
+        startCommands.forEach(Command::cancel);
     }
 
     /**
      * Fires when the state is entered
      */
     public void onEnter() {
-        System.out.println("Entering " + getDeepName());
-        onEnter = true;
+        startCommands.forEach(Command::schedule);
     };
 
     public SmartTrigger t(BooleanSupplier condition) {
         return new SmartTrigger(loop, condition);
     }
 
-    protected SmartTrigger onEnterTrg() {
-        return new SmartTrigger(loop, () -> onEnter);
+    /**
+     * Run an action when the state is active
+     * Cancels it if not already cancelled when the state is exited
+     */
+    protected void startWhenActive(Command cmd) {
+        startCommands.add(cmd);
     }
 
     /**
      * WARNING - activeTrg does not experience a rising edge, so it will not fire!
      * Use only with runWhileTrue and runWhileFalse, or compositions.
      * 
-     * @return
+     * @return A trigger that is active while this state is active
      */
     protected SmartTrigger activeTrg() {
         return new SmartTrigger(loop, () -> stateMachine.currentState.is(this));
@@ -262,11 +266,6 @@ public abstract class State {
             parentState.run();
 
         loop.poll();
-        // Yes, this is intentional. We want to "activate" the state after the first
-        // poll. This is done so that the active() triggers actually fire (since
-        // otherwise, the event loop would only be polled when active is true, so the
-        // trigger would never fire)
-        onEnter = false;
     }
 
     // boolean checkTransitions() {
@@ -300,6 +299,8 @@ public abstract class State {
     }
 
     static TransitionInfo evaluateBestTransition(List<TransitionInfo> transitions) {
+        if (transitions == null)
+            return null;
         TransitionInfo best = null;
         for (TransitionInfo i : transitions) {
             if ((best == null || best.priority > i.priority) && i.condition.getAsBoolean()) {

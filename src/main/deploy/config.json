@@ -1,0 +1,15 @@
+{
+    "presentation": {"Drive Speed (m/s)": {
+        "comment": "Auto-Generated",
+        "value": "4.8"
+    }},
+    "mode": "competition",
+    "simulation": {"Drive Speed (m/s)": {
+        "comment": "Auto-Generated",
+        "value": "4.8"
+    }},
+    "competition": {"Drive Speed (m/s)": {
+        "comment": "Auto-Generated",
+        "value": "4.8"
+    }}
+}
