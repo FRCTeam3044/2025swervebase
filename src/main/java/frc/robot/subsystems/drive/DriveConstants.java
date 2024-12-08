@@ -112,12 +112,13 @@ public class DriveConstants {
         public static final Mass robotMassKg = Kilogram.of(74.088);
         public static final double wheelCOF = 1.43;
         public static final Distance bumperSize = Inches.of(26.5);
+        // Make crab bot look right in ascope
         public static final Distance mapleBumperSize = Constants.currentMode == Mode.SIM
-                        ? bumperSize.plus(Inches.of(1.5))
+                        ? Inches.of(36.25)
                         : bumperSize;
 
         public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
-                        .withBumperSize(bumperSize, bumperSize)
+                        .withBumperSize(mapleBumperSize, mapleBumperSize)
                         .withCustomModuleTranslations(moduleTranslations)
                         .withRobotMass(robotMassKg)
                         .withGyro(GyroSimulation.getNav2X())
