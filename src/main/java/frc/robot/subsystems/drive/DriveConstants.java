@@ -15,118 +15,117 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.pathplanner.lib.config.ModuleConfig;
-import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Mass;
+import me.nabdev.pathfinding.Pathfinder;
+import me.nabdev.pathfinding.PathfinderBuilder;
+import me.nabdev.pathfinding.utilities.FieldLoader.Field;
+
 import org.ironmaple.simulation.drivesims.GyroSimulation;
 import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 
 public class DriveConstants {
-    public static final double maxSpeedMetersPerSec = 4.8;
-    public static final double odometryFrequency = 100.0; // Hz
-    public static final double trackWidth = Units.inchesToMeters(26);
-    public static final double wheelBase = Units.inchesToMeters(26);
-    public static final double driveBaseRadius = Math.hypot(trackWidth / 2.0, wheelBase / 2.0);
-    public static final Translation2d[] moduleTranslations = new Translation2d[] {
-            new Translation2d(trackWidth / 2.0, wheelBase / 2.0),
-            new Translation2d(trackWidth / 2.0, -wheelBase / 2.0),
-            new Translation2d(-trackWidth / 2.0, wheelBase / 2.0),
-            new Translation2d(-trackWidth / 2.0, -wheelBase / 2.0)
-    };
+        public static final double maxSpeedMetersPerSec = 4.8;
+        public static final double odometryFrequency = 100.0; // Hz
+        public static final double trackWidth = Units.inchesToMeters(26);
+        public static final double wheelBase = Units.inchesToMeters(26);
+        public static final double driveBaseRadius = Math.hypot(trackWidth / 2.0, wheelBase / 2.0);
+        public static final Translation2d[] moduleTranslations = new Translation2d[] {
+                        new Translation2d(trackWidth / 2.0, wheelBase / 2.0),
+                        new Translation2d(trackWidth / 2.0, -wheelBase / 2.0),
+                        new Translation2d(-trackWidth / 2.0, wheelBase / 2.0),
+                        new Translation2d(-trackWidth / 2.0, -wheelBase / 2.0)
+        };
 
-    // Zeroed rotation values for each module, see setup instructions
-    public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-Math.PI / 2);
-    public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.0);
-    public static final Rotation2d backLeftZeroRotation = new Rotation2d(Math.PI);
-    public static final Rotation2d backRightZeroRotation = new Rotation2d(Math.PI / 2);
+        // Zeroed rotation values for each module, see setup instructions
+        public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-Math.PI / 2);
+        public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.0);
+        public static final Rotation2d backLeftZeroRotation = new Rotation2d(Math.PI);
+        public static final Rotation2d backRightZeroRotation = new Rotation2d(Math.PI / 2);
 
-    // Device CAN IDs
+        // Device CAN IDs
 
-    public static final int frontLeftDriveCanId = 17;
-    public static final int backLeftDriveCanId = 12;
-    public static final int frontRightDriveCanId = 15;
-    public static final int backRightDriveCanId = 13;
+        public static final int frontLeftDriveCanId = 17;
+        public static final int backLeftDriveCanId = 12;
+        public static final int frontRightDriveCanId = 15;
+        public static final int backRightDriveCanId = 13;
 
-    public static final int frontLeftTurnCanId = 18;
-    public static final int backLeftTurnCanId = 11;
-    public static final int frontRightTurnCanId = 16;
-    public static final int backRightTurnCanId = 14;
+        public static final int frontLeftTurnCanId = 18;
+        public static final int backLeftTurnCanId = 11;
+        public static final int frontRightTurnCanId = 16;
+        public static final int backRightTurnCanId = 14;
 
-    // Drive motor configuration
-    public static final int driveMotorCurrentLimit = 40;
-    public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
-    public static final double driveMotorReduction = (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion teeth
-    // and 22 spur teeth
-    public static final DCMotor driveGearbox = DCMotor.getNEO(1);
+        // Drive motor configuration
+        public static final int driveMotorCurrentLimit = 40;
+        public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
+        public static final double driveMotorReduction = (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion
+                                                                                        // teeth
+        // and 22 spur teeth
+        public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 
-    // Drive encoder configuration
-    public static final double driveEncoderPositionFactor = 2 * Math.PI / driveMotorReduction; // Rotor Rotations ->
-    // Wheel Radians
-    public static final double driveEncoderVelocityFactor = (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM ->
-    // Wheel Rad/Sec
+        // Drive encoder configuration
+        public static final double driveEncoderPositionFactor = 2 * Math.PI / driveMotorReduction; // Rotor Rotations ->
+        // Wheel Radians
+        public static final double driveEncoderVelocityFactor = (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM
+                                                                                                            // ->
+        // Wheel Rad/Sec
 
-    // Drive PID configuration
-    public static final double driveKp = 0.0;
-    public static final double driveKd = 0.0;
-    public static final double driveKs = 0.0;
-    public static final double driveKv = 0.1;
-    public static final double driveSimP = 0.05;
-    public static final double driveSimD = 0.0;
-    public static final double driveSimKs = 0.0;
-    public static final double driveSimKv = 0.0789;
+        // Drive PID configuration
+        public static final double driveKp = 0.0;
+        public static final double driveKd = 0.0;
+        public static final double driveKs = 0.0;
+        public static final double driveKv = 0.1;
+        public static final double driveSimP = 0.05;
+        public static final double driveSimD = 0.0;
+        public static final double driveSimKs = 0.0;
+        public static final double driveSimKv = 0.0789;
 
-    // Turn motor configuration
-    public static final boolean turnInverted = false;
-    public static final int turnMotorCurrentLimit = 20;
-    public static final double turnMotorReduction = 9424.0 / 203.0;
-    public static final DCMotor turnGearbox = DCMotor.getNeo550(1);
+        // Turn motor configuration
+        public static final boolean turnInverted = false;
+        public static final int turnMotorCurrentLimit = 20;
+        public static final double turnMotorReduction = 9424.0 / 203.0;
+        public static final DCMotor turnGearbox = DCMotor.getNeo550(1);
 
-    // Turn encoder configuration
-    public static final boolean turnEncoderInverted = true;
-    public static final double turnEncoderPositionFactor = 2 * Math.PI; // Rotations -> Radians
-    public static final double turnEncoderVelocityFactor = (2 * Math.PI) / 60.0; // RPM -> Rad/Sec
+        // Turn encoder configuration
+        public static final boolean turnEncoderInverted = true;
+        public static final double turnEncoderPositionFactor = 2 * Math.PI; // Rotations -> Radians
+        public static final double turnEncoderVelocityFactor = (2 * Math.PI) / 60.0; // RPM -> Rad/Sec
 
-    // Turn PID configuration
-    public static final double turnKp = 2.0;
-    public static final double turnKd = 0.0;
-    public static final double turnSimP = 8.0;
-    public static final double turnSimD = 0.0;
-    public static final double turnPIDMinInput = 0; // Radians
-    public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
+        // Turn PID configuration
+        public static final double turnKp = 2.0;
+        public static final double turnKd = 0.0;
+        public static final double turnSimP = 8.0;
+        public static final double turnSimD = 0.0;
+        public static final double turnPIDMinInput = 0; // Radians
+        public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
 
-    // PathPlanner configuration
-    public static final double robotMassKg = 74.088;
-    public static final double robotMOI = 6.883;
-    public static final double wheelCOF = 1.2;
-    public static final RobotConfig ppConfig = new RobotConfig(
-            robotMassKg,
-            robotMOI,
-            new ModuleConfig(
-                    wheelRadiusMeters,
-                    maxSpeedMetersPerSec,
-                    wheelCOF,
-                    driveGearbox.withReduction(driveMotorReduction),
-                    driveMotorCurrentLimit,
-                    1),
-            moduleTranslations);
+        // MapleSim configuration
+        public static final Mass robotMassKg = Kilogram.of(74.088);
+        public static final double wheelCOF = 1.43;
+        public static final Distance bumperSize = Inches.of(26.5);
 
-    public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
-            .withCustomModuleTranslations(moduleTranslations)
-            .withRobotMass(Kilogram.of(robotMassKg))
-            .withGyro(GyroSimulation.getNav2X())
-            .withSwerveModule(
-                    () -> new SwerveModuleSimulation(
-                            driveGearbox,
-                            turnGearbox,
-                            driveMotorReduction,
-                            turnMotorReduction,
-                            Volts.of(0.1),
-                            Volts.of(0.1),
-                            Meters.of(wheelRadiusMeters),
-                            KilogramSquareMeters.of(0.02),
-                            wheelCOF));
+        public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
+                        .withBumperSize(bumperSize, bumperSize)
+                        .withCustomModuleTranslations(moduleTranslations)
+                        .withRobotMass(robotMassKg)
+                        .withGyro(GyroSimulation.getNav2X())
+                        .withSwerveModule(
+                                        () -> new SwerveModuleSimulation(
+                                                        driveGearbox,
+                                                        turnGearbox,
+                                                        driveMotorReduction,
+                                                        turnMotorReduction,
+                                                        Volts.of(0.1),
+                                                        Volts.of(0.1),
+                                                        Meters.of(wheelRadiusMeters),
+                                                        KilogramSquareMeters.of(0.02),
+                                                        wheelCOF));
+
+        public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.CRESCENDO_2024))
+                        .setRobotLength(bumperSize.in(Meters)).setRobotWidth(bumperSize.in(Meters)).build();
 }
