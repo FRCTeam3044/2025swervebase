@@ -18,12 +18,14 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.DriveCommands;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -60,6 +62,8 @@ public class RobotContainer {
         private final LoggedDashboardChooser<Command> autoChooser;
 
         public final StateMachine stateMachine;
+
+        public static Field2d fieldSim = new Field2d();
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -172,5 +176,18 @@ public class RobotContainer {
                 Logger.recordOutput(
                                 "FieldSimulation/Notes",
                                 SimulatedArena.getInstance().getGamePiecesByType("Note").toArray(new Pose3d[0]));
+        }
+
+        public void displaySimFieldToSmartDashboard() {
+                if (Constants.currentMode != Constants.Mode.SIM)
+                        return;
+
+                fieldSim.setRobotPose(driveSimulation.getSimulatedDriveTrainPose());
+                fieldSim.getObject("notes")
+                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Note").stream().map((p) -> {
+                                        return new Pose2d(p.getTranslation().getX(), p.getTranslation().getY(),
+                                                        new Rotation2d());
+                                }).toArray(Pose2d[]::new));
+                SmartDashboard.putData("Field", fieldSim);
         }
 }

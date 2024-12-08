@@ -15,15 +15,21 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.sampleClasses.ConfigurablePIDController;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
 import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
@@ -136,5 +142,21 @@ public class DriveConstants {
                                                         wheelCOF));
 
         public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.CRESCENDO_2024))
-                        .setRobotLength(bumperSize.in(Meters)).setRobotWidth(bumperSize.in(Meters)).build();
+                        .setRobotLength(mapleBumperSize.in(Meters)).setRobotWidth(mapleBumperSize.in(Meters)).build();
+
+        public static final PIDController xController = new ConfigurablePIDController(1, 0, 0,
+                        "Pathfinding X Controller");
+        public static final PIDController yController = new ConfigurablePIDController(1, 0, 0,
+                        "Pathfinding Y Controller");
+        public static final ProfiledPIDController angleController = new ConfigurableProfiledPIDController(
+                        6.0,
+                        0,
+                        0,
+                        // new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
+                        // kMaxAngularAccelerationRadiansPerSecondSquared.get()),
+                        new TrapezoidProfile.Constraints(8, 20),
+                        "Pathfinding Theta Controller");
+
+        public static final HolonomicDriveController driveController = new HolonomicDriveController(
+                        xController, yController, angleController);
 }

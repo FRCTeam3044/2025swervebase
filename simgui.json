@@ -11,17 +11,17 @@
     "windows": {
       "/SmartDashboard/Field": {
         "Robot": {
-          "length": 0.92,
-          "width": 0.92
+          "length": 0.9200000166893005,
+          "width": 0.9200000166893005
         },
         "bottom": 1476,
         "height": 8.210550308227539,
         "left": 150,
         "notes": {
           "image": "/home/nicholas/coding/robotics/2025/2025swervebase/note.png",
-          "length": 0.35,
+          "length": 0.3499999940395355,
           "weight": 1.0,
-          "width": 0.35
+          "width": 0.3499999940395355
         },
         "right": 2961,
         "top": 79,
