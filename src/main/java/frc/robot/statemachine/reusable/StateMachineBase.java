@@ -96,6 +96,7 @@ public abstract class StateMachineBase {
             children.put(getObjectForState(child));
         }
         obj.put("children", children);
+        obj.put("parameters", state.parameters);
         if (state.parentState == null || !state.parentState.transitions.containsKey(state))
             return obj;
         JSONArray transitions = new JSONArray();
