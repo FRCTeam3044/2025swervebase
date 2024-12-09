@@ -19,7 +19,7 @@
         "height": 8.210550308227539,
         "left": 150,
         "notes": {
-          "image": "/home/nicholas/coding/robotics/2025/2025swervebase/note.png",
+          "image": "C:\\Users\\robot\\Documents\\2025\\AkitSwerveBase\\note.png",
           "length": 0.3499999940395355,
           "weight": 1.0,
           "width": 0.3499999940395355
@@ -49,6 +49,9 @@
     }
   },
   "NetworkTables Info": {
+    "Server": {
+      "open": true
+    },
     "visible": true
   }
 }

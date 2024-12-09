@@ -129,17 +129,7 @@ public class DriveConstants {
                         .withRobotMass(robotMassKg)
                         .withGyro(GyroSimulation.getNav2X())
                         .withTrackLengthTrackWidth(Meters.of(wheelBase), Meters.of(trackWidth))
-                        .withSwerveModule(
-                                        () -> new SwerveModuleSimulation(
-                                                        driveGearbox,
-                                                        turnGearbox,
-                                                        driveMotorReduction,
-                                                        turnMotorReduction,
-                                                        Volts.of(0.1),
-                                                        Volts.of(0.1),
-                                                        Meters.of(wheelRadiusMeters),
-                                                        KilogramSquareMeters.of(0.02),
-                                                        wheelCOF));
+                        .withSwerveModule(SwerveModuleSimulation.getMAXSwerve(driveGearbox, turnGearbox, wheelCOF, 2));
 
         public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.CRESCENDO_2024))
                         .setRobotLength(mapleBumperSize.in(Meters)).setRobotWidth(mapleBumperSize.in(Meters)).build();

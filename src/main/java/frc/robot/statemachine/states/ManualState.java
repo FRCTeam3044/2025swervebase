@@ -16,18 +16,19 @@ import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.AllianceUtil;
 
 public class ManualState extends State {
+        @SuppressWarnings("unused")
         public ManualState(StateMachineBase stateMachine, CommandXboxController driver, CommandXboxController operator,
                         Drive drive) {
                 super(stateMachine);
 
                 SmartXboxController driverController = new SmartXboxController(driver, loop);
-                @SuppressWarnings("unused")
                 SmartXboxController operatorController = new SmartXboxController(operator, loop);
 
                 DoubleSupplier xVel;
                 DoubleSupplier yVel;
                 DoubleSupplier rotVel;
-                if (Constants.currentMode == Mode.SIM) {
+
+                if (Constants.currentMode == Mode.SIM && !Constants.drivePracticeSim) {
                         xVel = () -> driver.getLeftX();
                         yVel = () -> -driver.getLeftY();
                         rotVel = () -> -driver.getRightX();
