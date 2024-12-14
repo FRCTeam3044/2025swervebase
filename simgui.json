@@ -49,7 +49,10 @@
     }
   },
   "NetworkTables Info": {
-    "Server": {
+    "Clients": {
+      "open": true
+    },
+    "Nt4Unity@1": {
       "open": true
     },
     "visible": true
