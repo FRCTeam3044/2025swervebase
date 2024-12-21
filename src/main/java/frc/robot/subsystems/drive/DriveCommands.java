@@ -102,9 +102,7 @@ public class DriveCommands {
                             linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                             linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                             omega * drive.getMaxAngularSpeedRadPerSec());
-
-                    speeds.toRobotRelativeSpeeds(drive.getRotation());
-                    drive.runVelocity(speeds);
+                    drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation()));
                 },
                 drive).withName("Joystick Drive");
     }
@@ -141,8 +139,7 @@ public class DriveCommands {
                             linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                             omega);
 
-                    speeds.toRobotRelativeSpeeds(drive.getRotation());
-                    drive.runVelocity(speeds);
+                    drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation()));
                 },
                 drive)
 
@@ -359,8 +356,7 @@ public class DriveCommands {
         TrajectoryConfig config = new TrajectoryConfig(pathfindingMaxSpeed.get(), pathfindingMaxAccel.get());
 
         // TODO: This is wrong, it stutters still on path change
-        ChassisSpeeds chassisSpeed = drive.getVelocity();
-        chassisSpeed.toFieldRelativeSpeeds(drive.getRotation());
+        ChassisSpeeds chassisSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getVelocity(), drive.getRotation());
         Vector velocity = new Vector(chassisSpeed.vxMetersPerSecond,
                 chassisSpeed.vyMetersPerSecond);
         Vertex start = path.getStart();

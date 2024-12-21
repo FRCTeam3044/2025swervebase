@@ -34,8 +34,7 @@ import me.nabdev.pathfinding.Pathfinder;
 import me.nabdev.pathfinding.PathfinderBuilder;
 import me.nabdev.pathfinding.utilities.FieldLoader.Field;
 
-import org.ironmaple.simulation.drivesims.GyroSimulation;
-import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
+import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 
 public class DriveConstants {
@@ -127,9 +126,9 @@ public class DriveConstants {
                         .withBumperSize(mapleBumperSize, mapleBumperSize)
                         .withCustomModuleTranslations(moduleTranslations)
                         .withRobotMass(robotMassKg)
-                        .withGyro(GyroSimulation.getNav2X())
+                        .withGyro(COTS.ofNav2X())
                         .withTrackLengthTrackWidth(Meters.of(wheelBase), Meters.of(trackWidth))
-                        .withSwerveModule(SwerveModuleSimulation.getMAXSwerve(driveGearbox, turnGearbox, wheelCOF, 2));
+                        .withSwerveModule(COTS.ofMAXSwerve(driveGearbox, turnGearbox, wheelCOF, 2));
 
         public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.CRESCENDO_2024))
                         .setRobotLength(mapleBumperSize.in(Meters)).setRobotWidth(mapleBumperSize.in(Meters)).build();
