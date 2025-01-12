@@ -17,7 +17,9 @@ import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.AllianceUtil;
+import frc.robot.util.PathfindingDebugUtils;
 import me.nabdev.oxconfig.OxConfig;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -114,6 +116,9 @@ public class Robot extends LoggedRobot {
 
     // Return to normal thread priority
     Threads.setCurrentThreadPriority(false, 10);
+
+    PathfindingDebugUtils.drawLines("Field Map", DriveConstants.pathfinder.visualizeEdges(),
+                DriveConstants.pathfinder.visualizeVertices());
   }
 
   /** This function is called once when the robot is disabled. */

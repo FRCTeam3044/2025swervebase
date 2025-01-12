@@ -28,7 +28,7 @@ public final class Constants {
   public static final boolean visionSim = false;
   // If true, drive controls are based off alliance like in real life. If false,
   // up is positive y, right is positive x.
-  public static final boolean drivePracticeSim = true;
+  public static final boolean drivePracticeSim = false;
 
   public static enum Mode {
     /** Running on a real robot. */
