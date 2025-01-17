@@ -49,7 +49,7 @@
     "competition": {
         "Drive Speed (m/s)": {
             "comment": "Auto-Generated",
-            "value": "4.8"
+            "value": "44"
         },
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Max Speed": {

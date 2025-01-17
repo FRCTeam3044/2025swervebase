@@ -130,7 +130,7 @@ public class DriveConstants {
                         .withTrackLengthTrackWidth(Meters.of(wheelBase), Meters.of(trackWidth))
                         .withSwerveModule(COTS.ofMAXSwerve(driveGearbox, turnGearbox, wheelCOF, 2));
 
-        public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.CRESCENDO_2024))
+        public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.REEFSCAPE_2025))
                         .setRobotLength(mapleBumperSize.in(Meters)).setRobotWidth(mapleBumperSize.in(Meters)).build();
 
         public static final PIDController xController = new ConfigurablePIDController(1, 0, 0,

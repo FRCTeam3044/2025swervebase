@@ -90,7 +90,7 @@ public abstract class StateMachineBase {
 
     JSONObject getObjectForState(State state) {
         JSONObject obj = new JSONObject();
-        obj.put("name", state.getName());
+        obj.put("name", state.getDeepName());
         JSONArray children = new JSONArray();
         for (State child : state.children) {
             children.put(getObjectForState(child));

@@ -178,7 +178,8 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return autoChooser.get();
+                return DriveCommands.goToPointJoystickRot(drive, new Pose2d(10, 3, new Rotation2d()), () -> 0.0);
+                // return autoChooser.get();
         }
 
         public void resetSimulationField() {

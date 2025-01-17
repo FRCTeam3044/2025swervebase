@@ -118,7 +118,10 @@ public class Robot extends LoggedRobot {
     Threads.setCurrentThreadPriority(false, 10);
 
     PathfindingDebugUtils.drawLines("Field Map", DriveConstants.pathfinder.visualizeEdges(),
-                DriveConstants.pathfinder.visualizeVertices());
+        DriveConstants.pathfinder.visualizeVertices());
+
+    PathfindingDebugUtils.drawLines("Field Map Inflated", DriveConstants.pathfinder.visualizeEdges(),
+        DriveConstants.pathfinder.visualizeInflatedVertices());
   }
 
   /** This function is called once when the robot is disabled. */
