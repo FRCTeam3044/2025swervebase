@@ -1,4 +1,4 @@
-package frc.robot.statemachine.states;
+package frc.robot.statemachine.states.tele;
 
 import java.util.function.DoubleSupplier;
 
