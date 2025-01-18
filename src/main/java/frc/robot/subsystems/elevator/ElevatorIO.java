@@ -10,8 +10,11 @@ public interface ElevatorIO {
         public double appliedVolts = 0.0;
         public double currentAmps = 0.0;
 
+        
+
         public boolean topHallEffectClosed = false;
         public boolean bottomEffectClosed = false;
+        public double velocityRadPerSec;
     }
 
     public default void updateInputs(ElevatorIOInputs inputs) {}
