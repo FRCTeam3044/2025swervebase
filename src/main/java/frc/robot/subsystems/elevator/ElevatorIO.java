@@ -21,4 +21,6 @@ public interface ElevatorIO {
 
     public void setPosition (double desiredPosition);
     public void setSpeed (double desiredSpeed);
+
+	public Object setHeight(double calculateAngleForDist, Elevator elevator);
 }
