@@ -21,8 +21,6 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.AllianceUtil;
 import frc.robot.util.PathfindingDebugUtils;
 import me.nabdev.oxconfig.OxConfig;
-import me.nabdev.pathfinding.modifiers.ActiveOtherAllianceModifier;
-
 import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
