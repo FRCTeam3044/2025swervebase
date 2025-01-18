@@ -8,11 +8,22 @@ public class EndEffecter extends SubsystemBase{
     private final EndEffecterIO io;
     private final EndEffecterIOInputsAutoLogged inputs = new EndEffecterIOInputsAutoLogged();
 
-    enum levelAngles {
-        L1,
-        L2,
-        L3,
-        L4
+    enum LevelAngle {
+        L1(0, 0, 0, 0),
+        L23(0,0,0,0),
+        L4(0,0,0,0);
+
+        private double closeDist;
+        private double closeAngle;
+        private double farDist;
+        private double farAngle;
+
+        private LevelAngle (double closeDist, double closeAngle, double farDist, double farAngle){
+            this.closeAngle = closeAngle;
+            this.closeDist = closeDist;
+            this.farDist = farDist;
+            this.farAngle = farAngle;
+        }
     };
 
 
@@ -21,7 +32,7 @@ public class EndEffecter extends SubsystemBase{
         this.io = io;
     }
 
-    public Command pivot(Enum levelAngles) {
+    public Command pivot(LevelAngle levelAngles) {
         return null;
     }
 
@@ -39,6 +50,10 @@ public class EndEffecter extends SubsystemBase{
 
     public Command scoreL4() {
         return null;
+    }
+
+    private double calculateAngleForDist(double robotDist, LevelAngle desiredLevel){
+        
     }
 
 }
