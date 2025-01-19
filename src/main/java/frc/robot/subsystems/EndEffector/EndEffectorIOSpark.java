@@ -16,7 +16,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import me.nabdev.oxconfig.sampleClasses.ConfigureableSparkClosedLoop;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkClosedLoop;
 
 public class EndEffectorIOSpark implements EndEffectorIO {
     private final SparkMax intakeMotor = new SparkMax(rollerCanId, MotorType.kBrushless);
@@ -45,7 +45,7 @@ public class EndEffectorIOSpark implements EndEffectorIO {
                 .velocityConversionFactor((2.0 * Math.PI) / 60.0 / wristMotorReduction)
                 .uvwMeasurementPeriod(10)
                 .uvwAverageDepth(2);
-        new ConfigureableSparkClosedLoop(wristConfig, wristMotor.configAccessor, wristMotor, "wrist");
+        new ConfigurableSparkClosedLoop(wristConfig, wristMotor.configAccessor, wristMotor, "wrist");
 
         tryUntilOk(wristMotor, 5, () -> wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters));
