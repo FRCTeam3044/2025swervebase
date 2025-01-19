@@ -1,6 +1,6 @@
-package frc.robot.subsystems.EndEffecter;
+package frc.robot.subsystems.EndEffector;
 
-public class EndEffecterConstants {
+public class EndEffectorConstants {
     public static final int rollerCanId = 0;
     public static final int wristCanId = 0;
     public static final int proximitySensorChannel = 0;

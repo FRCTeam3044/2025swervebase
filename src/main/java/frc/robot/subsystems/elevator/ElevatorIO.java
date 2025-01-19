@@ -10,17 +10,15 @@ public interface ElevatorIO {
         public double appliedVolts = 0.0;
         public double currentAmps = 0.0;
 
-        
-
         public boolean topHallEffectClosed = false;
         public boolean bottomEffectClosed = false;
         public double velocityRadPerSec;
     }
 
-    public default void updateInputs(ElevatorIOInputs inputs) {}
+    public default void updateInputs(ElevatorIOInputs inputs) {
+    }
 
-    public void setPosition (double desiredPosition);
-    public void setSpeed (double desiredSpeed);
+    public void setPosition(double desiredPosition);
 
-	public Object setHeight(double calculateAngleForDist, Elevator elevator);
+    public void setSpeed(double desiredSpeed);
 }
