@@ -7,11 +7,21 @@ import frc.robot.statemachine.states.AutoState;
 import frc.robot.statemachine.states.DisabledState;
 import frc.robot.statemachine.states.TeleState;
 import frc.robot.statemachine.states.TestState;
+import frc.robot.statemachine.states.tele.GoToIntake;
+import frc.robot.statemachine.states.tele.GoToReefIntake;
+import frc.robot.statemachine.states.tele.GoToScoreAlgae;
+import frc.robot.statemachine.states.tele.GoToScoreCoral;
+import frc.robot.statemachine.states.tele.GoToScoreNet;
+import frc.robot.statemachine.states.tele.GoToScoreProcessor;
+import frc.robot.statemachine.states.tele.GoToScoringPosition;
+import frc.robot.statemachine.states.tele.GoToStationIntake;
 import frc.robot.statemachine.states.tele.IntakeAlgae;
 import frc.robot.statemachine.states.tele.IntakeCoral;
 import frc.robot.statemachine.states.tele.IntakeGamePiece;
 import frc.robot.statemachine.states.tele.ManualState;
 import frc.robot.statemachine.states.tele.ScoreAlgae;
+import frc.robot.statemachine.states.tele.ScoreAlgaeNet;
+import frc.robot.statemachine.states.tele.ScoreAlgaeProcessor;
 import frc.robot.statemachine.states.tele.ScoreCoral;
 import frc.robot.statemachine.states.tele.ScoreGamePiece;
 import frc.robot.subsystems.drive.Drive;
@@ -31,18 +41,52 @@ public class StateMachine extends StateMachineBase {
 
                 // Teleop
                 ManualState manual = new ManualState(this, driverController, operatorController, drive);
-                IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
-                IntakeCoral intakeCoral = new IntakeCoral(this);
-                IntakeAlgae intakeAlgae = new IntakeAlgae(this);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
                 ScoreCoral scoreCoral = new ScoreCoral(this);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
+                ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this);
+                ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this);
+                IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
+                IntakeCoral intakeCoral = new IntakeCoral(this);
+                IntakeAlgae intakeAlgae = new IntakeAlgae(this);
+                GoToIntake goToIntake = new GoToIntake(this);
+                GoToReefIntake goToReefIntake = new GoToReefIntake(this);
+                GoToStationIntake goToStationIntake = new GoToStationIntake(this);
+                GoToScoringPosition goToScoringPosition = new GoToScoringPosition(this);
+                GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this);
+                GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);
+                GoToScoreNet goToScoreNet = new GoToScoreNet(this);
+                GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this);
 
                 teleop.withModeTransitions(disabled, teleop, auto, test)
-                                .withDefaultChild(manual);
+                                .withDefaultChild(manual)
+                                .withChild(goToScoringPosition)
+                                .withChild(scoreGamePiece)
+                                .withChild(goToIntake)
+                                .withChild(intakeGamePiece);
 
                 // Example, will be button board later
                 manual.withTransition(scoreGamePiece, () -> false, "Example");
+
+                // Children inside children
+                goToScoringPosition.withChild(goToScoreCoral)
+                                .withChild(goToScoreAlgae);
+
+                scoreGamePiece.withChild(scoreCoral)
+                                .withChild(scoreAlgae);
+
+                goToIntake.withChild(goToReefIntake)
+                                .withChild(goToStationIntake);
+
+                intakeGamePiece.withChild(intakeCoral)
+                                .withChild(intakeAlgae);
+                
+                // Specific Algae intake and score
+                goToScoreAlgae.withChild(goToScoreNet)
+                                .withChild(goToScoreProcessor);
+
+                scoreAlgae.withChild(scoreAlgaeNet)
+                                .withChild(scoreAlgaeProcessor);
 
                 // Auto
                 auto.withModeTransitions(disabled, teleop, auto, test);
