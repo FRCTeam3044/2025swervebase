@@ -65,9 +65,6 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToIntake)
                                 .withChild(intakeGamePiece);
 
-                // Example, will be button board later
-                manual.withTransition(scoreGamePiece, () -> false, "Example");
-
                 // Children inside children
                 goToScoringPosition.withChild(goToScoreCoral)
                                 .withChild(goToScoreAlgae);
@@ -87,6 +84,27 @@ public class StateMachine extends StateMachineBase {
 
                 scoreAlgae.withChild(scoreAlgaeNet)
                                 .withChild(scoreAlgaeProcessor);
+
+                // Example, will be button board later
+                manual.withTransition(goToScoringPosition, () -> false, "Driver presses score")
+                                .withTransition(goToIntake, () -> false, "Driver presses intake");
+
+                goToScoringPosition.withTransition(scoreGamePiece, () -> false, "Close to scoring location")
+                                .withTransition(manual, () -> false, "Score button released");
+
+                scoreGamePiece.withTransition(goToScoringPosition, () -> false, "Scoring location changed")
+                                .withTransition(manual, () -> false, "Score button released")
+                                .withTransition(manual, () -> false, "No game piece in robot");
+
+                goToIntake.withTransition(intakeGamePiece, () -> false, "Close to intake location")
+                                .withTransition(manual, () -> false, "Intake button released");
+
+                intakeGamePiece.withTransition(goToIntake, () -> false, "Intake location changed")
+                                .withTransition(manual, () -> false, "Intake button released");
+
+                intakeCoral.withTransition(manual, () -> false, "Has coral");
+
+                intakeAlgae.withTransition(manual, () -> false, "Has algae");
 
                 // Auto
                 auto.withModeTransitions(disabled, teleop, auto, test);
