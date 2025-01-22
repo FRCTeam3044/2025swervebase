@@ -23,6 +23,8 @@ public class ElevatorIOSpark implements ElevatorIO {
     private final DigitalInput topHallEffect = new DigitalInput(0);
     private final DigitalInput bottomHallEffect = new DigitalInput(0);
 
+    public double currentBarMeters = 0;
+
     public ElevatorIOSpark(int currentLimit) {
 
         SparkMaxConfig configRight = new SparkMaxConfig();
@@ -67,5 +69,15 @@ public class ElevatorIOSpark implements ElevatorIO {
 
         inputs.bottomEffectClosed = bottomHallEffect.get();
         inputs.topHallEffectClosed = topHallEffect.get();
+
+        if(bottomHallEffect.get()) {
+            currentBarMeters = 0;
+            elevatorEncoder.setPosition(0);
+        }
+
+        if(topHallEffect.get()) {
+            //Unknown height
+            currentBarMeters = 2;
+        }
     }
 }

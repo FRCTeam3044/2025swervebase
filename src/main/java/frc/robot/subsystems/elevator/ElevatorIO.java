@@ -13,6 +13,7 @@ public interface ElevatorIO {
         public boolean topHallEffectClosed = false;
         public boolean bottomEffectClosed = false;
         public double velocityRadPerSec;
+
     }
 
     public default void updateInputs(ElevatorIOInputs inputs) {
