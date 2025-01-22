@@ -147,8 +147,8 @@ public abstract class State {
      * 
      * @return This state
      */
-    public State withChild(State child, BooleanSupplier condition, int priority) {
-        addChild(child, condition, priority, false);
+    public State withChild(State child, BooleanSupplier condition, int priority, String entranceConditionName) {
+        addChild(child, condition, priority, false, entranceConditionName);
         return this;
     }
 
@@ -156,7 +156,7 @@ public abstract class State {
      * Add a child state to this state (will never be entered by default)
      */
     public State withChild(State child) {
-        addChild(child, () -> false, Integer.MAX_VALUE, false);
+        addChild(child, () -> false, Integer.MAX_VALUE, false, "impossible");
         return this;
     }
 
@@ -167,7 +167,7 @@ public abstract class State {
      * @return This state
      */
     public State withDefaultChild(State child) {
-        addChild(child, () -> true, Integer.MAX_VALUE, true);
+        addChild(child, () -> true, Integer.MAX_VALUE, true, "default");
         return this;
     }
 
@@ -326,7 +326,7 @@ public abstract class State {
         this.parentState = parentState;
     }
 
-    private void addChild(State child, BooleanSupplier condition, int priority, boolean isDefault) {
+    private void addChild(State child, BooleanSupplier condition, int priority, boolean isDefault, String entranceConditionName) {
         if (isDefault) {
             if (hasDefaultChild)
                 throw new RuntimeException("A state can only have one default child");
@@ -334,6 +334,6 @@ public abstract class State {
         }
         child.setParentState(this);
         children.add(child);
-        entranceConditions.add(new TransitionInfo(child, condition, priority, null));
+        entranceConditions.add(new TransitionInfo(child, condition, priority, entranceConditionName));
     }
 }

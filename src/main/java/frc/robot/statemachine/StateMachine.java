@@ -65,25 +65,25 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToIntake)
                                 .withChild(intakeGamePiece);
 
-                // Children inside children
-                goToScoringPosition.withChild(goToScoreCoral)
-                                .withChild(goToScoreAlgae);
 
-                scoreGamePiece.withChild(scoreCoral)
-                                .withChild(scoreAlgae);
+                goToScoringPosition.withChild(goToScoreCoral, () -> false, 0, "Has coral")
+                                .withChild(goToScoreAlgae, () -> false, 1, "Has algae");
 
-                goToIntake.withChild(goToReefIntake)
-                                .withChild(goToStationIntake);
+                scoreGamePiece.withChild(scoreCoral, () -> false, 0, "Has coral")
+                                .withChild(scoreAlgae, () -> false, 1, "Has algae");
 
-                intakeGamePiece.withChild(intakeCoral)
-                                .withChild(intakeAlgae);
+                goToIntake.withChild(goToReefIntake, () -> false, 0, "Reef selected")
+                                .withChild(goToStationIntake, () -> false, 1, "Station selected");
+
+                intakeGamePiece.withChild(intakeCoral, () -> false, 0, "Reef selected")
+                                .withChild(intakeAlgae, () -> false, 1, "Station selected");
                 
                 // Specific Algae intake and score
-                goToScoreAlgae.withChild(goToScoreNet)
-                                .withChild(goToScoreProcessor);
+                goToScoreAlgae.withChild(goToScoreNet, () -> false, 0, "Net selected")
+                                .withChild(goToScoreProcessor, () -> false, 1, "Processor selected");
 
-                scoreAlgae.withChild(scoreAlgaeNet)
-                                .withChild(scoreAlgaeProcessor);
+                scoreAlgae.withChild(scoreAlgaeNet, () -> false, 0, "Net selected")
+                                .withChild(scoreAlgaeProcessor, () -> false, 1, "Processor selected");
 
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition, () -> false, "Driver presses score")
