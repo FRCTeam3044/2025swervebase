@@ -58,11 +58,11 @@ public class EndEffectorIOSpark implements EndEffectorIO {
 
     @Override
     public void setCoralSpeed(double speed) {
-
+        coralMotor.set(speed);
     }
 
     @Override
     public void setAlgaeSpeed(double speed) {
-
+        algaeMotor.set(speed);
     }
 }

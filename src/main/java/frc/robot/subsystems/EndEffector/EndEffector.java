@@ -23,7 +23,7 @@ public class EndEffector extends SubsystemBase {
     }
 
     public Command runIntake(DoubleSupplier desiredSpeed) {
-        return Commands.none();
+        return Commands.run(() -> {io.setAlgaeSpeed(desiredSpeed.getAsDouble()); io.setCoralSpeed(desiredSpeed.getAsDouble());});
     }
 
     public Command runUntilSpike(DoubleSupplier desiredSpeed) {
