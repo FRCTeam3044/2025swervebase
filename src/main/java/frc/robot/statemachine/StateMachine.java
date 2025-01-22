@@ -24,18 +24,21 @@ import frc.robot.statemachine.states.tele.ScoreAlgaeNet;
 import frc.robot.statemachine.states.tele.ScoreAlgaeProcessor;
 import frc.robot.statemachine.states.tele.ScoreCoral;
 import frc.robot.statemachine.states.tele.ScoreGamePiece;
+import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.shoulder.Shoulder;
 
 public class StateMachine extends StateMachineBase {
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
-                        Drive drive) {
+                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector) {
                 super();
                 State disabled = new DisabledState(this);
                 currentState = disabled;
 
                 State teleop = new TeleState(this);
                 State auto = new AutoState(this);
-                State test = new TestState(this, driverController);
+                State test = new TestState(this, driverController, elevator, shoulder, endEffector);
 
                 this.registerToRootState(test, auto, teleop, disabled);
 

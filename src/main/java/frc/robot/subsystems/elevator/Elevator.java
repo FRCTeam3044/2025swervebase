@@ -41,12 +41,12 @@ public class Elevator extends SubsystemBase {
         Logger.processInputs("Elevator", inputs);
     }
 
-    public Command elevatorMove(double speed) {
-        return null;
+    public Command elevatorMove(DoubleSupplier speed) {
+        return Commands.run(() -> io.setSpeed(speed.getAsDouble()));
     }
 
     public Command runOnJoystick() {
-        return null;
+        return Commands.none();
     }
 
     public Command toL1(DoubleSupplier robotDistance) {
@@ -70,7 +70,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command intake() {
-        return null;
+        return Commands.none();
     }
 
     private double calculateAngleForDist(double robotDist, LevelHeight desiredLevel) {

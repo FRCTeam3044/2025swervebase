@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -17,36 +18,32 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ElevatorIOSpark implements ElevatorIO {
-    private final SparkMax leftElevatorMoter = new SparkMax(leftCanId, null);
-    private final SparkMax rightElevatorMoter = new SparkMax(rightCanId, null);
+    private final SparkMax leftElevatorMotor = new SparkMax(leftCanId, MotorType.kBrushless);
+    private final SparkMax rightElevatorMotor = new SparkMax(rightCanId, MotorType.kBrushless);
+
+    private final RelativeEncoder elevatorEncoder = leftElevatorMotor.getEncoder();
 
     private final DigitalInput topHallEffect = new DigitalInput(0);
-    private final DigitalInput bottomHallEffect = new DigitalInput(0);
+    private final DigitalInput bottomHallEffect = new DigitalInput(1);
 
-    public double currentBarMeters = 0;
-
-    public ElevatorIOSpark(int currentLimit) {
+    public ElevatorIOSpark() {
 
         SparkMaxConfig configRight = new SparkMaxConfig();
-        configRight.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(0);
-        configRight.encoder
+        configRight.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).encoder
                 .positionConversionFactor(0);
 
-        tryUntilOk(rightElevatorMoter, 5, () -> rightElevatorMoter.configure(configRight,
+        tryUntilOk(rightElevatorMotor, 5, () -> rightElevatorMotor.configure(configRight,
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
         SparkMaxConfig configLeft = new SparkMaxConfig();
-        configLeft.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(0).inverted(true);
-        configLeft.encoder
-                .positionConversionFactor(0);
+        configLeft.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
 
-        tryUntilOk(leftElevatorMoter, 5, () -> leftElevatorMoter.configure(configLeft, ResetMode.kResetSafeParameters,
+
+        tryUntilOk(leftElevatorMotor, 5, () -> leftElevatorMotor.configure(configLeft, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters));
 
-        configRight.follow(leftElevatorMoter);
+        configRight.follow(leftElevatorMotor);
     }
-
-    private final RelativeEncoder elevatorEncoder = leftElevatorMoter.getEncoder();
 
     @Override
     public void setPosition(double desiredPosition) {
@@ -55,29 +52,29 @@ public class ElevatorIOSpark implements ElevatorIO {
 
     @Override
     public void setSpeed(double desiredSpeed) {
-        throw new UnsupportedOperationException("Unimplemented method 'setSpeed'");
+        leftElevatorMotor.set(desiredSpeed);
     }
 
     public void updateInputs(ElevatorIOInputs inputs) {
-        ifOk(leftElevatorMoter, elevatorEncoder::getPosition, (value) -> inputs.positionRad = value);
-        ifOk(leftElevatorMoter, elevatorEncoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);
+        ifOk(leftElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.positionRad = value);
+        ifOk(leftElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);
         ifOk(
-                leftElevatorMoter,
-                new DoubleSupplier[] { leftElevatorMoter::getAppliedOutput, leftElevatorMoter::getBusVoltage },
+                leftElevatorMotor,
+                new DoubleSupplier[] { leftElevatorMotor::getAppliedOutput, leftElevatorMotor::getBusVoltage },
                 (values) -> inputs.appliedVolts = values[0] * values[1]);
-        ifOk(leftElevatorMoter, leftElevatorMoter::getOutputCurrent, (value) -> inputs.currentAmps = value);
+        ifOk(leftElevatorMotor, leftElevatorMotor::getOutputCurrent, (value) -> inputs.currentAmps = value);
 
         inputs.bottomEffectClosed = bottomHallEffect.get();
         inputs.topHallEffectClosed = topHallEffect.get();
 
         if(bottomHallEffect.get()) {
-            currentBarMeters = 0;
-            elevatorEncoder.setPosition(0);
+            elevatorEncoder.setPosition(bottomBarMeters);
+            
         }
 
         if(topHallEffect.get()) {
             //Unknown height
-            currentBarMeters = 2;
+            elevatorEncoder.setPosition(topBarMeters);
         }
     }
 }

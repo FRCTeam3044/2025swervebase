@@ -3,6 +3,7 @@ package frc.robot.subsystems.climber;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase{
@@ -20,6 +21,6 @@ public class Climber extends SubsystemBase{
     }
 
     public Command setRadians(double radians) {
-        return null;
+        return Commands.none();
     }
 }
