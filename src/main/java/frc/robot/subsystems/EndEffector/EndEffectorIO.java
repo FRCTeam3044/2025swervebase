@@ -19,9 +19,9 @@ public interface EndEffectorIO {
 
     public void updateInputs(EndEffectorIOInputs inputs);
 
-    public void setWristAngle(double angle);
+    public void setShoulderAngle(double angle);
 
-    public void setWristSpeed(double speed);
+    public void setShoulderSpeed(double speed);
 
     public void setIntakeSpeed(double speed);
 }

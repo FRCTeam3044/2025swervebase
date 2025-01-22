@@ -46,20 +46,20 @@ public class EndEffector extends SubsystemBase {
 
     public Command scoreL1(DoubleSupplier robotDistance) {
         return Commands
-                .run(() -> io.setWristAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L1)), this)
-                .withName("Set wrist to L1 Scoring position");
+                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L1)), this)
+                .withName("Set Shoulder to L1 Scoring position");
     }
 
     public Command scoreL2AndL3(DoubleSupplier robotDistance) {
         return Commands
-                .run(() -> io.setWristAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L23)), this)
-                .withName("Set wrist to L1 Scoring position");
+                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L23)), this)
+                .withName("Set Shoulder to L1 Scoring position");
     }
 
     public Command scoreL4(DoubleSupplier robotDistance) {
         return Commands
-                .run(() -> io.setWristAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L4)), this)
-                .withName("Set wrist to L1 Scoring position");
+                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L4)), this)
+                .withName("Set Shoulder to L1 Scoring position");
     }
 
     private double calculateAngleForDist(double robotDist, LevelAngle desiredLevel) {
