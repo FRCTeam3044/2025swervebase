@@ -20,7 +20,7 @@ public class Climber extends SubsystemBase{
         Logger.processInputs("Climber", inputs);
     }
 
-    public Command setRadians(double radians) {
+    public Command setSpeed(double radians) {
         return Commands.none();
     }
 }

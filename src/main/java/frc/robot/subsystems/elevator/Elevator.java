@@ -45,10 +45,6 @@ public class Elevator extends SubsystemBase {
         return Commands.run(() -> io.setSpeed(speed.getAsDouble()));
     }
 
-    public Command runOnJoystick() {
-        return Commands.none();
-    }
-
     public Command toL1(DoubleSupplier robotDistance) {
         return Commands.run(() -> io.setPosition(calculateAngleForDist(robotDistance.getAsDouble(), LevelHeight.L1)))
                 .withName("Set elevator to L1 Scoring level");
