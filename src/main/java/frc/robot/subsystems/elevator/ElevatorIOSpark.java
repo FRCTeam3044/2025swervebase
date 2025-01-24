@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -25,6 +26,9 @@ public class ElevatorIOSpark implements ElevatorIO {
 
     private final DigitalInput topHallEffect = new DigitalInput(0);
     private final DigitalInput bottomHallEffect = new DigitalInput(1);
+
+    ConfigurableParameter<Double> bottomPoint = new ConfigurableParameter<Double>(0.0, "elevator/bottomPoint");
+    ConfigurableParameter<Double> topPoint = new ConfigurableParameter<Double>(1.0, "elevator/topPoint");
 
     public ElevatorIOSpark() {
 
@@ -68,13 +72,14 @@ public class ElevatorIOSpark implements ElevatorIO {
         inputs.topHallEffectClosed = topHallEffect.get();
 
         if(bottomHallEffect.get()) {
-            elevatorEncoder.setPosition(bottomBarMeters);
-            
+            elevatorEncoder.setPosition(bottomPoint.get());
         }
 
         if(topHallEffect.get()) {
-            //Unknown height
-            elevatorEncoder.setPosition(topBarMeters);
+            elevatorEncoder.setPosition(topPoint.get());
         }
+    }
+    public Command metersToClicks() {
+        
     }
 }

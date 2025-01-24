@@ -8,4 +8,6 @@ public class ElevatorConstants {
     public static final double topHallEffect = 1;
     public static final double bottomBarMeters = 0.2;
     public static final double topBarMeters = 2;
+    public static final double bottomBarHeight = 0;
+    public static final double topBarHeight = 1;
   }

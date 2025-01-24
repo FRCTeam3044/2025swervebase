@@ -74,4 +74,5 @@ public class Elevator extends SubsystemBase {
                 / (desiredLevel.farDist - desiredLevel.closeDist)) * (robotDist - desiredLevel.closeHeight);
         return heightForDist;
     }
+
 }
