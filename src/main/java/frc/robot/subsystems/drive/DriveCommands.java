@@ -36,6 +36,8 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.structures.Path;
 import me.nabdev.pathfinding.structures.Vector;
 import me.nabdev.pathfinding.structures.Vertex;
+
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -200,6 +202,14 @@ public class DriveCommands {
         return goToPoint(drive, pose, null, joystickRot, true).withName("Go To Point Joystick Rot");
     }
 
+    public static Command goToPointDesiredRot(Drive drive, Pose2d pose, Supplier<Rotation2d> desiredRotation) {
+        return goToPoint(drive, pose, desiredRotation, null, false).withName("Go To Point Static Rot");
+    }
+
+    public static Command pointControl(Drive drive, Pose2d pose, Rotation2d desiredRotation) {
+        return Commands.none();   
+    }
+
     /**
      * Measures the velocity feedforward constants for the drive motors.
      *
@@ -257,7 +267,7 @@ public class DriveCommands {
                                     double kS = (sumY * sumX2 - sumX * sumXY) / (n * sumX2 - sumX * sumX);
                                     double kV = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
 
-                                    NumberFormat formatter = null;// new DecimalFormat("#0.00000");
+                                    NumberFormat formatter = new DecimalFormat("#0.00000");
                                     System.out.println("********** Drive FF Characterization Results **********");
                                     System.out.println("\tkS: " + formatter.format(kS));
                                     System.out.println("\tkV: " + formatter.format(kV));
@@ -318,7 +328,7 @@ public class DriveCommands {
                                             double wheelRadius = (state.gyroDelta * DriveConstants.driveBaseRadius)
                                                     / wheelDelta;
 
-                                            NumberFormat formatter = null;// new DecimalFormat("#0.000");
+                                            NumberFormat formatter = new DecimalFormat("#0.000");
                                             System.out.println(
                                                     "********** Wheel Radius Characterization Results **********");
                                             System.out.println(

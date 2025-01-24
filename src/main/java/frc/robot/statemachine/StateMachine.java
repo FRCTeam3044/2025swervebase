@@ -28,9 +28,10 @@ import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shoulder.Shoulder;
+import frc.robot.util.ButtonBoardUtil;
 
 public class StateMachine extends StateMachineBase {
-        public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
+        public StateMachine(CommandXboxController driverController, CommandXboxController operatorController, ButtonBoardUtil buttonBoard,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector) {
                 super();
                 State disabled = new DisabledState(this);
@@ -50,11 +51,11 @@ public class StateMachine extends StateMachineBase {
                 ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this);
                 ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this);
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
-                IntakeCoral intakeCoral = new IntakeCoral(this);
-                IntakeAlgae intakeAlgae = new IntakeAlgae(this);
+                IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, endEffector);
+                IntakeAlgae intakeAlgae = new IntakeAlgae(this,buttonBoard, drive, elevator, endEffector);
                 GoToIntake goToIntake = new GoToIntake(this);
-                GoToReefIntake goToReefIntake = new GoToReefIntake(this);
-                GoToStationIntake goToStationIntake = new GoToStationIntake(this);
+                GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive);
+                GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive);
                 GoToScoringPosition goToScoringPosition = new GoToScoringPosition(this);
                 GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this);
                 GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);

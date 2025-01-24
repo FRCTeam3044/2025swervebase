@@ -1,7 +1,5 @@
 package frc.robot.subsystems.shoulder;
 
-import java.util.function.DoubleSupplier;
-
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ShoulderIO {
@@ -18,5 +16,5 @@ public interface ShoulderIO {
 
     public void setShoulderAngle(double angle);
 
-    public void setShoulderSpeed(DoubleSupplier speed);
+    public void setShoulderSpeed(double speed);
 }

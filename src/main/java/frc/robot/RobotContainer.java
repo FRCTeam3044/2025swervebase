@@ -45,6 +45,7 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceUtil;
+import frc.robot.util.ButtonBoardUtil;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -63,6 +64,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
         // Subsystems
         private final Drive drive;
+        private final ButtonBoardUtil buttonBoard;
         private final Vision vision;
         private final Elevator elevator;
         private final Shoulder shoulder;
@@ -98,6 +100,7 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorIOSpark());
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
+                                buttonBoard = new ButtonBoardUtil();
                                 break;
 
                         case SIM:
@@ -125,6 +128,7 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorIOSpark());
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
+                                buttonBoard = new ButtonBoardUtil();
                                 break;
 
                         default:
@@ -146,12 +150,13 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorIOSpark());
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
+                                buttonBoard = new ButtonBoardUtil();
                                 break;
                 }
 
                 AllianceUtil.setRobot(drive::getPose);
 
-                stateMachine = new StateMachine(driverController, operatorController, drive, elevator, shoulder, endEffector);
+                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, drive, elevator, shoulder, endEffector);
 
                 // Set up auto routines
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices");

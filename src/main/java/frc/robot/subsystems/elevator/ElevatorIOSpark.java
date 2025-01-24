@@ -79,7 +79,8 @@ public class ElevatorIOSpark implements ElevatorIO {
             elevatorEncoder.setPosition(topPoint.get());
         }
     }
-    public Command metersToClicks() {
+
+    public void metersToClicks() {
         
     }
 }

@@ -1,14 +1,10 @@
 {
     "presentation": {
-        "Drive Speed (m/s)": {
+        "elevator/bottomPoint": {
             "comment": "Auto-Generated",
-            "value": "4.8"
+            "value": "0.0"
         },
         "Pathfinding Y Controller/I": "0.0",
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "4.8"
-        },
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
@@ -17,22 +13,30 @@
             "comment": "Auto-Generated",
             "value": "2.0"
         },
+        "Pathfinding Y Controller/D": "0.0",
+        "Drive Speed (m/s)": {
+            "comment": "Auto-Generated",
+            "value": "4.8"
+        },
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "4.8"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
-        "Pathfinding Y Controller/D": "0.0"
+        "elevator/topPoint": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        }
     },
     "mode": "competition",
     "simulation": {
-        "Drive Speed (m/s)": {
+        "elevator/bottomPoint": {
             "comment": "Auto-Generated",
-            "value": "4.8"
+            "value": "0.0"
         },
         "Pathfinding Y Controller/I": "0.0",
-        "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "4.8"
-        },
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
@@ -41,32 +45,52 @@
             "comment": "Auto-Generated",
             "value": "2.0"
         },
+        "Pathfinding Y Controller/D": "0.0",
+        "Drive Speed (m/s)": {
+            "comment": "Auto-Generated",
+            "value": "4.8"
+        },
+        "Pathfinding Max Speed": {
+            "comment": "Auto-Generated",
+            "value": "4.8"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
-        "Pathfinding Y Controller/D": "0.0"
+        "elevator/topPoint": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        }
     },
     "competition": {
+        "elevator/bottomPoint": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Pathfinding Y Controller/I": "0.0",
+        "Pathfinding Theta Controller/I": "0.0",
+        "Pathfinding X Controller/I": "0.0",
+        "Pathfinding X Controller/D": "0.0",
+        "Pathfinding Theta Controller/P": "6.0",
+        "Pathfinding Max Accel": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
+        "Pathfinding Y Controller/D": "0.0",
         "Drive Speed (m/s)": {
             "comment": "Auto-Generated",
             "value": "44"
         },
-        "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
             "value": "4.8"
         },
-        "Pathfinding Theta Controller/I": "0.0",
-        "Pathfinding X Controller/I": "0.0",
-        "Pathfinding X Controller/D": "0.0",
-        "Pathfinding Theta Controller/P": "6.0",
-        "Pathfinding Max Accel": {
-            "comment": "Auto-Generated",
-            "value": "2.0"
-        },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
-        "Pathfinding Y Controller/D": "0.0"
+        "elevator/topPoint": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        }
     }
 }

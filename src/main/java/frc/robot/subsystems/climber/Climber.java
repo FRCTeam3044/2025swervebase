@@ -8,9 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
-
-
 public class Climber extends SubsystemBase{
     private final ClimberIO io;
     private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
@@ -23,10 +20,6 @@ public class Climber extends SubsystemBase{
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Climber", inputs);
-    }
-
-    public Command setSpeed(double speed) {
-        return Commands.run(() -> io.setSpeed(speed));
     }
 
     public Command move(DoubleSupplier speed) {

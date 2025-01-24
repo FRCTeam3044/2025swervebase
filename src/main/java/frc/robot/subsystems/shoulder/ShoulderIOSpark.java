@@ -50,8 +50,8 @@ public class ShoulderIOSpark implements ShoulderIO {
     }
 
     @Override
-    public void setShoulderSpeed(DoubleSupplier desiredSpeed) {
+    public void setShoulderSpeed(double desiredSpeed) {
         // TODO Auto-generated method stub
-        shoulderMotor.set(desiredSpeed.getAsDouble());
+        shoulderMotor.set(desiredSpeed);
     }
 }

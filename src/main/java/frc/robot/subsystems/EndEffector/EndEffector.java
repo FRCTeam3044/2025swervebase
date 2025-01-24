@@ -1,5 +1,7 @@
 package frc.robot.subsystems.EndEffector;
 
+import static frc.robot.subsystems.EndEffector.EndEffectorConstants.*;
+
 import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -22,8 +24,16 @@ public class EndEffector extends SubsystemBase {
         Logger.processInputs("EndEffector", inputs);
     }
 
-    public Command runIntake(DoubleSupplier desiredSpeed) {
-        return Commands.run(() -> {io.setAlgaeSpeed(desiredSpeed.getAsDouble()); io.setCoralSpeed(desiredSpeed.getAsDouble());});
+    public Command runIntakeSpeed(DoubleSupplier desiredSpeed) {
+        return Commands.runEnd(() -> {io.setAlgaeSpeed(desiredSpeed.getAsDouble()); io.setCoralSpeed(desiredSpeed.getAsDouble());}, () -> {io.setAlgaeSpeed(0.0); io.setCoralSpeed(0.0);});
+    }
+
+    public Command runIntake(){
+        return runIntakeSpeed(intakeSpeed::get);
+    }
+
+    public Command runIntakeReverse(){
+        return runIntakeSpeed(() -> -intakeSpeed.get());
     }
 
     public Command runUntilSpike(DoubleSupplier desiredSpeed) {

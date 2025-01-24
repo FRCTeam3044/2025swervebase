@@ -17,7 +17,7 @@ public class TestState extends State {
 
                 startWhenActive(elevator.elevatorMove(controller::getRightY));
                 startWhenActive(shoulder.manualPivot(controller::getLeftY));
-                controller.a().onTrue(endEffector.runIntake(() -> 1.0));
-                controller.b().onTrue(endEffector.runIntake(() -> -1.0));
+                controller.a().onTrue(endEffector.runIntake());
+                controller.b().onTrue(endEffector.runIntakeReverse());
         }
 }

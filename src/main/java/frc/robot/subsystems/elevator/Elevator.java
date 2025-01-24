@@ -42,7 +42,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command elevatorMove(DoubleSupplier speed) {
-        return Commands.run(() -> io.setSpeed(speed.getAsDouble()));
+        return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0));
     }
 
     public Command toL1(DoubleSupplier robotDistance) {
@@ -65,14 +65,9 @@ public class Elevator extends SubsystemBase {
                 .withName("Set elevator to L4 Scoring level");
     }
 
-    public Command intake() {
-        return Commands.none();
-    }
-
     private double calculateAngleForDist(double robotDist, LevelHeight desiredLevel) {
         double heightForDist = ((desiredLevel.farHeight - desiredLevel.closeHeight)
                 / (desiredLevel.farDist - desiredLevel.closeDist)) * (robotDist - desiredLevel.closeHeight);
         return heightForDist;
     }
-
 }

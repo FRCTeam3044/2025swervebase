@@ -41,7 +41,7 @@ public class Shoulder extends SubsystemBase {
     }
 
     public Command manualPivot(DoubleSupplier desiredSpeed) {
-        return Commands.run(() -> io.setShoulderSpeed(desiredSpeed));
+        return Commands.runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0));
     }
 
     public Command scoreL1(DoubleSupplier robotDistance) {
