@@ -7,6 +7,7 @@ import static frc.robot.util.SparkUtil.tryUntilOk;
 import java.util.function.DoubleSupplier;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -42,7 +43,6 @@ public class ElevatorIOSpark implements ElevatorIO {
         SparkMaxConfig configLeft = new SparkMaxConfig();
         configLeft.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
 
-
         tryUntilOk(leftElevatorMotor, 5, () -> leftElevatorMotor.configure(configLeft, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters));
 
@@ -51,7 +51,7 @@ public class ElevatorIOSpark implements ElevatorIO {
 
     @Override
     public void setPosition(double desiredPosition) {
-        throw new UnsupportedOperationException("Unimplemented method 'setPosition'");
+        leftElevatorMotor.getClosedLoopController().setReference(desiredPosition, ControlType.kCurrent);
     }
 
     @Override
