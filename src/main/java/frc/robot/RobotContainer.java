@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
+import frc.robot.subsystems.EndEffector.EndEffector;
+import frc.robot.subsystems.EndEffector.EndEffectorIOSpark;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveConstants;
@@ -35,6 +37,10 @@ import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIOSpark;
+import frc.robot.subsystems.shoulder.Shoulder;
+import frc.robot.subsystems.shoulder.ShoulderIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
@@ -58,6 +64,9 @@ public class RobotContainer {
         // Subsystems
         private final Drive drive;
         private final Vision vision;
+        private final Elevator elevator;
+        private final Shoulder shoulder;
+        private final EndEffector endEffector;
         private SwerveDriveSimulation driveSimulation = null;
 
         // Controller
@@ -86,6 +95,9 @@ public class RobotContainer {
                                                 new ModuleIOSpark(3));
 
                                 this.vision = new Vision(drive);
+                                elevator = new Elevator(new ElevatorIOSpark());
+                                shoulder = new Shoulder(new ShoulderIOSpark());
+                                endEffector = new EndEffector(new EndEffectorIOSpark());
                                 break;
 
                         case SIM:
@@ -110,6 +122,9 @@ public class RobotContainer {
                                                                 camera1Name, robotToCamera1,
                                                                 driveSimulation::getSimulatedDriveTrainPose));
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
+                                elevator = new Elevator(new ElevatorIOSpark());
+                                shoulder = new Shoulder(new ShoulderIOSpark());
+                                endEffector = new EndEffector(new EndEffectorIOSpark());
                                 break;
 
                         default:
@@ -128,12 +143,15 @@ public class RobotContainer {
                                 vision = new Vision(drive, new VisionIO() {
                                 }, new VisionIO() {
                                 });
+                                elevator = new Elevator(new ElevatorIOSpark());
+                                shoulder = new Shoulder(new ShoulderIOSpark());
+                                endEffector = new EndEffector(new EndEffectorIOSpark());
                                 break;
                 }
 
                 AllianceUtil.setRobot(drive::getPose);
 
-                stateMachine = new StateMachine(driverController, operatorController, drive);
+                stateMachine = new StateMachine(driverController, operatorController, drive, elevator, shoulder, endEffector);
 
                 // Set up auto routines
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices");

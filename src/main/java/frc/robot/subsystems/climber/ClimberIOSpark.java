@@ -49,8 +49,9 @@ public class ClimberIOSpark implements ClimberIO {
   }
 
   @Override
-  public void setPositionRadians(double radians) {
+  public void setSpeed(double speed) {
     // TODO: Auto-generated method stub
+    climber.set(speed);
   }
 
 }

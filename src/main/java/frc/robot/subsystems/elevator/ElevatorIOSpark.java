@@ -6,13 +6,11 @@ import static frc.robot.util.SparkUtil.tryUntilOk;
 
 import java.util.function.DoubleSupplier;
 
-import org.ejml.dense.row.linsol.qr.LinearSolverQrHouseCol_MT_FDRM;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -21,34 +19,31 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ElevatorIOSpark implements ElevatorIO {
-    private final SparkMax leftElevatorMotor = new SparkMax(leftCanId, null);
-    private final SparkMax rightElevatorMotor = new SparkMax(rightCanId, null);
+    private final SparkMax leftElevatorMotor = new SparkMax(leftCanId, MotorType.kBrushless);
+    private final SparkMax rightElevatorMotor = new SparkMax(rightCanId, MotorType.kBrushless);
+
+    private final RelativeEncoder elevatorEncoder = leftElevatorMotor.getEncoder();
 
     private final DigitalInput topHallEffect = new DigitalInput(0);
-    private final DigitalInput bottomHallEffect = new DigitalInput(0);
+    private final DigitalInput bottomHallEffect = new DigitalInput(1);
 
-    public ElevatorIOSpark(int currentLimit) {
+    public ElevatorIOSpark() {
 
         SparkMaxConfig configRight = new SparkMaxConfig();
-        configRight.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(0);
-        configRight.encoder
+        configRight.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).encoder
                 .positionConversionFactor(0);
 
         tryUntilOk(rightElevatorMotor, 5, () -> rightElevatorMotor.configure(configRight,
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
         SparkMaxConfig configLeft = new SparkMaxConfig();
-        configLeft.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(0).inverted(true);
-        configLeft.encoder
-                .positionConversionFactor(0);
+        configLeft.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
 
         tryUntilOk(leftElevatorMotor, 5, () -> leftElevatorMotor.configure(configLeft, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters));
 
         configRight.follow(leftElevatorMotor);
     }
-
-    private final RelativeEncoder elevatorEncoder = leftElevatorMotor.getEncoder();
 
     @Override
     public void setPosition(double desiredPosition) {
@@ -71,5 +66,15 @@ public class ElevatorIOSpark implements ElevatorIO {
 
         inputs.bottomEffectClosed = bottomHallEffect.get();
         inputs.topHallEffectClosed = topHallEffect.get();
+
+        if(bottomHallEffect.get()) {
+            elevatorEncoder.setPosition(bottomBarMeters);
+            
+        }
+
+        if(topHallEffect.get()) {
+            //Unknown height
+            elevatorEncoder.setPosition(topBarMeters);
+        }
     }
 }

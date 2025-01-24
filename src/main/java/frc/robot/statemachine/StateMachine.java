@@ -24,18 +24,21 @@ import frc.robot.statemachine.states.tele.ScoreAlgaeNet;
 import frc.robot.statemachine.states.tele.ScoreAlgaeProcessor;
 import frc.robot.statemachine.states.tele.ScoreCoral;
 import frc.robot.statemachine.states.tele.ScoreGamePiece;
+import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.shoulder.Shoulder;
 
 public class StateMachine extends StateMachineBase {
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
-                        Drive drive) {
+                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector) {
                 super();
                 State disabled = new DisabledState(this);
                 currentState = disabled;
 
                 State teleop = new TeleState(this);
                 State auto = new AutoState(this);
-                State test = new TestState(this, driverController);
+                State test = new TestState(this, driverController, elevator, shoulder, endEffector);
 
                 this.registerToRootState(test, auto, teleop, disabled);
 
@@ -65,25 +68,25 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToIntake)
                                 .withChild(intakeGamePiece);
 
-                // Children inside children
-                goToScoringPosition.withChild(goToScoreCoral)
-                                .withChild(goToScoreAlgae);
 
-                scoreGamePiece.withChild(scoreCoral)
-                                .withChild(scoreAlgae);
+                goToScoringPosition.withChild(goToScoreCoral, () -> false, 0, "Has coral")
+                                .withChild(goToScoreAlgae, () -> false, 1, "Has algae");
 
-                goToIntake.withChild(goToReefIntake)
-                                .withChild(goToStationIntake);
+                scoreGamePiece.withChild(scoreCoral, () -> false, 0, "Has coral")
+                                .withChild(scoreAlgae, () -> false, 1, "Has algae");
 
-                intakeGamePiece.withChild(intakeCoral)
-                                .withChild(intakeAlgae);
+                goToIntake.withChild(goToReefIntake, () -> false, 0, "Reef selected")
+                                .withChild(goToStationIntake, () -> false, 1, "Station selected");
+
+                intakeGamePiece.withChild(intakeCoral, () -> false, 0, "Reef selected")
+                                .withChild(intakeAlgae, () -> false, 1, "Station selected");
                 
                 // Specific Algae intake and score
-                goToScoreAlgae.withChild(goToScoreNet)
-                                .withChild(goToScoreProcessor);
+                goToScoreAlgae.withChild(goToScoreNet, () -> false, 0, "Net selected")
+                                .withChild(goToScoreProcessor, () -> false, 1, "Processor selected");
 
-                scoreAlgae.withChild(scoreAlgaeNet)
-                                .withChild(scoreAlgaeProcessor);
+                scoreAlgae.withChild(scoreAlgaeNet, () -> false, 0, "Net selected")
+                                .withChild(scoreAlgaeProcessor, () -> false, 1, "Processor selected");
 
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition, () -> false, "Driver presses score")
