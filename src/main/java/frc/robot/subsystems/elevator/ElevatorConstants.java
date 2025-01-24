@@ -6,4 +6,7 @@ public class ElevatorConstants {
     public static final int currentLimit = 40;
     public static final double bottomHallEffect = 0;
     public static final double topHallEffect = 1;
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
   }

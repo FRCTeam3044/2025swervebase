@@ -6,9 +6,13 @@ import static frc.robot.util.SparkUtil.tryUntilOk;
 
 import java.util.function.DoubleSupplier;
 
+import org.ejml.dense.row.linsol.qr.LinearSolverQrHouseCol_MT_FDRM;
+
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -17,8 +21,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ElevatorIOSpark implements ElevatorIO {
-    private final SparkMax leftElevatorMoter = new SparkMax(leftCanId, null);
-    private final SparkMax rightElevatorMoter = new SparkMax(rightCanId, null);
+    private final SparkMax leftElevatorMotor = new SparkMax(leftCanId, null);
+    private final SparkMax rightElevatorMotor = new SparkMax(rightCanId, null);
 
     private final DigitalInput topHallEffect = new DigitalInput(0);
     private final DigitalInput bottomHallEffect = new DigitalInput(0);
@@ -30,7 +34,7 @@ public class ElevatorIOSpark implements ElevatorIO {
         configRight.encoder
                 .positionConversionFactor(0);
 
-        tryUntilOk(rightElevatorMoter, 5, () -> rightElevatorMoter.configure(configRight,
+        tryUntilOk(rightElevatorMotor, 5, () -> rightElevatorMotor.configure(configRight,
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
         SparkMaxConfig configLeft = new SparkMaxConfig();
@@ -38,32 +42,32 @@ public class ElevatorIOSpark implements ElevatorIO {
         configLeft.encoder
                 .positionConversionFactor(0);
 
-        tryUntilOk(leftElevatorMoter, 5, () -> leftElevatorMoter.configure(configLeft, ResetMode.kResetSafeParameters,
+        tryUntilOk(leftElevatorMotor, 5, () -> leftElevatorMotor.configure(configLeft, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters));
 
-        configRight.follow(leftElevatorMoter);
+        configRight.follow(leftElevatorMotor);
     }
 
-    private final RelativeEncoder elevatorEncoder = leftElevatorMoter.getEncoder();
+    private final RelativeEncoder elevatorEncoder = leftElevatorMotor.getEncoder();
 
     @Override
     public void setPosition(double desiredPosition) {
-        throw new UnsupportedOperationException("Unimplemented method 'setPosition'");
+        leftElevatorMotor.getClosedLoopController().setReference(desiredPosition, ControlType.kCurrent);
     }
 
     @Override
     public void setSpeed(double desiredSpeed) {
-        throw new UnsupportedOperationException("Unimplemented method 'setSpeed'");
+        leftElevatorMotor.set(desiredSpeed);
     }
 
     public void updateInputs(ElevatorIOInputs inputs) {
-        ifOk(leftElevatorMoter, elevatorEncoder::getPosition, (value) -> inputs.positionRad = value);
-        ifOk(leftElevatorMoter, elevatorEncoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);
+        ifOk(leftElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.positionRad = value);
+        ifOk(leftElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);
         ifOk(
-                leftElevatorMoter,
-                new DoubleSupplier[] { leftElevatorMoter::getAppliedOutput, leftElevatorMoter::getBusVoltage },
+                leftElevatorMotor,
+                new DoubleSupplier[] { leftElevatorMotor::getAppliedOutput, leftElevatorMotor::getBusVoltage },
                 (values) -> inputs.appliedVolts = values[0] * values[1]);
-        ifOk(leftElevatorMoter, leftElevatorMoter::getOutputCurrent, (value) -> inputs.currentAmps = value);
+        ifOk(leftElevatorMotor, leftElevatorMotor::getOutputCurrent, (value) -> inputs.currentAmps = value);
 
         inputs.bottomEffectClosed = bottomHallEffect.get();
         inputs.topHallEffectClosed = topHallEffect.get();
