@@ -35,7 +35,13 @@ public class AutoTargetUtils {
     public static Pose2d reftStation2Ref = new Pose2d(0, 0, new Rotation2d());
     public static Pose2d reftStation3 = new Pose2d(0, 0, new Rotation2d());
     public static Pose2d reftStation3Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d rrocessor = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d processor = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d algaeA = new Pose2d(0,0,new Rotation2d());
+    public static Pose2d algaeB = new Pose2d(0,0,new Rotation2d());
+    public static Pose2d algaeC = new Pose2d(0,0,new Rotation2d());
+    public static Pose2d algaeD = new Pose2d(0,0,new Rotation2d());
+    public static Pose2d algaeE = new Pose2d(0,0,new Rotation2d());
+    public static Pose2d algaeF = new Pose2d(0,0,new Rotation2d());
 
     public static Pose2d reef(){
         return AllianceUtil.getPoseForAlliance(reef);
@@ -89,6 +95,30 @@ public class AutoTargetUtils {
         return AllianceUtil.getPoseForAlliance(reefL);
     }
 
+    public static Pose2d algaeA(){
+        return AllianceUtil.getPoseForAlliance(algaeA);
+    }
+
+    public static Pose2d algaeB(){
+        return AllianceUtil.getPoseForAlliance(algaeB);
+    }
+
+    public static Pose2d algaeC(){
+        return AllianceUtil.getPoseForAlliance(algaeC);
+    }
+
+    public static Pose2d algaeD(){
+        return AllianceUtil.getPoseForAlliance(algaeD);
+    }
+
+    public static Pose2d algaeE(){
+        return AllianceUtil.getPoseForAlliance(algaeE);
+    }
+
+    public static Pose2d algaeF(){
+        return AllianceUtil.getPoseForAlliance(algaeF);
+    }
+
     public static Pose2d rightStation1(){
         return AllianceUtil.getPoseForAlliance(rightStation1);
     }
@@ -138,7 +168,7 @@ public class AutoTargetUtils {
     }
 
     public static Pose2d processor(){
-        return AllianceUtil.getPoseForAlliance(rrocessor);
+        return AllianceUtil.getPoseForAlliance(processor);
     }
 
     public static DoubleSupplier robotDistToReef(Drive drive){

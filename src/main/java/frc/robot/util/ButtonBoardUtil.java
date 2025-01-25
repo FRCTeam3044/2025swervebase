@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import pabeles.concurrency.ConcurrencyOps.NewInstance;
 
 public class ButtonBoardUtil {
     private static GenericHID padOne;
@@ -34,11 +35,21 @@ public class ButtonBoardUtil {
     private ButtonInfo stationLeft2 = new ButtonInfo(0, 17);
     private ButtonInfo stationLeft3 = new ButtonInfo(0, 18);
     private ButtonInfo processor = new ButtonInfo(0, 19);
+    private ButtonInfo levelOne = new ButtonInfo(0, 20);
+    private ButtonInfo levelTwo = new ButtonInfo(0, 21);
+    private ButtonInfo levelThree = new ButtonInfo(0, 22);
+    private ButtonInfo levelFour = new ButtonInfo(0, 23);
+    private ButtonInfo algaeModeToggle = new ButtonInfo(0, 24);
 
     private Pose2d reefPose = null;
     private Pose2d intakePose = null;
+    private Pose2d processorPose = null;
+    private Pose2d algaePose = null;
 
     private IntakeStation intakeHeight;
+    private ReefHeight reefLevel;
+
+    private boolean isAlgaeMode = true;
 
     public void periodic() {
         if(reefA.isPressed()) {
@@ -101,6 +112,42 @@ public class ButtonBoardUtil {
             intakePose = AutoTargetUtils.rightStation3();
             intakeHeight = IntakeStation.R3;
         }
+        if(processor.isPressed()) {
+            processorPose = AutoTargetUtils.processor();
+        }
+        if(reefA.isPressed() || reefB.isPressed()) {
+            algaePose = AutoTargetUtils.algaeA();
+        }
+        if(reefC.isPressed() || reefD.isPressed()) {
+            algaePose = AutoTargetUtils.algaeB();
+        }
+        if(reefE.isPressed() || reefF.isPressed()) {
+            algaePose = AutoTargetUtils.algaeC;
+        }
+        if(reefG.isPressed() || reefH.isPressed()) {
+            algaePose = AutoTargetUtils.algaeD;
+        }
+        if(reefI.isPressed() || reefJ.isPressed()) {
+            algaePose = AutoTargetUtils.algaeE;
+        }
+        if(reefK.isPressed() || reefL.isPressed()) {
+            algaePose = AutoTargetUtils.algaeF;
+        }
+        if(levelOne.isPressed()) {
+            reefLevel = ReefHeight.L1;
+        }
+        if(levelTwo.isPressed()) {
+            reefLevel = ReefHeight.L2;
+        }
+        if(levelThree.isPressed()) {
+            reefLevel = ReefHeight.L3;
+        }
+        if(levelFour.isPressed()) {
+            reefLevel = ReefHeight.L4;
+        }
+        if(algaeModeToggle.isPressed()) {
+            isAlgaeMode = !isAlgaeMode;
+        }
     }
 
     public enum ReefHeight {
@@ -121,6 +168,10 @@ public class ButtonBoardUtil {
 
     public Pose2d getSelectedReef(){
         return reefPose;
+    }
+
+    public Pose2d getSelecectedAlgae() {
+        return algaePose;
     }
 
     public ReefHeight getSelectedReefHeight(){
