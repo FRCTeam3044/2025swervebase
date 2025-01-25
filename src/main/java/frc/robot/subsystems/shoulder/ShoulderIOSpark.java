@@ -8,6 +8,8 @@ import java.util.function.DoubleSupplier;
 import static frc.robot.util.SparkUtil.ifOk;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -15,10 +17,20 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Timer;
+
 public class ShoulderIOSpark implements ShoulderIO {
     private final SparkMax shoulderMotorOne = new SparkMax(shoulderCanId, MotorType.kBrushless);
-    private final SparkMax shoulderMotorTwo = new SparkMax(shoulderCanId, null);
+    private final SparkMax shoulderMotorTwo = new SparkMax(shoulderCanId, MotorType.kBrushless);
     private final AbsoluteEncoder shoulderEncoder = shoulderMotorOne.getAbsoluteEncoder();
+
+    private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity, kMaxAcceleration);
+      private final ProfiledPIDController controller = new ProfiledPIDController(kP, kI, kD, m_constraints, kDt);
+    ArmFeedforward feedforward = new ArmFeedforward(kS, kG, kV);
+
     
     public ShoulderIOSpark() {
         var shoulderMotorOneConfig = new SparkMaxConfig();
@@ -58,9 +70,35 @@ public class ShoulderIOSpark implements ShoulderIO {
     }
 
     @Override
-    public void setShoulderAngle(double desiredangle) {
+    public void setShoulderAngle(double desiredAngle) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAngle'");
+        double lastSpeed = 0;
+        double lastTime = Timer.getFPGATimestamp();
+        double pidVal = controller.calculate(shoulderEncoder.getPosition(), desiredAngle);
+        double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
+        shoulderMotorOne.setVoltage(
+            pidVal
+            + feedforward.calculate(controller.getSetpoint().velocity, acceleration));
+        lastSpeed = controller.getSetpoint().velocity;
+        lastTime = Timer.getFPGATimestamp();   
+    }
+
+    // TODO: check if we can use trapezoid profile itself
+    public void setShoulderAngleSpark(double desiredAngle) {
+        double lastSpeed = 0;
+        double lastTime = Timer.getFPGATimestamp();
+        controller.calculate(shoulderEncoder.getPosition(), desiredAngle);
+        double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
+        shoulderMotorOne.getClosedLoopController().setReference(controller.getSetpoint().position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedforward.calculate(controller.getSetpoint().velocity, acceleration));
+    }
+
+    // TODO: test with and without FF
+    public void setShoulderAngleMaxMotion(double desiredAngle) {
+        double lastSpeed = 0;
+        double lastTime = Timer.getFPGATimestamp();
+        controller.calculate(shoulderEncoder.getPosition(), desiredAngle);
+        double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
+        shoulderMotorOne.getClosedLoopController().setReference(desiredAngle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, feedforward.calculate(controller.getSetpoint().velocity, acceleration));
     }
 
     @Override
