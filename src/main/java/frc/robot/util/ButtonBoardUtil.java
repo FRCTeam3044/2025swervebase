@@ -1,29 +1,107 @@
 package frc.robot.util;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.GenericHID;
 
 public class ButtonBoardUtil {
-    public record ButtonInfo(boolean board1, int button){};
+    private static GenericHID padOne;
+    private static GenericHID padTwo;
+    private static GenericHID padThree;
 
-    private ButtonInfo reefA = new ButtonInfo(false, 0);
-    private ButtonInfo reefB = new ButtonInfo(false, 1);
-    private ButtonInfo reefC = new ButtonInfo(false, 2);
-    private ButtonInfo reefD = new ButtonInfo(false, 3);
-    private ButtonInfo reefE = new ButtonInfo(false, 4);
-    private ButtonInfo reefF = new ButtonInfo(false, 5);
-    private ButtonInfo reefG = new ButtonInfo(false, 6);
-    private ButtonInfo reefH = new ButtonInfo(false, 7);
-    private ButtonInfo reefI = new ButtonInfo(false, 8);
-    private ButtonInfo reefJ = new ButtonInfo(false, 9);
-    private ButtonInfo reefK = new ButtonInfo(false, 10);
-    private ButtonInfo reefL = new ButtonInfo(false,11);
-    private ButtonInfo stationRight1 = new ButtonInfo(false, 13);
-    private ButtonInfo stationRight2 = new ButtonInfo(false, 14);
-    private ButtonInfo stationRight3 = new ButtonInfo(false, 15);
-    private ButtonInfo stationLeft1 = new ButtonInfo(false, 16);
-    private ButtonInfo stationLeft2 = new ButtonInfo(false, 17);
-    private ButtonInfo stationLeft3 = new ButtonInfo(false, 18);
-    private ButtonInfo processor = new ButtonInfo(false, 19);
+
+    public record ButtonInfo(int board, int button){
+        public boolean isPressed(){
+            return (board == 1 && ButtonBoardUtil.padOne.getRawButtonPressed(button)) || (board == 2 && ButtonBoardUtil.padTwo.getRawButtonPressed(button)) || (board == 3 && ButtonBoardUtil.padThree.getRawButtonPressed(button));
+        }
+    };
+
+    private ButtonInfo reefA = new ButtonInfo(0, 0);
+    private ButtonInfo reefB = new ButtonInfo(0, 1);
+    private ButtonInfo reefC = new ButtonInfo(0, 2);
+    private ButtonInfo reefD = new ButtonInfo(0, 3);
+    private ButtonInfo reefE = new ButtonInfo(0, 4);
+    private ButtonInfo reefF = new ButtonInfo(0, 5);
+    private ButtonInfo reefG = new ButtonInfo(0, 6);
+    private ButtonInfo reefH = new ButtonInfo(0, 7);
+    private ButtonInfo reefI = new ButtonInfo(0, 8);
+    private ButtonInfo reefJ = new ButtonInfo(0, 9);
+    private ButtonInfo reefK = new ButtonInfo(0, 10);
+    private ButtonInfo reefL = new ButtonInfo(0,11);
+    private ButtonInfo stationRight1 = new ButtonInfo(0, 13);
+    private ButtonInfo stationRight2 = new ButtonInfo(0, 14);
+    private ButtonInfo stationRight3 = new ButtonInfo(0, 15);
+    private ButtonInfo stationLeft1 = new ButtonInfo(0, 16);
+    private ButtonInfo stationLeft2 = new ButtonInfo(0, 17);
+    private ButtonInfo stationLeft3 = new ButtonInfo(0, 18);
+    private ButtonInfo processor = new ButtonInfo(0, 19);
+
+    private Pose2d reefPose = null;
+    private Pose2d intakePose = null;
+
+    private IntakeStation intakeHeight;
+
+    public void periodic() {
+        if(reefA.isPressed()) {
+            reefPose = AutoTargetUtils.reefA();
+        }
+        if(reefB.isPressed()) {
+            reefPose = AutoTargetUtils.reefB();
+        }
+        if(reefC.isPressed()) {
+            reefPose = AutoTargetUtils.reefC();
+        }
+        if(reefD.isPressed()) {
+            reefPose = AutoTargetUtils.reefD();
+        }
+        if(reefE.isPressed()) {
+            reefPose = AutoTargetUtils.reefE();
+        }
+        if(reefF.isPressed()) {
+            reefPose = AutoTargetUtils.reefF();
+        }
+        if(reefG.isPressed()) {
+            reefPose = AutoTargetUtils.reefG();
+        }
+        if(reefH.isPressed()) {
+            reefPose = AutoTargetUtils.reefH();
+        }
+        if(reefI.isPressed()) {
+            reefPose = AutoTargetUtils.reefI();
+        }
+        if(reefJ.isPressed()) {
+            reefPose = AutoTargetUtils.reefJ();
+        }
+        if(reefK.isPressed()) {
+            reefPose = AutoTargetUtils.reefK();
+        }
+        if(reefL.isPressed()) {
+            reefPose = AutoTargetUtils.reefL();
+        }
+        if(stationLeft1.isPressed()) {
+            intakePose = AutoTargetUtils.leftStation1();
+            intakeHeight = IntakeStation.L1;
+        }
+        if(stationLeft2.isPressed()) {
+            intakePose = AutoTargetUtils.leftStation2();
+            intakeHeight = IntakeStation.L2;
+        }
+        if(stationLeft3.isPressed()) {
+            intakePose = AutoTargetUtils.leftStation3();
+            intakeHeight = IntakeStation.L3;
+        }
+        if(stationRight1.isPressed()) {
+            intakePose = AutoTargetUtils.rightStation1();
+            intakeHeight = IntakeStation.R1;
+        }
+        if(stationRight2.isPressed()) {
+            intakePose = AutoTargetUtils.rightStation2();
+            intakeHeight = IntakeStation.R2;
+        }
+        if(stationRight3.isPressed()) {
+            intakePose = AutoTargetUtils.rightStation3();
+            intakeHeight = IntakeStation.R3;
+        }
+    }
 
     public enum ReefHeight {
         L1,
@@ -42,7 +120,7 @@ public class ButtonBoardUtil {
     }
 
     public Pose2d getSelectedReef(){
-        return null;
+        return reefPose;
     }
 
     public ReefHeight getSelectedReefHeight(){
@@ -50,10 +128,10 @@ public class ButtonBoardUtil {
     }
 
     public Pose2d getSelectedStationPose(){
-        return null;
+        return intakePose;
     }
 
     public IntakeStation getSelectedStation(){
-        return null;
+        return intakeHeight;
     }
 }

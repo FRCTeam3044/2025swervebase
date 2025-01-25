@@ -10,135 +10,135 @@ import frc.robot.subsystems.drive.Drive;
 
 public class AutoTargetUtils {
     // Hardcode positions
-    public static Pose2d blueReef = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefA = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefB = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefC = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefD = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefE = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefF = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefG = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefH = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefI = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefJ = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefK = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueReefL = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueRightStation1 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueRightStation1Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueRightStation2 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueRightStation2Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueRightStation3 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueRightStation3Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueLeftStation1 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueLeftStation1Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueLeftStation2 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueLeftStation2Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueLeftStation3 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueLeftStation3Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d blueProcessor = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reef = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefA = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefB = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefC = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefD = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefE = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefF = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefG = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefH = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefI = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefJ = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefK = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reefL = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d rightStation1 = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d rightStation1Ref = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d rightStation2 = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d rightStation2Ref = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d rightStation3 = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d rightStation3Ref = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reftStation1 = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reftStation1Ref = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reftStation2 = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reftStation2Ref = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reftStation3 = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d reftStation3Ref = new Pose2d(0, 0, new Rotation2d());
+    public static Pose2d rrocessor = new Pose2d(0, 0, new Rotation2d());
 
     public static Pose2d reef(){
-        return AllianceUtil.getPoseForAlliance(blueReef);
+        return AllianceUtil.getPoseForAlliance(reef);
     }
 
     public static Pose2d reefA(){
-        return AllianceUtil.getPoseForAlliance(blueReefA);
+        return AllianceUtil.getPoseForAlliance(reefA);
     }
 
     public static Pose2d reefB(){
-        return AllianceUtil.getPoseForAlliance(blueReefB);
+        return AllianceUtil.getPoseForAlliance(reefB);
     }
 
     public static Pose2d reefC(){
-        return AllianceUtil.getPoseForAlliance(blueReefC);
+        return AllianceUtil.getPoseForAlliance(reefC);
     }
 
     public static Pose2d reefD(){
-        return AllianceUtil.getPoseForAlliance(blueReefD);
+        return AllianceUtil.getPoseForAlliance(reefD);
     }
 
     public static Pose2d reefE(){
-        return AllianceUtil.getPoseForAlliance(blueReefE);
+        return AllianceUtil.getPoseForAlliance(reefE);
     }
 
     public static Pose2d reefF(){
-        return AllianceUtil.getPoseForAlliance(blueReefF);
+        return AllianceUtil.getPoseForAlliance(reefF);
     }
 
     public static Pose2d reefG(){
-        return AllianceUtil.getPoseForAlliance(blueReefG);
+        return AllianceUtil.getPoseForAlliance(reefG);
     }
 
     public static Pose2d reefH(){
-        return AllianceUtil.getPoseForAlliance(blueReefH);
+        return AllianceUtil.getPoseForAlliance(reefH);
     }
 
     public static Pose2d reefI(){
-        return AllianceUtil.getPoseForAlliance(blueReefI);
+        return AllianceUtil.getPoseForAlliance(reefI);
     }
 
     public static Pose2d reefJ(){
-        return AllianceUtil.getPoseForAlliance(blueReefJ);
+        return AllianceUtil.getPoseForAlliance(reefJ);
     }
 
     public static Pose2d reefK(){
-        return AllianceUtil.getPoseForAlliance(blueReefK);
+        return AllianceUtil.getPoseForAlliance(reefK);
     }
 
     public static Pose2d reefL(){
-        return AllianceUtil.getPoseForAlliance(blueReefL);
+        return AllianceUtil.getPoseForAlliance(reefL);
     }
 
-    public static Pose2d blueRightStation1(){
-        return AllianceUtil.getPoseForAlliance(blueRightStation1);
+    public static Pose2d rightStation1(){
+        return AllianceUtil.getPoseForAlliance(rightStation1);
     }
     
-    public static Pose2d blueRightStation1Ref(){
-        return AllianceUtil.getPoseForAlliance(blueRightStation1Ref);
+    public static Pose2d rightStation1Ref(){
+        return AllianceUtil.getPoseForAlliance(rightStation1Ref);
     }
 
-    public static Pose2d blueRightStation2(){
-        return AllianceUtil.getPoseForAlliance(blueRightStation2);
+    public static Pose2d rightStation2(){
+        return AllianceUtil.getPoseForAlliance(rightStation2);
     }
 
-    public static Pose2d blueRightStation2Ref(){
-        return AllianceUtil.getPoseForAlliance(blueRightStation2Ref);
+    public static Pose2d rightStation2Ref(){
+        return AllianceUtil.getPoseForAlliance(rightStation2Ref);
     }
 
-    public static Pose2d blueRightStation3(){
-        return AllianceUtil.getPoseForAlliance(blueRightStation3);
+    public static Pose2d rightStation3(){
+        return AllianceUtil.getPoseForAlliance(rightStation3);
     }
 
-    public static Pose2d blueRightStation3Ref(){
-        return AllianceUtil.getPoseForAlliance(blueRightStation3Ref);
+    public static Pose2d rightStation3Ref(){
+        return AllianceUtil.getPoseForAlliance(rightStation3Ref);
     }
 
-    public static Pose2d blueLeftStation1(){
-        return AllianceUtil.getPoseForAlliance(blueLeftStation1);
+    public static Pose2d leftStation1(){
+        return AllianceUtil.getPoseForAlliance(reftStation1);
     }
 
-    public static Pose2d blueLeftStation1Ref(){
-        return AllianceUtil.getPoseForAlliance(blueLeftStation1Ref);
+    public static Pose2d leftStation1Ref(){
+        return AllianceUtil.getPoseForAlliance(reftStation1Ref);
     }
 
-    public static Pose2d blueLeftStation2(){
-        return AllianceUtil.getPoseForAlliance(blueLeftStation2);
+    public static Pose2d leftStation2(){
+        return AllianceUtil.getPoseForAlliance(reftStation2);
     }
 
-    public static Pose2d blueLeftStation2Ref(){
-        return AllianceUtil.getPoseForAlliance(blueLeftStation2Ref);
+    public static Pose2d leftStation2Ref(){
+        return AllianceUtil.getPoseForAlliance(reftStation2Ref);
     }
 
-    public static Pose2d blueLeftStation3(){
-        return AllianceUtil.getPoseForAlliance(blueLeftStation3);
+    public static Pose2d leftStation3(){
+        return AllianceUtil.getPoseForAlliance(reftStation3);
     }
 
-    public static Pose2d blueLeftStation3Ref(){
-        return AllianceUtil.getPoseForAlliance(blueLeftStation3Ref);
+    public static Pose2d leftStation3Ref(){
+        return AllianceUtil.getPoseForAlliance(reftStation3Ref);
     }
 
-    public static Pose2d blueProcessor(){
-        return AllianceUtil.getPoseForAlliance(blueProcessor);
+    public static Pose2d processor(){
+        return AllianceUtil.getPoseForAlliance(rrocessor);
     }
 
     public static DoubleSupplier robotDistToReef(Drive drive){
@@ -146,27 +146,27 @@ public class AutoTargetUtils {
     }
 
     public static DoubleSupplier robotDistToLeftStation1(Drive drive){
-        return robotDistToPose(drive, AutoTargetUtils::blueLeftStation1);
+        return robotDistToPose(drive, AutoTargetUtils::leftStation1);
     }
 
     public static DoubleSupplier robotDistToLeftStation2(Drive drive){
-        return robotDistToPose(drive, AutoTargetUtils::blueLeftStation2);
+        return robotDistToPose(drive, AutoTargetUtils::leftStation2);
     }
 
     public static DoubleSupplier robotDistToLeftStation3(Drive drive){
-        return robotDistToPose(drive, AutoTargetUtils::blueLeftStation3);
+        return robotDistToPose(drive, AutoTargetUtils::leftStation3);
     }
 
     public static DoubleSupplier robotDistToRightStation1(Drive drive){
-        return robotDistToPose(drive, AutoTargetUtils::blueRightStation1);
+        return robotDistToPose(drive, AutoTargetUtils::rightStation1);
     }
 
     public static DoubleSupplier robotDistToRightStation2(Drive drive){
-        return robotDistToPose(drive, AutoTargetUtils::blueRightStation2);
+        return robotDistToPose(drive, AutoTargetUtils::rightStation2);
     }
 
     public static DoubleSupplier robotDistToRightStation3(Drive drive){
-        return robotDistToPose(drive, AutoTargetUtils::blueRightStation3);
+        return robotDistToPose(drive, AutoTargetUtils::rightStation3);
     }
 
     public static DoubleSupplier robotDistToPose(Drive drive, Supplier<Pose2d> pose){
