@@ -156,8 +156,7 @@ public class RobotContainer {
 
                 AllianceUtil.setRobot(drive::getPose);
 
-                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, drive, elevator, shoulder, endEffector);
-
+                
                 // Set up auto routines
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices");
 
@@ -178,6 +177,27 @@ public class RobotContainer {
                 autoChooser.addOption(
                                 "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
+                autoChooser.addOption("Elevator SysID (Quasistatic Forward)", 
+                                elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                autoChooser.addOption("Elevator SysId (Quasistatic Reverse)", 
+                                elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                autoChooser.addOption("Elevator SysId (Dynamic Forward)", 
+                                elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                autoChooser.addOption("Elevator SysId (Dynamic Reverse)", 
+                                elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+                autoChooser.addOption("Shoulder SysID (Quasistatic Forward)", 
+                                shoulder.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                autoChooser.addOption("Shoulder SysId (Quasistatic Reverse)", 
+                                shoulder.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                autoChooser.addOption("Shoulder SysId (Dynamic Forward)", 
+                                shoulder.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                autoChooser.addOption("Shoulder SysId (Dynamic Reverse)", 
+                                shoulder.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+                                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, autoChooser, drive, elevator, shoulder, endEffector);
+
+
                 // Configure the button bindings
                 configureButtonBindings();
         }
@@ -193,16 +213,6 @@ public class RobotContainer {
         private void configureButtonBindings() {
                 // Default command, normal field-relative drive
 
-        }
-
-        /**
-         * Use this to pass the autonomous command to the main {@link Robot} class.
-         *
-         * @return the command to run in autonomous
-         */
-        public Command getAutonomousCommand() {
-                return DriveCommands.goToPointJoystickRot(drive, new Pose2d(10, 7, new Rotation2d()), () -> 0.0);
-                // return autoChooser.get();
         }
 
         public void resetSimulationField() {

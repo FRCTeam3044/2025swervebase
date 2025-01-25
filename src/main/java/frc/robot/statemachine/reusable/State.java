@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import org.json.JSONObject;
 
@@ -28,7 +29,8 @@ public abstract class State {
     List<TransitionInfo> entranceConditions = new ArrayList<>();
     List<State> children = new ArrayList<>();
 
-    List<Command> startCommands = new ArrayList<>();
+    List<Supplier<Command>> startCommands = new ArrayList<>();
+    List<Command> currentStartCommands = new ArrayList<>();
 
     private final StateMachineBase stateMachine;
 
@@ -229,14 +231,19 @@ public abstract class State {
      */
     public void onExit() {
         loop.stop();
-        startCommands.forEach(Command::cancel);
+        currentStartCommands.forEach(Command::cancel);
+        currentStartCommands.clear();
     }
 
     /**
      * Fires when the state is entered
      */
     public void onEnter() {
-        startCommands.forEach(Command::schedule);
+        for(Supplier<Command> commandSup : startCommands){
+            Command command = commandSup.get();
+            currentStartCommands.add(command);
+            command.schedule();
+        }
     };
 
     public SmartTrigger t(BooleanSupplier condition) {
@@ -248,6 +255,14 @@ public abstract class State {
      * Cancels it if not already cancelled when the state is exited
      */
     protected void startWhenActive(Command cmd) {
+        startCommands.add(() -> cmd);
+    }
+
+    /**
+     * Run an action when the state is active
+     * Cancels it if not already cancelled when the state is exited
+     */
+    protected void startWhenActive(Supplier<Command> cmd) {
         startCommands.add(cmd);
     }
 

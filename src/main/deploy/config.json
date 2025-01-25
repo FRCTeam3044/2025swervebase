@@ -13,6 +13,10 @@
             "comment": "Auto-Generated",
             "value": "2.0"
         },
+        "Intake speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/D": "0.0",
         "Drive Speed (m/s)": {
             "comment": "Auto-Generated",
@@ -45,6 +49,10 @@
             "comment": "Auto-Generated",
             "value": "2.0"
         },
+        "Intake speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/D": "0.0",
         "Drive Speed (m/s)": {
             "comment": "Auto-Generated",
@@ -75,6 +83,10 @@
         "Pathfinding Max Accel": {
             "comment": "Auto-Generated",
             "value": "2.0"
+        },
+        "Intake speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
         },
         "Pathfinding Y Controller/D": "0.0",
         "Drive Speed (m/s)": {

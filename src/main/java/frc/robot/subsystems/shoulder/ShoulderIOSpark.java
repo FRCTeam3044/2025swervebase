@@ -23,8 +23,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ShoulderIOSpark implements ShoulderIO {
-    private final SparkMax shoulderMotorOne = new SparkMax(shoulderCanId, MotorType.kBrushless);
-    private final SparkMax shoulderMotorTwo = new SparkMax(shoulderCanId, MotorType.kBrushless);
+    private final SparkMax shoulderMotorOne = new SparkMax(shoulderOneCanId, MotorType.kBrushless);
+    private final SparkMax shoulderMotorTwo = new SparkMax(shoulderTwoCanId, MotorType.kBrushless);
     private final AbsoluteEncoder shoulderEncoder = shoulderMotorOne.getAbsoluteEncoder();
 
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity, kMaxAcceleration);

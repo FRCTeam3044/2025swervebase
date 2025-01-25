@@ -1,5 +1,8 @@
 package frc.robot.statemachine;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
@@ -31,14 +34,14 @@ import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.ButtonBoardUtil;
 
 public class StateMachine extends StateMachineBase {
-        public StateMachine(CommandXboxController driverController, CommandXboxController operatorController, ButtonBoardUtil buttonBoard,
+        public StateMachine(CommandXboxController driverController, CommandXboxController operatorController, ButtonBoardUtil buttonBoard, LoggedDashboardChooser<Command> chooser,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector) {
                 super();
                 State disabled = new DisabledState(this);
                 currentState = disabled;
 
                 State teleop = new TeleState(this);
-                State auto = new AutoState(this);
+                State auto = new AutoState(this, chooser);
                 State test = new TestState(this, driverController, elevator, shoulder, endEffector);
 
                 this.registerToRootState(test, auto, teleop, disabled);
@@ -48,8 +51,8 @@ public class StateMachine extends StateMachineBase {
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
                 ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
-                ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this);
-                ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this);
+                ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector);
+                ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector);
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
                 IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, endEffector);
                 IntakeAlgae intakeAlgae = new IntakeAlgae(this,buttonBoard, drive, elevator, endEffector);
@@ -59,8 +62,8 @@ public class StateMachine extends StateMachineBase {
                 GoToScoringPosition goToScoringPosition = new GoToScoringPosition(this);
                 GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive);
                 GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);
-                GoToScoreNet goToScoreNet = new GoToScoreNet(this);
-                GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this);
+                GoToScoreNet goToScoreNet = new GoToScoreNet(this, buttonBoard, drive);
+                GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive);
 
                 teleop.withModeTransitions(disabled, teleop, auto, test)
                                 .withDefaultChild(manual)

@@ -39,14 +39,16 @@
     }
   },
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
     "transitory": {
       "AdvantageKit": {
         "RealOutputs": {
           "FieldSimulation": {
             "open": true
           }
-        },
-        "open": true
+        }
       },
       "SmartDashboard": {
         "Field": {

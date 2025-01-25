@@ -143,12 +143,6 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
     AllianceUtil.setAlliance();
-    autonomousCommand = robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
-    }
   }
 
   /** This function is called periodically during autonomous. */
