@@ -17,4 +17,6 @@ public interface ShoulderIO {
     public void setShoulderAngle(double angle);
 
     public void setShoulderSpeed(double speed);
+
+    public void setVoltage(double voltage);
 }

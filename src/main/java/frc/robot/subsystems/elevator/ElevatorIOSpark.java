@@ -94,6 +94,11 @@ public class ElevatorIOSpark implements ElevatorIO {
         leftElevatorMotor.set(desiredSpeed);
     }
 
+    @Override
+    public void setVoltage(double voltage) {
+        leftElevatorMotor.setVoltage(voltage);
+    } 
+
     public void updateInputs(ElevatorIOInputs inputs) {
         ifOk(leftElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.positionRad = value);
         ifOk(leftElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);

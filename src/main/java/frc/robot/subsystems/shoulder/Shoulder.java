@@ -1,16 +1,19 @@
 package frc.robot.subsystems.shoulder;
 
 import java.util.function.DoubleSupplier;
+import static edu.wpi.first.units.Units.*;
 
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class Shoulder extends SubsystemBase {
     private final ShoulderIO io;
     private final ShoulderIOInputsAutoLogged inputs = new ShoulderIOInputsAutoLogged();
+    private final SysIdRoutine sysId;
 
     enum LevelAngle {
         L1(0, 0, 0, 0),
@@ -32,6 +35,25 @@ public class Shoulder extends SubsystemBase {
 
     public Shoulder(ShoulderIO io) {
         this.io = io;
+
+        sysId = new SysIdRoutine(
+        new SysIdRoutine.Config(
+            null,
+            null,
+            null,
+            (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
+        new SysIdRoutine.Mechanism(
+            (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+    }
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return run(() -> io.setVoltage(0.0))
+            .withTimeout(1.0)
+            .andThen(sysId.quasistatic(direction));
+    }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return run(() -> io.setVoltage(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction));
     }
 
     @Override

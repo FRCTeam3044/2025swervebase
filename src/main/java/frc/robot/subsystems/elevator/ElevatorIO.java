@@ -22,4 +22,6 @@ public interface ElevatorIO {
     public void setPosition(double desiredPosition);
 
     public void setSpeed(double desiredSpeed);
+
+    public void setVoltage(double voltage);
 }

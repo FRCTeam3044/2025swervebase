@@ -106,4 +106,9 @@ public class ShoulderIOSpark implements ShoulderIO {
         // TODO Auto-generated method stub
         shoulderMotorOne.set(desiredSpeed);
     }
+
+    @Override
+    public void setVoltage(double voltage) {
+        shoulderMotorOne.setVoltage(voltage);
+    }
 }
