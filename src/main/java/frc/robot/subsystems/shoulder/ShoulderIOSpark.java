@@ -16,30 +16,44 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ShoulderIOSpark implements ShoulderIO {
-    private final SparkMax shoulderMotor = new SparkMax(shoulderCanId, MotorType.kBrushless);
-    private final AbsoluteEncoder shoulderEncoder = shoulderMotor.getAbsoluteEncoder();
+    private final SparkMax shoulderMotorOne = new SparkMax(shoulderCanId, MotorType.kBrushless);
+    private final SparkMax shoulderMotorTwo = new SparkMax(shoulderCanId, null);
+    private final AbsoluteEncoder shoulderEncoder = shoulderMotorOne.getAbsoluteEncoder();
     
     public ShoulderIOSpark() {
-        var shoulderMotorConfig = new SparkMaxConfig();
-        shoulderMotorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
-        shoulderMotorConfig
+        var shoulderMotorOneConfig = new SparkMaxConfig();
+        shoulderMotorOneConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
+        shoulderMotorOneConfig
             .encoder
             .positionConversionFactor(2.0 * Math.PI / shoulderMotorReduction)
             .velocityConversionFactor((2.0 * Math.PI) / 60.0 / shoulderMotorReduction)
             .uvwMeasurementPeriod(10)
             .uvwAverageDepth(2);
 
-        tryUntilOk(shoulderMotor, 5, () -> shoulderMotor.configure(shoulderMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+        tryUntilOk(shoulderMotorOne, 5, () -> shoulderMotorOne.configure(shoulderMotorOneConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+
+        var shoulderMotorTwoConfig = new SparkMaxConfig();
+        shoulderMotorTwoConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
+        shoulderMotorTwoConfig
+            .encoder
+            .positionConversionFactor(2.0 * Math.PI / shoulderMotorReduction)
+            .velocityConversionFactor((2.0 * Math.PI) / 60.0 / shoulderMotorReduction)
+            .uvwMeasurementPeriod(10)
+            .uvwAverageDepth(2);
+
+        shoulderMotorTwoConfig.follow(shoulderMotorOne);
+        tryUntilOk(shoulderMotorTwo, 5, () -> shoulderMotorTwo.configure(shoulderMotorOneConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+
     }
 
     @Override
     public void updateInputs(ShoulderIOInputs inputs) {
-        ifOk(shoulderMotor, shoulderEncoder::getPosition, (value) -> inputs.shoulderAngleRad = value);
-        ifOk(shoulderMotor, shoulderEncoder::getVelocity, (value) -> inputs.shoulderSpeedRadsPerSec = value);
-        ifOk(shoulderMotor, shoulderMotor::getOutputCurrent, (value) -> inputs.shoulderCurrantAmps = value);
+        ifOk(shoulderMotorOne, shoulderEncoder::getPosition, (value) -> inputs.shoulderAngleRad = value);
+        ifOk(shoulderMotorOne, shoulderEncoder::getVelocity, (value) -> inputs.shoulderSpeedRadsPerSec = value);
+        ifOk(shoulderMotorOne, shoulderMotorOne::getOutputCurrent, (value) -> inputs.shoulderCurrantAmps = value);
         ifOk(
-                shoulderMotor,
-                new DoubleSupplier[] { shoulderMotor::getAppliedOutput, shoulderMotor::getBusVoltage },
+                shoulderMotorOne,
+                new DoubleSupplier[] { shoulderMotorOne::getAppliedOutput, shoulderMotorOne::getBusVoltage },
                 (values) -> inputs.shoulderAppliedVoltage = values[0] * values[1]);
     }
 
@@ -52,6 +66,6 @@ public class ShoulderIOSpark implements ShoulderIO {
     @Override
     public void setShoulderSpeed(double desiredSpeed) {
         // TODO Auto-generated method stub
-        shoulderMotor.set(desiredSpeed);
+        shoulderMotorOne.set(desiredSpeed);
     }
 }
