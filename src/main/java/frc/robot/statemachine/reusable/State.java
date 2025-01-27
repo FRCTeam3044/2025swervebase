@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  * A state in a state machine.
  */
 public abstract class State {
-    public record TransitionInfo(State state, BooleanSupplier condition, int priority, String name) {
+    public record TransitionInfo(State target, State source, BooleanSupplier condition, int priority, String name) {
     }
 
     public State parentState;
@@ -77,7 +77,7 @@ public abstract class State {
      * @return This state
      */
     public State withTransition(State state, BooleanSupplier condition, int priority, String name) {
-        return withTransition(new TransitionInfo(state, condition, priority, name));
+        return withTransition(new TransitionInfo(state, this, condition, priority, name));
     }
 
     /**
@@ -117,6 +117,7 @@ public abstract class State {
             list.add(transition);
             transitions.put(before, list);
         }
+        stateMachine.markDirty();
         return this;
     }
 
@@ -239,9 +240,9 @@ public abstract class State {
      * Fires when the state is entered
      */
     public void onEnter() {
-        for(Supplier<Command> commandSup : startCommands){
+        for (Supplier<Command> commandSup : startCommands) {
             Command command = commandSup.get();
-            if(command == null){
+            if (command == null) {
                 DriverStation.reportWarning("A command passed to startWhenActive was null", false);
                 continue;
             }
@@ -302,19 +303,23 @@ public abstract class State {
     // return false;
     // }
 
-    State evalTransitions(Stack<State> nodesToSearch) {
+    public record TransitionEvalResult(State finalState, List<TransitionInfo> transitions) {
+    }
+
+    TransitionEvalResult evalTransitions(Stack<State> nodesToSearch, List<TransitionInfo> transitionList) {
         State next = nodesToSearch.pop();
         if (next == this)
-            return this;
+            return new TransitionEvalResult(this, transitionList);
 
         TransitionInfo transition = evaluateBestTransition(transitions.get(next));
-        if (transition != null)
-            return stateMachine.traverseTransitions(transition.state);
-
+        if (transition != null) {
+            transitionList.add(transition);
+            return stateMachine.traverseTransitions(transition.target(), transitionList);
+        }
         if (nodesToSearch.isEmpty())
             nodesToSearch.push(next.evaluateEntranceState());
 
-        return next.evalTransitions(nodesToSearch);
+        return next.evalTransitions(nodesToSearch, transitionList);
     }
 
     static TransitionInfo evaluateBestTransition(List<TransitionInfo> transitions) {
@@ -333,10 +338,10 @@ public abstract class State {
         if (entranceConditions.isEmpty())
             return this;
         TransitionInfo next = evaluateBestTransition(entranceConditions);
-        if (next == null || next.state == null)
+        if (next == null || next.target() == null)
             throw new RuntimeException(
                     "A state was unable to determine which child to transition to. Consider adding a default state.");
-        return next.state.evaluateEntranceState();
+        return next.target().evaluateEntranceState();
     }
 
     void setParentState(State parentState) {
@@ -345,7 +350,8 @@ public abstract class State {
         this.parentState = parentState;
     }
 
-    private void addChild(State child, BooleanSupplier condition, int priority, boolean isDefault, String entranceConditionName) {
+    private void addChild(State child, BooleanSupplier condition, int priority, boolean isDefault,
+            String entranceConditionName) {
         if (isDefault) {
             if (hasDefaultChild)
                 throw new RuntimeException("A state can only have one default child");
@@ -353,6 +359,7 @@ public abstract class State {
         }
         child.setParentState(this);
         children.add(child);
-        entranceConditions.add(new TransitionInfo(child, condition, priority, entranceConditionName));
+        entranceConditions.add(new TransitionInfo(child, this, condition, priority, entranceConditionName));
+        stateMachine.markDirty();
     }
 }

@@ -1,5 +1,7 @@
 package frc.robot.statemachine.reusable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import org.json.JSONArray;
@@ -7,6 +9,7 @@ import org.json.JSONObject;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.statemachine.reusable.State.TransitionEvalResult;
 import frc.robot.statemachine.reusable.State.TransitionInfo;
 
 public abstract class StateMachineBase {
@@ -25,6 +28,9 @@ public abstract class StateMachineBase {
      */
     public State currentState;
 
+    private String currentTree = "";
+    private boolean treeDirty = false;
+
     /**
      * Execute the state machine
      */
@@ -34,10 +40,30 @@ public abstract class StateMachineBase {
                     null);
             return;
         }
-        checkTransitions();
+        List<TransitionInfo> lastTransitions = checkTransitions();
         currentState.run();
-        SmartDashboard.putString("State", currentState.getDeepName());
-        SmartDashboard.putString("State Tree", getObjectForState(rootState).toString());
+        SmartDashboard.putString("StateMachine/CurrentState", currentState.getDeepName());
+        SmartDashboard.putString("StateMachine/Tree", getTree());
+        if (lastTransitions.size() > 0) {
+            JSONArray transitions = new JSONArray();
+            for (TransitionInfo transition : lastTransitions) {
+                transitions
+                        .put(transition.name() + transition.target().getDeepName() + transition.source().getDeepName());
+            }
+            SmartDashboard.putString("StateMachine/LastTransitions", transitions.toString());
+        }
+    }
+
+    private String getTree() {
+        if (treeDirty) {
+            currentTree = getObjectForState(rootState).toString();
+            treeDirty = false;
+        }
+        return currentTree;
+    }
+
+    void markDirty() {
+        treeDirty = true;
     }
 
     public void registerToRootState(State... state) {
@@ -45,10 +71,12 @@ public abstract class StateMachineBase {
             rootState.children.add(s);
             s.setParentState(rootState);
         }
+        markDirty();
     }
 
-    private void checkTransitions() {
-        State newState = traverseTransitions(currentState);
+    private List<TransitionInfo> checkTransitions() {
+        TransitionEvalResult transitionEvalResult = traverseTransitions(currentState, new ArrayList<TransitionInfo>());
+        State newState = transitionEvalResult.finalState();
         if (newState != currentState) {
             Stack<State> before = getStateTree(currentState);
             Stack<State> after = getStateTree(newState);
@@ -72,10 +100,11 @@ public abstract class StateMachineBase {
 
             currentState = newState;
         }
+        return transitionEvalResult.transitions();
     }
 
-    State traverseTransitions(State state) {
-        return rootState.evalTransitions(getStateTree(state));
+    TransitionEvalResult traverseTransitions(State state, List<TransitionInfo> transitions) {
+        return rootState.evalTransitions(getStateTree(state), transitions);
     }
 
     Stack<State> getStateTree(State state) {
@@ -103,7 +132,7 @@ public abstract class StateMachineBase {
         for (TransitionInfo transition : state.parentState.transitions.get(state)) {
             JSONObject transitionObj = new JSONObject();
             transitionObj.put("name", transition.name());
-            transitionObj.put("target", transition.state().getDeepName());
+            transitionObj.put("target", transition.target().getDeepName());
             transitions.put(transitionObj);
         }
         obj.put("transitions", transitions);
