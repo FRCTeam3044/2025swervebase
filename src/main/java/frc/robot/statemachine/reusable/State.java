@@ -241,6 +241,10 @@ public abstract class State {
     public void onEnter() {
         for(Supplier<Command> commandSup : startCommands){
             Command command = commandSup.get();
+            if(command == null){
+                DriverStation.reportWarning("A command passed to startWhenActive was null", false);
+                continue;
+            }
             currentStartCommands.add(command);
             command.schedule();
         }
