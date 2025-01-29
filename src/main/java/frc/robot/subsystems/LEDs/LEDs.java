@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.LEDs.LEDsIO.LEDsIOInputs.*;
 
-
 public class LEDs extends SubsystemBase {
 
     private final LEDsIO io;
@@ -18,35 +17,36 @@ public class LEDs extends SubsystemBase {
         this.io = io;
     }
 
-    public Command Default(){
+    public Command Default() {
         return null;
     }
 
-    public Command hasCoral(){
-        return Commands.run(() -> LEDsIO.LedColor.Green.applyTo(LEDsConstants.LEDStrip));
-    }
+    // public Command hasCoral(){
+    // return Commands.run(() ->
+    // LEDsIO.LedColor.Green.applyTo(LEDsConstants.LEDStrip));
+    // }
 
-    public Command hasAlgea(){
+    public Command hasAlgea() {
         return null;
     }
 
-    public Command goingToCoralIntake(){
+    public Command goingToCoralIntake() {
         return null;
     }
 
-    public Command goingToAlgaeIntake(){
+    public Command goingToAlgaeIntake() {
         return null;
     }
 
-    public Command intakingCoral(){
+    public Command intakingCoral() {
         return null;
     }
 
-    public Command scoringCoral(){
+    public Command scoringCoral() {
         return null;
     }
 
-    public Command scoringAlgae(){
+    public Command scoringAlgae() {
         return null;
     }
 }

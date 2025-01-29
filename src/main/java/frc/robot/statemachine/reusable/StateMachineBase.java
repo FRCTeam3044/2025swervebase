@@ -136,6 +136,16 @@ public abstract class StateMachineBase {
             transitions.put(transitionObj);
         }
         obj.put("transitions", transitions);
+
+        JSONArray entranceConditions = new JSONArray();
+        for (TransitionInfo entranceCondition : state.entranceConditions) {
+            JSONObject transitionObj = new JSONObject();
+            transitionObj.put("name", entranceCondition.name());
+            transitionObj.put("target", entranceCondition.target().getDeepName());
+            entranceConditions.put(transitionObj);
+        }
+        obj.put("entranceConditions", entranceConditions);
+
         return obj;
 
     }
