@@ -25,7 +25,7 @@ public class EndEffector extends SubsystemBase {
     }
 
     public Command runIntakeSpeed(DoubleSupplier desiredSpeed) {
-        return Commands.runEnd(() -> {io.setAlgaeSpeed(desiredSpeed.getAsDouble()); io.setCoralSpeed(desiredSpeed.getAsDouble());}, () -> {io.setAlgaeSpeed(0.0); io.setCoralSpeed(0.0);});
+        return Commands.runEnd(() -> io.setCoralSpeed(desiredSpeed.getAsDouble()), () ->  io.setCoralSpeed(0.0));
     }
 
     public Command runIntake(){

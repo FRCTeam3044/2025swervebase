@@ -100,14 +100,22 @@ public class ElevatorIOSpark implements ElevatorIO {
     } 
 
     public void updateInputs(ElevatorIOInputs inputs) {
-        ifOk(leftElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.positionRad = value);
-        ifOk(leftElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);
+        ifOk(leftElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.leftPositionRad = value);
+        ifOk(leftElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.leftVelocityRadPerSec = value);
         ifOk(
                 leftElevatorMotor,
                 new DoubleSupplier[] { leftElevatorMotor::getAppliedOutput, leftElevatorMotor::getBusVoltage },
-                (values) -> inputs.appliedVolts = values[0] * values[1]);
-        ifOk(leftElevatorMotor, leftElevatorMotor::getOutputCurrent, (value) -> inputs.currentAmps = value);
-
+                (values) -> inputs.leftAppliedVolts = values[0] * values[1]);
+        ifOk(leftElevatorMotor, leftElevatorMotor::getOutputCurrent, (value) -> inputs.leftCurrentAmps = value);
+        ifOk(leftElevatorMotor, leftElevatorMotor::getMotorTemperature, (value) -> inputs.leftTemperature = value );
+        ifOk(rightElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.rightPositionRad = value);
+        ifOk(rightElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.rightVelocityRadPerSec = value);
+        ifOk(
+                rightElevatorMotor,
+                new DoubleSupplier[] { rightElevatorMotor::getAppliedOutput, rightElevatorMotor::getBusVoltage },
+                (values) -> inputs.leftAppliedVolts = values[0] * values[1]);
+        ifOk(rightElevatorMotor, rightElevatorMotor::getOutputCurrent, (value) -> inputs.rightCurrentAmps = value);
+        ifOk(rightElevatorMotor, rightElevatorMotor::getMotorTemperature, (value) -> inputs.rightTemperature = value );
         inputs.bottomEffectClosed = bottomHallEffect.get();
         inputs.topHallEffectClosed = topHallEffect.get();
 
