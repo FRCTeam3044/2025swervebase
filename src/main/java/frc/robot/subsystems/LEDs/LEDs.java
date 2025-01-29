@@ -23,8 +23,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command hasCoral(){
-        return Commands.none();
-        //return Commands.run(() -> LEDsIO.LedColor.Green.applyTo(LEDsConstants.LEDStrip));
+        return Commands.run(() -> LEDsIO.LedColor.Green.applyTo(LEDsConstants.LEDStrip));
     }
 
     public Command hasAlgea(){
