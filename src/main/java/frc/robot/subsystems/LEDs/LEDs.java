@@ -12,7 +12,7 @@ import frc.robot.subsystems.LEDs.LEDsIO.LEDsIOInputs.*;
 public class LEDs extends SubsystemBase {
 
     private final LEDsIO io;
-    private final LEDsIOInputAutoLogged inputs = new LEDsIOInputAutoLogged();
+    private final LEDsIOInputsAutoLogged inputs = new LEDsIOInputsAutoLogged();
 
     public LEDs(LEDsIO io) {
         this.io = io;
@@ -23,6 +23,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command hasCoral(){
+        return Commands.none();
         //return Commands.run(() -> LEDsIO.LedColor.Green.applyTo(LEDsConstants.LEDStrip));
     }
 
