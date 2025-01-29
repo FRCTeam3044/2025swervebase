@@ -16,7 +16,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class EndEffectorIOSpark implements EndEffectorIO {
     private final SparkMax coralMotor = new SparkMax(coralCanId, MotorType.kBrushless);
-    private final SparkMax algaeMotor = new SparkMax(algaeCanId, MotorType.kBrushless);
+    
 
     public EndEffectorIOSpark() {
         var algaeMotorConfig = new SparkMaxConfig();
@@ -28,7 +28,7 @@ public class EndEffectorIOSpark implements EndEffectorIO {
             .uvwMeasurementPeriod(10)
             .uvwAverageDepth(2);
 
-        tryUntilOk(algaeMotor, 5, () -> algaeMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+       
 
         var coralMotorConfig = new SparkMaxConfig();
         coralMotorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
@@ -45,24 +45,16 @@ public class EndEffectorIOSpark implements EndEffectorIO {
     @Override
     public void updateInputs(EndEffectorIOInputs inputs) {
         ifOk(coralMotor, coralMotor::getOutputCurrent, (value) -> inputs.coralCurrentAmps = value);
-        ifOk(algaeMotor, algaeMotor::getOutputCurrent, (value) -> inputs.algaeCurrentAmps = value);
+      
         ifOk(
                 coralMotor,
                 new DoubleSupplier[] { coralMotor::getAppliedOutput, coralMotor::getBusVoltage },
                 (values) -> inputs.coralAppliedVoltage = values[0] * values[1]);
-        ifOk(
-                algaeMotor,
-                new DoubleSupplier[] { algaeMotor::getAppliedOutput, algaeMotor::getBusVoltage },
-                (values) -> inputs.algaeAppliedVoltage = values[0] * values[1]);
+       
     }
 
     @Override
     public void setCoralSpeed(double speed) {
         coralMotor.set(speed);
-    }
-
-    @Override
-    public void setAlgaeSpeed(double speed) {
-        algaeMotor.set(speed);
     }
 }
