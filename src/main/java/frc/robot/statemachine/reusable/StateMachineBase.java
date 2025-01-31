@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,15 +43,15 @@ public abstract class StateMachineBase {
         }
         List<TransitionInfo> lastTransitions = checkTransitions();
         currentState.run();
-        SmartDashboard.putString("StateMachine/CurrentState", currentState.getDeepName());
-        SmartDashboard.putString("StateMachine/Tree", getTree());
+        Logger.recordOutput("StateMachine/CurrentState", currentState.getDeepName());
+        Logger.recordOutput("StateMachine/Tree", getTree());
         if (lastTransitions.size() > 0) {
             JSONArray transitions = new JSONArray();
             for (TransitionInfo transition : lastTransitions) {
                 transitions
                         .put(transition.name() + transition.target().getDeepName() + transition.source().getDeepName());
             }
-            SmartDashboard.putString("StateMachine/LastTransitions", transitions.toString());
+            Logger.recordOutput("StateMachine/LastTransitions", transitions.toString());
         }
     }
 
