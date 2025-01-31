@@ -3,7 +3,6 @@ package frc.robot.subsystems.shoulder;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ShoulderIO {
-
     @AutoLog
     public static class ShoulderIOInputs {
         public double leftShoulderAngleRad = 0.0;
@@ -18,11 +17,15 @@ public interface ShoulderIO {
         public double rightTemperature = 0.0;
     }
 
-    public void updateInputs(ShoulderIOInputs inputs);
+    public default void updateInputs(ShoulderIOInputs inputs) {
+    };
 
-    public void setShoulderAngle(double angle);
+    public default void setShoulderAngle(double angle) {
+    };
 
-    public void setShoulderSpeed(double speed);
+    public default void setShoulderSpeed(double speed) {
+    };
 
-    public void setVoltage(double voltage);
+    public default void setVoltage(double voltage) {
+    };
 }
