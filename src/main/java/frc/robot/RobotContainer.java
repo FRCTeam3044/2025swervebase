@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.EndEffector.EndEffector;
+import frc.robot.subsystems.EndEffector.EndEffectorIO;
 import frc.robot.subsystems.EndEffector.EndEffectorIOSpark;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
@@ -38,8 +39,11 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOSpark;
 import frc.robot.subsystems.shoulder.Shoulder;
+import frc.robot.subsystems.shoulder.ShoulderIO;
 import frc.robot.subsystems.shoulder.ShoulderIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
@@ -125,7 +129,7 @@ public class RobotContainer {
                                                                 camera1Name, robotToCamera1,
                                                                 driveSimulation::getSimulatedDriveTrainPose));
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
-                                elevator = new Elevator(new ElevatorIOSpark());
+                                elevator = new Elevator(new ElevatorIOSim());
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoardUtil();
@@ -147,16 +151,18 @@ public class RobotContainer {
                                 vision = new Vision(drive, new VisionIO() {
                                 }, new VisionIO() {
                                 });
-                                elevator = new Elevator(new ElevatorIOSpark());
-                                shoulder = new Shoulder(new ShoulderIOSpark());
-                                endEffector = new EndEffector(new EndEffectorIOSpark());
+                                elevator = new Elevator(new ElevatorIO() {
+                                });
+                                shoulder = new Shoulder(new ShoulderIO() {
+                                });
+                                endEffector = new EndEffector(new EndEffectorIO() {
+                                });
                                 buttonBoard = new ButtonBoardUtil();
                                 break;
                 }
 
                 AllianceUtil.setRobot(drive::getPose);
 
-                
                 // Set up auto routines
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices");
 
@@ -177,26 +183,26 @@ public class RobotContainer {
                 autoChooser.addOption(
                                 "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-                autoChooser.addOption("Elevator SysID (Quasistatic Forward)", 
+                autoChooser.addOption("Elevator SysID (Quasistatic Forward)",
                                 elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Elevator SysId (Quasistatic Reverse)", 
+                autoChooser.addOption("Elevator SysId (Quasistatic Reverse)",
                                 elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption("Elevator SysId (Dynamic Forward)", 
+                autoChooser.addOption("Elevator SysId (Dynamic Forward)",
                                 elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Elevator SysId (Dynamic Reverse)", 
+                autoChooser.addOption("Elevator SysId (Dynamic Reverse)",
                                 elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-                autoChooser.addOption("Shoulder SysID (Quasistatic Forward)", 
+                autoChooser.addOption("Shoulder SysID (Quasistatic Forward)",
                                 shoulder.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Shoulder SysId (Quasistatic Reverse)", 
+                autoChooser.addOption("Shoulder SysId (Quasistatic Reverse)",
                                 shoulder.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption("Shoulder SysId (Dynamic Forward)", 
+                autoChooser.addOption("Shoulder SysId (Dynamic Forward)",
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Shoulder SysId (Dynamic Reverse)", 
+                autoChooser.addOption("Shoulder SysId (Dynamic Reverse)",
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-                                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, autoChooser, drive, elevator, shoulder, endEffector);
-
+                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, autoChooser, drive,
+                                elevator, shoulder, endEffector);
 
                 // Configure the button bindings
                 configureButtonBindings();
