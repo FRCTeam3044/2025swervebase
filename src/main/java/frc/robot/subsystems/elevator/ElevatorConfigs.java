@@ -12,6 +12,7 @@ public class ElevatorConfigs {
     public static SparkMaxConfig rightConfig = new SparkMaxConfig();
 
     static {
+        // TODO:Soft Limit
         leftConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
         rightConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leftCanId);
     }

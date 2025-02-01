@@ -29,6 +29,8 @@ import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.EndEffector.EndEffectorIO;
 import frc.robot.subsystems.EndEffector.EndEffectorIOSpark;
+import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.LEDs.LEDsIORio;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveConstants;
@@ -73,6 +75,7 @@ public class RobotContainer {
         private final Elevator elevator;
         private final Shoulder shoulder;
         private final EndEffector endEffector;
+        private final LEDs LEDs;
         private SwerveDriveSimulation driveSimulation = null;
 
         // Controller
@@ -105,6 +108,7 @@ public class RobotContainer {
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoardUtil();
+                                LEDs = new LEDs(new LEDsIORio());
                                 break;
 
                         case SIM:
@@ -133,6 +137,7 @@ public class RobotContainer {
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoardUtil();
+                                LEDs = new LEDs(new LEDsIORio());
                                 break;
 
                         default:
@@ -158,6 +163,7 @@ public class RobotContainer {
                                 endEffector = new EndEffector(new EndEffectorIO() {
                                 });
                                 buttonBoard = new ButtonBoardUtil();
+                                LEDs = new LEDs(new LEDsIORio());
                                 break;
                 }
 
@@ -202,7 +208,7 @@ public class RobotContainer {
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
                 stateMachine = new StateMachine(driverController, operatorController, buttonBoard, autoChooser, drive,
-                                elevator, shoulder, endEffector);
+                                elevator, shoulder, endEffector, LEDs);
 
                 // Configure the button bindings
                 configureButtonBindings();

@@ -1,14 +1,11 @@
 package frc.robot.subsystems.LEDs;
+
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.util.Color;
 
-public class LEDsIO {
+public interface LEDsIO {
 
-    public void defaultLights(){};
-    public void hasCoral(LEDPattern color, LEDsConstants buffer){};
-    public void hasAlgea(LEDPattern color, LEDsConstants buffer){};
-    public void goingToCoralIntake(LEDPattern color, LEDsConstants buffer){};
-    public void goingToAlgaeIntake(){};
-    public void intakingCoral(){};
-    public void scoringCoral(LEDPattern color, LEDsConstants buffer){};
-    public void scoringAlgae(LEDPattern color, LEDsConstants buffer){};
+    public default void setSolidColor(LEDPattern color){};
+    public default void setBlinkingColor(Color color){};
+    public default void setSpinningColor(Color color1, Color color2){};
 }
