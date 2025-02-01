@@ -14,8 +14,10 @@ import static frc.robot.subsystems.climber.ClimberConstants.*;
 import java.util.function.DoubleSupplier;
 
 public class ClimberIOSpark implements ClimberIO {
-    private final SparkMax climber = new SparkMax(climberCanId, MotorType.kBrushless);
-    private final RelativeEncoder encoder = climber.getEncoder();
+    private final SparkMax climberOne = new SparkMax(climberCanId, MotorType.kBrushed);
+    private final SparkMax climberTwo = new SparkMax(climberCanId, MotorType.kBrushed);
+    private final RelativeEncoder climberEncoderOne = climberOne.getEncoder();
+    private final RelativeEncoder climberEncoderTwo = climberTwo.getEncoder();
 
 
     public ClimberIOSpark(){
@@ -24,34 +26,37 @@ public class ClimberIOSpark implements ClimberIO {
         config
         .encoder
         .positionConversionFactor(
-            2.0 * Math.PI / motorReduction) // Rotor Rotations -> Roller Radians
+            2.0 * Math.PI / motorReduction) // Motor Rotations -> Roller Radians
         .velocityConversionFactor((2.0 * Math.PI) / 60.0 / motorReduction)
         .uvwMeasurementPeriod(10)
         .uvwAverageDepth(2);
 
     tryUntilOk(
-        climber,
+        climberOne,
         5,
         () ->
-            climber.configure(
+            climberOne.configure(
                 config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
   }
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
-    ifOk(climber, encoder::getPosition, (value) -> inputs.positionRad = value);
-    ifOk(climber, encoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);
+    ifOk(climberOne, climberEncoderOne::getPosition, (value) -> inputs.positionRad = value);
+    ifOk(climberOne, climberEncoderOne::getVelocity, (value) -> inputs.velocityRadPerSec = value);
     ifOk(
-        climber,
-        new DoubleSupplier[] {climber::getAppliedOutput, climber::getBusVoltage},
+        climberOne,
+        new DoubleSupplier[] {climberOne::getAppliedOutput, climberOne::getBusVoltage},
         (values) -> inputs.appliedVolts = values[0] * values[1]);
-    ifOk(climber, climber::getOutputCurrent, (value) -> inputs.currentAmps = value);
+    ifOk(climberOne, climberOne::getOutputCurrent, (value) -> inputs.currentAmps = value);
+
   }
+
+
+  
 
   @Override
   public void setSpeed(double speed) {
     // TODO: Auto-generated method stub
-    climber.set(speed);
   }
 
 }
