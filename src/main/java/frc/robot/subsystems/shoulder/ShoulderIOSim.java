@@ -24,16 +24,16 @@ import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class ShoulderIOSim implements ShoulderIO {
-    private final SparkMax shoulderMotorOne = new SparkMax(52, MotorType.kBrushless);
-    private final SparkMax shoulderMotorTwo = new SparkMax(53, MotorType.kBrushless);
-    private final AbsoluteEncoder shoulderEncoder = shoulderMotorOne.getAbsoluteEncoder();
+    private final SparkMax shoulderMotorLeft = new SparkMax(52, MotorType.kBrushless);
+    private final SparkMax shoulderMotorRight = new SparkMax(53, MotorType.kBrushless);
+    private final AbsoluteEncoder shoulderEncoder = shoulderMotorLeft.getAbsoluteEncoder();
 
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity, kMaxAcceleration);
     private final ProfiledPIDController controller = new ProfiledPIDController(kP, kI, kD, m_constraints, kDt);
     ArmFeedforward feedforward = new ArmFeedforward(kS, kG, kV);
 
     private DCMotor gearBox = DCMotor.getNEO(2);
-    private SparkMaxSim sparkMaxSim = new SparkMaxSim(shoulderMotorOne, gearBox);
+    private SparkMaxSim sparkMaxSim = new SparkMaxSim(shoulderMotorLeft, gearBox);
     SingleJointedArmSim shoulderSim = new SingleJointedArmSim(gearBox, 48.0, 0.0, 1.0, 0.0, 0.0, false, 0.0, null);
 
     // Add to Robot.java
@@ -45,28 +45,28 @@ public class ShoulderIOSim implements ShoulderIO {
 
     @Override
     public void updateInputs(ShoulderIOInputs inputs) {
-        var shoulderMotorOneConfig = new SparkMaxConfig();
-        shoulderMotorOneConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
-        shoulderMotorOneConfig
+        var shoulderMotorLeftConfig = new SparkMaxConfig();
+        shoulderMotorLeftConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
+        shoulderMotorLeftConfig
             .encoder
             .positionConversionFactor(2.0 * Math.PI / shoulderMotorReduction)
             .velocityConversionFactor((2.0 * Math.PI) / 60.0 / shoulderMotorReduction)
             .uvwMeasurementPeriod(10)
             .uvwAverageDepth(2);
 
-        tryUntilOk(shoulderMotorOne, 5, () -> shoulderMotorOne.configure(shoulderMotorOneConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+        tryUntilOk(shoulderMotorLeft, 5, () -> shoulderMotorLeft.configure(shoulderMotorLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
-        var shoulderMotorTwoConfig = new SparkMaxConfig();
-        shoulderMotorTwoConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
-        shoulderMotorTwoConfig
+        var shoulderMotorRightConfig = new SparkMaxConfig();
+        shoulderMotorRightConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
+        shoulderMotorRightConfig
             .encoder
             .positionConversionFactor(2.0 * Math.PI / shoulderMotorReduction)
             .velocityConversionFactor((2.0 * Math.PI) / 60.0 / shoulderMotorReduction)
             .uvwMeasurementPeriod(10)
             .uvwAverageDepth(2);
 
-        shoulderMotorTwoConfig.follow(shoulderMotorOne);
-        tryUntilOk(shoulderMotorTwo, 5, () -> shoulderMotorTwo.configure(shoulderMotorOneConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+        shoulderMotorRightConfig.follow(shoulderMotorLeft);
+        tryUntilOk(shoulderMotorRight, 5, () -> shoulderMotorRight.configure(shoulderMotorLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
     }
 
@@ -76,7 +76,7 @@ public class ShoulderIOSim implements ShoulderIO {
         double lastTime = Timer.getFPGATimestamp();
         double pidVal = controller.calculate(shoulderEncoder.getPosition(), desiredAngle);
         double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        shoulderMotorOne.setVoltage(
+        shoulderMotorLeft.setVoltage(
             pidVal
             + feedforward.calculate(controller.getSetpoint().velocity, acceleration));
         lastSpeed = controller.getSetpoint().velocity;
@@ -85,11 +85,11 @@ public class ShoulderIOSim implements ShoulderIO {
 
     @Override
     public void setVoltage(double voltage) {
-        shoulderMotorOne.setVoltage(voltage);
+        shoulderMotorLeft.setVoltage(voltage);
     }
 
     @Override
     public void setShoulderSpeed(double desiredSpeed) {
-        shoulderMotorOne.set(desiredSpeed);
+        shoulderMotorLeft.set(desiredSpeed);
     }
 }

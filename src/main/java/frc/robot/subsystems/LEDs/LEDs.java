@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import frc.robot.subsystems.LEDs.LEDsIO.LEDsIOInputs.*;
 
 public class LEDs extends SubsystemBase {
 
@@ -16,7 +17,7 @@ public class LEDs extends SubsystemBase {
     //I donno how to make this 
     private final LEDsIOInputsAutoLogged inputs = new LEDsIOInputsAutoLogged();
 
-    public void setLEDS(LEDsConstants LEDStrips){
+    public void setLEDS(LEDsConstants LED){
         LEDStrip.setLength((buffer.getLength()));
         LEDStrip.setData(buffer);
         LEDStrip.start();
