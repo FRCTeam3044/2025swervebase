@@ -19,6 +19,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command hasCoral(){
+        //currentPattern = Color.kTeal;
         return setColor(LEDPattern.solid(Color.kTeal));
     }
 
@@ -38,15 +39,19 @@ public class LEDs extends SubsystemBase {
         return setColor(LEDPattern.solid(Color.kGreen));
     }
 
+    public Command setBlinkingColor(Color color) {
+        return Commands.run(() -> io.setBlinkingColor(color));
+    }
+
     public Command intakingAndScoringCoral(){
-        return Commands.none();
+        return setBlinkingColor(Color.kOrange);
     }
 
     public Command intakingAndScoringAlgae(){
-        return Commands.none();
+        return setBlinkingColor(Color.kGreen);
     }
 
     public Command Default(){
-        return Commands.none();
+        return Commands.run(()-> io.setSpinningColor(Color.kPurple, Color.kYellow));
     }
 }

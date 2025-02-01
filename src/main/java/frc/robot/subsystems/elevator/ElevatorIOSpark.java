@@ -25,7 +25,7 @@ public class ElevatorIOSpark implements ElevatorIO {
     private final SparkMax leftElevatorMotor = new SparkMax(leftCanId, MotorType.kBrushless);
     private final SparkMax rightElevatorMotor = new SparkMax(rightCanId, MotorType.kBrushless);
 
-    private final RelativeEncoder elevatorEncoder = leftElevatorMotor.getEncoder();
+    private final RelativeEncoder elevatorEncoder = leftElevatorMotor.getAlternateEncoder();
 
     private final DigitalInput topHallEffect = new DigitalInput(0);
     private final DigitalInput bottomHallEffect = new DigitalInput(1);
