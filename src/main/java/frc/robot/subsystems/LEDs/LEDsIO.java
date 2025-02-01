@@ -1,17 +1,14 @@
 package frc.robot.subsystems.LEDs;
-
-import org.littletonrobotics.junction.AutoLog;
 import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.util.Color;
 
 public class LEDsIO {
 
-    public void defaultLights(LEDsConstants.LedColor color){};
-    public void hasCoral(){};
-    public void hasAlgea(){};
-    public void goingToCoralIntake(){};
+    public void defaultLights(){};
+    public void hasCoral(LEDPattern color, LEDsConstants buffer){};
+    public void hasAlgea(LEDPattern color, LEDsConstants buffer){};
+    public void goingToCoralIntake(LEDPattern color, LEDsConstants buffer){};
     public void goingToAlgaeIntake(){};
     public void intakingCoral(){};
-    public void scoringCoral(){};
-    public void scoringAlgae(){};
+    public void scoringCoral(LEDPattern color, LEDsConstants buffer){};
+    public void scoringAlgae(LEDPattern color, LEDsConstants buffer){};
 }

@@ -1,6 +1,7 @@
 package frc.robot.subsystems.LEDs;
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -16,7 +17,10 @@ public class LEDsConstants {
     
     public static enum LedColor {
         Green(LEDPattern.solid(Color.kGreen)),
-        Yellow(LEDPattern.solid(Color.kYellow));
+        Teal(LEDPattern.solid(Color.kTeal)),
+        Orange(LEDPattern.solid(Color.kOrange)),
+        White(LEDPattern.solid(Color.kWhite)),
+        Blue(LEDPattern.solid(Color.kBlue));
 
         private LEDPattern solid;
 

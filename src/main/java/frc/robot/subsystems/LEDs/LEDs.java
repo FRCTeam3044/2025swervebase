@@ -1,15 +1,15 @@
-/;package frc.robot.subsystems.LEDs;
+package frc.robot.subsystems.LEDs;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import frc.robot.subsystems.LEDs.LEDsIO.LEDsIOInputs.*;
 
 public class LEDs extends SubsystemBase {
 
@@ -18,9 +18,9 @@ public class LEDs extends SubsystemBase {
     private final LEDsIOInputsAutoLogged inputs = new LEDsIOInputsAutoLogged();
 
     public void setLEDS(LEDsConstants LED){
-        LEDStrip.setLength((buffer.getLength()));
-        LEDStrip.setData(buffer);
-        LEDStrip.start();
+        LEDsConstants.LEDsIOInputs.LEDStrip.setLength((LEDsConstants.LEDsIOInputs.buffer.getLength()));
+        LEDsConstants.LEDsIOInputs.LEDStrip.setData(LEDsConstants.LEDsIOInputs.buffer);
+        LEDsConstants.LEDsIOInputs.LEDStrip.start();
     }
 
 
@@ -33,16 +33,18 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command hasCoral(LEDPattern color, LEDsConstants buffer){
-        color.applyTo(buffer);
-        return Commands.run(() -> LEDStrip.setData(buffer), this);
+        color.applyTo(LEDsConstants.LEDsIOInputs.buffer);
+        return Commands.run(() -> LEDsConstants.LEDsIOInputs.LEDStrip.setData(LEDsConstants.LEDsIOInputs.buffer), this);
     }
 
-    public Command hasAlgea(){
-        return null;
+    public Command hasAlgea(LEDPattern color, LEDsConstants buffer){
+        color.applyTo(LEDsConstants.LEDsIOInputs.buffer);
+        return Commands.run(() -> LEDsConstants.LEDsIOInputs.LEDStrip.setData(LEDsConstants.LEDsIOInputs.buffer), this);
     }
 
-    public Command goingToCoralIntake(){
-        return null;
+    public Command goingToCoralIntake(LEDPattern color, LEDsConstants buffer){
+        color.applyTo(LEDsConstants.LEDsIOInputs.buffer);
+        return Commands.run(() -> LEDsConstants.LEDsIOInputs.LEDStrip.setData(LEDsConstants.LEDsIOInputs.buffer), this);
     }
 
     public Command goingToAlgaeIntake(){
@@ -53,11 +55,20 @@ public class LEDs extends SubsystemBase {
         return null;
     }
 
-    public Command scoringCoral(){
-        return null;
+    public Command scoringCoral(LEDPattern color, LEDsConstants buffer){
+        color.applyTo(LEDsConstants.LEDsIOInputs.buffer);
+        return Commands.run(() -> LEDsConstants.LEDsIOInputs.LEDStrip.setData(LEDsConstants.LEDsIOInputs.buffer), this);
     }
 
-    public Command scoringAlgae(){
-        return null;
+    public Command scoringAlgae(LEDPattern color, LEDsConstants buffer){
+        color.applyTo(LEDsConstants.LEDsIOInputs.buffer);
+        return Commands.run(() -> LEDsConstants.LEDsIOInputs.LEDStrip.setData(LEDsConstants.LEDsIOInputs.buffer), this);
+    }
+
+    public Command makePatternScroll(LEDsConstant Length) {
+        Distance ledSpacing = .of(1 / 120.0);
+        LEDPattern base = LEDPattern.discontinuousGradient(Color.kRed, Color.kBlue);
+        LEDPattern pattern = base.scrollAtRelativeSpeed(Percent.per(Second).of(25));
+        LEDPattern absolute = base.scrollAtAbsoluteSpeed(Centimeters.per(Second).of(12.5), ledSpacing);
     }
 }
