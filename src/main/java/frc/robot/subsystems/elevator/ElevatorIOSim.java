@@ -46,11 +46,11 @@ public class ElevatorIOSim implements ElevatorIO {
     private double currentTarget;
     private boolean positionControlMode = false;
 
-    public ElevatorIOSim() {
-        tryUntilOk(sparkMax, 5, () -> sparkMax.configure(ElevatorConfigs.leftConfig,
-                ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+    // public ElevatorIOSim() {
+    //     tryUntilOk(sparkMax, 5, () -> sparkMax.configure(ElevatorConfigs.leftConfig,
+    //             ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
-    }
+    //}
 
     public void simulationPeriodic() {
         m_elevatorSim.setInput(sparkMaxSim.getVelocity() * RobotController.getBatteryVoltage());

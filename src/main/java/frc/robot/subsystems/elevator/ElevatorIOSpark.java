@@ -41,15 +41,15 @@ public class ElevatorIOSpark implements ElevatorIO {
     private double currentTarget;
     private boolean positionControlMode = false;
 
-    public ElevatorIOSpark() {
+    // public ElevatorIOSpark() {
 
-        tryUntilOk(rightElevatorMotor, 5, () -> rightElevatorMotor.configure(ElevatorConfigs.rightConfig,
-                ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+    //     tryUntilOk(rightElevatorMotor, 5, () -> rightElevatorMotor.configure(ElevatorConfigs.rightConfig,
+    //             ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
-        tryUntilOk(leftElevatorMotor, 5,
-                () -> leftElevatorMotor.configure(ElevatorConfigs.leftConfig, ResetMode.kResetSafeParameters,
-                        PersistMode.kPersistParameters));
-    }
+    //     tryUntilOk(leftElevatorMotor, 5,
+    //             () -> leftElevatorMotor.configure(ElevatorConfigs.leftConfig, ResetMode.kResetSafeParameters,
+    //                     PersistMode.kPersistParameters));
+    // }
 
     @Override
     public void setPosition(double desiredPosition) {
