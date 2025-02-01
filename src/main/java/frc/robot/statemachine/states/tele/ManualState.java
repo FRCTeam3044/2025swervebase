@@ -11,6 +11,7 @@ import frc.robot.Constants.Mode;
 import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
+import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.AllianceUtil;
@@ -18,7 +19,7 @@ import frc.robot.util.AllianceUtil;
 public class ManualState extends State {
         @SuppressWarnings("unused")
         public ManualState(StateMachineBase stateMachine, CommandXboxController driver, CommandXboxController operator,
-                        Drive drive) {
+                        Drive drive, LEDs LEDs) {
                 super(stateMachine);
 
                 SmartXboxController driverController = new SmartXboxController(driver, loop);
@@ -41,11 +42,14 @@ public class ManualState extends State {
                 }
 
                 startWhenActive(DriveCommands.joystickDrive(drive, xVel, yVel, rotVel));
+                startWhenActive(LEDs.Default());
 
                 // Switch to X pattern when X button is pressed
                 driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
                 driverController.a().onTrue(
                                 DriveCommands.goToPointJoystickRot(drive, new Pose2d(3, 3, new Rotation2d()), rotVel));
+
+                
         }
 }

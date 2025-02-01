@@ -28,6 +28,7 @@ import frc.robot.statemachine.states.tele.ScoreAlgaeProcessor;
 import frc.robot.statemachine.states.tele.ScoreCoral;
 import frc.robot.statemachine.states.tele.ScoreGamePiece;
 import frc.robot.subsystems.EndEffector.EndEffector;
+import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shoulder.Shoulder;
@@ -35,7 +36,7 @@ import frc.robot.util.ButtonBoardUtil;
 
 public class StateMachine extends StateMachineBase {
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController, ButtonBoardUtil buttonBoard, LoggedDashboardChooser<Command> chooser,
-                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector) {
+                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super();
                 State disabled = new DisabledState(this);
                 currentState = disabled;
@@ -47,18 +48,18 @@ public class StateMachine extends StateMachineBase {
                 this.registerToRootState(test, auto, teleop, disabled);
 
                 // Teleop
-                ManualState manual = new ManualState(this, driverController, operatorController, drive);
+                ManualState manual = new ManualState(this, driverController, operatorController, drive, LEDs);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
-                ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector);
+                ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, LEDs);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
-                ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector);
-                ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector);
+                ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector, LEDs);
+                ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector, LEDs);
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
-                IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, endEffector);
-                IntakeAlgae intakeAlgae = new IntakeAlgae(this,buttonBoard, drive, elevator, endEffector);
+                IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, endEffector, LEDs);
+                IntakeAlgae intakeAlgae = new IntakeAlgae(this,buttonBoard, drive, elevator, endEffector, LEDs);
                 GoToIntake goToIntake = new GoToIntake(this);
-                GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive);
-                GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive);
+                GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive, LEDs);
+                GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, LEDs);
                 GoToScoringPosition goToScoringPosition = new GoToScoringPosition(this);
                 GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive);
                 GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);

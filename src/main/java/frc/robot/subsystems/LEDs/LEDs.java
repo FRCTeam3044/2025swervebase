@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LEDs extends SubsystemBase {
 
     private final LEDsIO io;
-    //I donno how to make this 
-    private final LEDsIOInputsAutoLogged inputs = new LEDsIOInputsAutoLogged();
 
     public LEDs(LEDsIO io) {
         this.io = io;
@@ -21,6 +19,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command hasCoral(){
+        //currentPattern = Color.kTeal;
         return setColor(LEDPattern.solid(Color.kTeal));
     }
 
@@ -40,15 +39,19 @@ public class LEDs extends SubsystemBase {
         return setColor(LEDPattern.solid(Color.kGreen));
     }
 
+    public Command setBlinkingColor(Color color) {
+        return Commands.run(() -> io.setBlinkingColor(color));
+    }
+
     public Command intakingAndScoringCoral(){
-        return Commands.none();
+        return setBlinkingColor(Color.kOrange);
     }
 
     public Command intakingAndScoringAlgae(){
-        return Commands.none();
+        return setBlinkingColor(Color.kGreen);
     }
 
     public Command Default(){
-        return Commands.none();
+        return Commands.run(()-> io.setSpinningColor(Color.kPurple, Color.kYellow));
     }
 }
