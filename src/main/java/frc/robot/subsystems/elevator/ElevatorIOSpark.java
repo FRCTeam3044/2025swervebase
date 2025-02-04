@@ -36,7 +36,7 @@ public class ElevatorIOSpark implements ElevatorIO {
     private final ProfiledPIDController controller = new ProfiledPIDController(kP, kI, kD, m_constraints, kDt);
     private final ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV);
 
-    private double currentTarget;
+    private double currentTargetMeters;
     private boolean positionControlMode = false;
 
     // public ElevatorIOSpark() {
@@ -52,7 +52,7 @@ public class ElevatorIOSpark implements ElevatorIO {
     @Override
     public void setPosition(double desiredPosition) {
         positionControlMode = true;
-        currentTarget = desiredPosition;
+        currentTargetMeters = desiredPosition;
     }
 
     private void setPositionPPID(double desiredPosition) {
@@ -101,8 +101,9 @@ public class ElevatorIOSpark implements ElevatorIO {
     }
 
     public void updateInputs(ElevatorIOInputs inputs) {
+        double currentTargetRotations = currentTargetMeters / (drumRadius * 2.0 * Math.PI);
         if (positionControlMode)
-            setPositionPPID(currentTarget);
+            setPositionPPID(currentTargetRotations);
 
         ifOk(leftElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.leftPositionRot = value);
         ifOk(leftElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.leftVelocityRPM = value);
@@ -120,7 +121,9 @@ public class ElevatorIOSpark implements ElevatorIO {
                 (values) -> inputs.leftAppliedVolts = values[0] * values[1]);
         ifOk(rightElevatorMotor, rightElevatorMotor::getOutputCurrent, (value) -> inputs.rightCurrentAmps = value);
         ifOk(rightElevatorMotor, rightElevatorMotor::getMotorTemperature, (value) -> inputs.rightTemperature = value);
-        inputs.setpoint = currentTarget;
+        inputs.setpointMeters = currentTargetMeters;
+        inputs.setpointRotations = currentTargetRotations;
+        inputs.elevatorHeightMeters = inputs.leftPositionRot * drumRadius * 2.0 * Math.PI;
         inputs.bottomEffectClosed = bottomHallEffect.get();
         inputs.topHallEffectClosed = topHallEffect.get();
 

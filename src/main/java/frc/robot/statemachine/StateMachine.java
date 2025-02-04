@@ -35,7 +35,8 @@ import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.ButtonBoardUtil;
 
 public class StateMachine extends StateMachineBase {
-        public StateMachine(CommandXboxController driverController, CommandXboxController operatorController, ButtonBoardUtil buttonBoard, LoggedDashboardChooser<Command> chooser,
+        public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
+                        ButtonBoardUtil buttonBoard, LoggedDashboardChooser<Command> chooser,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super();
                 State disabled = new DisabledState(this);
@@ -48,15 +49,16 @@ public class StateMachine extends StateMachineBase {
                 this.registerToRootState(test, auto, teleop, disabled);
 
                 // Teleop
-                ManualState manual = new ManualState(this, driverController, operatorController, drive, LEDs);
+                ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator, LEDs);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
                 ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, LEDs);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
                 ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector, LEDs);
-                ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector, LEDs);
+                ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector,
+                                LEDs);
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
                 IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, endEffector, LEDs);
-                IntakeAlgae intakeAlgae = new IntakeAlgae(this,buttonBoard, drive, elevator, endEffector, LEDs);
+                IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, endEffector, LEDs);
                 GoToIntake goToIntake = new GoToIntake(this);
                 GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive, LEDs);
                 GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, LEDs);
@@ -73,7 +75,6 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToIntake)
                                 .withChild(intakeGamePiece);
 
-
                 goToScoringPosition.withChild(goToScoreCoral, () -> false, 0, "Has coral")
                                 .withChild(goToScoreAlgae, () -> false, 1, "Has algae");
 
@@ -85,7 +86,7 @@ public class StateMachine extends StateMachineBase {
 
                 intakeGamePiece.withChild(intakeCoral, () -> false, 0, "Reef selected")
                                 .withChild(intakeAlgae, () -> false, 1, "Station selected");
-                
+
                 // Specific Algae intake and score
                 goToScoreAlgae.withChild(goToScoreNet, () -> false, 0, "Net selected")
                                 .withChild(goToScoreProcessor, () -> false, 1, "Processor selected");

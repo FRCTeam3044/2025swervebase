@@ -16,8 +16,9 @@ public interface ElevatorIO {
         public double rightVelocityRPM = 0.0;
         public double rightTemperature = 0.0;
 
-        public double setpoint = 0.0;
-        public double elevatorHeight = 0.0;
+        public double setpointRotations = 0.0;
+        public double setpointMeters = 0.0;
+        public double elevatorHeightMeters = 0.0;
 
         public boolean topHallEffectClosed = false;
         public boolean bottomEffectClosed = false;

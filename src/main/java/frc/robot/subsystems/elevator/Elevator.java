@@ -16,7 +16,7 @@ public class Elevator extends SubsystemBase {
     private final SysIdRoutine sysId;
 
     enum LevelHeight {
-        L1(0, 0, 0, 0),
+        L1(0, 1, 0, 0),
         L2(0, 0, 0, 0),
         L3(0, 0, 0, 0),
         L4(0, 0, 0, 0);
@@ -38,19 +38,19 @@ public class Elevator extends SubsystemBase {
         this.io = io;
 
         sysId = new SysIdRoutine(
-        new SysIdRoutine.Config(
-            null,
-            null,
-            null,
-            (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
-        new SysIdRoutine.Mechanism(
-            (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+                new SysIdRoutine.Config(
+                        null,
+                        null,
+                        null,
+                        (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
+                new SysIdRoutine.Mechanism(
+                        (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return run(() -> io.setVoltage(0.0))
-            .withTimeout(1.0)
-            .andThen(sysId.quasistatic(direction));
+                .withTimeout(1.0)
+                .andThen(sysId.quasistatic(direction));
     }
 
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {

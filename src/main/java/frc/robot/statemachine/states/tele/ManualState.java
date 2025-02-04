@@ -14,12 +14,13 @@ import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
+import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.util.AllianceUtil;
 
 public class ManualState extends State {
         @SuppressWarnings("unused")
         public ManualState(StateMachineBase stateMachine, CommandXboxController driver, CommandXboxController operator,
-                        Drive drive, LEDs LEDs) {
+                        Drive drive, Elevator elevator, LEDs LEDs) {
                 super(stateMachine);
 
                 SmartXboxController driverController = new SmartXboxController(driver, loop);
@@ -50,6 +51,6 @@ public class ManualState extends State {
                 driverController.a().onTrue(
                                 DriveCommands.goToPointJoystickRot(drive, new Pose2d(3, 3, new Rotation2d()), rotVel));
 
-                
+                startWhenActive(elevator.toL1(() -> 0.0));
         }
 }

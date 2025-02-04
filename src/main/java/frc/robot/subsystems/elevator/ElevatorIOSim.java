@@ -40,7 +40,7 @@ public class ElevatorIOSim implements ElevatorIO {
             new TrapezoidProfile.Constraints(2.45, 2.45));
     ElevatorFeedforward m_feedforward = new ElevatorFeedforward(kS, kG, kV);
 
-    private double currentTarget;
+    private double currentTargetMeters;
     private boolean positionControlMode = false;
 
     // public ElevatorIOSim() {
@@ -69,8 +69,9 @@ public class ElevatorIOSim implements ElevatorIO {
                 RobotController.getBatteryVoltage(),
                 0.02);
 
+        double currentTargetRotations = currentTargetMeters / (drumRadius * 2.0 * Math.PI);
         if (positionControlMode) {
-            m_controller.setGoal(currentTarget);
+            m_controller.setGoal(currentTargetRotations);
             // With the setpoint value we run PID control like normal
             double pidOutput = m_controller.calculate(elevatorEncoder.getPosition());
             double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
@@ -78,9 +79,10 @@ public class ElevatorIOSim implements ElevatorIO {
         }
         // elevatorMotorSim.setAppliedOutput((pidOutput + feedforwardOutput) / 12.0);
 
-        inputs.setpoint = currentTarget;
+        inputs.setpointMeters = currentTargetMeters;
+        inputs.setpointRotations = currentTargetRotations;
         inputs.leftPositionRot = elevatorEncoder.getPosition();
-        inputs.elevatorHeight = m_elevatorSim.getPositionMeters();
+        inputs.elevatorHeightMeters = m_elevatorSim.getPositionMeters();
         // inputs.elevatorHeightCalc = (elevatorEncoder.getPosition() /
         // ElevatorConstants.kElevatorGearing)
         // * (ElevatorConstants.kElevatorDrumRadius * 2.0 * Math.PI);
@@ -102,6 +104,6 @@ public class ElevatorIOSim implements ElevatorIO {
 
     @Override
     public void setPosition(double position) {
-        currentTarget = position;
+        currentTargetMeters = position;
     }
 }
