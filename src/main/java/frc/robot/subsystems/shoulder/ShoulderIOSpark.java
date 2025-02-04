@@ -55,7 +55,6 @@ public class ShoulderIOSpark implements ShoulderIO {
         shoulderMotorRightConfig.follow(shoulderMotorLeft);
         tryUntilOk(shoulderMotorRight, 5, () -> shoulderMotorRight.configure(shoulderMotorLeftConfig,
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
-
     }
 
     @Override

@@ -1,14 +1,11 @@
 package frc.robot.subsystems.elevator;
 
-import static frc.robot.util.SparkUtil.tryUntilOk;
 import static frc.robot.subsystems.elevator.ElevatorConstants.*;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
