@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -27,6 +28,9 @@ public class ShoulderIOSpark implements ShoulderIO {
     private final SparkMax shoulderMotorRight = new SparkMax(shoulderTwoCanId, MotorType.kBrushless);
     private final AbsoluteEncoder shoulderEncoder = shoulderMotorLeft.getAbsoluteEncoder();
 
+    public static SoftLimitConfig leftSoftConfig = new SoftLimitConfig();
+    public static SoftLimitConfig rightSoftConfig = new SoftLimitConfig();
+
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity,
             kMaxAcceleration);
     private final ProfiledPIDController controller = new ProfiledPIDController(kP, kI, kD, m_constraints, kDt);
@@ -34,6 +38,12 @@ public class ShoulderIOSpark implements ShoulderIO {
 
     public ShoulderIOSpark() {
         var shoulderMotorLeftConfig = new SparkMaxConfig();
+
+        leftSoftConfig.forwardSoftLimit(0.0);
+        leftSoftConfig.reverseSoftLimit(0.0);
+
+        shoulderMotorLeftConfig.apply(leftSoftConfig);
+
         shoulderMotorLeftConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
         shoulderMotorLeftConfig.encoder
                 .positionConversionFactor(2.0 * Math.PI / shoulderMotorReduction)
@@ -45,6 +55,12 @@ public class ShoulderIOSpark implements ShoulderIO {
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
         var shoulderMotorRightConfig = new SparkMaxConfig();
+
+        rightSoftConfig.forwardSoftLimit(0.0);
+        rightSoftConfig.reverseSoftLimit(0.0);
+
+        shoulderMotorRightConfig.apply(rightSoftConfig);
+
         shoulderMotorRightConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
         shoulderMotorRightConfig.encoder
                 .positionConversionFactor(2.0 * Math.PI / shoulderMotorReduction)
