@@ -12,11 +12,14 @@ import static frc.robot.subsystems.climber.ClimberConstants.*;
 import java.util.function.DoubleSupplier;
 
 public class ClimberIOSpark implements ClimberIO {
-    private final SparkMax climber = new SparkMax(climberCanId, MotorType.kBrushless);
-    private final RelativeEncoder encoder = climber.getEncoder();
+    private final SparkMax rightMotorClimber = new SparkMax(rightMotorCanId, MotorType.kBrushless);
+    private final RelativeEncoder encoder1 = rightMotorClimber.getEncoder();
+
+    private final SparkMax leftMotorClimber = new SparkMax(leftMotorCanId, MotorType.kBrushless);
+    private final RelativeEncoder encoder2 = leftMotorClimber.getEncoder();
 
 
-    public ClimberIOSpark(){
+  /*   public ClimberIOSpark(){
         var config = new SparkMaxConfig();
         config.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).voltageCompensation(12.0);
         config
@@ -33,17 +36,26 @@ public class ClimberIOSpark implements ClimberIO {
         () ->
             climber.configure(
                 config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
-  }
+  } */
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
-    ifOk(climber, encoder::getPosition, (value) -> inputs.positionRad = value);
-    ifOk(climber, encoder::getVelocity, (value) -> inputs.velocityRadPerSec = value);
+    ifOk(rightMotorClimber, encoder1::getPosition, (value) -> inputs.positionRad = value);
+    ifOk(rightMotorClimber, encoder1::getVelocity, (value) -> inputs.velocityRadPerSec = value);
     ifOk(
-        climber,
-        new DoubleSupplier[] {climber::getAppliedOutput, climber::getBusVoltage},
+      rightMotorClimber,
+        new DoubleSupplier[] {rightMotorClimber::getAppliedOutput, rightMotorClimber::getBusVoltage},
         (values) -> inputs.appliedVolts = values[0] * values[1]);
-    ifOk(climber, climber::getOutputCurrent, (value) -> inputs.currentAmps = value);
+    ifOk(rightMotorClimber, rightMotorClimber::getOutputCurrent, (value) -> inputs.currentAmps = value);
+
+    
+    ifOk(leftMotorClimber, encoder2::getPosition, (value) -> inputs.positionRad = value);
+    ifOk(leftMotorClimber, encoder2::getVelocity, (value) -> inputs.velocityRadPerSec = value);
+    ifOk(
+      leftMotorClimber,
+        new DoubleSupplier[] {leftMotorClimber::getAppliedOutput, leftMotorClimber::getBusVoltage},
+        (values) -> inputs.appliedVolts = values[0] * values[1]);
+    ifOk(leftMotorClimber, leftMotorClimber::getOutputCurrent, (value) -> inputs.currentAmps = value);
   }
 
 
@@ -52,6 +64,7 @@ public class ClimberIOSpark implements ClimberIO {
   @Override
   public void setSpeed(double speed) {
     // TODO: Auto-generated method stub
-    climber.set(speed);
+    rightMotorClimber.set(speed);
+    leftMotorClimber.set(speed);
   }
 }
