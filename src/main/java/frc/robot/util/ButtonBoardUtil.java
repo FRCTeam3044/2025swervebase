@@ -2,17 +2,17 @@ package frc.robot.util;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
-import pabeles.concurrency.ConcurrencyOps.NewInstance;
 
 public class ButtonBoardUtil {
     private static GenericHID padOne;
     private static GenericHID padTwo;
     private static GenericHID padThree;
 
-
-    public record ButtonInfo(int board, int button){
-        public boolean isPressed(){
-            return (board == 1 && ButtonBoardUtil.padOne.getRawButtonPressed(button)) || (board == 2 && ButtonBoardUtil.padTwo.getRawButtonPressed(button)) || (board == 3 && ButtonBoardUtil.padThree.getRawButtonPressed(button));
+    public record ButtonInfo(int board, int button) {
+        public boolean isPressed() {
+            return (board == 1 && ButtonBoardUtil.padOne.getRawButtonPressed(button))
+                    || (board == 2 && ButtonBoardUtil.padTwo.getRawButtonPressed(button))
+                    || (board == 3 && ButtonBoardUtil.padThree.getRawButtonPressed(button));
         }
     };
 
@@ -27,7 +27,7 @@ public class ButtonBoardUtil {
     private ButtonInfo reefI = new ButtonInfo(0, 8);
     private ButtonInfo reefJ = new ButtonInfo(0, 9);
     private ButtonInfo reefK = new ButtonInfo(0, 10);
-    private ButtonInfo reefL = new ButtonInfo(0,11);
+    private ButtonInfo reefL = new ButtonInfo(0, 11);
     private ButtonInfo stationRight1 = new ButtonInfo(0, 13);
     private ButtonInfo stationRight2 = new ButtonInfo(0, 14);
     private ButtonInfo stationRight3 = new ButtonInfo(0, 15);
@@ -52,100 +52,100 @@ public class ButtonBoardUtil {
     private boolean isAlgaeMode = true;
 
     public void periodic() {
-        if(reefA.isPressed()) {
+        if (reefA.isPressed()) {
             reefPose = AutoTargetUtils.reefA();
         }
-        if(reefB.isPressed()) {
+        if (reefB.isPressed()) {
             reefPose = AutoTargetUtils.reefB();
         }
-        if(reefC.isPressed()) {
+        if (reefC.isPressed()) {
             reefPose = AutoTargetUtils.reefC();
         }
-        if(reefD.isPressed()) {
+        if (reefD.isPressed()) {
             reefPose = AutoTargetUtils.reefD();
         }
-        if(reefE.isPressed()) {
+        if (reefE.isPressed()) {
             reefPose = AutoTargetUtils.reefE();
         }
-        if(reefF.isPressed()) {
+        if (reefF.isPressed()) {
             reefPose = AutoTargetUtils.reefF();
         }
-        if(reefG.isPressed()) {
+        if (reefG.isPressed()) {
             reefPose = AutoTargetUtils.reefG();
         }
-        if(reefH.isPressed()) {
+        if (reefH.isPressed()) {
             reefPose = AutoTargetUtils.reefH();
         }
-        if(reefI.isPressed()) {
+        if (reefI.isPressed()) {
             reefPose = AutoTargetUtils.reefI();
         }
-        if(reefJ.isPressed()) {
+        if (reefJ.isPressed()) {
             reefPose = AutoTargetUtils.reefJ();
         }
-        if(reefK.isPressed()) {
+        if (reefK.isPressed()) {
             reefPose = AutoTargetUtils.reefK();
         }
-        if(reefL.isPressed()) {
+        if (reefL.isPressed()) {
             reefPose = AutoTargetUtils.reefL();
         }
-        if(stationLeft1.isPressed()) {
+        if (stationLeft1.isPressed()) {
             intakePose = AutoTargetUtils.leftStation1();
             intakeHeight = IntakeStation.L1;
         }
-        if(stationLeft2.isPressed()) {
+        if (stationLeft2.isPressed()) {
             intakePose = AutoTargetUtils.leftStation2();
             intakeHeight = IntakeStation.L2;
         }
-        if(stationLeft3.isPressed()) {
+        if (stationLeft3.isPressed()) {
             intakePose = AutoTargetUtils.leftStation3();
             intakeHeight = IntakeStation.L3;
         }
-        if(stationRight1.isPressed()) {
+        if (stationRight1.isPressed()) {
             intakePose = AutoTargetUtils.rightStation1();
             intakeHeight = IntakeStation.R1;
         }
-        if(stationRight2.isPressed()) {
+        if (stationRight2.isPressed()) {
             intakePose = AutoTargetUtils.rightStation2();
             intakeHeight = IntakeStation.R2;
         }
-        if(stationRight3.isPressed()) {
+        if (stationRight3.isPressed()) {
             intakePose = AutoTargetUtils.rightStation3();
             intakeHeight = IntakeStation.R3;
         }
-        if(processor.isPressed()) {
+        if (processor.isPressed()) {
             processorPose = AutoTargetUtils.processor();
         }
-        if(reefA.isPressed() || reefB.isPressed()) {
+        if (reefA.isPressed() || reefB.isPressed()) {
             algaePose = AutoTargetUtils.algaeA();
         }
-        if(reefC.isPressed() || reefD.isPressed()) {
+        if (reefC.isPressed() || reefD.isPressed()) {
             algaePose = AutoTargetUtils.algaeB();
         }
-        if(reefE.isPressed() || reefF.isPressed()) {
+        if (reefE.isPressed() || reefF.isPressed()) {
             algaePose = AutoTargetUtils.algaeC;
         }
-        if(reefG.isPressed() || reefH.isPressed()) {
+        if (reefG.isPressed() || reefH.isPressed()) {
             algaePose = AutoTargetUtils.algaeD;
         }
-        if(reefI.isPressed() || reefJ.isPressed()) {
+        if (reefI.isPressed() || reefJ.isPressed()) {
             algaePose = AutoTargetUtils.algaeE;
         }
-        if(reefK.isPressed() || reefL.isPressed()) {
+        if (reefK.isPressed() || reefL.isPressed()) {
             algaePose = AutoTargetUtils.algaeF;
         }
-        if(levelOne.isPressed()) {
+        if (levelOne.isPressed()) {
             reefLevel = ReefHeight.L1;
         }
-        if(levelTwo.isPressed()) {
+        if (levelTwo.isPressed()) {
             reefLevel = ReefHeight.L2;
         }
-        if(levelThree.isPressed()) {
+        if (levelThree.isPressed()) {
             reefLevel = ReefHeight.L3;
         }
-        if(levelFour.isPressed()) {
+        if (levelFour.isPressed()) {
             reefLevel = ReefHeight.L4;
         }
-        if(algaeModeToggle.isPressed()) {
+        if (algaeModeToggle.isPressed()) {
             isAlgaeMode = !isAlgaeMode;
         }
     }
@@ -166,7 +166,7 @@ public class ButtonBoardUtil {
         R3
     }
 
-    public Pose2d getSelectedReef(){
+    public Pose2d getSelectedReef() {
         return reefPose;
     }
 
@@ -174,15 +174,15 @@ public class ButtonBoardUtil {
         return algaePose;
     }
 
-    public ReefHeight getSelectedReefHeight(){
+    public ReefHeight getSelectedReefHeight() {
         return null;
     }
 
-    public Pose2d getSelectedStationPose(){
+    public Pose2d getSelectedStationPose() {
         return intakePose;
     }
 
-    public IntakeStation getSelectedStation(){
+    public IntakeStation getSelectedStation() {
         return intakeHeight;
     }
 }
