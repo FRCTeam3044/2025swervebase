@@ -63,8 +63,6 @@ public class ClimberIOSpark implements ClimberIO {
 
   @Override
   public void setSpeed(double speed) {
-    // TODO: Auto-generated method stub
-    rightMotorClimber.set(speed);
     leftMotorClimber.set(speed);
   }
 }
