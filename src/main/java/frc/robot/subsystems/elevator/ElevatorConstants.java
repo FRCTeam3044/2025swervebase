@@ -3,8 +3,8 @@ package frc.robot.subsystems.elevator;
 import edu.wpi.first.math.util.Units;
 
 public class ElevatorConstants {
-  public static final int leftCanId = 21;
-  public static final int rightCanId = 22;
+  public static final int leaderCanId = 21;
+  public static final int followerCanId = 22;
   public static final double motorReduction = 1.0;
   public static final int currentLimit = 40;
   public static final double bottomHallEffect = 0;
@@ -25,4 +25,7 @@ public class ElevatorConstants {
   public static double kS = 1.1;
   public static double kG = 1.2;
   public static double kV = 1.3;
+
+  public static final double forwardSoftLimit = 0.0;
+  public static final double reverseSoftLimit = 0.0;
 }

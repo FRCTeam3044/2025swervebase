@@ -1,12 +1,11 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems.shoulder;
 
-import static frc.robot.subsystems.elevator.ElevatorConstants.*;
-
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import static frc.robot.subsystems.shoulder.ShoulderConstants.*;
 
-public class ElevatorConfigs {
+public class ShoulderConfig {
     // Leader
     public static SparkMaxConfig leaderConfig = new SparkMaxConfig();
     // Follower
@@ -15,7 +14,6 @@ public class ElevatorConfigs {
     public static SoftLimitConfig softLimitConfig = new SoftLimitConfig();
 
     static {
-        // TODO: Soft Limit conversion factor
         leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
         followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId);
 
