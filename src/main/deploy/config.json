@@ -4,6 +4,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Coral proximity distance": {
+            "comment": "Auto-Generated",
+            "value": "15.0"
+        },
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding X Controller/I": "0.0",
@@ -40,6 +44,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Coral proximity distance": {
+            "comment": "Auto-Generated",
+            "value": "15.0"
+        },
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding X Controller/I": "0.0",
@@ -74,6 +82,10 @@
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",
             "value": "0.0"
+        },
+        "Coral proximity distance": {
+            "comment": "Auto-Generated",
+            "value": "15.0"
         },
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",

@@ -17,9 +17,7 @@ import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.AllianceUtil;
-import frc.robot.util.PathfindingDebugUtils;
 import me.nabdev.oxconfig.OxConfig;
 import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -73,6 +71,7 @@ public class Robot extends LoggedRobot {
       case SIM:
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(new NT4Publisher());
+        Logger.addDataReceiver(new WPILOGWriter());
         break;
 
       case REPLAY:
@@ -116,11 +115,13 @@ public class Robot extends LoggedRobot {
     // Return to normal thread priority
     Threads.setCurrentThreadPriority(false, 10);
 
-    PathfindingDebugUtils.drawLines("Field Map", DriveConstants.pathfinder.visualizeEdges(),
-        DriveConstants.pathfinder.visualizeVertices());
+    // PathfindingDebugUtils.drawLines("Field Map",
+    // DriveConstants.pathfinder.visualizeEdges(),
+    // DriveConstants.pathfinder.visualizeVertices());
 
-    PathfindingDebugUtils.drawLines("Field Map Inflated", DriveConstants.pathfinder.visualizeEdges(),
-        DriveConstants.pathfinder.visualizeInflatedVertices());
+    // PathfindingDebugUtils.drawLines("Field Map Inflated",
+    // DriveConstants.pathfinder.visualizeEdges(),
+    // DriveConstants.pathfinder.visualizeInflatedVertices());
   }
 
   /** This function is called once when the robot is disabled. */

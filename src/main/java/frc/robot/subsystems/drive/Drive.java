@@ -150,6 +150,10 @@ public class Drive extends SubsystemBase implements VisionConsumer {
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+
+    var curPose = getPose();
+    Logger.recordOutput("Odometry/RobotArray", new double[] { curPose.getTranslation().getX(),
+        curPose.getTranslation().getY(), curPose.getRotation().getDegrees() });
   }
 
   /**
