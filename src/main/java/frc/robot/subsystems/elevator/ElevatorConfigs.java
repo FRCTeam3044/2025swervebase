@@ -12,20 +12,16 @@ public class ElevatorConfigs {
     // Follower
     public static SparkMaxConfig rightConfig = new SparkMaxConfig();
 
-    public static SoftLimitConfig leftSoftConfig = new SoftLimitConfig();
-    public static SoftLimitConfig rightSoftConfig = new SoftLimitConfig();
+    public static SoftLimitConfig softLimitConfig = new SoftLimitConfig();
 
     static {
         // TODO: Soft Limit conversion factor
         leftConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
         rightConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leftCanId);
 
-        leftSoftConfig.forwardSoftLimit(0.0);
-        leftSoftConfig.reverseSoftLimit(0.0);
-        rightSoftConfig.forwardSoftLimit(0.0);
-        rightSoftConfig.reverseSoftLimit(0.0);
-        
-        leftConfig.apply(leftSoftConfig);
-        rightConfig.apply(rightSoftConfig);
+        softLimitConfig.forwardSoftLimit(forwardSoftLimit);
+        softLimitConfig.reverseSoftLimit(reverseSoftLimit);
+
+        leftConfig.apply(softLimitConfig);
     }
 }

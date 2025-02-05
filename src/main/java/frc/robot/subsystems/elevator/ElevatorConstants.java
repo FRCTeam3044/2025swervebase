@@ -25,4 +25,7 @@ public class ElevatorConstants {
   public static double kS = 1.1;
   public static double kG = 1.2;
   public static double kV = 1.3;
+
+  public static final double forwardSoftLimit = 0.0;
+  public static final double reverseSoftLimit = 0.0;
 }
