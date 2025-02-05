@@ -8,20 +8,20 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ElevatorConfigs {
     // Leader
-    public static SparkMaxConfig leftConfig = new SparkMaxConfig();
+    public static SparkMaxConfig leaderConfig = new SparkMaxConfig();
     // Follower
-    public static SparkMaxConfig rightConfig = new SparkMaxConfig();
+    public static SparkMaxConfig followerConfig = new SparkMaxConfig();
 
     public static SoftLimitConfig softLimitConfig = new SoftLimitConfig();
 
     static {
         // TODO: Soft Limit conversion factor
-        leftConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
-        rightConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leftCanId);
+        leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
+        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId);
 
         softLimitConfig.forwardSoftLimit(forwardSoftLimit);
         softLimitConfig.reverseSoftLimit(reverseSoftLimit);
 
-        leftConfig.apply(softLimitConfig);
+        leaderConfig.apply(softLimitConfig);
     }
 }

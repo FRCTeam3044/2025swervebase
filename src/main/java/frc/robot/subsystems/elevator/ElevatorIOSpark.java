@@ -22,10 +22,10 @@ import edu.wpi.first.wpilibj.Timer;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class ElevatorIOSpark implements ElevatorIO {
-    private final SparkMax leftElevatorMotor = new SparkMax(leftCanId, MotorType.kBrushless);
-    private final SparkMax rightElevatorMotor = new SparkMax(rightCanId, MotorType.kBrushless);
+    private final SparkMax leaderMotor = new SparkMax(leaderCanId, MotorType.kBrushless);
+    private final SparkMax followerMotor = new SparkMax(followerCanId, MotorType.kBrushless);
 
-    private final RelativeEncoder elevatorEncoder = leftElevatorMotor.getAlternateEncoder();
+    private final RelativeEncoder encoder = leaderMotor.getAlternateEncoder();
 
     private final DigitalInput topHallEffect = new DigitalInput(0);
     private final DigitalInput bottomHallEffect = new DigitalInput(1);
@@ -42,10 +42,10 @@ public class ElevatorIOSpark implements ElevatorIO {
     private boolean positionControlMode = false;
 
     public ElevatorIOSpark() {
-        tryUntilOk(rightElevatorMotor, 5, () -> rightElevatorMotor.configure(ElevatorConfigs.rightConfig,
+        tryUntilOk(followerMotor, 5, () -> followerMotor.configure(ElevatorConfigs.followerConfig,
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
-        tryUntilOk(leftElevatorMotor, 5, () -> leftElevatorMotor.configure(ElevatorConfigs.leftConfig,
+        tryUntilOk(leaderMotor, 5, () -> leaderMotor.configure(ElevatorConfigs.leaderConfig,
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
     }
 
@@ -58,9 +58,9 @@ public class ElevatorIOSpark implements ElevatorIO {
     private void setPositionPPID(double desiredPosition) {
         double lastSpeed = 0;
         double lastTime = Timer.getFPGATimestamp();
-        double pidVal = controller.calculate(elevatorEncoder.getPosition(), desiredPosition);
+        double pidVal = controller.calculate(encoder.getPosition(), desiredPosition);
         double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        leftElevatorMotor.setVoltage(
+        leaderMotor.setVoltage(
                 pidVal
                         + feedforward.calculate(controller.getSetpoint().velocity, acceleration));
         lastSpeed = controller.getSetpoint().velocity;
@@ -71,9 +71,9 @@ public class ElevatorIOSpark implements ElevatorIO {
     public void setPositionSpark(double desiredPosition) {
         double lastSpeed = 0;
         double lastTime = Timer.getFPGATimestamp();
-        controller.calculate(elevatorEncoder.getPosition(), desiredPosition);
+        controller.calculate(encoder.getPosition(), desiredPosition);
         double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        leftElevatorMotor.getClosedLoopController().setReference(controller.getSetpoint().position,
+        leaderMotor.getClosedLoopController().setReference(controller.getSetpoint().position,
                 ControlType.kPosition, ClosedLoopSlot.kSlot0,
                 feedforward.calculate(controller.getSetpoint().velocity, acceleration));
     }
@@ -82,22 +82,22 @@ public class ElevatorIOSpark implements ElevatorIO {
     public void setPositionMaxMotion(double desiredPosition) {
         double lastSpeed = 0;
         double lastTime = Timer.getFPGATimestamp();
-        controller.calculate(elevatorEncoder.getPosition(), desiredPosition);
+        controller.calculate(encoder.getPosition(), desiredPosition);
         double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        leftElevatorMotor.getClosedLoopController().setReference(desiredPosition, ControlType.kMAXMotionPositionControl,
+        leaderMotor.getClosedLoopController().setReference(desiredPosition, ControlType.kMAXMotionPositionControl,
                 ClosedLoopSlot.kSlot0, feedforward.calculate(controller.getSetpoint().velocity, acceleration));
     }
 
     @Override
     public void setSpeed(double desiredSpeed) {
         positionControlMode = false;
-        leftElevatorMotor.set(desiredSpeed);
+        leaderMotor.set(desiredSpeed);
     }
 
     @Override
     public void setVoltage(double voltage) {
         positionControlMode = false;
-        leftElevatorMotor.setVoltage(voltage);
+        leaderMotor.setVoltage(voltage);
     }
 
     public void updateInputs(ElevatorIOInputs inputs) {
@@ -105,22 +105,22 @@ public class ElevatorIOSpark implements ElevatorIO {
         if (positionControlMode)
             setPositionPPID(currentTargetRotations);
 
-        ifOk(leftElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.leftPositionRot = value);
-        ifOk(leftElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.leftVelocityRPM = value);
+        ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leftPositionRot = value);
+        ifOk(leaderMotor, encoder::getVelocity, (value) -> inputs.leftVelocityRPM = value);
         ifOk(
-                leftElevatorMotor,
-                new DoubleSupplier[] { leftElevatorMotor::getAppliedOutput, leftElevatorMotor::getBusVoltage },
+                leaderMotor,
+                new DoubleSupplier[] { leaderMotor::getAppliedOutput, leaderMotor::getBusVoltage },
                 (values) -> inputs.leftAppliedVolts = values[0] * values[1]);
-        ifOk(leftElevatorMotor, leftElevatorMotor::getOutputCurrent, (value) -> inputs.leftCurrentAmps = value);
-        ifOk(leftElevatorMotor, leftElevatorMotor::getMotorTemperature, (value) -> inputs.leftTemperature = value);
-        ifOk(rightElevatorMotor, elevatorEncoder::getPosition, (value) -> inputs.rightPositionRot = value);
-        ifOk(rightElevatorMotor, elevatorEncoder::getVelocity, (value) -> inputs.rightVelocityRPM = value);
+        ifOk(leaderMotor, leaderMotor::getOutputCurrent, (value) -> inputs.leftCurrentAmps = value);
+        ifOk(leaderMotor, leaderMotor::getMotorTemperature, (value) -> inputs.leftTemperature = value);
+        ifOk(followerMotor, encoder::getPosition, (value) -> inputs.rightPositionRot = value);
+        ifOk(followerMotor, encoder::getVelocity, (value) -> inputs.rightVelocityRPM = value);
         ifOk(
-                rightElevatorMotor,
-                new DoubleSupplier[] { rightElevatorMotor::getAppliedOutput, rightElevatorMotor::getBusVoltage },
+                followerMotor,
+                new DoubleSupplier[] { followerMotor::getAppliedOutput, followerMotor::getBusVoltage },
                 (values) -> inputs.leftAppliedVolts = values[0] * values[1]);
-        ifOk(rightElevatorMotor, rightElevatorMotor::getOutputCurrent, (value) -> inputs.rightCurrentAmps = value);
-        ifOk(rightElevatorMotor, rightElevatorMotor::getMotorTemperature, (value) -> inputs.rightTemperature = value);
+        ifOk(followerMotor, followerMotor::getOutputCurrent, (value) -> inputs.rightCurrentAmps = value);
+        ifOk(followerMotor, followerMotor::getMotorTemperature, (value) -> inputs.rightTemperature = value);
         inputs.setpointMeters = currentTargetMeters;
         inputs.setpointRotations = currentTargetRotations;
         inputs.elevatorHeightMeters = inputs.leftPositionRot * drumRadius * 2.0 * Math.PI;
@@ -128,11 +128,11 @@ public class ElevatorIOSpark implements ElevatorIO {
         inputs.topHallEffectClosed = topHallEffect.get();
 
         if (bottomHallEffect.get()) {
-            elevatorEncoder.setPosition(bottomPoint.get());
+            encoder.setPosition(bottomPoint.get());
         }
 
         if (topHallEffect.get()) {
-            elevatorEncoder.setPosition(topPoint.get());
+            encoder.setPosition(topPoint.get());
         }
     }
 }

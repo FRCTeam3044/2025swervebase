@@ -15,7 +15,7 @@ public class ShoulderConfig {
 
     static {
         leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
-        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(shoulderOneCanId);
+        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId);
 
         softLimitConfig.forwardSoftLimit(forwardSoftLimit);
         softLimitConfig.reverseSoftLimit(reverseSoftLimit);

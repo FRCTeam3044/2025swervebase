@@ -21,9 +21,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ShoulderIOSpark implements ShoulderIO {
-        private final SparkMax shoulderMotorLeft = new SparkMax(shoulderOneCanId, MotorType.kBrushless);
-        private final SparkMax shoulderMotorRight = new SparkMax(shoulderTwoCanId, MotorType.kBrushless);
-        private final AbsoluteEncoder shoulderEncoder = shoulderMotorLeft.getAbsoluteEncoder();
+        private final SparkMax leaderMotor = new SparkMax(leaderCanId, MotorType.kBrushless);
+        private final SparkMax followerMotor = new SparkMax(followerCanId, MotorType.kBrushless);
+        private final AbsoluteEncoder encoder = leaderMotor.getAbsoluteEncoder();
 
         private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity,
                         kMaxAcceleration);
@@ -31,38 +31,38 @@ public class ShoulderIOSpark implements ShoulderIO {
         ArmFeedforward feedforward = new ArmFeedforward(kS, kG, kV);
 
         public ShoulderIOSpark() {
-                tryUntilOk(shoulderMotorLeft, 5, () -> shoulderMotorLeft.configure(ShoulderConfig.leaderConfig,
+                tryUntilOk(leaderMotor, 5, () -> leaderMotor.configure(ShoulderConfig.leaderConfig,
                                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
-                tryUntilOk(shoulderMotorRight, 5, () -> shoulderMotorRight.configure(ShoulderConfig.followerConfig,
+                tryUntilOk(followerMotor, 5, () -> followerMotor.configure(ShoulderConfig.followerConfig,
                                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
         }
 
         @Override
         public void updateInputs(ShoulderIOInputs inputs) {
-                ifOk(shoulderMotorLeft, shoulderEncoder::getPosition, (value) -> inputs.leftShoulderAngleRad = value);
-                ifOk(shoulderMotorLeft, shoulderEncoder::getVelocity,
+                ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leftShoulderAngleRad = value);
+                ifOk(leaderMotor, encoder::getVelocity,
                                 (value) -> inputs.leftShoulderSpeedRadsPerSec = value);
-                ifOk(shoulderMotorLeft, shoulderMotorLeft::getOutputCurrent,
+                ifOk(leaderMotor, leaderMotor::getOutputCurrent,
                                 (value) -> inputs.leftShoulderCurrentAmps = value);
                 ifOk(
-                                shoulderMotorLeft,
-                                new DoubleSupplier[] { shoulderMotorLeft::getAppliedOutput,
-                                                shoulderMotorLeft::getBusVoltage },
+                                leaderMotor,
+                                new DoubleSupplier[] { leaderMotor::getAppliedOutput,
+                                                leaderMotor::getBusVoltage },
                                 (values) -> inputs.leftShoulderAppliedVoltage = values[0] * values[1]);
-                ifOk(shoulderMotorLeft, shoulderMotorLeft::getMotorTemperature,
+                ifOk(leaderMotor, leaderMotor::getMotorTemperature,
                                 (value) -> inputs.leftTemperature = value);
-                ifOk(shoulderMotorRight, shoulderEncoder::getPosition, (value) -> inputs.rightShoulderAngleRad = value);
-                ifOk(shoulderMotorRight, shoulderEncoder::getVelocity,
+                ifOk(followerMotor, encoder::getPosition, (value) -> inputs.rightShoulderAngleRad = value);
+                ifOk(followerMotor, encoder::getVelocity,
                                 (value) -> inputs.rightShoulderSpeedRadsPerSec = value);
-                ifOk(shoulderMotorRight, shoulderMotorRight::getOutputCurrent,
+                ifOk(followerMotor, followerMotor::getOutputCurrent,
                                 (value) -> inputs.rightShoulderCurrentAmps = value);
                 ifOk(
-                                shoulderMotorRight,
-                                new DoubleSupplier[] { shoulderMotorRight::getAppliedOutput,
-                                                shoulderMotorRight::getBusVoltage },
+                                followerMotor,
+                                new DoubleSupplier[] { followerMotor::getAppliedOutput,
+                                                followerMotor::getBusVoltage },
                                 (values) -> inputs.rightShoulderAppliedVoltage = values[0] * values[1]);
-                ifOk(shoulderMotorRight, shoulderMotorRight::getMotorTemperature,
+                ifOk(followerMotor, followerMotor::getMotorTemperature,
                                 (value) -> inputs.rightTemperature = value);
         }
 
@@ -71,10 +71,10 @@ public class ShoulderIOSpark implements ShoulderIO {
                 // TODO Auto-generated method stub
                 double lastSpeed = 0;
                 double lastTime = Timer.getFPGATimestamp();
-                double pidVal = controller.calculate(shoulderEncoder.getPosition(), desiredAngle);
+                double pidVal = controller.calculate(encoder.getPosition(), desiredAngle);
                 double acceleration = (controller.getSetpoint().velocity - lastSpeed)
                                 / (Timer.getFPGATimestamp() - lastTime);
-                shoulderMotorLeft.setVoltage(
+                leaderMotor.setVoltage(
                                 pidVal
                                                 + feedforward.calculate(controller.getSetpoint().velocity,
                                                                 acceleration));
@@ -86,10 +86,10 @@ public class ShoulderIOSpark implements ShoulderIO {
         public void setShoulderAngleSpark(double desiredAngle) {
                 double lastSpeed = 0;
                 double lastTime = Timer.getFPGATimestamp();
-                controller.calculate(shoulderEncoder.getPosition(), desiredAngle);
+                controller.calculate(encoder.getPosition(), desiredAngle);
                 double acceleration = (controller.getSetpoint().velocity - lastSpeed)
                                 / (Timer.getFPGATimestamp() - lastTime);
-                shoulderMotorLeft.getClosedLoopController().setReference(controller.getSetpoint().position,
+                leaderMotor.getClosedLoopController().setReference(controller.getSetpoint().position,
                                 ControlType.kPosition, ClosedLoopSlot.kSlot0,
                                 feedforward.calculate(controller.getSetpoint().velocity, acceleration));
         }
@@ -98,10 +98,10 @@ public class ShoulderIOSpark implements ShoulderIO {
         public void setShoulderAngleMaxMotion(double desiredAngle) {
                 double lastSpeed = 0;
                 double lastTime = Timer.getFPGATimestamp();
-                controller.calculate(shoulderEncoder.getPosition(), desiredAngle);
+                controller.calculate(encoder.getPosition(), desiredAngle);
                 double acceleration = (controller.getSetpoint().velocity - lastSpeed)
                                 / (Timer.getFPGATimestamp() - lastTime);
-                shoulderMotorLeft.getClosedLoopController().setReference(desiredAngle,
+                leaderMotor.getClosedLoopController().setReference(desiredAngle,
                                 ControlType.kMAXMotionPositionControl,
                                 ClosedLoopSlot.kSlot0,
                                 feedforward.calculate(controller.getSetpoint().velocity, acceleration));
@@ -110,11 +110,11 @@ public class ShoulderIOSpark implements ShoulderIO {
         @Override
         public void setShoulderSpeed(double desiredSpeed) {
                 // TODO Auto-generated method stub
-                shoulderMotorLeft.set(desiredSpeed);
+                leaderMotor.set(desiredSpeed);
         }
 
         @Override
         public void setVoltage(double voltage) {
-                shoulderMotorLeft.setVoltage(voltage);
+                leaderMotor.setVoltage(voltage);
         }
 }
