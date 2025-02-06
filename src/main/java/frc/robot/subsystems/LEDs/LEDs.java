@@ -1,10 +1,13 @@
 package frc.robot.subsystems.LEDs;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.ToMorseCode;
 
 public class LEDs extends SubsystemBase {
 
@@ -53,5 +56,10 @@ public class LEDs extends SubsystemBase {
 
     public Command Default() {
         return Commands.run(() -> io.setSpinningColor(Color.kPurple, Color.kYellow));
+    }
+
+    public Command morseCode(String phrase) {
+            return null;
+
     }
 }
