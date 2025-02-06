@@ -16,4 +16,12 @@ public interface EndEffectorIO {
 
     public default void setCoralSpeed(double speed) {
     };
+
+    public default boolean hasCoral() {
+        return false;
+    };
+
+    public default boolean hasAlgae() {
+        return false;
+    };
 }

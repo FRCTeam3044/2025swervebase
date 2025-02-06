@@ -15,23 +15,23 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command setColor(LEDPattern color) {
-        return Commands.run(() -> io.setSolidColor(color), this);
+        return Commands.run(() -> io.setSolidColor(color), this).withName("Set LEDs");
     }
 
-    public Command hasCoral(){
-        //currentPattern = Color.kTeal;
+    public Command hasCoral() {
+        // currentPattern = Color.kTeal;
         return setColor(LEDPattern.solid(Color.kTeal));
     }
 
-    public Command hasAlgea(){
+    public Command hasAlgea() {
         return setColor(LEDPattern.solid(Color.kRed));
     }
 
-    public Command goingToCoralIntake(){
+    public Command goingToCoralIntake() {
         return setColor(LEDPattern.solid(Color.kOrange));
     }
 
-    public Command goingToAlgaeIntake(){
+    public Command goingToAlgaeIntake() {
         return setColor(LEDPattern.solid(Color.kGreen));
     }
 
@@ -43,15 +43,15 @@ public class LEDs extends SubsystemBase {
         return Commands.run(() -> io.setBlinkingColor(color));
     }
 
-    public Command intakingAndScoringCoral(){
+    public Command intakingAndScoringCoral() {
         return setBlinkingColor(Color.kOrange);
     }
 
-    public Command intakingAndScoringAlgae(){
+    public Command intakingAndScoringAlgae() {
         return setBlinkingColor(Color.kGreen);
     }
 
-    public Command Default(){
-        return Commands.run(()-> io.setSpinningColor(Color.kPurple, Color.kYellow));
+    public Command Default() {
+        return Commands.run(() -> io.setSpinningColor(Color.kPurple, Color.kYellow));
     }
 }

@@ -40,16 +40,28 @@ public class ButtonBoardUtil {
     private ButtonInfo levelThree = new ButtonInfo(0, 22);
     private ButtonInfo levelFour = new ButtonInfo(0, 23);
     private ButtonInfo algaeModeToggle = new ButtonInfo(0, 24);
+    private ButtonInfo net = new ButtonInfo(0, 25);
+    private ButtonInfo climbUp = new ButtonInfo(0, 26);
+    private ButtonInfo climbDown = new ButtonInfo(0, 27);
 
     private Pose2d reefPose = null;
     private Pose2d intakePose = null;
-    private Pose2d processorPose = null;
-    private Pose2d algaePose = null;
+    private Pose2d processorPose = AutoTargetUtils.processor;
+    private Pose2d algaeReefPose = null;
 
-    private IntakeStation intakeHeight;
+    private IntakeStation intakeStation;
     private ReefHeight reefLevel;
 
-    private boolean isAlgaeMode = true;
+    private boolean algaeMode = false;
+    private boolean isProcessor = false;
+
+    public boolean getAlgaeMode() {
+        return algaeMode;
+    }
+
+    public boolean getSelectedAlgaeLocation() {
+        return isProcessor;
+    }
 
     public void periodic() {
         if (reefA.isPressed()) {
@@ -90,48 +102,45 @@ public class ButtonBoardUtil {
         }
         if (stationLeft1.isPressed()) {
             intakePose = AutoTargetUtils.leftStation1();
-            intakeHeight = IntakeStation.L1;
+            intakeStation = IntakeStation.L1;
         }
         if (stationLeft2.isPressed()) {
             intakePose = AutoTargetUtils.leftStation2();
-            intakeHeight = IntakeStation.L2;
+            intakeStation = IntakeStation.L2;
         }
         if (stationLeft3.isPressed()) {
             intakePose = AutoTargetUtils.leftStation3();
-            intakeHeight = IntakeStation.L3;
+            intakeStation = IntakeStation.L3;
         }
         if (stationRight1.isPressed()) {
             intakePose = AutoTargetUtils.rightStation1();
-            intakeHeight = IntakeStation.R1;
+            intakeStation = IntakeStation.R1;
         }
         if (stationRight2.isPressed()) {
             intakePose = AutoTargetUtils.rightStation2();
-            intakeHeight = IntakeStation.R2;
+            intakeStation = IntakeStation.R2;
         }
         if (stationRight3.isPressed()) {
             intakePose = AutoTargetUtils.rightStation3();
-            intakeHeight = IntakeStation.R3;
-        }
-        if (processor.isPressed()) {
-            processorPose = AutoTargetUtils.processor();
+            intakeStation = IntakeStation.R3;
         }
         if (reefA.isPressed() || reefB.isPressed()) {
-            algaePose = AutoTargetUtils.algaeA();
+            algaeReefPose = AutoTargetUtils.algaeA();
         }
         if (reefC.isPressed() || reefD.isPressed()) {
-            algaePose = AutoTargetUtils.algaeB();
+            algaeReefPose = AutoTargetUtils.algaeB();
         }
         if (reefE.isPressed() || reefF.isPressed()) {
-            algaePose = AutoTargetUtils.algaeC;
+            algaeReefPose = AutoTargetUtils.algaeC;
         }
         if (reefG.isPressed() || reefH.isPressed()) {
-            algaePose = AutoTargetUtils.algaeD;
+            algaeReefPose = AutoTargetUtils.algaeD;
         }
         if (reefI.isPressed() || reefJ.isPressed()) {
-            algaePose = AutoTargetUtils.algaeE;
+            algaeReefPose = AutoTargetUtils.algaeE;
         }
         if (reefK.isPressed() || reefL.isPressed()) {
-            algaePose = AutoTargetUtils.algaeF;
+            algaeReefPose = AutoTargetUtils.algaeF;
         }
         if (levelOne.isPressed()) {
             reefLevel = ReefHeight.L1;
@@ -146,7 +155,13 @@ public class ButtonBoardUtil {
             reefLevel = ReefHeight.L4;
         }
         if (algaeModeToggle.isPressed()) {
-            isAlgaeMode = !isAlgaeMode;
+            algaeMode = !algaeMode;
+        }
+        if (processor.isPressed()) {
+            isProcessor = true;
+        }
+        if (net.isPressed()) {
+            isProcessor = false;
         }
     }
 
@@ -171,11 +186,11 @@ public class ButtonBoardUtil {
     }
 
     public Pose2d getSelecectedAlgae() {
-        return algaePose;
+        return algaeReefPose;
     }
 
     public ReefHeight getSelectedReefHeight() {
-        return null;
+        return reefLevel;
     }
 
     public Pose2d getSelectedStationPose() {
@@ -183,6 +198,6 @@ public class ButtonBoardUtil {
     }
 
     public IntakeStation getSelectedStation() {
-        return intakeHeight;
+        return intakeStation;
     }
 }

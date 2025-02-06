@@ -75,24 +75,29 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToIntake)
                                 .withChild(intakeGamePiece);
 
-                goToScoringPosition.withChild(goToScoreCoral, () -> false, 0, "Has coral")
-                                .withChild(goToScoreAlgae, () -> false, 1, "Has algae");
+                goToScoringPosition.withChild(goToScoreCoral, () -> endEffector.hasCoral(), 0, "Has coral")
+                                .withChild(goToScoreAlgae, () -> endEffector.hasAlgae(), 1, "Has algae");
 
-                scoreGamePiece.withChild(scoreCoral, () -> false, 0, "Has coral")
-                                .withChild(scoreAlgae, () -> false, 1, "Has algae");
+                scoreGamePiece.withChild(scoreCoral, () -> endEffector
+                                .hasCoral(), 0, "Has coral")
+                                .withChild(scoreAlgae, () -> endEffector.hasAlgae(), 1, "Has algae");
 
-                goToIntake.withChild(goToReefIntake, () -> false, 0, "Reef selected")
-                                .withChild(goToStationIntake, () -> false, 1, "Station selected");
+                goToIntake.withChild(goToReefIntake, buttonBoard::getAlgaeMode, 0, "Reef selected")
+                                .withChild(goToStationIntake, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
 
-                intakeGamePiece.withChild(intakeCoral, () -> false, 0, "Reef selected")
-                                .withChild(intakeAlgae, () -> false, 1, "Station selected");
+                intakeGamePiece.withChild(intakeCoral, buttonBoard::getAlgaeMode, 0, "Reef selected")
+                                .withChild(intakeAlgae, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
 
                 // Specific Algae intake and score
-                goToScoreAlgae.withChild(goToScoreNet, () -> false, 0, "Net selected")
-                                .withChild(goToScoreProcessor, () -> false, 1, "Processor selected");
+                goToScoreAlgae.withChild(goToScoreNet, () -> !buttonBoard
+                                .getSelectedAlgaeLocation(), 0, "Net selected")
+                                .withChild(goToScoreProcessor, buttonBoard::getSelectedAlgaeLocation, 1,
+                                                "Processor selected");
 
-                scoreAlgae.withChild(scoreAlgaeNet, () -> false, 0, "Net selected")
-                                .withChild(scoreAlgaeProcessor, () -> false, 1, "Processor selected");
+                scoreAlgae.withChild(scoreAlgaeNet, () -> !buttonBoard
+                                .getSelectedAlgaeLocation(), 0, "Net selected")
+                                .withChild(scoreAlgaeProcessor,
+                                                buttonBoard::getSelectedAlgaeLocation, 1, "Processor selected");
 
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition, driverController.rightTrigger()::getAsBoolean,
@@ -117,9 +122,9 @@ public class StateMachine extends StateMachineBase {
                                 .withTransition(manual, () -> !driverController.leftTrigger()
                                                 .getAsBoolean(), "Intake button released");
 
-                intakeCoral.withTransition(manual, () -> false, "Has coral");
+                intakeCoral.withTransition(manual, () -> endEffector.hasCoral(), "Has coral");
 
-                intakeAlgae.withTransition(manual, () -> false, "Has algae");
+                intakeAlgae.withTransition(manual, () -> endEffector.hasAlgae(), "Has algae");
 
                 // Auto
                 auto.withModeTransitions(disabled, teleop, auto, test);

@@ -54,6 +54,9 @@
     },
     "transitory": {
       "AdvantageKit": {
+        "Drive": {
+          "open": true
+        },
         "RealOutputs": {
           "FieldSimulation": {
             "open": true
@@ -64,10 +67,8 @@
         "Field": {
           "double[]##v_/SmartDashboard/Field/notes": {
             "open": true
-          },
-          "open": true
-        },
-        "open": true
+          }
+        }
       }
     }
   },

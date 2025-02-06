@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class EndEffector extends SubsystemBase {
     private final EndEffectorIO io;
     private final EndEffectorIOInputsAutoLogged inputs = new EndEffectorIOInputsAutoLogged();
-    
 
     public EndEffector(EndEffectorIO io) {
         this.io = io;
@@ -26,18 +25,22 @@ public class EndEffector extends SubsystemBase {
     }
 
     public Command runIntakeSpeed(DoubleSupplier desiredSpeed) {
-        return Commands.runEnd(() -> io.setCoralSpeed(desiredSpeed.getAsDouble()), () ->  io.setCoralSpeed(0.0));
+        return Commands.runEnd(() -> io.setCoralSpeed(desiredSpeed.getAsDouble()), () -> io.setCoralSpeed(0.0));
     }
 
-    public Command runIntake(){
+    public Command runIntake() {
         return runIntakeSpeed(intakeSpeed::get);
     }
 
-    public Command runIntakeReverse(){
+    public Command runIntakeReverse() {
         return runIntakeSpeed(() -> -intakeSpeed.get());
     }
 
-    public Command runUntilSpike(DoubleSupplier desiredSpeed) {
-        return Commands.none();
+    public boolean hasCoral() {
+        return io.hasCoral();
+    }
+
+    public boolean hasAlgae() {
+        return io.hasAlgae();
     }
 }
