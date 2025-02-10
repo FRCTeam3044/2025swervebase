@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import java.util.List;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.robot.util.AutoTargetUtils.Reef;
@@ -11,26 +13,37 @@ public class ButtonBoardUtil {
     private static GenericHID padTwo;
     private static GenericHID padThree;
 
+    private static boolean isButtonPressed(int board, int button) {
+        return (board == 1 && padOne.getRawButtonPressed(button))
+                || (board == 2 && padTwo.getRawButtonPressed(button))
+                || (board == 3 && padThree.getRawButtonPressed(button));
+    }
+
     public record ButtonInfo(int board, int button) {
         public boolean isPressed() {
-            return (board == 1 && ButtonBoardUtil.padOne.getRawButtonPressed(button))
-                    || (board == 2 && ButtonBoardUtil.padTwo.getRawButtonPressed(button))
-                    || (board == 3 && ButtonBoardUtil.padThree.getRawButtonPressed(button));
+            return isButtonPressed(board, button);
         }
     };
 
-    private ButtonInfo reefA = new ButtonInfo(0, 0);
-    private ButtonInfo reefB = new ButtonInfo(0, 1);
-    private ButtonInfo reefC = new ButtonInfo(0, 2);
-    private ButtonInfo reefD = new ButtonInfo(0, 3);
-    private ButtonInfo reefE = new ButtonInfo(0, 4);
-    private ButtonInfo reefF = new ButtonInfo(0, 5);
-    private ButtonInfo reefG = new ButtonInfo(0, 6);
-    private ButtonInfo reefH = new ButtonInfo(0, 7);
-    private ButtonInfo reefI = new ButtonInfo(0, 8);
-    private ButtonInfo reefJ = new ButtonInfo(0, 9);
-    private ButtonInfo reefK = new ButtonInfo(0, 10);
-    private ButtonInfo reefL = new ButtonInfo(0, 11);
+    public record SelectButtonInfo<T extends Enum<?>>(int board, int button, T value) {
+        public boolean isPressed() {
+            return isButtonPressed(board, button);
+        }
+    };
+
+    private List<SelectButtonInfo<CoralReefLocation>> reefButtons = List.of(
+            new SelectButtonInfo<CoralReefLocation>(0, 0, CoralReefLocation.A),
+            new SelectButtonInfo<CoralReefLocation>(0, 1, CoralReefLocation.B),
+            new SelectButtonInfo<CoralReefLocation>(0, 2, CoralReefLocation.C),
+            new SelectButtonInfo<CoralReefLocation>(0, 3, CoralReefLocation.D),
+            new SelectButtonInfo<CoralReefLocation>(0, 4, CoralReefLocation.E),
+            new SelectButtonInfo<CoralReefLocation>(0, 5, CoralReefLocation.F),
+            new SelectButtonInfo<CoralReefLocation>(0, 6, CoralReefLocation.G),
+            new SelectButtonInfo<CoralReefLocation>(0, 7, CoralReefLocation.H),
+            new SelectButtonInfo<CoralReefLocation>(0, 8, CoralReefLocation.I),
+            new SelectButtonInfo<CoralReefLocation>(0, 9, CoralReefLocation.J),
+            new SelectButtonInfo<CoralReefLocation>(0, 10, CoralReefLocation.K),
+            new SelectButtonInfo<CoralReefLocation>(0, 11, CoralReefLocation.L));
     private ButtonInfo stationRight1 = new ButtonInfo(0, 13);
     private ButtonInfo stationRight2 = new ButtonInfo(0, 14);
     private ButtonInfo stationRight3 = new ButtonInfo(0, 15);
@@ -38,22 +51,23 @@ public class ButtonBoardUtil {
     private ButtonInfo stationLeft2 = new ButtonInfo(0, 17);
     private ButtonInfo stationLeft3 = new ButtonInfo(0, 18);
     private ButtonInfo processor = new ButtonInfo(0, 19);
-    private ButtonInfo levelOne = new ButtonInfo(0, 20);
-    private ButtonInfo levelTwo = new ButtonInfo(0, 21);
-    private ButtonInfo levelThree = new ButtonInfo(0, 22);
-    private ButtonInfo levelFour = new ButtonInfo(0, 23);
+    private List<SelectButtonInfo<CoralLevel>> levels = List.of(new SelectButtonInfo<CoralLevel>(0, 20, CoralLevel.L1),
+            new SelectButtonInfo<CoralLevel>(0, 21, CoralLevel.L2),
+            new SelectButtonInfo<CoralLevel>(0, 22, CoralLevel.L3),
+            new SelectButtonInfo<CoralLevel>(0, 23, CoralLevel.L4));
     private ButtonInfo algaeModeToggle = new ButtonInfo(0, 24);
     private ButtonInfo net = new ButtonInfo(0, 25);
     private ButtonInfo climbUp = new ButtonInfo(0, 26);
     private ButtonInfo climbDown = new ButtonInfo(0, 27);
 
     private Pose2d reefPose = null;
+    private CoralReefLocation reefLocation;
+    private CoralLevel reefLevel;
     private Pose2d intakePose = null;
     private Pose2d processorPose = AutoTargetUtils.processor;
     private Pose2d algaeReefPose = null;
 
     private IntakeStation intakeStation;
-    private CoralLevel reefLevel;
 
     private boolean algaeMode = false;
     private boolean isProcessor = false;
@@ -67,42 +81,20 @@ public class ButtonBoardUtil {
     }
 
     public void periodic() {
-        if (reefA.isPressed()) {
-            reefPose = Reef.coral(CoralReefLocation.A, reefLevel);
+        for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
+            if (button.isPressed()) {
+                reefLocation = button.value();
+                reefPose = Reef.coral(reefLocation, reefLevel);
+            }
         }
-        if (reefB.isPressed()) {
-            reefPose = AutoTargetUtils.reefB();
+        for (SelectButtonInfo<CoralLevel> button : levels) {
+            if (button.isPressed()) {
+                reefLevel = button.value();
+                reefPose = Reef.coral(reefLocation, reefLevel);
+            }
         }
-        if (reefC.isPressed()) {
-            reefPose = AutoTargetUtils.reefC();
-        }
-        if (reefD.isPressed()) {
-            reefPose = AutoTargetUtils.reefD();
-        }
-        if (reefE.isPressed()) {
-            reefPose = AutoTargetUtils.reefE();
-        }
-        if (reefF.isPressed()) {
-            reefPose = AutoTargetUtils.reefF();
-        }
-        if (reefG.isPressed()) {
-            reefPose = AutoTargetUtils.reefG();
-        }
-        if (reefH.isPressed()) {
-            reefPose = AutoTargetUtils.reefH();
-        }
-        if (reefI.isPressed()) {
-            reefPose = AutoTargetUtils.reefI();
-        }
-        if (reefJ.isPressed()) {
-            reefPose = AutoTargetUtils.reefJ();
-        }
-        if (reefK.isPressed()) {
-            reefPose = AutoTargetUtils.reefK();
-        }
-        if (reefL.isPressed()) {
-            reefPose = AutoTargetUtils.reefL();
-        }
+        // TODO: Algae Poses
+
         if (stationLeft1.isPressed()) {
             intakePose = AutoTargetUtils.leftStation1();
             intakeStation = IntakeStation.L1;
@@ -126,36 +118,6 @@ public class ButtonBoardUtil {
         if (stationRight3.isPressed()) {
             intakePose = AutoTargetUtils.rightStation3();
             intakeStation = IntakeStation.R3;
-        }
-        if (reefA.isPressed() || reefB.isPressed()) {
-            algaeReefPose = AutoTargetUtils.algaeA();
-        }
-        if (reefC.isPressed() || reefD.isPressed()) {
-            algaeReefPose = AutoTargetUtils.algaeB();
-        }
-        if (reefE.isPressed() || reefF.isPressed()) {
-            algaeReefPose = AutoTargetUtils.algaeC;
-        }
-        if (reefG.isPressed() || reefH.isPressed()) {
-            algaeReefPose = AutoTargetUtils.algaeD;
-        }
-        if (reefI.isPressed() || reefJ.isPressed()) {
-            algaeReefPose = AutoTargetUtils.algaeE;
-        }
-        if (reefK.isPressed() || reefL.isPressed()) {
-            algaeReefPose = AutoTargetUtils.algaeF;
-        }
-        if (levelOne.isPressed()) {
-            reefLevel = CoralLevel.L1;
-        }
-        if (levelTwo.isPressed()) {
-            reefLevel = CoralLevel.L2;
-        }
-        if (levelThree.isPressed()) {
-            reefLevel = CoralLevel.L3;
-        }
-        if (levelFour.isPressed()) {
-            reefLevel = CoralLevel.L4;
         }
         if (algaeModeToggle.isPressed()) {
             algaeMode = !algaeMode;
@@ -185,7 +147,7 @@ public class ButtonBoardUtil {
         return algaeReefPose;
     }
 
-    public ReefHeight getSelectedReefHeight() {
+    public CoralLevel getSelectedReefHeight() {
         return reefLevel;
     }
 
