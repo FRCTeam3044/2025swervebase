@@ -2,6 +2,9 @@ package frc.robot.util;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import frc.robot.util.AutoTargetUtils.Reef;
+import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
+import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 
 public class ButtonBoardUtil {
     private static GenericHID padOne;
@@ -50,7 +53,7 @@ public class ButtonBoardUtil {
     private Pose2d algaeReefPose = null;
 
     private IntakeStation intakeStation;
-    private ReefHeight reefLevel;
+    private CoralLevel reefLevel;
 
     private boolean algaeMode = false;
     private boolean isProcessor = false;
@@ -65,7 +68,7 @@ public class ButtonBoardUtil {
 
     public void periodic() {
         if (reefA.isPressed()) {
-            reefPose = AutoTargetUtils.reefA();
+            reefPose = Reef.coral(CoralReefLocation.A, reefLevel);
         }
         if (reefB.isPressed()) {
             reefPose = AutoTargetUtils.reefB();
@@ -143,16 +146,16 @@ public class ButtonBoardUtil {
             algaeReefPose = AutoTargetUtils.algaeF;
         }
         if (levelOne.isPressed()) {
-            reefLevel = ReefHeight.L1;
+            reefLevel = CoralLevel.L1;
         }
         if (levelTwo.isPressed()) {
-            reefLevel = ReefHeight.L2;
+            reefLevel = CoralLevel.L2;
         }
         if (levelThree.isPressed()) {
-            reefLevel = ReefHeight.L3;
+            reefLevel = CoralLevel.L3;
         }
         if (levelFour.isPressed()) {
-            reefLevel = ReefHeight.L4;
+            reefLevel = CoralLevel.L4;
         }
         if (algaeModeToggle.isPressed()) {
             algaeMode = !algaeMode;
@@ -163,13 +166,6 @@ public class ButtonBoardUtil {
         if (net.isPressed()) {
             isProcessor = false;
         }
-    }
-
-    public enum ReefHeight {
-        L1,
-        L2,
-        L3,
-        L4,
     }
 
     public enum IntakeStation {
