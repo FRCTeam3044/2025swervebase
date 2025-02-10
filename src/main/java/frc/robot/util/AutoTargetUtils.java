@@ -35,23 +35,35 @@ public class AutoTargetUtils {
         }
 
         public static enum CoralReefLocation {
-            A, B, C, D, E, F, G, H, I, J, K, L
-        }
+            A, B, C, D, E, F, G, H, I, J, K, L;
 
-        public static POIData[] corals = {
-                POIData.create(0, 0, 0, 0), // A
-                POIData.create(0, 0, 0, 0), // B
-                POIData.create(0, 0, 0, 0), // C
-                POIData.create(0, 0, 0, 0), // D
-                POIData.create(0, 0, 0, 0), // E
-                POIData.create(0, 0, 0, 0), // F
-                POIData.create(0, 0, 0, 0), // G
-                POIData.create(0, 0, 0, 0), // H
-                POIData.create(0, 0, 0, 0), // I
-                POIData.create(0, 0, 0, 0), // J
-                POIData.create(0, 0, 0, 0), // K
-                POIData.create(0, 0, 0, 0) // L
-        };
+            public AlgaeReefLocation algae() {
+                return AlgaeReefLocation.values()[ordinal() / 2];
+            }
+
+            private static POIData[] corals = {
+                    POIData.create(0, 0, 0, 0), // A
+                    POIData.create(0, 0, 0, 0), // B
+                    POIData.create(0, 0, 0, 0), // C
+                    POIData.create(0, 0, 0, 0), // D
+                    POIData.create(0, 0, 0, 0), // E
+                    POIData.create(0, 0, 0, 0), // F
+                    POIData.create(0, 0, 0, 0), // G
+                    POIData.create(0, 0, 0, 0), // H
+                    POIData.create(0, 0, 0, 0), // I
+                    POIData.create(0, 0, 0, 0), // J
+                    POIData.create(0, 0, 0, 0), // K
+                    POIData.create(0, 0, 0, 0) // L
+            };
+
+            public POIData data() {
+                return corals[ordinal()];
+            }
+
+            public Pose2d pose() {
+                return AllianceUtil.getPoseForAlliance(corals[ordinal()].pos.asPose2d());
+            }
+        }
 
         public static final ConfigurableParameter<Double> coralL1Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L1 scoring dist");
@@ -80,7 +92,52 @@ public class AutoTargetUtils {
         }
 
         public static Pose2d coral(CoralReefLocation location, CoralLevel level) {
-            return poseFacePOI(corals[location.ordinal()], coralDistance(level), flipped.get());
+            return poseFacePOI(location.data(), coralDistance(level), flipped.get());
+        }
+
+        public static enum AlgaeReefLocation {
+            AB(true), CD(false), EF(true), GH(false), IJ(true), KL(false);
+
+            // False: Between L2-L3
+            // True: Between L3-L4
+            private final boolean upperBranch;
+
+            AlgaeReefLocation(boolean upperBranch) {
+                this.upperBranch = upperBranch;
+            }
+
+            public static POIData[] algaes = {
+                    POIData.create(0, 0, 0, 0), // AB
+                    POIData.create(0, 0, 0, 0), // CD
+                    POIData.create(0, 0, 0, 0), // EF
+                    POIData.create(0, 0, 0, 0), // GH
+                    POIData.create(0, 0, 0, 0), // IJ
+                    POIData.create(0, 0, 0, 0), // KL
+            };
+
+            public POIData data() {
+                return algaes[ordinal()];
+            }
+
+            public Pose2d pose() {
+                return AllianceUtil.getPoseForAlliance(algaes[ordinal()].pos.asPose2d());
+            }
+
+            public boolean upperBranch() {
+                return upperBranch;
+            }
+        }
+
+        public static ConfigurableParameter<Double> algaeLowDistance = new ConfigurableParameter<Double>(1.0,
+                "Algae low scoring dist");
+        public static ConfigurableParameter<Double> algaeHighDistance = new ConfigurableParameter<Double>(1.0,
+                "Algae high scoring dist");
+        public static ConfigurableParameter<Boolean> algaeFlipped = new ConfigurableParameter<Boolean>(false,
+                "Algae Flipped");
+
+        public static Pose2d algae(AlgaeReefLocation location) {
+            return poseFacePOI(location.data(), location.upperBranch() ? algaeHighDistance.get()
+                    : algaeLowDistance.get(), algaeFlipped.get());
         }
     }
 
@@ -183,6 +240,11 @@ public class AutoTargetUtils {
             Translation2d robot = drive.getPose().getTranslation();
             return pose.get().getTranslation().getDistance(robot);
         };
+    }
+
+    public static double robotDistToPose(Drive drive, Pose2d pose) {
+        Translation2d robot = drive.getPose().getTranslation();
+        return pose.getTranslation().getDistance(robot);
     }
 
     public static Pose2d poseFromPOI(POIData poi, double distance, Rotation2d rotation) {

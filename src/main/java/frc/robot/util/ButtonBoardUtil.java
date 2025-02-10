@@ -2,8 +2,11 @@ package frc.robot.util;
 
 import java.util.List;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AutoTargetUtils.Reef;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
@@ -60,12 +63,17 @@ public class ButtonBoardUtil {
     private ButtonInfo climbUp = new ButtonInfo(0, 26);
     private ButtonInfo climbDown = new ButtonInfo(0, 27);
 
-    private Pose2d reefPose = null;
-    private CoralReefLocation reefLocation;
-    private CoralLevel reefLevel;
-    private Pose2d intakePose = null;
+    // Reef
+    private Pose2d coralReefTargetPose = null;
+    private Pose2d coralReefReferencePose = null;
+    private Pose2d algaeReefTargetPose = null;
+    private Pose2d algaeReefReferencePose = null;
+
+    private CoralReefLocation coralReefLocation;
+    private CoralLevel coralReefLevel;
+    private Pose2d intakeStationPose = null;
+    private Pose2d intakeStationReferencePose = null;
     private Pose2d processorPose = AutoTargetUtils.processor;
-    private Pose2d algaeReefPose = null;
 
     private IntakeStation intakeStation;
 
@@ -80,20 +88,22 @@ public class ButtonBoardUtil {
         return isProcessor;
     }
 
-    public void periodic() {
+    public void periodic(Drive drive) {
         for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
             if (button.isPressed()) {
-                reefLocation = button.value();
-                reefPose = Reef.coral(reefLocation, reefLevel);
+                coralReefLocation = button.value();
+                coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
+                coralReefReferencePose = coralReefLocation.pose();
+                algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
+                algaeReefReferencePose = coralReefLocation.algae().pose();
             }
         }
         for (SelectButtonInfo<CoralLevel> button : levels) {
             if (button.isPressed()) {
-                reefLevel = button.value();
-                reefPose = Reef.coral(reefLocation, reefLevel);
+                coralReefLevel = button.value();
+                coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
             }
         }
-        // TODO: Algae Poses
 
         if (stationLeft1.isPressed()) {
             intakePose = AutoTargetUtils.leftStation1();
@@ -128,6 +138,10 @@ public class ButtonBoardUtil {
         if (net.isPressed()) {
             isProcessor = false;
         }
+
+        Logger.recordOutput("Dist to coral reef position",
+                AutoTargetUtils.robotDistToPose(drive, coralReefReferencePose));
+
     }
 
     public enum IntakeStation {
@@ -139,8 +153,8 @@ public class ButtonBoardUtil {
         R3
     }
 
-    public Pose2d getSelectedReef() {
-        return reefPose;
+    public Pose2d getSelectedReefTarget() {
+        return coralReefTargetPose;
     }
 
     public Pose2d getSelecectedAlgae() {
@@ -148,7 +162,7 @@ public class ButtonBoardUtil {
     }
 
     public CoralLevel getSelectedReefHeight() {
-        return reefLevel;
+        return coralReefLevel;
     }
 
     public Pose2d getSelectedStationPose() {
