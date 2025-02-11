@@ -30,7 +30,7 @@ public class ElevatorIOSim implements ElevatorIO {
             2.0,
             true,
             0,
-            0.01,
+            0.001,
             0.0);
 
     private final ProfiledPIDController m_controller = new ProfiledPIDController(
@@ -44,21 +44,16 @@ public class ElevatorIOSim implements ElevatorIO {
     private boolean positionControlMode = false;
 
     // public ElevatorIOSim() {
-    //     tryUntilOk(sparkMax, 5, () -> sparkMax.configure(ElevatorConfigs.leftConfig,
-    //             ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
+    // tryUntilOk(sparkMax, 5, () -> sparkMax.configure(ElevatorConfigs.leftConfig,
+    // ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
-    //}
-
-    public void simulationPeriodic() {
-        m_elevatorSim.setInput(sparkMaxSim.getVelocity() * RobotController.getBatteryVoltage());
-        m_elevatorSim.update(0.020);
-        RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
-    }
+    // }
 
     @Override
     public void updateInputs(ElevatorIOInputs inputs) {
         m_elevatorSim.setInput(sparkMax.getAppliedOutput() * RobotController.getBatteryVoltage());
         m_elevatorSim.update(0.020);
+        RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
 
         // Iterate the elevator and arm SPARK simulations
         sparkMaxSim.iterate(

@@ -64,7 +64,8 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command elevatorMove(DoubleSupplier speed) {
-        return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0));
+        return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0))
+                .withName("Elevator manual move");
     }
 
     public Command toL1(DoubleSupplier robotDistance) {
@@ -91,5 +92,13 @@ public class Elevator extends SubsystemBase {
         double heightForDist = ((desiredLevel.farHeight - desiredLevel.closeHeight)
                 / (desiredLevel.farDist - desiredLevel.closeDist)) * (robotDist - desiredLevel.closeHeight);
         return heightForDist;
+    }
+
+    public ElevatorIOInputsAutoLogged getInputs() {
+        return inputs;
+    }
+
+    public double getElevatorHeight() {
+        return inputs.elevatorHeightMeters;
     }
 }

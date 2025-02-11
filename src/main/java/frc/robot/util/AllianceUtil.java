@@ -41,24 +41,28 @@ public class AllianceUtil {
     }
 
     public static AllianceColor getAlliance() {
+        if (alliance == null) {
+            return AllianceColor.UNKNOWN;
+        }
         return alliance;
     }
 
     // Mirrored
     // private static final Pose2d mapBluePoseToRed(Pose2d bluePose) {
-    //     return new Pose2d(
-    //             DriveConstants.pathfinder.map.fieldx - bluePose.getX(),
-    //             bluePose.getY(),
-    //             new Rotation2d(-(bluePose.getRotation().getRadians() - (Math.PI / 2)) + (Math.PI / 2)));
+    // return new Pose2d(
+    // DriveConstants.pathfinder.map.fieldx - bluePose.getX(),
+    // bluePose.getY(),
+    // new Rotation2d(-(bluePose.getRotation().getRadians() - (Math.PI / 2)) +
+    // (Math.PI / 2)));
     // }
 
     // Rotated
     public static final Pose2d mapBluePoseToRed(Pose2d bluePose) {
-    return new Pose2d(
-    DriveConstants.pathfinder.map.fieldx - bluePose.getX(),
-    DriveConstants.pathfinder.map.fieldy - bluePose.getY(),
-    new Rotation2d((bluePose.getRotation().getRadians() + Math.PI) % (2 *
-    Math.PI)));
+        return new Pose2d(
+                DriveConstants.pathfinder.map.fieldx - bluePose.getX(),
+                DriveConstants.pathfinder.map.fieldy - bluePose.getY(),
+                new Rotation2d((bluePose.getRotation().getRadians() + Math.PI) % (2 *
+                        Math.PI)));
     }
 
     public static Pose2d getPoseForAlliance(Pose2d bluePose) {

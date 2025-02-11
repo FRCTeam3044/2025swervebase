@@ -15,13 +15,19 @@ package frc.robot;
 
 import static frc.robot.subsystems.vision.VisionConstants.*;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -46,6 +52,7 @@ import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOSpark;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.subsystems.shoulder.ShoulderIO;
+import frc.robot.subsystems.shoulder.ShoulderIOSim;
 import frc.robot.subsystems.shoulder.ShoulderIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
@@ -88,6 +95,11 @@ public class RobotContainer {
         public final StateMachine stateMachine;
 
         public static Field2d fieldSim = new Field2d();
+
+        private final Mechanism2d mech;
+        private final MechanismRoot2d root;
+        private final MechanismLigament2d elevatorSim;
+        private final MechanismLigament2d shoulderSim;
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -134,7 +146,7 @@ public class RobotContainer {
                                                                 driveSimulation::getSimulatedDriveTrainPose));
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
                                 elevator = new Elevator(new ElevatorIOSim());
-                                shoulder = new Shoulder(new ShoulderIOSpark());
+                                shoulder = new Shoulder(new ShoulderIOSim());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoardUtil();
                                 LEDs = new LEDs(new LEDsIORio());
@@ -212,6 +224,14 @@ public class RobotContainer {
 
                 // Configure the button bindings
                 configureButtonBindings();
+
+                mech = new Mechanism2d(3, 3);
+                root = mech.getRoot("elevator", 2, 0);
+                elevatorSim = root
+                                .append(new MechanismLigament2d("elevator", elevator.getElevatorHeight(), 90));
+                shoulderSim = elevatorSim
+                                .append(new MechanismLigament2d("shoulder", 0.5, shoulder.getShoulderAngle(), 6.0,
+                                                new Color8Bit(Color.kPurple)));
         }
 
         /**
@@ -254,5 +274,11 @@ public class RobotContainer {
                                                         new Rotation2d());
                                 }).toArray(Pose2d[]::new));
                 SmartDashboard.putData("Field", fieldSim);
+        }
+
+        public void updateMechanism() {
+                elevatorSim.setLength(elevator.getElevatorHeight());
+                shoulderSim.setAngle(shoulder.getShoulderAngle());
+                SmartDashboard.putData("Mech2d", mech);
         }
 }

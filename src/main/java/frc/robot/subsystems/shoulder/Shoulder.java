@@ -37,19 +37,19 @@ public class Shoulder extends SubsystemBase {
         this.io = io;
 
         sysId = new SysIdRoutine(
-        new SysIdRoutine.Config(
-            null,
-            null,
-            null,
-            (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
-        new SysIdRoutine.Mechanism(
-            (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+                new SysIdRoutine.Config(
+                        null,
+                        null,
+                        null,
+                        (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
+                new SysIdRoutine.Mechanism(
+                        (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return run(() -> io.setVoltage(0.0))
-            .withTimeout(1.0)
-            .andThen(sysId.quasistatic(direction));
+                .withTimeout(1.0)
+                .andThen(sysId.quasistatic(direction));
     }
 
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
@@ -63,7 +63,8 @@ public class Shoulder extends SubsystemBase {
     }
 
     public Command manualPivot(DoubleSupplier desiredSpeed) {
-        return Commands.runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0));
+        return Commands.runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0))
+                .withName("Shoulder Manual Pivot");
     }
 
     public Command scoreL1(DoubleSupplier robotDistance) {
@@ -74,7 +75,8 @@ public class Shoulder extends SubsystemBase {
 
     public Command scoreL2AndL3(DoubleSupplier robotDistance) {
         return Commands
-                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L23)), this)
+                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L23)),
+                        this)
                 .withName("Set Shoulder to L1 Scoring position");
     }
 
@@ -90,4 +92,7 @@ public class Shoulder extends SubsystemBase {
                 + desiredLevel.closeAngle;
     }
 
+    public double getShoulderAngle() {
+        return inputs.leftShoulderAngleRad;
+    }
 }

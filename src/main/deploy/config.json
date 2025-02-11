@@ -30,6 +30,10 @@
             "comment": "Auto-Generated",
             "value": "4.8"
         },
+        "Current threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
@@ -70,6 +74,10 @@
             "comment": "Auto-Generated",
             "value": "4.8"
         },
+        "Current threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
@@ -108,6 +116,10 @@
         "Pathfinding Max Speed": {
             "comment": "Auto-Generated",
             "value": "4.8"
+        },
+        "Current threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
         },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
