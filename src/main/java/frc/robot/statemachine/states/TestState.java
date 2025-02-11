@@ -20,9 +20,10 @@ public class TestState extends State {
                 SmartXboxController testController = new SmartXboxController(controller, loop);
 
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(controller.getRightY(), 0.01);
+                DoubleSupplier leftY = () -> -MathUtil.applyDeadband(controller.getLeftY(), 0.05);
 
                 startWhenActive(elevator.elevatorMove(rightY));
-                startWhenActive(shoulder.manualPivot(controller::getLeftY));
+                startWhenActive(shoulder.manualPivot(leftY));
                 controller.a().onTrue(endEffector.runIntake());
                 controller.b().onTrue(endEffector.runIntakeReverse());
         }

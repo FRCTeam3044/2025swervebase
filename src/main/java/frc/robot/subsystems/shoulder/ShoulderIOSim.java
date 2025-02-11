@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class ShoulderIOSim implements ShoulderIO {
-    private final SparkMax sparkMax = new SparkMax(52, MotorType.kBrushless);
-    private final AbsoluteEncoder shoulderEncoder = sparkMax.getAbsoluteEncoder();
+    private SparkMax sparkMax = new SparkMax(52, MotorType.kBrushless);
+    private AbsoluteEncoder shoulderEncoder = sparkMax.getAbsoluteEncoder();
 
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity,
             kMaxAcceleration);
@@ -28,7 +28,7 @@ public class ShoulderIOSim implements ShoulderIO {
 
     private DCMotor gearBox = DCMotor.getNEO(2);
     private SparkMaxSim sparkMaxSim = new SparkMaxSim(sparkMax, gearBox);
-    SingleJointedArmSim shoulderSim = new SingleJointedArmSim(gearBox, 48.0, 1.0, 1.0, 0.0, 0.0, false, 0.0, 0, 0);
+    SingleJointedArmSim shoulderSim = new SingleJointedArmSim(gearBox, 48.0, 1.0, 1.0, -180.0, 180.0, false, 0.0, 0, 0);
 
     @Override
     public void updateInputs(ShoulderIOInputs inputs) {
