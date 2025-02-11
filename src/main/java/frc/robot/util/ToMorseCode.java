@@ -12,7 +12,7 @@ public class ToMorseCode {
         }
     }
 
-    public ArrayList<MorseCode> toMorseCode(String phrase) {
+    public static ArrayList<MorseCode> toMorseCode(String phrase) {
         phrase.toUpperCase();
         ArrayList<MorseCode> arr = new ArrayList<>();
         for(int i = 0; i < phrase.length(); i++) {
