@@ -11,6 +11,6 @@ public class GoToScoreCoral extends State {
         super(stateMachine);
 
         // TODO: change to 1-6 sides of reef
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getSelectedReefTarget(), null));
+        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getCoralReefTarget(), null));
     }
 }

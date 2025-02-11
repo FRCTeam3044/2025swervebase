@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import java.util.List;
+import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -69,6 +70,15 @@ public class ButtonBoardUtil {
     private ButtonInfo climbDown = new ButtonInfo(0, 27);
 
     // Reef
+    private Pose2d coralReefTargetPose = null;
+    private Pose2d coralReefReferencePose = null;
+    private Pose2d algaeReefTargetPose = null;
+    private Pose2d algaeReefReferencePose = null;
+
+    private CoralReefLocation coralReefLocation;
+    private CoralLevel coralReefLevel;
+    private Pose2d intakeStationPose = null;
+    private Pose2d intakeStationReferencePose = null;
 
     private IntakeStation intakeStation;
 
@@ -123,6 +133,40 @@ public class ButtonBoardUtil {
                 AutoTargetUtils.robotDistToPose(drive, algaeReefReferencePose));
         Logger.recordOutput("Dist to intake station position",
                 AutoTargetUtils.robotDistToPose(drive, intakeStationReferencePose));
+        Logger.recordOutput("ButtonBoard/AlgaeMode", algaeMode);
+        Logger.recordOutput("ButtonBoard/Processor", isProcessor);
+        Logger.recordOutput("ButtonBoard/CoralReefLocation", coralReefLocation);
+        Logger.recordOutput("ButtonBoard/CoralReefLevel", coralReefLevel);
+        Logger.recordOutput("ButtonBoard/IntakeStation", intakeStation);
+        Logger.recordOutput("ButtonBoard/ClimbUp", climbUp.isPressed());
+        Logger.recordOutput("ButtonBoard/ClimbDown", climbDown.isPressed());
+    }
 
+    public Pose2d getCoralReefTarget() {
+        return coralReefTargetPose;
+    }
+
+    public DoubleSupplier getCoralReefTargetDist(Drive drive) {
+        return () -> AutoTargetUtils.robotDistToPose(drive, coralReefReferencePose);
+    }
+
+    public Pose2d getAlgaeReefTarget() {
+        return algaeReefTargetPose;
+    }
+
+    public DoubleSupplier getAlgaeReefTargetDist(Drive drive) {
+        return () -> AutoTargetUtils.robotDistToPose(drive, algaeReefReferencePose);
+    }
+
+    public Pose2d getIntakeStationTarget() {
+        return intakeStationPose;
+    }
+
+    public DoubleSupplier getIntakeStationTargetDist(Drive drive) {
+        return () -> AutoTargetUtils.robotDistToPose(drive, intakeStationReferencePose);
+    }
+
+    public boolean isProcessor() {
+        return isProcessor;
     }
 }

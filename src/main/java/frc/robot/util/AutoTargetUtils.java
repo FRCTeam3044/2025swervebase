@@ -54,18 +54,18 @@ public class AutoTargetUtils {
             }
 
             private static POIData[] corals = {
-                    POIData.create(0, 0, 0, 0), // A
-                    POIData.create(0, 0, 0, 0), // B
-                    POIData.create(0, 0, 0, 0), // C
-                    POIData.create(0, 0, 0, 0), // D
-                    POIData.create(0, 0, 0, 0), // E
-                    POIData.create(0, 0, 0, 0), // F
-                    POIData.create(0, 0, 0, 0), // G
-                    POIData.create(0, 0, 0, 0), // H
-                    POIData.create(0, 0, 0, 0), // I
-                    POIData.create(0, 0, 0, 0), // J
-                    POIData.create(0, 0, 0, 0), // K
-                    POIData.create(0, 0, 0, 0) // L
+                    POIData.create(3.69782, 4.19023, 2.76247, 4.19023), // A
+                    POIData.create(3.69668, 3.86161, 2.77582, 3.86161), // B
+                    POIData.create(3.94533, 3.43292, 3.54684, 2.74270), // C
+                    POIData.create(4.22935, 3.26762, 3.61189, 2.19815), // D
+                    POIData.create(4.72494, 3.26861, 5.25618, 2.34847), // E
+                    POIData.create(5.01010, 3.43193, 5.53546, 2.52199), // F
+                    POIData.create(5.25704, 3.86161, 6.17743, 3.86161), // G
+                    POIData.create(5.25704, 4.19023, 3.86161, 4.19023), // H
+                    POIData.create(5.00953, 4.61893, 5.57792, 5.60341), // I
+                    POIData.create(4.72551, 4.78423, 5.28143, 5.74711), // J
+                    POIData.create(4.22992, 4.78324, 3.79370, 5.53879), // K
+                    POIData.create(3.94456, 4.61992, 3.41521, 5.53713) // L
             };
 
             public POIData data() {
@@ -200,7 +200,4 @@ public class AutoTargetUtils {
         Translation2d robot = drive.getPose().getTranslation();
         return pose.getTranslation().getDistance(robot);
     }
-
-    // Current Selections
-
 }

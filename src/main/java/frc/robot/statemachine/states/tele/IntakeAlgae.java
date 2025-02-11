@@ -14,7 +14,7 @@ public class IntakeAlgae extends State {
             EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
 
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getSelectedReefTarget(), null));
+        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getAlgaeReefTarget(), null));
         startWhenActive(endEffector.runIntake());
         startWhenActive(LEDs.intakingAndScoringAlgae());
     }

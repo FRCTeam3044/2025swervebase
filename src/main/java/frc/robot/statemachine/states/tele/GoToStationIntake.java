@@ -7,12 +7,12 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.ButtonBoardUtil;
 
-public class GoToStationIntake extends State{
+public class GoToStationIntake extends State {
     public GoToStationIntake(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, LEDs LEDs) {
         super(stateMachine);
 
         // TODO: rotation
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getSelectedStationPose(), null));
+        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getIntakeStationTarget(), null));
         startWhenActive(LEDs.goingToCoralIntake());
     }
 }

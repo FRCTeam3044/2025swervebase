@@ -14,7 +14,7 @@ public class ScoreAlgaeProcessor extends State {
         super(stateMachine);
 
         // TODO: change to processor
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getSelectedReefTarget(), null));
+        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getCoralReefTarget(), null));
         startWhenActive(endEffector.runIntakeReverse());
         startWhenActive(LEDs.intakingAndScoringAlgae());
     }

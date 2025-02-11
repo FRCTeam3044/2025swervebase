@@ -13,7 +13,7 @@ public class ScoreCoral extends State {
             LEDs LEDs) {
         super(stateMachine);
 
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getSelectedReefTarget(), null));
+        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getCoralReefTarget(), null));
         startWhenActive(endEffector.runIntakeReverse());
         startWhenActive(LEDs.intakingAndScoringCoral());
     }

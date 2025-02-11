@@ -12,7 +12,7 @@ public class GoToReefIntake extends State {
         super(stateMachine);
 
         // TODO: rotation
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getSelectedReefTarget(), null));
+        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getAlgaeReefTarget(), null));
         startWhenActive(LEDs.goingToAlgaeIntake());
     }
 }
