@@ -20,6 +20,18 @@ public class AutoTargetUtils {
         public static POIData create(double pos1x, double pos1y, double pos2x, double pos2y) {
             return create(new Vertex(pos1x, pos1y), new Vertex(pos2x, pos2y));
         }
+
+        public Pose2d poseWithRot(double distance, Rotation2d rotation) {
+            Vertex robotPos = pos().moveByVector(normal().scale(distance));
+            return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
+        }
+
+        public Pose2d poseFacing(double distance, boolean flipped) {
+            Vertex robotPos = pos().moveByVector(normal().scale(distance));
+            double sign = flipped ? 1 : -1;
+            Rotation2d rotation = Rotation2d.fromRadians(Math.atan2(sign * normal().y, sign * normal().x));
+            return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
+        }
     }
 
     public static class Reef {
@@ -92,7 +104,7 @@ public class AutoTargetUtils {
         }
 
         public static Pose2d coral(CoralReefLocation location, CoralLevel level) {
-            return poseFacePOI(location.data(), coralDistance(level), flipped.get());
+            return location.data().poseFacing(coralDistance(level), flipped.get());
         }
 
         public static enum AlgaeReefLocation {
@@ -136,103 +148,45 @@ public class AutoTargetUtils {
                 "Algae Flipped");
 
         public static Pose2d algae(AlgaeReefLocation location) {
-            return poseFacePOI(location.data(), location.upperBranch() ? algaeHighDistance.get()
-                    : algaeLowDistance.get(), algaeFlipped.get());
+            return location.data().poseFacing(location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
+                    algaeFlipped.get());
         }
     }
 
-    public static Pose2d rightStation1 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d rightStation1Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d rightStation2 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d rightStation2Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d rightStation3 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d rightStation3Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d reftStation1 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d reftStation1Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d reftStation2 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d reftStation2Ref = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d reftStation3 = new Pose2d(0, 0, new Rotation2d());
-    public static Pose2d reftStation3Ref = new Pose2d(0, 0, new Rotation2d());
+    public static class IntakeStations {
+        public static enum IntakeStation {
+            LeftOne, LeftTwo, LeftThree, RightOne, RightTwo, RightThree;
+
+            private static POIData[] stations = {
+                    POIData.create(0, 0, 0, 0), // LeftOne
+                    POIData.create(0, 0, 0, 0), // LeftTwo
+                    POIData.create(0, 0, 0, 0), // LeftThree
+                    POIData.create(0, 0, 0, 0), // RightOne
+                    POIData.create(0, 0, 0, 0), // RightTwo
+                    POIData.create(0, 0, 0, 0), // RightThree
+            };
+
+            public POIData data() {
+                return stations[ordinal()];
+            }
+
+            public Pose2d pose() {
+                return AllianceUtil.getPoseForAlliance(stations[ordinal()].pos.asPose2d());
+            }
+        }
+
+        public static ConfigurableParameter<Double> intakeStationDistance = new ConfigurableParameter<Double>(1.0,
+                "Intake station dist");
+
+        public static Pose2d intakeStation(IntakeStation station) {
+            return station.data().poseWithRot(intakeStationDistance.get(), new Rotation2d());
+        }
+    }
+
     public static Pose2d processor = new Pose2d(0, 0, new Rotation2d());
-
-    public static Pose2d rightStation1() {
-        return AllianceUtil.getPoseForAlliance(rightStation1);
-    }
-
-    public static Pose2d rightStation1Ref() {
-        return AllianceUtil.getPoseForAlliance(rightStation1Ref);
-    }
-
-    public static Pose2d rightStation2() {
-        return AllianceUtil.getPoseForAlliance(rightStation2);
-    }
-
-    public static Pose2d rightStation2Ref() {
-        return AllianceUtil.getPoseForAlliance(rightStation2Ref);
-    }
-
-    public static Pose2d rightStation3() {
-        return AllianceUtil.getPoseForAlliance(rightStation3);
-    }
-
-    public static Pose2d rightStation3Ref() {
-        return AllianceUtil.getPoseForAlliance(rightStation3Ref);
-    }
-
-    public static Pose2d leftStation1() {
-        return AllianceUtil.getPoseForAlliance(reftStation1);
-    }
-
-    public static Pose2d leftStation1Ref() {
-        return AllianceUtil.getPoseForAlliance(reftStation1Ref);
-    }
-
-    public static Pose2d leftStation2() {
-        return AllianceUtil.getPoseForAlliance(reftStation2);
-    }
-
-    public static Pose2d leftStation2Ref() {
-        return AllianceUtil.getPoseForAlliance(reftStation2Ref);
-    }
-
-    public static Pose2d leftStation3() {
-        return AllianceUtil.getPoseForAlliance(reftStation3);
-    }
-
-    public static Pose2d leftStation3Ref() {
-        return AllianceUtil.getPoseForAlliance(reftStation3Ref);
-    }
 
     public static Pose2d processor() {
         return AllianceUtil.getPoseForAlliance(processor);
-    }
-
-    public static DoubleSupplier robotDistToReef(Drive drive) {
-        return robotDistToPose(drive, Reef::reef);
-    }
-
-    public static DoubleSupplier robotDistToLeftStation1(Drive drive) {
-        return robotDistToPose(drive, AutoTargetUtils::leftStation1);
-    }
-
-    public static DoubleSupplier robotDistToLeftStation2(Drive drive) {
-        return robotDistToPose(drive, AutoTargetUtils::leftStation2);
-    }
-
-    public static DoubleSupplier robotDistToLeftStation3(Drive drive) {
-        return robotDistToPose(drive, AutoTargetUtils::leftStation3);
-    }
-
-    public static DoubleSupplier robotDistToRightStation1(Drive drive) {
-        return robotDistToPose(drive, AutoTargetUtils::rightStation1);
-    }
-
-    public static DoubleSupplier robotDistToRightStation2(Drive drive) {
-        return robotDistToPose(drive, AutoTargetUtils::rightStation2);
-    }
-
-    public static DoubleSupplier robotDistToRightStation3(Drive drive) {
-        return robotDistToPose(drive, AutoTargetUtils::rightStation3);
     }
 
     public static DoubleSupplier robotDistToPose(Drive drive, Supplier<Pose2d> pose) {
@@ -247,15 +201,6 @@ public class AutoTargetUtils {
         return pose.getTranslation().getDistance(robot);
     }
 
-    public static Pose2d poseFromPOI(POIData poi, double distance, Rotation2d rotation) {
-        Vertex robotPos = poi.pos().moveByVector(poi.normal().scale(distance));
-        return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
-    }
+    // Current Selections
 
-    public static Pose2d poseFacePOI(POIData poi, double distance, boolean flipped) {
-        Vertex robotPos = poi.pos().moveByVector(poi.normal().scale(distance));
-        double sign = flipped ? 1 : -1;
-        Rotation2d rotation = Rotation2d.fromRadians(Math.atan2(sign * poi.normal().y, sign * poi.normal().x));
-        return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
-    }
 }
