@@ -4,11 +4,11 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Coral proximity distance": {
-            "comment": "Auto-Generated",
-            "value": "15.0"
-        },
         "Pathfinding Y Controller/I": "0.0",
+        "Algae low scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
@@ -21,7 +21,40 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Algae Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "Pathfinding Y Controller/D": "0.0",
+        "Pathfinding Theta Controller/D": "0.0",
+        "Coral L4 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral L3 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral proximity distance": {
+            "comment": "Auto-Generated",
+            "value": "15.0"
+        },
+        "Coral L2 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral L1 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
+        "Algae high scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Drive Speed (m/s)": {
             "comment": "Auto-Generated",
             "value": "4.8"
@@ -36,23 +69,22 @@
         },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
-        "Pathfinding Theta Controller/D": "0.0",
         "elevator/topPoint": {
             "comment": "Auto-Generated",
             "value": "1.0"
         }
     },
-    "mode": "competition",
+    "mode": "simulation",
     "simulation": {
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Coral proximity distance": {
-            "comment": "Auto-Generated",
-            "value": "15.0"
-        },
         "Pathfinding Y Controller/I": "0.0",
+        "Algae low scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
@@ -65,7 +97,40 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Algae Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "Pathfinding Y Controller/D": "0.0",
+        "Pathfinding Theta Controller/D": "0.0",
+        "Coral L4 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral L3 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral proximity distance": {
+            "comment": "Auto-Generated",
+            "value": "15.0"
+        },
+        "Coral L2 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral L1 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "7"
+        },
+        "Coral Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
+        "Algae high scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Drive Speed (m/s)": {
             "comment": "Auto-Generated",
             "value": "4.8"
@@ -80,7 +145,6 @@
         },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
-        "Pathfinding Theta Controller/D": "0.0",
         "elevator/topPoint": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -91,11 +155,11 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Coral proximity distance": {
-            "comment": "Auto-Generated",
-            "value": "15.0"
-        },
         "Pathfinding Y Controller/I": "0.0",
+        "Algae low scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
@@ -108,7 +172,40 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Algae Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "Pathfinding Y Controller/D": "0.0",
+        "Pathfinding Theta Controller/D": "0.0",
+        "Coral L4 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral L3 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral proximity distance": {
+            "comment": "Auto-Generated",
+            "value": "15.0"
+        },
+        "Coral L2 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral L1 scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
+        "Coral Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
+        "Algae high scoring dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Drive Speed (m/s)": {
             "comment": "Auto-Generated",
             "value": "44"
@@ -123,7 +220,6 @@
         },
         "Pathfinding Y Controller/P": "1.0",
         "Pathfinding X Controller/P": "1.0",
-        "Pathfinding Theta Controller/D": "0.0",
         "elevator/topPoint": {
             "comment": "Auto-Generated",
             "value": "1.0"

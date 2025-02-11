@@ -61,7 +61,7 @@ public class AutoTargetUtils {
                     POIData.create(4.72494, 3.26861, 5.25618, 2.34847), // E
                     POIData.create(5.01010, 3.43193, 5.53546, 2.52199), // F
                     POIData.create(5.25704, 3.86161, 6.17743, 3.86161), // G
-                    POIData.create(5.25704, 4.19023, 3.86161, 4.19023), // H
+                    POIData.create(5.25704, 4.19023, 6.17743, 4.19023), // H
                     POIData.create(5.00953, 4.61893, 5.57792, 5.60341), // I
                     POIData.create(4.72551, 4.78423, 5.28143, 5.74711), // J
                     POIData.create(4.22992, 4.78324, 3.79370, 5.53879), // K
