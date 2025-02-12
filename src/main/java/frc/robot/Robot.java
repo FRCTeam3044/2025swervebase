@@ -107,6 +107,7 @@ public class Robot extends LoggedRobot {
     // Switch thread to high priority to improve loop timing
     Threads.setCurrentThreadPriority(true, 99);
 
+    robotContainer.buttonBoard.periodic(robotContainer.drive);
     robotContainer.stateMachine.periodic();
 
     // Runs the Scheduler. This is responsible for polling buttons, adding

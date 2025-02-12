@@ -26,6 +26,14 @@
             "value": "false"
         },
         "Pathfinding Y Controller/D": "0.0",
+        "Processor Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
+        "Processor dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Theta Controller/D": "0.0",
         "Coral L4 scoring dist": {
             "comment": "Auto-Generated",
@@ -102,6 +110,14 @@
             "value": "false"
         },
         "Pathfinding Y Controller/D": "0.0",
+        "Processor Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
+        "Processor dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Theta Controller/D": "0.0",
         "Coral L4 scoring dist": {
             "comment": "Auto-Generated",
@@ -121,7 +137,7 @@
         },
         "Coral L1 scoring dist": {
             "comment": "Auto-Generated",
-            "value": "7"
+            "value": "0.6"
         },
         "Coral Flipped": {
             "comment": "Auto-Generated",
@@ -177,6 +193,14 @@
             "value": "false"
         },
         "Pathfinding Y Controller/D": "0.0",
+        "Processor Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
+        "Processor dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Pathfinding Theta Controller/D": "0.0",
         "Coral L4 scoring dist": {
             "comment": "Auto-Generated",

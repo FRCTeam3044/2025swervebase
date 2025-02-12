@@ -77,15 +77,15 @@ public class AutoTargetUtils {
             }
         }
 
-        public static final ConfigurableParameter<Double> coralL1Distance = new ConfigurableParameter<Double>(1.0,
+        private static final ConfigurableParameter<Double> coralL1Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L1 scoring dist");
-        public static final ConfigurableParameter<Double> coralL2Distance = new ConfigurableParameter<Double>(1.0,
+        private static final ConfigurableParameter<Double> coralL2Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L2 scoring dist");
-        public static final ConfigurableParameter<Double> coralL3Distance = new ConfigurableParameter<Double>(1.0,
+        private static final ConfigurableParameter<Double> coralL3Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L3 scoring dist");
-        public static final ConfigurableParameter<Double> coralL4Distance = new ConfigurableParameter<Double>(1.0,
+        private static final ConfigurableParameter<Double> coralL4Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L4 scoring dist");
-        public static final ConfigurableParameter<Boolean> flipped = new ConfigurableParameter<Boolean>(false,
+        private static final ConfigurableParameter<Boolean> flipped = new ConfigurableParameter<Boolean>(false,
                 "Coral Flipped");
 
         public static double coralDistance(CoralLevel level) {
@@ -175,7 +175,7 @@ public class AutoTargetUtils {
             }
         }
 
-        public static ConfigurableParameter<Double> intakeStationDistance = new ConfigurableParameter<Double>(1.0,
+        private static ConfigurableParameter<Double> intakeStationDistance = new ConfigurableParameter<Double>(1.0,
                 "Intake station dist");
 
         public static Pose2d intakeStation(IntakeStation station) {
@@ -183,10 +183,14 @@ public class AutoTargetUtils {
         }
     }
 
-    public static Pose2d processor = new Pose2d(0, 0, new Rotation2d());
+    private static POIData processor = POIData.create(0, 0, 0, 0);
+    private static ConfigurableParameter<Double> processorDistance = new ConfigurableParameter<Double>(1.0,
+            "Processor dist");
+    private static ConfigurableParameter<Boolean> processorFlipped = new ConfigurableParameter<Boolean>(false,
+            "Processor Flipped");
 
     public static Pose2d processor() {
-        return AllianceUtil.getPoseForAlliance(processor);
+        return processor.poseFacing(processorDistance.get(), processorFlipped.get());
     }
 
     public static DoubleSupplier robotDistToPose(Drive drive, Supplier<Pose2d> pose) {
