@@ -1,5 +1,6 @@
 package frc.robot.statemachine.states.tele;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.drive.Drive;
@@ -11,6 +12,8 @@ public class GoToScoreCoral extends State {
         super(stateMachine);
 
         // TODO: change to 1-6 sides of reef
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getCoralReefTarget(), null));
+        startWhenActive(Commands
+                .deferredProxy(() -> DriveCommands.goToPointDesiredRot(drive, buttonBoard.getCoralReefTarget(),
+                        buttonBoard.getCoralReefTarget()::getRotation)));
     }
 }
