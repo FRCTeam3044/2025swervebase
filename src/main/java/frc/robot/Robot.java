@@ -13,12 +13,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.AllianceUtil;
+import frc.robot.util.AutoTargetUtils.Reef;
+import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
+import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import me.nabdev.oxconfig.OxConfig;
+
+import java.util.ArrayList;
+
 import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -100,6 +107,7 @@ public class Robot extends LoggedRobot {
     // Switch thread to high priority to improve loop timing
     Threads.setCurrentThreadPriority(true, 99);
 
+    robotContainer.buttonBoard.periodic(robotContainer.drive);
     robotContainer.stateMachine.periodic();
 
     // Runs the Scheduler. This is responsible for polling buttons, adding
@@ -121,6 +129,15 @@ public class Robot extends LoggedRobot {
     // PathfindingDebugUtils.drawLines("Field Map Inflated",
     // DriveConstants.pathfinder.visualizeEdges(),
     // DriveConstants.pathfinder.visualizeInflatedVertices());
+    ArrayList<Double> distances = new ArrayList<>();
+    for (CoralReefLocation location : Reef.CoralReefLocation.values()) {
+      Pose2d pose = Reef.coral(location, CoralLevel.L1);
+      distances.add(pose.getX());
+      distances.add(pose.getY());
+      distances.add(pose.getRotation().getDegrees());
+    }
+    double[] dist = distances.stream().mapToDouble(Double::doubleValue).toArray();
+    SmartDashboard.putNumberArray("Coral Reef Locations", dist);
   }
 
   /** This function is called once when the robot is disabled. */

@@ -6,11 +6,11 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.ButtonBoardUtil;
 
-public class GoToScoreProcessor extends State{
+public class GoToScoreProcessor extends State {
     public GoToScoreProcessor(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive) {
         super(stateMachine);
 
         // TODO: change to processor
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getSelecectedAlgae(), null));
+        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getAlgaeReefTarget(), null));
     }
 }

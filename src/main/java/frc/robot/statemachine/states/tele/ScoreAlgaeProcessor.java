@@ -6,14 +6,16 @@ import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
+import frc.robot.util.AutoTargetUtils;
 import frc.robot.util.ButtonBoardUtil;
 
-public class ScoreAlgaeProcessor extends State{
-    public ScoreAlgaeProcessor(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, EndEffector endEffector, LEDs LEDs) {
+public class ScoreAlgaeProcessor extends State {
+    public ScoreAlgaeProcessor(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive,
+            EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
 
         // TODO: change to processor
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getSelectedReef(), null));
+        startWhenActive(DriveCommands.pointControl(drive, AutoTargetUtils.processor(), null));
         startWhenActive(endEffector.runIntakeReverse());
         startWhenActive(LEDs.intakingAndScoringAlgae());
     }

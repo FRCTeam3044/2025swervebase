@@ -10,10 +10,11 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.util.ButtonBoardUtil;
 
 public class IntakeAlgae extends State {
-    public IntakeAlgae(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, Elevator elevator, EndEffector endEffector, LEDs LEDs) {
+    public IntakeAlgae(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, Elevator elevator,
+            EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
 
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getSelectedReef(), null));
+        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getAlgaeReefTarget(), null));
         startWhenActive(endEffector.runIntake());
         startWhenActive(LEDs.intakingAndScoringAlgae());
     }

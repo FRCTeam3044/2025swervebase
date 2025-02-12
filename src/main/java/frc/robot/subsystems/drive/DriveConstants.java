@@ -60,12 +60,12 @@ public class DriveConstants {
         // Device CAN IDs
 
         public static final int frontLeftDriveCanId = 17;
-        public static final int backLeftDriveCanId = 12;
+        public static final int backLeftDriveCanId = 11;
         public static final int frontRightDriveCanId = 15;
         public static final int backRightDriveCanId = 13;
 
         public static final int frontLeftTurnCanId = 18;
-        public static final int backLeftTurnCanId = 11;
+        public static final int backLeftTurnCanId = 12;
         public static final int frontRightTurnCanId = 16;
         public static final int backRightTurnCanId = 14;
 

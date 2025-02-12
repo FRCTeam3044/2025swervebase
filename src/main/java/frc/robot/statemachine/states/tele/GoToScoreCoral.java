@@ -6,11 +6,11 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.ButtonBoardUtil;
 
-public class GoToScoreCoral extends State{
+public class GoToScoreCoral extends State {
     public GoToScoreCoral(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive) {
         super(stateMachine);
 
         // TODO: change to 1-6 sides of reef
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getSelectedReef(), null));
+        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getCoralReefTarget(), null));
     }
 }

@@ -7,12 +7,12 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.ButtonBoardUtil;
 
-public class GoToReefIntake extends State{
+public class GoToReefIntake extends State {
     public GoToReefIntake(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, LEDs LEDs) {
         super(stateMachine);
 
         // TODO: rotation
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getSelectedReef(), null));
+        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getAlgaeReefTarget(), null));
         startWhenActive(LEDs.goingToAlgaeIntake());
     }
 }

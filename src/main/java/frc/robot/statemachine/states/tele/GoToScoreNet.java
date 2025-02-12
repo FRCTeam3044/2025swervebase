@@ -6,11 +6,11 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.ButtonBoardUtil;
 
-public class GoToScoreNet extends State{
+public class GoToScoreNet extends State {
     public GoToScoreNet(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive) {
         super(stateMachine);
 
         // TODO: change position to net
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getSelecectedAlgae(), null));
+        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getAlgaeReefTarget(), null));
     }
 }
