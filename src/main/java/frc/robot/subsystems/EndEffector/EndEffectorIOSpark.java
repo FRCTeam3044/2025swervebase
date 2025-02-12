@@ -59,11 +59,11 @@ public class EndEffectorIOSpark implements EndEffectorIO {
 
     @Override
     public boolean hasCoral() {
-        return readSensor() < coralProximityDistance.get();
+        return isCurrentSpiking && readSensor() < coralProximityDistance.get();
     }
 
     @Override
     public boolean hasAlgae() {
-        return readSensor() > coralProximityDistance.get();
+        return isCurrentSpiking && readSensor() > coralProximityDistance.get();
     }
 }

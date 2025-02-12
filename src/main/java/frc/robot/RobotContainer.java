@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.EndEffector.EndEffectorIO;
+import frc.robot.subsystems.EndEffector.EndEffectorIOSim;
 import frc.robot.subsystems.EndEffector.EndEffectorIOSpark;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.LEDs.LEDsIORio;
@@ -146,7 +147,7 @@ public class RobotContainer {
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
                                 elevator = new Elevator(new ElevatorIOSim());
                                 shoulder = new Shoulder(new ShoulderIOSim());
-                                endEffector = new EndEffector(new EndEffectorIOSpark());
+                                endEffector = new EndEffector(new EndEffectorIOSim());
                                 buttonBoard = new ButtonBoardUtil();
                                 LEDs = new LEDs(new LEDsIORio());
                                 break;
