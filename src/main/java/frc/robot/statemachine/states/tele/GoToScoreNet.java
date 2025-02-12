@@ -11,6 +11,6 @@ public class GoToScoreNet extends State {
         super(stateMachine);
 
         // TODO: change position to net
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getAlgaeReefTarget(), null));
+        startWhenActive(DriveCommands.goToPoint(drive, buttonBoard::getAlgaeReefTarget));
     }
 }

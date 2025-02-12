@@ -11,8 +11,7 @@ public class GoToReefIntake extends State {
     public GoToReefIntake(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, LEDs LEDs) {
         super(stateMachine);
 
-        // TODO: rotation
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getAlgaeReefTarget(), null));
+        startWhenActive(DriveCommands.goToPoint(drive, buttonBoard::getAlgaeReefTarget));
         startWhenActive(LEDs.goingToAlgaeIntake());
     }
 }

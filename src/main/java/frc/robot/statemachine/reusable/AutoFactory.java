@@ -34,8 +34,4 @@ public class AutoFactory {
 
         return s;
     }
-
-    private static void parseTransitions(StateMachineBase stateMachine, State state, JSONObject transitions) {
-
-    }
 }

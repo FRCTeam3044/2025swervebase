@@ -166,7 +166,7 @@ public class DriveCommands {
         Timer timer = new Timer();
         HolonomicDriveController m_controller = DriveConstants.driveController;
 
-        //Change down 
+        // Change down
         final Supplier<Rotation2d> desiredRotationSupplier = desiredRot;
         return Commands.run(() -> {
             double curTime = timer.get();
@@ -188,7 +188,7 @@ public class DriveCommands {
         }).until(() -> timer.hasElapsed(traj.getTotalTimeSeconds()))
                 .finallyDo(timer::stop).withName("Follow Trajectory");
     };
-    //change stop 
+    // change stop
 
     private static Command goToPoint(Drive drive, Pose2d pose, Supplier<Rotation2d> desiredRotation,
             DoubleSupplier joystickRot, boolean useJoystick) {
@@ -202,12 +202,18 @@ public class DriveCommands {
         return goToPoint(drive, pose, null, joystickRot, true).withName("Go To Point Joystick Rot");
     }
 
-    public static Command goToPointDesiredRot(Drive drive, Pose2d pose, Supplier<Rotation2d> desiredRotation) {
-        return goToPoint(drive, pose, desiredRotation, null, false).withName("Go To Point Static Rot");
+    public static Command goToPoint(Drive drive, Supplier<Pose2d> pose) {
+        return Commands.defer(
+                () -> {
+                    Pose2d curPose = pose.get();
+                    return followTrajectory(drive, generateTrajectory(drive, curPose), () -> curPose.getRotation(),
+                            null, false);
+                },
+                new HashSet<>());
     }
 
     public static Command pointControl(Drive drive, Pose2d pose, Rotation2d desiredRotation) {
-        return Commands.none();   
+        return Commands.none();
     }
 
     /**

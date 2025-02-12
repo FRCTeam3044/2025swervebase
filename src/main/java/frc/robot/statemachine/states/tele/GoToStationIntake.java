@@ -11,8 +11,7 @@ public class GoToStationIntake extends State {
     public GoToStationIntake(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, LEDs LEDs) {
         super(stateMachine);
 
-        // TODO: rotation
-        startWhenActive(DriveCommands.goToPointDesiredRot(drive, buttonBoard.getIntakeStationTarget(), null));
+        startWhenActive(DriveCommands.goToPoint(drive, buttonBoard::getIntakeStationTarget));
         startWhenActive(LEDs.goingToCoralIntake());
     }
 }
