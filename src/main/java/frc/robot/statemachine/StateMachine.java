@@ -75,11 +75,11 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToIntake)
                                 .withChild(intakeGamePiece);
 
-                goToScoringPosition.withChild(goToScoreCoral, () -> true, 0, "Has coral")
-                                .withChild(goToScoreAlgae, () -> endEffector.hasAlgae(), 1, "Has algae");
+                goToScoringPosition.withChild(goToScoreCoral, endEffector::hasCoral, 0, "Has coral")
+                                .withChild(goToScoreAlgae, endEffector::hasAlgae, 1, "Has algae");
 
-                scoreGamePiece.withChild(scoreCoral, () -> true, 0, "Has coral")
-                                .withChild(scoreAlgae, () -> endEffector.hasAlgae(), 1, "Has algae");
+                scoreGamePiece.withChild(scoreCoral, endEffector::hasCoral, 0, "Has coral")
+                                .withChild(scoreAlgae, endEffector::hasAlgae, 1, "Has algae");
 
                 goToIntake.withChild(goToReefIntake, buttonBoard::getAlgaeMode, 0, "Reef selected")
                                 .withChild(goToStationIntake, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
