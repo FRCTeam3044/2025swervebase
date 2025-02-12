@@ -153,6 +153,10 @@ public class ButtonBoardUtil {
         return coralReefTargetPose;
     }
 
+    public CoralLevel getCoralReefLevel() {
+        return coralReefLevel;
+    }
+
     public DoubleSupplier getCoralReefTargetDist(Drive drive) {
         return () -> AutoTargetUtils.robotDistToPose(drive, coralReefReferencePose);
     }

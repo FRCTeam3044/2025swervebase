@@ -9,29 +9,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.util.ConfigurableLinearInterpolation;
+import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 
 public class Shoulder extends SubsystemBase {
     private final ShoulderIO io;
     private final ShoulderIOInputsAutoLogged inputs = new ShoulderIOInputsAutoLogged();
     private final SysIdRoutine sysId;
-
-    enum LevelAngle {
-        L1(0, 0, 0, 0),
-        L23(0, 0, 0, 0),
-        L4(0, 0, 0, 0);
-
-        private double closeDist;
-        private double closeAngle;
-        private double farDist;
-        private double farAngle;
-
-        private LevelAngle(double closeDist, double closeAngle, double farDist, double farAngle) {
-            this.closeAngle = closeAngle;
-            this.closeDist = closeDist;
-            this.farDist = farDist;
-            this.farAngle = farAngle;
-        }
-    };
+    private final ConfigurableLinearInterpolation L1 = new ConfigurableLinearInterpolation("Shoulder L1 Angles");
+    private final ConfigurableLinearInterpolation L2 = new ConfigurableLinearInterpolation("Shoulder L2 Angles");
+    private final ConfigurableLinearInterpolation L3 = new ConfigurableLinearInterpolation("Shoulder L3 Angles");
+    private final ConfigurableLinearInterpolation L4 = new ConfigurableLinearInterpolation("Shoulder L4 Angles");
 
     public Shoulder(ShoulderIO io) {
         this.io = io;
@@ -67,29 +55,25 @@ public class Shoulder extends SubsystemBase {
                 .withName("Shoulder Manual Pivot");
     }
 
-    public Command scoreL1(DoubleSupplier robotDistance) {
+    public Command scoreCoral(CoralLevel level, DoubleSupplier robotDistance) {
         return Commands
-                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L1)), this)
+                .run(() -> io.setShoulderAngle(calculateAngleForCoral(level, robotDistance.getAsDouble())), this)
                 .withName("Set Shoulder to L1 Scoring position");
     }
 
-    public Command scoreL2AndL3(DoubleSupplier robotDistance) {
-        return Commands
-                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L23)),
-                        this)
-                .withName("Set Shoulder to L1 Scoring position");
-    }
-
-    public Command scoreL4(DoubleSupplier robotDistance) {
-        return Commands
-                .run(() -> io.setShoulderAngle(calculateAngleForDist(robotDistance.getAsDouble(), LevelAngle.L4)), this)
-                .withName("Set Shoulder to L1 Scoring position");
-    }
-
-    private double calculateAngleForDist(double robotDist, LevelAngle desiredLevel) {
-        return ((desiredLevel.farAngle - desiredLevel.closeAngle)
-                / (desiredLevel.farDist - desiredLevel.closeDist)) * (robotDist - desiredLevel.closeDist)
-                + desiredLevel.closeAngle;
+    private double calculateAngleForCoral(CoralLevel level, double robotDist) {
+        switch (level) {
+            case L1:
+                return L1.calculate(robotDist);
+            case L2:
+                return L2.calculate(robotDist);
+            case L3:
+                return L3.calculate(robotDist);
+            case L4:
+                return L4.calculate(robotDist);
+            default:
+                return 0;
+        }
     }
 
     public double getShoulderAngle() {

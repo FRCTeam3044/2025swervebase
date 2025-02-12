@@ -9,30 +9,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.util.ConfigurableLinearInterpolation;
+import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 
 public class Elevator extends SubsystemBase {
     private final ElevatorIO io;
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
     private final SysIdRoutine sysId;
-
-    enum LevelHeight {
-        L1(0, 1, 0, 0),
-        L2(0, 0, 0, 0),
-        L3(0, 0, 0, 0),
-        L4(0, 0, 0, 0);
-
-        private double closeDist;
-        private double closeHeight;
-        private double farDist;
-        private double farHeight;
-
-        private LevelHeight(double closeDist, double closeHeight, double farDist, double farHeight) {
-            this.closeHeight = closeHeight;
-            this.closeDist = closeDist;
-            this.farDist = farDist;
-            this.farHeight = farHeight;
-        }
-    };
+    private final ConfigurableLinearInterpolation L1 = new ConfigurableLinearInterpolation("Elevator L1 Heights");
+    private final ConfigurableLinearInterpolation L2 = new ConfigurableLinearInterpolation("Elevator L2 Heights");
+    private final ConfigurableLinearInterpolation L3 = new ConfigurableLinearInterpolation("Elevator L3 Heights");
+    private final ConfigurableLinearInterpolation L4 = new ConfigurableLinearInterpolation("Elevator L4 Heights");
 
     public Elevator(ElevatorIO io) {
         this.io = io;
@@ -68,30 +55,24 @@ public class Elevator extends SubsystemBase {
                 .withName("Elevator manual move");
     }
 
-    public Command toL1(DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(calculateAngleForDist(robotDistance.getAsDouble(), LevelHeight.L1)))
+    public Command toCoral(CoralLevel level, DoubleSupplier robotDistance) {
+        return Commands.run(() -> io.setPosition(getHeightForCoral(level, robotDistance.getAsDouble())))
                 .withName("Set elevator to L1 Scoring level");
     }
 
-    public Command toL2(DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(calculateAngleForDist(robotDistance.getAsDouble(), LevelHeight.L2)))
-                .withName("Set elevator to L2 Scoring level");
-    }
-
-    public Command toL3(DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(calculateAngleForDist(robotDistance.getAsDouble(), LevelHeight.L4)))
-                .withName("Set elevator to L3 Scoring level");
-    }
-
-    public Command toL4(DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(calculateAngleForDist(robotDistance.getAsDouble(), LevelHeight.L4)))
-                .withName("Set elevator to L4 Scoring level");
-    }
-
-    private double calculateAngleForDist(double robotDist, LevelHeight desiredLevel) {
-        double heightForDist = ((desiredLevel.farHeight - desiredLevel.closeHeight)
-                / (desiredLevel.farDist - desiredLevel.closeDist)) * (robotDist - desiredLevel.closeHeight);
-        return heightForDist;
+    private double getHeightForCoral(CoralLevel level, double distance) {
+        switch (level) {
+            case L1:
+                return L1.calculate(distance);
+            case L2:
+                return L2.calculate(distance);
+            case L3:
+                return L3.calculate(distance);
+            case L4:
+                return L4.calculate(distance);
+            default:
+                return 0;
+        }
     }
 
     public ElevatorIOInputsAutoLogged getInputs() {

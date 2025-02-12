@@ -50,7 +50,5 @@ public class ManualState extends State {
 
                 driverController.a().onTrue(
                                 DriveCommands.goToPointJoystickRot(drive, new Pose2d(3, 3, new Rotation2d()), rotVel));
-
-                startWhenActive(elevator.toL1(() -> 0.0));
         }
 }

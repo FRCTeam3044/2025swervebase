@@ -51,7 +51,7 @@ public class StateMachine extends StateMachineBase {
                 // Teleop
                 ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator, LEDs);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
-                ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, LEDs);
+                ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
                 ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector, LEDs);
                 ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector,
