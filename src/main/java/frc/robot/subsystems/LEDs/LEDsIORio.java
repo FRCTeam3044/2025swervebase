@@ -1,9 +1,11 @@
 package frc.robot.subsystems.LEDs;
 
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.util.ToMorseCode;
 
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Seconds;
@@ -11,11 +13,11 @@ import static frc.robot.subsystems.LEDs.LEDsConstants.*;
 
 import java.util.Map;
 
-public class LEDsIORio implements LEDsIO{
+public class LEDsIORio implements LEDsIO {
     private final AddressableLED LEDStrip = new AddressableLED(PWM);
     private final AddressableLEDBuffer buffer = new AddressableLEDBuffer(length);
 
-    public LEDsIORio(){
+    public LEDsIORio() {
         LEDStrip.setLength(buffer.getLength());
         LEDStrip.start();
     }
@@ -40,5 +42,33 @@ public class LEDsIORio implements LEDsIO{
         LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
         pattern.applyTo(buffer);
         LEDStrip.setData(buffer);
+    }
+
+    @Override
+    public void makeMorseCode(String phrase, int indexOfStr, int indexOfChar, Time currentTime, Time timeOfDot,
+            Time timeOfDash) {
+        if (ToMorseCode.toMorseCode(phrase).get(indexOfStr).toString().charAt(indexOfChar) == '.') {
+            currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+            setSolidColor(LEDPattern.solid(Color.kYellow));
+            if (timeOfDot.plus(currentTime).lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
+                if (ToMorseCode.toMorseCode(phrase).get(indexOfStr).toString().length() < indexOfChar) {
+                    indexOfChar = 0;
+                    indexOfStr++;
+                } else {
+                    indexOfChar++;
+                }
+            }
+        } else {
+            currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+            setSolidColor(LEDPattern.solid(Color.kYellow));
+            if (currentTime.plus(timeOfDash).lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
+                if (ToMorseCode.toMorseCode(phrase).get(indexOfStr).toString().length() < indexOfChar) {
+                    indexOfChar = 0;
+                    indexOfStr++;
+                } else {
+                    indexOfChar++;
+                }
+            }
+        }
     }
 }
