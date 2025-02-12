@@ -57,6 +57,7 @@ public class LEDsIORio implements LEDsIO {
                 } else {
                     indexOfChar++;
                 }
+                setSolidColor(LEDPattern.solid(Color.kYellow));
             }
         } else {
             currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
@@ -70,5 +71,11 @@ public class LEDsIORio implements LEDsIO {
                 }
             }
         }
+        currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+        setSolidColor(LEDPattern.solid(Color.kYellow));
+        if (currentTime.lt(timeOfDot.plus(timeOfDot).plus(timeOfDot))) {
+            setSolidColor(LEDPattern.solid(Color.kPurple));
+        }
+
     }
 }
