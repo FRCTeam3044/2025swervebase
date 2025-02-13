@@ -1,6 +1,5 @@
 package frc.robot.subsystems.LEDs;
 
-
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -17,8 +16,7 @@ public class LEDsIORio implements LEDsIO {
     private final AddressableLED LEDStrip = new AddressableLED(PWM);
     private final AddressableLEDBuffer buffer = new AddressableLEDBuffer(length);
 
-    
-    public void LEDsIORio() {
+    public LEDsIORio() {
         LEDStrip.setLength(buffer.getLength());
         LEDStrip.start();
     }
@@ -45,18 +43,22 @@ public class LEDsIORio implements LEDsIO {
         LEDStrip.setData(buffer);
     }
 
-   @Override
+    @Override
     public void makeMorseCode(String phrase) {
-        if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString().charAt(LEDsIOInputs.indexOfChar) == '.') {
+        if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
+                .charAt(LEDsIOInputs.indexOfChar) == '.') {
             LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
             setSolidColor(LEDPattern.solid(Color.kYellow));
-            if (LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.currentTime).lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
-                if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString().length() < LEDsIOInputs.indexOfChar) {
+            if (LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.currentTime)
+                    .lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
+                if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
+                        .length() < LEDsIOInputs.indexOfChar) {
                     LEDsIOInputs.indexOfChar = 0;
                     LEDsIOInputs.indexOfStr++;
                     LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
                     setSolidColor(LEDPattern.solid(Color.kYellow));
-                    if (LEDsIOInputs.currentTime.lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
+                    if (LEDsIOInputs.currentTime
+                            .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
                         setSolidColor(LEDPattern.solid(Color.kPurple));
                     }
                 } else {
@@ -67,13 +69,16 @@ public class LEDsIORio implements LEDsIO {
         } else {
             LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
             setSolidColor(LEDPattern.solid(Color.kYellow));
-            if (LEDsIOInputs.currentTime.plus(LEDsIOInputs.timeOfDash).lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
-                if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString().length() < LEDsIOInputs.indexOfChar) {
+            if (LEDsIOInputs.currentTime.plus(LEDsIOInputs.timeOfDash)
+                    .lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
+                if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
+                        .length() < LEDsIOInputs.indexOfChar) {
                     LEDsIOInputs.indexOfChar = 0;
                     LEDsIOInputs.indexOfStr++;
                     LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
                     setSolidColor(LEDPattern.solid(Color.kYellow));
-                    if (LEDsIOInputs.currentTime.lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
+                    if (LEDsIOInputs.currentTime
+                            .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
                         setSolidColor(LEDPattern.solid(Color.kPurple));
                     }
                 } else {
@@ -81,5 +86,5 @@ public class LEDsIORio implements LEDsIO {
                 }
             }
         }
-    } 
+    }
 }
