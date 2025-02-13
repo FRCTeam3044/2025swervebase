@@ -28,7 +28,10 @@ public class ShoulderIOSim implements ShoulderIO {
 
     private DCMotor gearBox = DCMotor.getNEO(2);
     private SparkMaxSim sparkMaxSim = new SparkMaxSim(sparkMax, gearBox);
-    SingleJointedArmSim shoulderSim = new SingleJointedArmSim(gearBox, 48.0, 1.0, 1.0, -180.0, 180.0, false, 0.0, 0, 0);
+    SingleJointedArmSim shoulderSim = new SingleJointedArmSim(gearBox, 45.0, 1.0, 1.0, -Math.PI / 1.5, Math.PI / 3,
+            true,
+            0.0, 0,
+            0);
 
     @Override
     public void updateInputs(ShoulderIOInputs inputs) {

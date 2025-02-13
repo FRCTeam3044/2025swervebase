@@ -100,6 +100,7 @@ public class RobotContainer {
         private final MechanismRoot2d root;
         private final MechanismLigament2d elevatorSim;
         private final MechanismLigament2d shoulderSim;
+        private final MechanismLigament2d endEffectorSim;
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -226,12 +227,14 @@ public class RobotContainer {
                 configureButtonBindings();
 
                 mech = new Mechanism2d(3, 3);
-                root = mech.getRoot("elevator", 2, 0);
+                root = mech.getRoot("elevator", 1.5, 0);
                 elevatorSim = root
                                 .append(new MechanismLigament2d("elevator", elevator.getElevatorHeight(), 90));
                 shoulderSim = elevatorSim
-                                .append(new MechanismLigament2d("shoulder", 0.5, shoulder.getShoulderAngle(), 6.0,
+                                .append(new MechanismLigament2d("shoulder", 0.65, shoulder.getShoulderAngle(), 6.0,
                                                 new Color8Bit(Color.kPurple)));
+                endEffectorSim = shoulderSim.append(
+                                new MechanismLigament2d("endEffector", 0.5, 90.0, 6.0, new Color8Bit(Color.kPurple)));
         }
 
         /**
@@ -278,7 +281,7 @@ public class RobotContainer {
 
         public void updateMechanism() {
                 elevatorSim.setLength(elevator.getElevatorHeight());
-                shoulderSim.setAngle(shoulder.getShoulderAngle());
+                shoulderSim.setAngle(Math.toDegrees(shoulder.getShoulderAngle()));
                 SmartDashboard.putData("Mech2d", mech);
         }
 }
