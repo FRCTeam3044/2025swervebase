@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.LEDs.LEDsIO.LEDsIOInputs;
 import frc.robot.util.ToMorseCode;
 
 public class LEDs extends SubsystemBase {
@@ -57,11 +58,14 @@ public class LEDs extends SubsystemBase {
         return Commands.run(() -> io.setSpinningColor(Color.kPurple, Color.kYellow));
     }
 
-    public Command morseCode(String phrase, int indexOfStr, int indexOfChar, Time currentTime, Time timeOfDot,
-            Time timeOfDash) {
+    public Command simMorseCode() {
+        return morseCode("HI");
+    }
+
+    public Command morseCode(String phrase) {
         setColor(LEDPattern.solid(Color.kPurple));
         return Commands.run(() -> {
-            io.makeMorseCode(phrase, indexOfStr, indexOfChar, currentTime, timeOfDot, timeOfDash);
-        }).until(() -> indexOfStr > ToMorseCode.toMorseCode(phrase).size()).withName("Make Morse Code");
+            io.makeMorseCode(phrase);
+        }).until(() -> LEDsIOInputs.indexOfStr > ToMorseCode.toMorseCode(phrase).size()).withName("Make Morse Code");
     }
 }

@@ -10,11 +10,11 @@ import static edu.wpi.first.units.Units.Milliseconds;
 public interface LEDsIO {
     @AutoLog
     public static class LEDsIOInputs {
-        int indexOfStr = 0;
-        int indexOfChar = 0;
-        Time timeOfDot = Milliseconds.of(500);
-        Time timeOfDash = Milliseconds.of(1000);
-        Time currentTime;
+        static int indexOfStr = 0;
+        static int indexOfChar = 0;
+        static Time timeOfDot = Milliseconds.of(500);
+        static Time timeOfDash = Milliseconds.of(1000);
+        static Time currentTime;
     }
 
     public default void setSolidColor(LEDPattern color) {
@@ -26,7 +26,6 @@ public interface LEDsIO {
     public default void setSpinningColor(Color color1, Color color2) {
     };
 
-    public default void makeMorseCode(String phrase, int indexOfStr, int indexOfChar, Time currentTime, Time timeOfDot,
-            Time timeOfDash) {
+    public default void makeMorseCode(String phrase) {
     };
 }
