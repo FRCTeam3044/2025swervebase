@@ -1,6 +1,9 @@
 {
   "HALProvider": {
     "Addressable LEDs": {
+      "0": {
+        "serpentine": true
+      },
       "window": {
         "visible": true
       }
@@ -87,5 +90,8 @@
       "open": false
     },
     "visible": true
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }
