@@ -9,9 +9,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
+import frc.robot.util.AutoTargetUtils.IntakeStations;
 import frc.robot.util.AutoTargetUtils.Reef;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class ButtonBoardUtil {
     private static GenericHID padOne = new GenericHID(2);
@@ -116,7 +118,7 @@ public class ButtonBoardUtil {
         for (SelectButtonInfo<IntakeStation> button : intakeStationButtons) {
             if (button.isPressed()) {
                 intakeStation = button.value();
-                intakeStationPose = intakeStation.pose();
+                intakeStationPose = IntakeStations.intakeStation(intakeStation);
                 intakeStationReferencePose = intakeStation.pose();
             }
         }
@@ -145,6 +147,7 @@ public class ButtonBoardUtil {
         Logger.recordOutput("ButtonBoard/CoralReefPose", coralReefTargetPose);
         Logger.recordOutput("ButtonBoard/CoralReefLevel", coralReefLevel);
         Logger.recordOutput("ButtonBoard/IntakeStation", intakeStation);
+        Logger.recordOutput("ButtonBoard/IntakeStationPose", intakeStationPose);
         Logger.recordOutput("ButtonBoard/ClimbUp", climbUp.isPressed());
         Logger.recordOutput("ButtonBoard/ClimbDown", climbDown.isPressed());
     }
@@ -179,5 +182,37 @@ public class ButtonBoardUtil {
 
     public boolean isProcessor() {
         return isProcessor;
+    }
+
+    public ConfigurableParameter<Double> processorDistThreshold = new ConfigurableParameter<Double>(0.5,
+            "Processor score dist threshold");
+    public ConfigurableParameter<Double> coralReefDistThreshold = new ConfigurableParameter<Double>(0.5,
+            "Coral reef score dist threshold");
+    public ConfigurableParameter<Double> netDistThreshold = new ConfigurableParameter<Double>(0.5,
+            "Net score dist threshold");
+
+    public boolean closeToScoringTarget(Drive drive) {
+        if (algaeMode) {
+            if (isProcessor) {
+                return AutoTargetUtils.robotDistToPose(drive, algaeReefTargetPose) < processorDistThreshold.get();
+            } else {
+                return AutoTargetUtils.robotDistToPose(drive, coralReefTargetPose) < coralReefDistThreshold.get();
+            }
+        } else {
+            return AutoTargetUtils.robotDistToPose(drive, coralReefTargetPose) < coralReefDistThreshold.get();
+        }
+    }
+
+    public ConfigurableParameter<Double> algaeReefDistThreshold = new ConfigurableParameter<>(0.5,
+            "Algae intake reef dist threshold");
+    public ConfigurableParameter<Double> intakeStationDistThreshold = new ConfigurableParameter<>(0.5,
+            "Intake station dist threshold");
+
+    public boolean closeToIntakeTarget(Drive drive) {
+        if (algaeMode) {
+            return AutoTargetUtils.robotDistToPose(drive, algaeReefTargetPose) < algaeReefDistThreshold.get();
+        } else {
+            return AutoTargetUtils.robotDistToPose(drive, intakeStationPose) < intakeStationDistThreshold.get();
+        }
     }
 }

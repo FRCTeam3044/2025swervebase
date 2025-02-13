@@ -340,7 +340,8 @@ public abstract class State {
         TransitionInfo next = evaluateBestTransition(entranceConditions);
         if (next == null || next.target() == null)
             throw new RuntimeException(
-                    "A state was unable to determine which child to transition to. Consider adding a default state.");
+                    "A state (" + getDeepName()
+                            + ") was unable to determine which child to transition to. Consider adding a default state.");
         return next.target().evaluateEntranceState();
     }
 

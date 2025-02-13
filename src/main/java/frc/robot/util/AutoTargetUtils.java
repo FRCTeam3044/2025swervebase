@@ -158,12 +158,12 @@ public class AutoTargetUtils {
             LeftOne, LeftTwo, LeftThree, RightOne, RightTwo, RightThree;
 
             private static POIData[] stations = {
-                    POIData.create(0, 0, 0, 0), // LeftOne
-                    POIData.create(0, 0, 0, 0), // LeftTwo
-                    POIData.create(0, 0, 0, 0), // LeftThree
-                    POIData.create(0, 0, 0, 0), // RightOne
-                    POIData.create(0, 0, 0, 0), // RightTwo
-                    POIData.create(0, 0, 0, 0), // RightThree
+                    POIData.create(1.17152, 7.64678, 1.35439, 7.39497), // LeftOne
+                    POIData.create(0.84268, 7.40797, 1.00537, 7.18395), // LeftTwo
+                    POIData.create(0.51385, 7.16916, 0.68402, 6.93484), // LeftThree
+                    POIData.create(1.17152, 0.40502, 1.35439, 0.65683), // RightOne
+                    POIData.create(0.84268, 0.64383, 1.00537, 0.86785), // RightTwo
+                    POIData.create(0.51385, 0.88264, 0.68402, 1.11696), // RightThree
             };
 
             public POIData data() {
@@ -173,13 +173,17 @@ public class AutoTargetUtils {
             public Pose2d pose() {
                 return AllianceUtil.getPoseForAlliance(stations[ordinal()].pos.asPose2d());
             }
+
         }
 
         private static ConfigurableParameter<Double> intakeStationDistance = new ConfigurableParameter<Double>(1.0,
                 "Intake station dist");
 
+        private static ConfigurableParameter<Boolean> intakeStationFlipped = new ConfigurableParameter<Boolean>(false,
+                "Intake station flipped");
+
         public static Pose2d intakeStation(IntakeStation station) {
-            return station.data().poseWithRot(intakeStationDistance.get(), new Rotation2d());
+            return station.data().poseFacing(intakeStationDistance.get(), intakeStationFlipped.get());
         }
     }
 

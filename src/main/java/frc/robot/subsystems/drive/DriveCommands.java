@@ -213,7 +213,8 @@ public class DriveCommands {
     }
 
     public static Command pointControl(Drive drive, Pose2d pose, Rotation2d desiredRotation) {
-        return Commands.none();
+        return Commands.run(() -> drive.runVelocity(
+                new ChassisSpeeds(0.0, 0.0, 0)));
     }
 
     /**

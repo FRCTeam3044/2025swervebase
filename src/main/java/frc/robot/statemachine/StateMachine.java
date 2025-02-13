@@ -99,27 +99,37 @@ public class StateMachine extends StateMachineBase {
                                                 buttonBoard::getSelectedAlgaeLocation, 1, "Processor selected");
 
                 // Example, will be button board later
-                manual.withTransition(goToScoringPosition, driverController.rightTrigger()::getAsBoolean,
+                manual.withTransition(goToScoringPosition,
+                                () -> driverController.rightTrigger().getAsBoolean()
+                                                && (endEffector.hasCoral() || endEffector.hasAlgae()),
                                 "Driver presses score")
-                                .withTransition(goToIntake, driverController.leftTrigger()::getAsBoolean,
+                                .withTransition(goToIntake,
+                                                () -> driverController.leftTrigger().getAsBoolean()
+                                                                && (!endEffector.hasCoral() && !endEffector.hasAlgae()),
                                                 "Driver presses intake");
 
-                goToScoringPosition.withTransition(scoreGamePiece, () -> false, "Close to scoring location")
+                goToScoringPosition
+                                .withTransition(scoreGamePiece, () -> buttonBoard.closeToScoringTarget(drive),
+                                                "Close to scoring location")
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released");
 
                 scoreGamePiece.withTransition(goToScoringPosition, () -> false, "Scoring location changed")
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released")
-                                .withTransition(manual, () -> false, "No game piece in robot");
+                                .withTransition(manual, () -> !endEffector.hasCoral() && !endEffector.hasAlgae(),
+                                                "No game piece in robot");
 
-                goToIntake.withTransition(intakeGamePiece, () -> false, "Close to intake location")
+                goToIntake.withTransition(intakeGamePiece, () -> buttonBoard.closeToIntakeTarget(drive),
+                                "Close to intake location")
                                 .withTransition(manual, () -> !driverController.leftTrigger()
                                                 .getAsBoolean(), "Intake button released");
 
                 intakeGamePiece.withTransition(goToIntake, () -> false, "Intake location changed")
                                 .withTransition(manual, () -> !driverController.leftTrigger()
-                                                .getAsBoolean(), "Intake button released");
+                                                .getAsBoolean(), "Intake button released")
+                                .withTransition(manual, () -> endEffector.hasCoral() || endEffector.hasAlgae(),
+                                                "Game piece in robot");
 
                 intakeCoral.withTransition(manual, () -> endEffector.hasCoral(), "Has coral");
 
