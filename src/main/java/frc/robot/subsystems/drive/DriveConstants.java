@@ -149,4 +149,19 @@ public class DriveConstants {
 
         public static final HolonomicDriveController driveController = new HolonomicDriveController(
                         xController, yController, angleController);
+
+        public static final PIDController xPointController = new ConfigurablePIDController(1, 0, 0,
+                        "X Point Controller");
+        public static final PIDController yPointController = new ConfigurablePIDController(1, 0, 0,
+                        "Point Y Controller");
+        public static final ProfiledPIDController anglePointController = new ConfigurableProfiledPIDController(
+                        6.0,
+                        0,
+                        0,
+                        // new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
+                        // kMaxAngularAccelerationRadiansPerSecondSquared.get()),
+                        new TrapezoidProfile.Constraints(8, 20),
+                        "Point Theta Controller");
+        public static final HolonomicDriveController pointController = new HolonomicDriveController(
+                        xPointController, yPointController, anglePointController);
 }
