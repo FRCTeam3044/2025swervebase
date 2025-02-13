@@ -15,7 +15,7 @@ public class IntakeCoral extends State {
         super(stateMachine);
 
         // TODO: Get others to make heights and (Marcus) rotation
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getIntakeStationTarget(), null));
+        startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getIntakeStationTarget));
         startWhenActive(endEffector.runIntake());
         startWhenActive(LEDs.intakingAndScoringCoral());
     }

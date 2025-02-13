@@ -16,7 +16,7 @@ public class ScoreCoral extends State {
             Elevator elevator, Shoulder shoulder, LEDs LEDs) {
         super(stateMachine);
 
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard.getCoralReefTarget(), null));
+        startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getCoralReefTarget));
         startWhenActive(Commands.deferredProxy(
                 () -> elevator.toCoral(buttonBoard.getCoralReefLevel(), buttonBoard.getCoralReefTargetDist(drive))));
         startWhenActive(Commands.deferredProxy(
