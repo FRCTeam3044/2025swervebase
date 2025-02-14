@@ -49,7 +49,8 @@ public class StateMachine extends StateMachineBase {
                 this.registerToRootState(test, auto, teleop, disabled);
 
                 // Teleop
-                ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator, LEDs);
+                ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator,
+                                shoulder, endEffector, LEDs);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
                 ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);

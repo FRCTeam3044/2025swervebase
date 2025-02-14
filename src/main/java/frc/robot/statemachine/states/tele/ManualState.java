@@ -2,6 +2,7 @@ package frc.robot.statemachine.states.tele;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -11,16 +12,18 @@ import frc.robot.Constants.Mode;
 import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
+import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.AllianceUtil;
 
 public class ManualState extends State {
         @SuppressWarnings("unused")
         public ManualState(StateMachineBase stateMachine, CommandXboxController driver, CommandXboxController operator,
-                        Drive drive, Elevator elevator, LEDs LEDs) {
+                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super(stateMachine);
 
                 SmartXboxController driverController = new SmartXboxController(driver, loop);
@@ -50,5 +53,15 @@ public class ManualState extends State {
 
                 driverController.a().onTrue(
                                 DriveCommands.goToPointJoystickRot(drive, new Pose2d(3, 3, new Rotation2d()), rotVel));
+
+                operatorController.leftTrigger().onTrue(endEffector.runIntakeReverse());
+                operatorController.rightTrigger().onTrue(endEffector.runIntake());
+
+                DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.01);
+                DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.05);
+
+                startWhenActive(LEDs.simMorseCode());
+                startWhenActive(elevator.elevatorMove(rightY));
+                startWhenActive(shoulder.manualPivot(leftY));
         }
 }
