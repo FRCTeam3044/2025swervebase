@@ -84,8 +84,8 @@ public class StateMachine extends StateMachineBase {
                 goToIntake.withChild(goToReefIntake, buttonBoard::getAlgaeMode, 0, "Reef selected")
                                 .withChild(goToStationIntake, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
 
-                intakeGamePiece.withChild(intakeCoral, buttonBoard::getAlgaeMode, 0, "Reef selected")
-                                .withChild(intakeAlgae, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
+                intakeGamePiece.withChild(intakeCoral, () -> !buttonBoard.getAlgaeMode(), 0, "Reef selected")
+                                .withChild(intakeAlgae, buttonBoard::getAlgaeMode, 1, "Station selected");
 
                 // Specific Algae intake and score
                 goToScoreAlgae.withChild(goToScoreNet, () -> !buttonBoard

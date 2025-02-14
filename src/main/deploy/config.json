@@ -74,6 +74,7 @@
         "Elevator L2 Heights/x1": "0.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
+        "X Point Controller/I": "0.0",
         "Pathfinding Theta Controller/P": "6.0",
         "Elevator L4 Heights/y1": "0.0",
         "Intake speed": {
@@ -81,13 +82,18 @@
             "value": "1.0"
         },
         "Elevator L4 Heights/y2": "0.0",
+        "Point Y Controller/I": "0.0",
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
         "Pathfinding Y Controller/D": "0.0",
+        "X Point Controller/D": "0.0",
+        "Point Y Controller/D": "0.0",
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "X Point Controller/P": "1.0",
+        "Point Y Controller/P": "1.0",
         "Processor Flipped": {
             "comment": "Auto-Generated",
             "value": "false"
@@ -138,9 +144,12 @@
         },
         "Elevator L3 Heights/y2": "0.0",
         "Elevator L3 Heights/y1": "0.0",
+        "Point Theta Controller/D": "0.0",
+        "Point Theta Controller/P": "6.0",
         "Pathfinding Y Controller/P": "1.0",
         "Shoulder L3 Angles/x2": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+        "Pathfinding X Controller/P": "1.0",
+        "Point Theta Controller/I": "0.0"
     },
     "mode": "simulation",
     "simulation": {
@@ -218,6 +227,7 @@
         "Elevator L2 Heights/x1": "0.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
+        "X Point Controller/I": "0.0",
         "Pathfinding Theta Controller/P": "6.0",
         "Elevator L4 Heights/y1": "0.0",
         "Intake speed": {
@@ -225,13 +235,18 @@
             "value": "1.0"
         },
         "Elevator L4 Heights/y2": "0.0",
+        "Point Y Controller/I": "0.0",
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
         "Pathfinding Y Controller/D": "0.0",
+        "X Point Controller/D": "0.0",
+        "Point Y Controller/D": "0.0",
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "X Point Controller/P": "1.0",
+        "Point Y Controller/P": "1.0",
         "Processor Flipped": {
             "comment": "Auto-Generated",
             "value": "false"
@@ -282,9 +297,12 @@
         },
         "Elevator L3 Heights/y2": "0.0",
         "Elevator L3 Heights/y1": "0.0",
+        "Point Theta Controller/D": "0.0",
+        "Point Theta Controller/P": "6.0",
         "Pathfinding Y Controller/P": "1.0",
         "Shoulder L3 Angles/x2": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+        "Pathfinding X Controller/P": "1.0",
+        "Point Theta Controller/I": "0.0"
     },
     "competition": {
         "Shoulder L3 Angles/y2": "0.0",
@@ -361,6 +379,7 @@
         "Elevator L2 Heights/x1": "0.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
+        "X Point Controller/I": "0.0",
         "Pathfinding Theta Controller/P": "6.0",
         "Elevator L4 Heights/y1": "0.0",
         "Intake speed": {
@@ -368,13 +387,18 @@
             "value": "1.0"
         },
         "Elevator L4 Heights/y2": "0.0",
+        "Point Y Controller/I": "0.0",
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
         "Pathfinding Y Controller/D": "0.0",
+        "X Point Controller/D": "0.0",
+        "Point Y Controller/D": "0.0",
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "X Point Controller/P": "1.0",
+        "Point Y Controller/P": "1.0",
         "Processor Flipped": {
             "comment": "Auto-Generated",
             "value": "false"
@@ -425,8 +449,11 @@
         },
         "Elevator L3 Heights/y2": "0.0",
         "Elevator L3 Heights/y1": "0.0",
+        "Point Theta Controller/D": "0.0",
+        "Point Theta Controller/P": "6.0",
         "Pathfinding Y Controller/P": "1.0",
         "Shoulder L3 Angles/x2": "0.0",
-        "Pathfinding X Controller/P": "1.0"
+        "Pathfinding X Controller/P": "1.0",
+        "Point Theta Controller/I": "0.0"
     }
 }

@@ -71,6 +71,9 @@
           }
         }
       },
+      "LiveWindow": {
+        "open": true
+      },
       "SmartDashboard": {
         "Field": {
           "double[]##v_/SmartDashboard/Field/notes": {
@@ -95,8 +98,5 @@
       "open": false
     },
     "visible": true
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }
