@@ -166,6 +166,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousPeriodic() {
     AllianceUtil.setIfUnknown();
+
   }
 
   /** This function is called once when teleop is enabled. */

@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 
 public class ElevatorIOSim implements ElevatorIO {
-    private SparkMax sparkMax = new SparkMax(50, MotorType.kBrushless);
+    private SparkMax sparkMax = new SparkMax(73, MotorType.kBrushless);
     private DCMotor gearBox = DCMotor.getNEO(2);
     private SparkMaxSim sparkMaxSim = new SparkMaxSim(sparkMax, gearBox);
     private RelativeEncoder elevatorEncoder = sparkMax.getEncoder();

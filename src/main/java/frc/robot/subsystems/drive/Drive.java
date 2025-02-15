@@ -45,6 +45,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
+import choreo.trajectory.SwerveSample;
+
 public class Drive extends SubsystemBase implements VisionConsumer {
   static final Lock odometryLock = new ReentrantLock();
   private final GyroIO gyroIO;
@@ -302,5 +304,20 @@ public class Drive extends SubsystemBase implements VisionConsumer {
   /** Returns the maximum angular speed in radians per sec. */
   public double getMaxAngularSpeedRadPerSec() {
     return maxSpeedMetersPerSec.get() / driveBaseRadius;
+  }
+
+  public void choreoDriveController(SwerveSample sample) {
+    // Get the current pose of the robot
+    Pose2d pose = getPose();
+
+    // Generate the next speeds for the robot
+    ChassisSpeeds speeds = new ChassisSpeeds(
+        sample.vx + xController.calculate(pose.getX(), sample.x),
+        sample.vy + yController.calculate(pose.getY(), sample.y),
+        sample.omega + angleController.calculate(pose.getRotation().getRadians(), sample.heading));
+
+    // Apply the generated speeds
+    // TODO: Maybe convert to robot relative?
+    runVelocity(speeds);
   }
 }

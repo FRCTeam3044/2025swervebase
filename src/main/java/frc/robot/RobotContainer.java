@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
+import frc.robot.statemachine.states.auto.AutoRoutines;
 import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.EndEffector.EndEffectorIO;
 import frc.robot.subsystems.EndEffector.EndEffectorIOSim;
@@ -59,11 +60,13 @@ import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceUtil;
 import frc.robot.util.ButtonBoardUtil;
-
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import choreo.auto.AutoChooser;
+import choreo.auto.AutoFactory;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -84,6 +87,8 @@ public class RobotContainer {
         private final EndEffector endEffector;
         private final LEDs LEDs;
         private SwerveDriveSimulation driveSimulation = null;
+        private final AutoChooser choreoAutoChooser;
+        private final AutoRoutines choreoAutoRoutines;
 
         // Controller
         private final CommandXboxController driverController = new CommandXboxController(0);
@@ -95,6 +100,8 @@ public class RobotContainer {
         public final StateMachine stateMachine;
 
         public static Field2d fieldSim = new Field2d();
+
+        public final AutoFactory autoFactory;
 
         private final Mechanism2d mech;
         private final MechanismRoot2d root;
@@ -180,6 +187,16 @@ public class RobotContainer {
                                 break;
                 }
 
+                autoFactory = new AutoFactory(
+                                drive::getPose,
+                                drive::resetOdometry,
+                                drive::choreoDriveController,
+                                true,
+                                drive);
+
+                choreoAutoChooser = new AutoChooser();
+                choreoAutoRoutines = new AutoRoutines();
+
                 AllianceUtil.setRobot(drive::getPose);
 
                 // Set up auto routines
@@ -219,6 +236,8 @@ public class RobotContainer {
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kForward));
                 autoChooser.addOption("Shoulder SysId (Dynamic Reverse)",
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+                choreoAutoChooser.addRoutine("Marcus", choreoAutoRoutines::pickupAndScoreAuto);
 
                 stateMachine = new StateMachine(driverController, operatorController, buttonBoard, autoChooser, drive,
                                 elevator, shoulder, endEffector, LEDs);
