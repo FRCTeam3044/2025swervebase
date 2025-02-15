@@ -65,6 +65,8 @@ public class LEDs extends SubsystemBase {
         setColor(LEDPattern.solid(Color.kPurple));
         return Commands.run(() -> {
             io.makeMorseCode(phrase);
-        }).until(() -> LEDsIOInputs.indexOfStr > ToMorseCode.toMorseCode(phrase).size()).withName("Make Morse Code");
+        })
+                .until(() -> LEDsIOInputs.indexOfStr > ToMorseCode.toMorseCode(phrase).size())
+                .withName("Make Morse Code");
     }
 }

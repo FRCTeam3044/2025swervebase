@@ -2,7 +2,9 @@
   "HALProvider": {
     "Addressable LEDs": {
       "0": {
-        "serpentine": true
+        "order": 1,
+        "serpentine": true,
+        "start": 1
       },
       "window": {
         "visible": true

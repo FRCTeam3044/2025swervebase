@@ -3,6 +3,7 @@ package frc.robot.subsystems.LEDs;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.util.ToMorseCode;
 
@@ -47,15 +48,16 @@ public class LEDsIORio implements LEDsIO {
     public void makeMorseCode(String phrase) {
         if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
                 .charAt(LEDsIOInputs.indexOfChar) == '.') {
-            LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+            LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
+
             setSolidColor(LEDPattern.solid(Color.kYellow));
-            if (LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.currentTime)
-                    .lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
+
+            if (LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.currentTime).lt(Seconds.of(Timer.getFPGATimestamp()))) {
                 if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
                         .length() < LEDsIOInputs.indexOfChar) {
                     LEDsIOInputs.indexOfChar = 0;
                     LEDsIOInputs.indexOfStr++;
-                    LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+                    LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
                     setSolidColor(LEDPattern.solid(Color.kYellow));
                     if (LEDsIOInputs.currentTime
                             .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
@@ -67,16 +69,20 @@ public class LEDsIORio implements LEDsIO {
                 setSolidColor(LEDPattern.solid(Color.kYellow));
             }
         } else {
-            LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+            LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
+
             setSolidColor(LEDPattern.solid(Color.kYellow));
+
             if (LEDsIOInputs.currentTime.plus(LEDsIOInputs.timeOfDash)
-                    .lt(Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp()))) {
+                    .lt(Seconds.of(Timer.getFPGATimestamp()))) {
                 if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
                         .length() < LEDsIOInputs.indexOfChar) {
                     LEDsIOInputs.indexOfChar = 0;
                     LEDsIOInputs.indexOfStr++;
-                    LEDsIOInputs.currentTime = Seconds.of(edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+                    LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
+
                     setSolidColor(LEDPattern.solid(Color.kYellow));
+
                     if (LEDsIOInputs.currentTime
                             .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
                         setSolidColor(LEDPattern.solid(Color.kPurple));
