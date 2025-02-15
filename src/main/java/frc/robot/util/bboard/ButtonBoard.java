@@ -8,7 +8,9 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
+import frc.robot.util.AllianceUtil;
 import frc.robot.util.AutoTargetUtils;
+import frc.robot.util.AllianceUtil.AllianceColor;
 import frc.robot.util.AutoTargetUtils.IntakeStations;
 import frc.robot.util.AutoTargetUtils.Reef;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
@@ -88,7 +90,23 @@ public class ButtonBoard {
         return isProcessor;
     }
 
+    private AllianceColor lastAllianceColor = AllianceColor.UNKNOWN;
+
     public void periodic(Drive drive) {
+        if(lastAllianceColor != AllianceUtil.getAlliance()){
+            if(coralReefLevel != null && coralReefLocation != null){
+                coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
+                coralReefReferencePose = coralReefLocation.pose();
+            }
+            if(coralReefLocation != null){
+                algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
+                algaeReefReferencePose = coralReefLocation.algae().pose();
+            }
+            if(intakeStation != null){
+                intakeStationPose = IntakeStations.intakeStation(intakeStation);
+                intakeStationReferencePose = intakeStation.pose();
+            }
+        }
         boardIO.periodic();
         for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
             if (boardIO.isPressed(button)) {

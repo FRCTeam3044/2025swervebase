@@ -63,6 +63,9 @@
     "transitory": {
       "AdvantageKit": {
         "RealOutputs": {
+          "ButtonBoard": {
+            "open": true
+          },
           "StateMachine": {
             "open": true
           },
@@ -74,6 +77,9 @@
         "open": true
       },
       "SmartDashboard": {
+        "ButtonBoardSim": {
+          "open": true
+        },
         "Field": {
           "double[]##v_/SmartDashboard/Field/notes": {
             "open": false
@@ -101,6 +107,7 @@
     },
     "Server": {
       "open": true
-    }
+    },
+    "visible": true
   }
 }
