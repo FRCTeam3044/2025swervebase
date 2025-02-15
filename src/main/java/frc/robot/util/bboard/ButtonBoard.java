@@ -89,6 +89,7 @@ public class ButtonBoard {
     }
 
     public void periodic(Drive drive) {
+        boardIO.periodic();
         for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
             if (boardIO.isPressed(button)) {
                 coralReefLocation = button.value();

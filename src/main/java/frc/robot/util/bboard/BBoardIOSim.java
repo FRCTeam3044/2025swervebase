@@ -13,6 +13,7 @@ public class BBoardIOSim implements BBoardIO{
 
     private ArrayList<ButtonInfo> pressedButtons = new ArrayList<>();
 
+    @Override
     public void periodic(){
         double[] pressed = SmartDashboard.getNumberArray("ButtonBoardSim/Pressed", new double[0]);
         pressedButtons.clear();
