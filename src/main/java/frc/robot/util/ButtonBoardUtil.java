@@ -197,7 +197,7 @@ public class ButtonBoardUtil {
                 if (coralReefTargetPose == null) {
                     return false;
                 }
-                return AutoTargetUtils.robotDistToPose(drive, algaeReefTargetPose) < processorDistThreshold.get();
+                return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.processor()) < processorDistThreshold.get();
             } else {
                 // TODO: Net
                 return false;
