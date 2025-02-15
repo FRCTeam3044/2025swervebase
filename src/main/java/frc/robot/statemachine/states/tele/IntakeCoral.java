@@ -14,9 +14,9 @@ public class IntakeCoral extends State {
             EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
 
-        // TODO: Get others to make heights and (Marcus) rotation
         startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getIntakeStationTarget));
         startWhenActive(endEffector.runIntake());
+        // TODO: Elevator/Shoulder
         startWhenActive(LEDs.intakingAndScoringCoral());
     }
 }

@@ -49,7 +49,8 @@ public class StateMachine extends StateMachineBase {
                 this.registerToRootState(test, auto, teleop, disabled);
 
                 // Teleop
-                ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator, LEDs);
+                ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator,
+                                shoulder, endEffector, LEDs);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
                 ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
@@ -84,8 +85,8 @@ public class StateMachine extends StateMachineBase {
                 goToIntake.withChild(goToReefIntake, buttonBoard::getAlgaeMode, 0, "Reef selected")
                                 .withChild(goToStationIntake, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
 
-                intakeGamePiece.withChild(intakeCoral, buttonBoard::getAlgaeMode, 0, "Reef selected")
-                                .withChild(intakeAlgae, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
+                intakeGamePiece.withChild(intakeCoral, () -> !buttonBoard.getAlgaeMode(), 0, "Reef selected")
+                                .withChild(intakeAlgae, buttonBoard::getAlgaeMode, 1, "Station selected");
 
                 // Specific Algae intake and score
                 goToScoreAlgae.withChild(goToScoreNet, () -> !buttonBoard

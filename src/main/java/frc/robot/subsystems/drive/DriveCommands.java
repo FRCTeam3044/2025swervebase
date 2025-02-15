@@ -214,8 +214,12 @@ public class DriveCommands {
 
     public static Command pointControl(Drive drive, Supplier<Pose2d> pose) {
         return Commands
-                .run(() -> drive.runVelocity(DriveConstants.pointController.calculate(drive.getPose(), pose.get(), 0,
-                        pose.get().getRotation())));
+                .run(() -> {
+                    drive.runVelocity(DriveConstants.pointController.calculate(drive.getPose(), pose.get(), 0,
+                            pose.get().getRotation()));
+
+                    System.out.println(pose.get().getY());
+                }).withName("Point Control");
     }
 
     /**
