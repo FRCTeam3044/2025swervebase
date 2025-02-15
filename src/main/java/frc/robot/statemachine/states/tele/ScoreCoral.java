@@ -9,10 +9,10 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shoulder.Shoulder;
-import frc.robot.util.ButtonBoardUtil;
+import frc.robot.util.bboard.ButtonBoard;
 
 public class ScoreCoral extends State {
-    public ScoreCoral(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive, EndEffector endEffector,
+    public ScoreCoral(StateMachineBase stateMachine, ButtonBoard buttonBoard, Drive drive, EndEffector endEffector,
             Elevator elevator, Shoulder shoulder, LEDs LEDs) {
         super(stateMachine);
 

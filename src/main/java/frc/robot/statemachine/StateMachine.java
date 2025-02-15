@@ -32,11 +32,11 @@ import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shoulder.Shoulder;
-import frc.robot.util.ButtonBoardUtil;
+import frc.robot.util.bboard.ButtonBoard;
 
 public class StateMachine extends StateMachineBase {
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
-                        ButtonBoardUtil buttonBoard, LoggedDashboardChooser<Command> chooser,
+                        ButtonBoard buttonBoard, LoggedDashboardChooser<Command> chooser,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super();
                 State disabled = new DisabledState(this);

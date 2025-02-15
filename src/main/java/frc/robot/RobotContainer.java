@@ -58,7 +58,9 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceUtil;
-import frc.robot.util.ButtonBoardUtil;
+import frc.robot.util.bboard.BBoardIOReal;
+import frc.robot.util.bboard.BBoardIOSim;
+import frc.robot.util.bboard.ButtonBoard;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -77,7 +79,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
         // Subsystems
         public final Drive drive;
-        public final ButtonBoardUtil buttonBoard;
+        public final ButtonBoard buttonBoard;
         private final Vision vision;
         private final Elevator elevator;
         private final Shoulder shoulder;
@@ -120,7 +122,7 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorIOSpark());
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
-                                buttonBoard = new ButtonBoardUtil();
+                                buttonBoard = new ButtonBoard(new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIORio());
                                 break;
 
@@ -149,7 +151,7 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorIOSim());
                                 shoulder = new Shoulder(new ShoulderIOSim());
                                 endEffector = new EndEffector(new EndEffectorIOSim());
-                                buttonBoard = new ButtonBoardUtil();
+                                buttonBoard = new ButtonBoard(Constants.simButtonBoard ? new BBoardIOSim() : new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIORio());
                                 break;
 
@@ -175,7 +177,7 @@ public class RobotContainer {
                                 });
                                 endEffector = new EndEffector(new EndEffectorIO() {
                                 });
-                                buttonBoard = new ButtonBoardUtil();
+                                buttonBoard = new ButtonBoard(new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIORio());
                                 break;
                 }

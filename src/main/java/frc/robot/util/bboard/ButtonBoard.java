@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.robot.util.bboard;
 
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -6,35 +6,28 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.GenericHID;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
+import frc.robot.util.AutoTargetUtils;
 import frc.robot.util.AutoTargetUtils.IntakeStations;
 import frc.robot.util.AutoTargetUtils.Reef;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
-public class ButtonBoardUtil {
-    private static GenericHID padOne = new GenericHID(2);
-    private static GenericHID padTwo = new GenericHID(3);
-    private static GenericHID padThree = new GenericHID(4);
+public class ButtonBoard {
+    private final BBoardIO boardIO;
 
-    private static boolean isButtonPressed(int board, int button) {
-        return (board == 0 && padOne.getRawButtonPressed(button))
-                || (board == 1 && padTwo.getRawButtonPressed(button))
-                || (board == 2 && padThree.getRawButtonPressed(button));
+    public ButtonBoard(BBoardIO boardIO) {
+        this.boardIO = boardIO;
     }
 
     public record ButtonInfo(int board, int button) {
-        public boolean isPressed() {
-            return isButtonPressed(board, button);
-        }
     };
 
     public record SelectButtonInfo<T extends Enum<?>>(int board, int button, T value) {
-        public boolean isPressed() {
-            return isButtonPressed(board, button);
+        public ButtonInfo buttonInfo() {
+            return new ButtonInfo(board, button);
         }
     };
 
@@ -97,7 +90,7 @@ public class ButtonBoardUtil {
 
     public void periodic(Drive drive) {
         for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
-            if (button.isPressed()) {
+            if (boardIO.isPressed(button)) {
                 coralReefLocation = button.value();
                 coralReefReferencePose = coralReefLocation.pose();
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
@@ -108,7 +101,7 @@ public class ButtonBoardUtil {
             }
         }
         for (SelectButtonInfo<CoralLevel> button : levels) {
-            if (button.isPressed()) {
+            if (boardIO.isPressed(button)) {
                 coralReefLevel = button.value();
                 if (coralReefLocation != null)
                     coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
@@ -116,19 +109,19 @@ public class ButtonBoardUtil {
         }
 
         for (SelectButtonInfo<IntakeStation> button : intakeStationButtons) {
-            if (button.isPressed()) {
+            if (boardIO.isPressed(button)) {
                 intakeStation = button.value();
                 intakeStationPose = IntakeStations.intakeStation(intakeStation);
                 intakeStationReferencePose = intakeStation.pose();
             }
         }
-        if (algaeModeToggle.isPressed()) {
+        if (boardIO.isPressed(algaeModeToggle)) {
             algaeMode = !algaeMode;
         }
-        if (processor.isPressed()) {
+        if (boardIO.isPressed(processor)) {
             isProcessor = true;
         }
-        if (net.isPressed()) {
+        if (boardIO.isPressed(net)) {
             isProcessor = false;
         }
 
@@ -148,8 +141,8 @@ public class ButtonBoardUtil {
         Logger.recordOutput("ButtonBoard/CoralReefLevel", coralReefLevel);
         Logger.recordOutput("ButtonBoard/IntakeStation", intakeStation);
         Logger.recordOutput("ButtonBoard/IntakeStationPose", intakeStationPose);
-        Logger.recordOutput("ButtonBoard/ClimbUp", climbUp.isPressed());
-        Logger.recordOutput("ButtonBoard/ClimbDown", climbDown.isPressed());
+        Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
+        Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
     }
 
     public Pose2d getCoralReefTarget() {
@@ -197,7 +190,8 @@ public class ButtonBoardUtil {
                 if (coralReefTargetPose == null) {
                     return false;
                 }
-                return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.processor()) < processorDistThreshold.get();
+                return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.processor()) < processorDistThreshold
+                        .get();
             } else {
                 // TODO: Net
                 return false;
