@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -44,12 +45,13 @@ public class ManualState extends State {
                         rotVel = () -> -driver.getRightX();
                 }
 
-                startWhenActive(DriveCommands.joystickDrive(drive, xVel, yVel, rotVel));
+                Command joystickDrive = DriveCommands.joystickDrive(drive, xVel, yVel, rotVel);
+                startWhenActive(joystickDrive);
                 startWhenActive(LEDs.Default());
 
                 // Switch to X pattern when X button is pressed
-                driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-
+                driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive).withName("X mode"));
+                driverController.x().onFalse(joystickDrive);
                 driverController.a().onTrue(
                                 DriveCommands.goToPointJoystickRot(drive, new Pose2d(3, 3, new Rotation2d()), rotVel));
 

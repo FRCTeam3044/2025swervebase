@@ -2,9 +2,7 @@
   "HALProvider": {
     "Addressable LEDs": {
       "0": {
-        "order": 1,
-        "serpentine": true,
-        "start": 1
+        "serpentine": true
       },
       "window": {
         "visible": true
@@ -86,6 +84,9 @@
     }
   },
   "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
     "GearGlimpse@1": {
       "Publishers": {
         "open": false
@@ -98,6 +99,8 @@
     "Nt4Unity@1": {
       "open": false
     },
-    "visible": true
+    "Server": {
+      "open": true
+    }
   }
 }
