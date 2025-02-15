@@ -386,7 +386,7 @@ public class DriveCommands {
         Vector pathDir = start.createVectorTo(nextWaypoint).normalize();
         double speed = velocity.dotProduct(pathDir);
         config.setStartVelocity(speed);
-        // config.setKinematics(DriveConstants.kDriveKinematics);
+        config.setKinematics(drive.getKinematics());
         // config.setStartVelocity(10);
         return config;
     }

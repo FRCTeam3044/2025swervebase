@@ -303,4 +303,9 @@ public class Drive extends SubsystemBase implements VisionConsumer {
   public double getMaxAngularSpeedRadPerSec() {
     return maxSpeedMetersPerSec.get() / driveBaseRadius;
   }
+
+  /** Returns the kinematics object. */
+  public SwerveDriveKinematics getKinematics() {
+    return kinematics;
+  }
 }
