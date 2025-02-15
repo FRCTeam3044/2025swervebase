@@ -194,11 +194,18 @@ public class ButtonBoardUtil {
     public boolean closeToScoringTarget(Drive drive) {
         if (algaeMode) {
             if (isProcessor) {
+                if (coralReefTargetPose == null) {
+                    return false;
+                }
                 return AutoTargetUtils.robotDistToPose(drive, algaeReefTargetPose) < processorDistThreshold.get();
             } else {
-                return AutoTargetUtils.robotDistToPose(drive, coralReefTargetPose) < coralReefDistThreshold.get();
+                // TODO: Net
+                return false;
             }
         } else {
+            if (coralReefTargetPose == null) {
+                return false;
+            }
             return AutoTargetUtils.robotDistToPose(drive, coralReefTargetPose) < coralReefDistThreshold.get();
         }
     }

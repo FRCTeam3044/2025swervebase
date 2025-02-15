@@ -115,7 +115,8 @@ public class StateMachine extends StateMachineBase {
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released");
 
-                scoreGamePiece.withTransition(goToScoringPosition, () -> false, "Scoring location changed")
+                scoreGamePiece.withTransition(goToScoringPosition, () -> !buttonBoard.closeToScoringTarget(drive),
+                                "Far from scoring location")
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released")
                                 .withTransition(manual, () -> !endEffector.hasCoral() && !endEffector.hasAlgae(),
@@ -126,7 +127,8 @@ public class StateMachine extends StateMachineBase {
                                 .withTransition(manual, () -> !driverController.leftTrigger()
                                                 .getAsBoolean(), "Intake button released");
 
-                intakeGamePiece.withTransition(goToIntake, () -> false, "Intake location changed")
+                intakeGamePiece.withTransition(goToIntake, () -> !buttonBoard.closeToIntakeTarget(drive),
+                                "Intake location changed")
                                 .withTransition(manual, () -> !driverController.leftTrigger()
                                                 .getAsBoolean(), "Intake button released")
                                 .withTransition(manual, () -> endEffector.hasCoral() || endEffector.hasAlgae(),

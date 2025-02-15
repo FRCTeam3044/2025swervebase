@@ -64,14 +64,13 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
-        "Drive": {
-          "open": false
-        },
         "RealOutputs": {
-          "FieldSimulation": {
-            "open": false
-          }
-        }
+          "StateMachine": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
       },
       "LiveWindow": {
         "open": true

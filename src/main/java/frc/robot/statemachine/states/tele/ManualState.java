@@ -21,7 +21,6 @@ import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.AllianceUtil;
 
 public class ManualState extends State {
-        @SuppressWarnings("unused")
         public ManualState(StateMachineBase stateMachine, CommandXboxController driver, CommandXboxController operator,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super(stateMachine);
@@ -60,7 +59,6 @@ public class ManualState extends State {
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.01);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.05);
 
-                startWhenActive(LEDs.simMorseCode());
                 startWhenActive(elevator.elevatorMove(rightY));
                 startWhenActive(shoulder.manualPivot(leftY));
         }
