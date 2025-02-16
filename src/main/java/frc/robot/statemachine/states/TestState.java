@@ -17,7 +17,6 @@ public class TestState extends State {
         public TestState(StateMachineBase stateMachine, CommandXboxController controller, Elevator elevator,
                         Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super(stateMachine);
-                @SuppressWarnings("unused")
                 SmartXboxController testController = new SmartXboxController(controller, loop);
 
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(controller.getRightY(), 0.01);
@@ -26,7 +25,7 @@ public class TestState extends State {
                 startWhenActive(LEDs.simMorseCode());
                 startWhenActive(elevator.elevatorMove(rightY));
                 startWhenActive(shoulder.manualPivot(leftY));
-                controller.a().onTrue(endEffector.runIntake());
-                controller.b().onTrue(endEffector.runIntakeReverse());
+                testController.a().onTrue(endEffector.runIntake());
+                testController.b().onTrue(endEffector.runIntakeReverse());
         }
 }

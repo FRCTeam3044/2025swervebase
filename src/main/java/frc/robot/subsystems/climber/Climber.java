@@ -23,6 +23,6 @@ public class Climber extends SubsystemBase{
     }
 
     public Command move(DoubleSupplier speed) {
-        return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0));
+        return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0), this);
     }
 }

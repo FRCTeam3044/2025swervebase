@@ -32,12 +32,50 @@
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "Blocker": {
+          "arrows": false,
+          "color": [
+            0.24313725531101227,
+            0.24313725531101227,
+            0.24313725531101227,
+            255.0
+          ],
+          "length": 0.20999999344348907,
+          "weight": 25.0,
+          "width": 0.20999999344348907
+        },
         "Path": {
           "arrows": false,
           "style": "Line"
         },
+        "Robot": {
+          "arrowWeight": 3.0,
+          "length": 0.9200000166893005,
+          "selectable": false,
+          "weight": 3.0,
+          "width": 0.9200000166893005
+        },
+        "algae": {
+          "arrows": false,
+          "image": "/home/nicholas/Documents/coding/robotics/2025/2025swervebase/algae.png",
+          "length": 0.3499999940395355,
+          "width": 0.3499999940395355
+        },
         "bottom": 1638,
         "builtin": "2025 Reefscape",
+        "coral": {
+          "arrows": false,
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "image": "/home/nicholas/Documents/coding/robotics/2025/2025swervebase/coral.png",
+          "length": 0.30000001192092896,
+          "weight": 0.0,
+          "width": 0.10999999940395355
+        },
         "height": 8.051901817321777,
         "left": 534,
         "right": 3466,

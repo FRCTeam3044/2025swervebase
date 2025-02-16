@@ -102,11 +102,13 @@ public class StateMachine extends StateMachineBase {
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition,
                                 () -> driverController.rightTrigger().getAsBoolean()
-                                                && (endEffector.hasCoral() || endEffector.hasAlgae()),
+                                                && (endEffector.hasCoral() || endEffector.hasAlgae())
+                                                && buttonBoard.scoringSelected(),
                                 "Driver presses score")
                                 .withTransition(goToIntake,
                                                 () -> driverController.leftTrigger().getAsBoolean()
-                                                                && (!endEffector.hasCoral() && !endEffector.hasAlgae()),
+                                                                && (!endEffector.hasCoral() && !endEffector.hasAlgae())
+                                                                && buttonBoard.intakeSelected(),
                                                 "Driver presses intake");
 
                 goToScoringPosition

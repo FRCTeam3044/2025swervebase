@@ -51,13 +51,13 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command elevatorMove(DoubleSupplier speed) {
-        return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0))
+        return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0), this)
                 .withName("Elevator manual move");
     }
 
     public Command toCoral(CoralLevel level, DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(getHeightForCoral(level, robotDistance.getAsDouble())))
-                .withName("Set elevator to L1 Scoring level");
+        return Commands.run(() -> io.setPosition(getHeightForCoral(level, robotDistance.getAsDouble())), this)
+                .withName("Elevator to CoralLevel");
     }
 
     private double getHeightForCoral(CoralLevel level, double distance) {

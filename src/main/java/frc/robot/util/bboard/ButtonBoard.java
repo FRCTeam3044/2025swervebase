@@ -93,16 +93,16 @@ public class ButtonBoard {
     private AllianceColor lastAllianceColor = AllianceColor.UNKNOWN;
 
     public void periodic(Drive drive) {
-        if(lastAllianceColor != AllianceUtil.getAlliance()){
-            if(coralReefLevel != null && coralReefLocation != null){
+        if (lastAllianceColor != AllianceUtil.getAlliance()) {
+            if (coralReefLevel != null && coralReefLocation != null) {
                 coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
                 coralReefReferencePose = coralReefLocation.pose();
             }
-            if(coralReefLocation != null){
+            if (coralReefLocation != null) {
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
                 algaeReefReferencePose = coralReefLocation.algae().pose();
             }
-            if(intakeStation != null){
+            if (intakeStation != null) {
                 intakeStationPose = IntakeStations.intakeStation(intakeStation);
                 intakeStationReferencePose = intakeStation.pose();
             }
@@ -240,6 +240,22 @@ public class ButtonBoard {
             }
 
             return AutoTargetUtils.robotDistToPose(drive, intakeStationPose) < intakeStationDistThreshold.get();
+        }
+    }
+
+    public boolean intakeSelected() {
+        if (algaeMode) {
+            return algaeReefTargetPose != null;
+        } else {
+            return intakeStationPose != null;
+        }
+    }
+
+    public boolean scoringSelected() {
+        if (algaeMode) {
+            return true;
+        } else {
+            return coralReefTargetPose != null;
         }
     }
 }

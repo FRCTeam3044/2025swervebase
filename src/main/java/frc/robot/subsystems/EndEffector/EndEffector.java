@@ -25,15 +25,15 @@ public class EndEffector extends SubsystemBase {
     }
 
     public Command runIntakeSpeed(DoubleSupplier desiredSpeed) {
-        return Commands.runEnd(() -> io.setCoralSpeed(desiredSpeed.getAsDouble()), () -> io.setCoralSpeed(0.0));
+        return Commands.runEnd(() -> io.setCoralSpeed(desiredSpeed.getAsDouble()), () -> io.setCoralSpeed(0.0), this).withName("Run Intake Speed");
     }
 
     public Command runIntake() {
-        return runIntakeSpeed(intakeSpeed::get);
+        return runIntakeSpeed(intakeSpeed::get).withName("Run Intake");
     }
 
     public Command runIntakeReverse() {
-        return runIntakeSpeed(() -> -intakeSpeed.get());
+        return runIntakeSpeed(() -> -intakeSpeed.get()).withName("Run Intake Reverse");
     }
 
     public boolean hasCoral() {

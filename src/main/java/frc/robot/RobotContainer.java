@@ -16,7 +16,6 @@ package frc.robot;
 import static frc.robot.subsystems.vision.VisionConstants.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -102,7 +101,6 @@ public class RobotContainer {
         private final MechanismRoot2d root;
         private final MechanismLigament2d elevatorSim;
         private final MechanismLigament2d shoulderSim;
-        private final MechanismLigament2d endEffectorSim;
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -150,7 +148,7 @@ public class RobotContainer {
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
                                 elevator = new Elevator(new ElevatorIOSim());
                                 shoulder = new Shoulder(new ShoulderIOSim());
-                                endEffector = new EndEffector(new EndEffectorIOSim());
+                                endEffector = new EndEffector(new EndEffectorIOSim(driverController.getHID()));
                                 buttonBoard = new ButtonBoard(Constants.simButtonBoard ? new BBoardIOSim() : new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIORio());
                                 break;
@@ -235,7 +233,7 @@ public class RobotContainer {
                 shoulderSim = elevatorSim
                                 .append(new MechanismLigament2d("shoulder", 0.65, shoulder.getShoulderAngle(), 6.0,
                                                 new Color8Bit(Color.kPurple)));
-                endEffectorSim = shoulderSim.append(
+                shoulderSim.append(
                                 new MechanismLigament2d("endEffector", 0.5, 90.0, 6.0, new Color8Bit(Color.kPurple)));
         }
 
@@ -264,8 +262,9 @@ public class RobotContainer {
                         return;
                 Logger.recordOutput("FieldSimulation/RobotPosition", driveSimulation.getSimulatedDriveTrainPose());
                 Logger.recordOutput(
-                                "FieldSimulation/Notes",
-                                SimulatedArena.getInstance().getGamePiecesByType("Note").toArray(new Pose3d[0]));
+                        "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+                Logger.recordOutput(
+                        "FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
         }
 
         public void displaySimFieldToSmartDashboard() {
@@ -273,11 +272,17 @@ public class RobotContainer {
                         return;
 
                 fieldSim.setRobotPose(driveSimulation.getSimulatedDriveTrainPose());
-                fieldSim.getObject("notes")
-                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Note").stream().map((p) -> {
+                fieldSim.getObject("algae")
+                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Algae").stream().map((p) -> {
                                         return new Pose2d(p.getTranslation().getX(), p.getTranslation().getY(),
                                                         new Rotation2d());
                                 }).toArray(Pose2d[]::new));
+                fieldSim.getObject("coral")
+                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Coral").stream().map((p) -> {
+                                        return new Pose2d(p.getTranslation().getX(), p.getTranslation().getY(),
+                                                        new Rotation2d(p.getRotation().getZ()));
+                                }).toArray(Pose2d[]::new));
+                
                 SmartDashboard.putData("Field", fieldSim);
         }
 

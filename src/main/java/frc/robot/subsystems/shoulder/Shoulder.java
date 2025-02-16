@@ -51,14 +51,15 @@ public class Shoulder extends SubsystemBase {
     }
 
     public Command manualPivot(DoubleSupplier desiredSpeed) {
-        return Commands.runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0))
+        return Commands
+                .runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0), this)
                 .withName("Shoulder Manual Pivot");
     }
 
     public Command scoreCoral(CoralLevel level, DoubleSupplier robotDistance) {
         return Commands
                 .run(() -> io.setShoulderAngle(calculateAngleForCoral(level, robotDistance.getAsDouble())), this)
-                .withName("Set Shoulder to L1 Scoring position");
+                .withName("Shoulder to CoralLevel");
     }
 
     private double calculateAngleForCoral(CoralLevel level, double robotDist) {

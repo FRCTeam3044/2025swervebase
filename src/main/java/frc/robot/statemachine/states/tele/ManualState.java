@@ -3,8 +3,6 @@ package frc.robot.statemachine.states.tele;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -52,11 +50,9 @@ public class ManualState extends State {
                 // Switch to X pattern when X button is pressed
                 driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive).withName("X mode"));
                 driverController.x().onFalse(joystickDrive);
-                driverController.a().onTrue(
-                                DriveCommands.goToPointJoystickRot(drive, new Pose2d(3, 3, new Rotation2d()), rotVel));
 
-                operatorController.leftTrigger().onTrue(endEffector.runIntakeReverse());
-                operatorController.rightTrigger().onTrue(endEffector.runIntake());
+                operatorController.leftTrigger().whileTrue(endEffector.runIntakeReverse());
+                operatorController.rightTrigger().whileTrue(endEffector.runIntake());
 
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.01);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.05);
