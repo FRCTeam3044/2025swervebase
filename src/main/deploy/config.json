@@ -1,5 +1,7 @@
 {
     "presentation": {
+        "Shoulder Intake Angles/x2": "0.0",
+        "Shoulder Intake Angles/x1": "0.0",
         "Shoulder L3 Angles/y2": "0.0",
         "Algae low scoring dist": {
             "comment": "Auto-Generated",
@@ -20,7 +22,7 @@
         "Shoulder L2 Angles/x2": "0.0",
         "Algae Flipped": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
@@ -32,6 +34,8 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Elevator Intake Heights/y1": "0.0",
+        "Elevator Intake Heights/y2": "0.0",
         "Shoulder L4 Angles/y1": "0.0",
         "Coral proximity distance": {
             "comment": "Auto-Generated",
@@ -41,10 +45,12 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Shoulder Intake Angles/y2": "0.0",
         "Intake station flipped": {
             "comment": "Auto-Generated",
             "value": "false"
         },
+        "Shoulder Intake Angles/y1": "0.0",
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
@@ -57,6 +63,8 @@
         },
         "Elevator L1 Heights/x2": "0.0",
         "Elevator L1 Heights/x1": "0.0",
+        "Elevator Intake Heights/x1": "0.0",
+        "Elevator Intake Heights/x2": "0.0",
         "Intake station dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
@@ -132,7 +140,7 @@
         "Shoulder L2 Angles/y1": "0.0",
         "Coral Flipped": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",
@@ -153,6 +161,8 @@
     },
     "mode": "simulation",
     "simulation": {
+        "Shoulder Intake Angles/x2": "1",
+        "Shoulder Intake Angles/x1": "0.5",
         "Shoulder L3 Angles/y2": "0.0",
         "Algae low scoring dist": {
             "comment": "Auto-Generated",
@@ -165,15 +175,15 @@
         },
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Shoulder L2 Angles/x1": "0.0",
+        "Shoulder L2 Angles/x1": "0.635",
         "Pathfinding Max Accel": {
             "comment": "Auto-Generated",
             "value": "2.0"
         },
-        "Shoulder L2 Angles/x2": "0.0",
+        "Shoulder L2 Angles/x2": "1",
         "Algae Flipped": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
@@ -185,6 +195,8 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Elevator Intake Heights/y1": "1.16",
+        "Elevator Intake Heights/y2": "1.16",
         "Shoulder L4 Angles/y1": "0.0",
         "Coral proximity distance": {
             "comment": "Auto-Generated",
@@ -194,10 +206,12 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Shoulder Intake Angles/y2": "-0.85",
         "Intake station flipped": {
             "comment": "Auto-Generated",
             "value": "false"
         },
+        "Shoulder Intake Angles/y1": "-0.85",
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
@@ -209,7 +223,9 @@
             "value": "1.0"
         },
         "Elevator L1 Heights/x2": "0.0",
-        "Elevator L1 Heights/x1": "0.0",
+        "Elevator L1 Heights/x1": "1.0",
+        "Elevator Intake Heights/x1": "0.5",
+        "Elevator Intake Heights/x2": "1",
         "Intake station dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
@@ -219,12 +235,12 @@
             "value": "1.0"
         },
         "Shoulder L4 Angles/y2": "0.0",
-        "Elevator L2 Heights/x2": "0.0",
+        "Elevator L2 Heights/x2": "1",
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Elevator L2 Heights/x1": "0.0",
+        "Elevator L2 Heights/x1": "0.635",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "X Point Controller/I": "0.0",
@@ -243,7 +259,7 @@
         "Point Y Controller/D": "0.0",
         "Intake station dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.7"
         },
         "X Point Controller/P": "1.5",
         "Point Y Controller/P": "1.5",
@@ -270,22 +286,22 @@
         },
         "Coral L2 scoring dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.6"
         },
-        "Elevator L2 Heights/y2": "0.0",
+        "Elevator L2 Heights/y2": "1",
         "Shoulder L3 Angles/x1": "0.0",
         "Coral L1 scoring dist": {
             "comment": "Auto-Generated",
             "value": "0.6"
         },
-        "Elevator L2 Heights/y1": "0.0",
-        "Shoulder L2 Angles/y2": "0.0",
+        "Elevator L2 Heights/y1": "1",
+        "Shoulder L2 Angles/y2": "2",
         "Elevator L4 Heights/x1": "0.0",
         "Elevator L4 Heights/x2": "0.0",
-        "Shoulder L2 Angles/y1": "0.0",
+        "Shoulder L2 Angles/y1": "2",
         "Coral Flipped": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",
@@ -305,6 +321,8 @@
         "Point Theta Controller/I": "0.0"
     },
     "competition": {
+        "Shoulder Intake Angles/x2": "0.0",
+        "Shoulder Intake Angles/x1": "0.0",
         "Shoulder L3 Angles/y2": "0.0",
         "Algae low scoring dist": {
             "comment": "Auto-Generated",
@@ -325,7 +343,7 @@
         "Shoulder L2 Angles/x2": "0.0",
         "Algae Flipped": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
@@ -337,6 +355,8 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Elevator Intake Heights/y1": "0.0",
+        "Elevator Intake Heights/y2": "0.0",
         "Shoulder L4 Angles/y1": "0.0",
         "Coral proximity distance": {
             "comment": "Auto-Generated",
@@ -346,10 +366,12 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Shoulder Intake Angles/y2": "0.0",
         "Intake station flipped": {
             "comment": "Auto-Generated",
             "value": "false"
         },
+        "Shoulder Intake Angles/y1": "0.0",
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
@@ -362,6 +384,8 @@
         },
         "Elevator L1 Heights/x2": "0.0",
         "Elevator L1 Heights/x1": "0.0",
+        "Elevator Intake Heights/x1": "0.0",
+        "Elevator Intake Heights/x2": "0.0",
         "Intake station dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
@@ -437,7 +461,7 @@
         "Shoulder L2 Angles/y1": "0.0",
         "Coral Flipped": {
             "comment": "Auto-Generated",
-            "value": "false"
+            "value": "true"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",

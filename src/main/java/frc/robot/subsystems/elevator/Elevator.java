@@ -21,6 +21,9 @@ public class Elevator extends SubsystemBase {
     private final ConfigurableLinearInterpolation L3 = new ConfigurableLinearInterpolation("Elevator L3 Heights");
     private final ConfigurableLinearInterpolation L4 = new ConfigurableLinearInterpolation("Elevator L4 Heights");
 
+    private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
+            "Elevator Intake Heights");
+
     public Elevator(ElevatorIO io) {
         this.io = io;
 
@@ -58,6 +61,11 @@ public class Elevator extends SubsystemBase {
     public Command toCoral(CoralLevel level, DoubleSupplier robotDistance) {
         return Commands.run(() -> io.setPosition(getHeightForCoral(level, robotDistance.getAsDouble())), this)
                 .withName("Elevator to CoralLevel");
+    }
+
+    public Command intakeCoral(DoubleSupplier robotDistance) {
+        return Commands.run(() -> io.setPosition(intakeCoral.calculate(robotDistance.getAsDouble())), this)
+                .withName("Elevator to intake");
     }
 
     private double getHeightForCoral(CoralLevel level, double distance) {

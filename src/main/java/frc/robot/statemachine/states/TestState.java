@@ -19,8 +19,8 @@ public class TestState extends State {
                 super(stateMachine);
                 SmartXboxController testController = new SmartXboxController(controller, loop);
 
-                DoubleSupplier rightY = () -> -MathUtil.applyDeadband(controller.getRightY(), 0.01);
-                DoubleSupplier leftY = () -> -MathUtil.applyDeadband(controller.getLeftY(), 0.05);
+                DoubleSupplier rightY = () -> -MathUtil.applyDeadband(controller.getRightY(), 0.1);
+                DoubleSupplier leftY = () -> -MathUtil.applyDeadband(controller.getLeftY(), 0.1);
 
                 startWhenActive(LEDs.simMorseCode());
                 startWhenActive(elevator.elevatorMove(rightY));

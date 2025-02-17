@@ -54,8 +54,8 @@ public class ManualState extends State {
                 operatorController.leftTrigger().whileTrue(endEffector.runIntakeReverse());
                 operatorController.rightTrigger().whileTrue(endEffector.runIntake());
 
-                DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.01);
-                DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.05);
+                DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
+                DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);
 
                 startWhenActive(elevator.elevatorMove(rightY));
                 startWhenActive(shoulder.manualPivot(leftY));

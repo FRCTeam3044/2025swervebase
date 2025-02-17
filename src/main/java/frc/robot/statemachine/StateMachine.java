@@ -58,13 +58,15 @@ public class StateMachine extends StateMachineBase {
                 ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector,
                                 LEDs);
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
-                IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, endEffector, LEDs);
+                IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, shoulder, endEffector,
+                                LEDs);
                 IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, endEffector, LEDs);
                 GoToIntake goToIntake = new GoToIntake(this);
                 GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive, LEDs);
-                GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, LEDs);
+                GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, elevator,
+                                shoulder, LEDs);
                 GoToScoringPosition goToScoringPosition = new GoToScoringPosition(this);
-                GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive);
+                GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive, elevator, shoulder);
                 GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);
                 GoToScoreNet goToScoreNet = new GoToScoreNet(this, buttonBoard, drive);
                 GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive);

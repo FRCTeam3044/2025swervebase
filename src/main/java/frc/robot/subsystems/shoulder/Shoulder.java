@@ -21,6 +21,9 @@ public class Shoulder extends SubsystemBase {
     private final ConfigurableLinearInterpolation L3 = new ConfigurableLinearInterpolation("Shoulder L3 Angles");
     private final ConfigurableLinearInterpolation L4 = new ConfigurableLinearInterpolation("Shoulder L4 Angles");
 
+    private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
+            "Shoulder Intake Angles");
+
     public Shoulder(ShoulderIO io) {
         this.io = io;
 
@@ -29,7 +32,7 @@ public class Shoulder extends SubsystemBase {
                         null,
                         null,
                         null,
-                        (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
+                        (state) -> Logger.recordOutput("Shoulder/SysIdTestState", state.toString())),
                 new SysIdRoutine.Mechanism(
                         (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
     }
@@ -37,11 +40,25 @@ public class Shoulder extends SubsystemBase {
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return run(() -> io.setVoltage(0.0))
                 .withTimeout(1.0)
-                .andThen(sysId.quasistatic(direction));
+                .andThen(sysId.quasistatic(direction))
+                .until(() -> {
+                    if (direction == SysIdRoutine.Direction.kForward) {
+                        return inputs.leftShoulderAngleRad > 1.4 * Math.PI;
+                    } else {
+                        return inputs.leftShoulderAngleRad < -Math.PI / 2.1;
+                    }
+                });
     }
 
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        return run(() -> io.setVoltage(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction));
+        return run(() -> io.setVoltage(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction)).until(() -> {
+            if (direction == SysIdRoutine.Direction.kForward) {
+                return inputs.leftShoulderAngleRad > 1.4 * Math.PI;
+            } else {
+                return inputs.leftShoulderAngleRad < -Math.PI / 2.1;
+            }
+        });
+
     }
 
     @Override
@@ -60,6 +77,11 @@ public class Shoulder extends SubsystemBase {
         return Commands
                 .run(() -> io.setShoulderAngle(calculateAngleForCoral(level, robotDistance.getAsDouble())), this)
                 .withName("Shoulder to CoralLevel");
+    }
+
+    public Command intakeCoral(DoubleSupplier robotDistance) {
+        return Commands.run(() -> io.setShoulderAngle(intakeCoral.calculate(robotDistance.getAsDouble())), this)
+                .withName("Shoulder to Intake");
     }
 
     private double calculateAngleForCoral(CoralLevel level, double robotDist) {

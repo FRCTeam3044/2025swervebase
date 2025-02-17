@@ -91,8 +91,12 @@ public class ButtonBoard {
     }
 
     private AllianceColor lastAllianceColor = AllianceColor.UNKNOWN;
+    private boolean intakeJustChanged = false;
+    private boolean coralReefJustChanged = false;
 
     public void periodic(Drive drive) {
+        intakeJustChanged = false;
+        coralReefJustChanged = false;
         if (lastAllianceColor != AllianceUtil.getAlliance()) {
             if (coralReefLevel != null && coralReefLocation != null) {
                 coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
@@ -110,6 +114,7 @@ public class ButtonBoard {
         boardIO.periodic();
         for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
             if (boardIO.isPressed(button)) {
+                coralReefJustChanged = true;
                 coralReefLocation = button.value();
                 coralReefReferencePose = coralReefLocation.pose();
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
@@ -129,6 +134,7 @@ public class ButtonBoard {
 
         for (SelectButtonInfo<IntakeStation> button : intakeStationButtons) {
             if (boardIO.isPressed(button)) {
+                intakeJustChanged = true;
                 intakeStation = button.value();
                 intakeStationPose = IntakeStations.intakeStation(intakeStation);
                 intakeStationReferencePose = intakeStation.pose();
@@ -257,5 +263,13 @@ public class ButtonBoard {
         } else {
             return coralReefTargetPose != null;
         }
+    }
+
+    public boolean intakeJustChanged() {
+        return intakeJustChanged;
+    }
+
+    public boolean coralReefJustChanged() {
+        return coralReefJustChanged;
     }
 }

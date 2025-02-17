@@ -149,7 +149,8 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorIOSim());
                                 shoulder = new Shoulder(new ShoulderIOSim());
                                 endEffector = new EndEffector(new EndEffectorIOSim(driverController.getHID()));
-                                buttonBoard = new ButtonBoard(Constants.simButtonBoard ? new BBoardIOSim() : new BBoardIOReal());
+                                buttonBoard = new ButtonBoard(
+                                                Constants.simButtonBoard ? new BBoardIOSim() : new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIORio());
                                 break;
 
@@ -231,10 +232,10 @@ public class RobotContainer {
                 elevatorSim = root
                                 .append(new MechanismLigament2d("elevator", elevator.getElevatorHeight(), 90));
                 shoulderSim = elevatorSim
-                                .append(new MechanismLigament2d("shoulder", 0.65, shoulder.getShoulderAngle(), 6.0,
+                                .append(new MechanismLigament2d("shoulder", 0.5, -90, 6.0,
                                                 new Color8Bit(Color.kPurple)));
                 shoulderSim.append(
-                                new MechanismLigament2d("endEffector", 0.5, 90.0, 6.0, new Color8Bit(Color.kPurple)));
+                                new MechanismLigament2d("endEffector", 0.35, 90.0, 6.0, new Color8Bit(Color.kPurple)));
         }
 
         /**
@@ -262,9 +263,11 @@ public class RobotContainer {
                         return;
                 Logger.recordOutput("FieldSimulation/RobotPosition", driveSimulation.getSimulatedDriveTrainPose());
                 Logger.recordOutput(
-                        "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+                                "FieldSimulation/Coral",
+                                SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
                 Logger.recordOutput(
-                        "FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+                                "FieldSimulation/Algae",
+                                SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
         }
 
         public void displaySimFieldToSmartDashboard() {
@@ -273,22 +276,26 @@ public class RobotContainer {
 
                 fieldSim.setRobotPose(driveSimulation.getSimulatedDriveTrainPose());
                 fieldSim.getObject("algae")
-                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Algae").stream().map((p) -> {
-                                        return new Pose2d(p.getTranslation().getX(), p.getTranslation().getY(),
-                                                        new Rotation2d());
-                                }).toArray(Pose2d[]::new));
+                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Algae").stream()
+                                                .map((p) -> {
+                                                        return new Pose2d(p.getTranslation().getX(),
+                                                                        p.getTranslation().getY(),
+                                                                        new Rotation2d());
+                                                }).toArray(Pose2d[]::new));
                 fieldSim.getObject("coral")
-                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Coral").stream().map((p) -> {
-                                        return new Pose2d(p.getTranslation().getX(), p.getTranslation().getY(),
-                                                        new Rotation2d(p.getRotation().getZ()));
-                                }).toArray(Pose2d[]::new));
-                
+                                .setPoses(SimulatedArena.getInstance().getGamePiecesByType("Coral").stream()
+                                                .map((p) -> {
+                                                        return new Pose2d(p.getTranslation().getX(),
+                                                                        p.getTranslation().getY(),
+                                                                        new Rotation2d(p.getRotation().getZ()));
+                                                }).toArray(Pose2d[]::new));
+
                 SmartDashboard.putData("Field", fieldSim);
         }
 
         public void updateMechanism() {
                 elevatorSim.setLength(elevator.getElevatorHeight());
-                shoulderSim.setAngle(Math.toDegrees(shoulder.getShoulderAngle()));
+                shoulderSim.setAngle(Math.toDegrees(shoulder.getShoulderAngle()) - 90);
                 SmartDashboard.putData("Mech2d", mech);
         }
 }
