@@ -1,5 +1,9 @@
 package frc.robot.statemachine.states.tele;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
+import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.EndEffector.EndEffector;
@@ -18,7 +22,11 @@ public class IntakeCoral extends State {
         startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getIntakeStationTarget));
         startWhenActive(endEffector.runIntake());
         startWhenActive(LEDs.intakingAndScoringCoral());
-        startWhenActive(elevator.intakeCoral(buttonBoard.getIntakeStationTargetDist(drive)));
-        startWhenActive(shoulder.intakeCoral(buttonBoard.getIntakeStationTargetDist(drive)));
+        startWhenActive(elevator.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive)));
+        BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
+        DoubleSupplier dist = buttonBoard.getIntakeStationTargetDist(drive);
+        BooleanSupplier staging = () -> dist.getAsDouble() > StateMachine.alignmentThreshold.get()
+                || !elevatorCloseToTarget.getAsBoolean();
+        startWhenActive(shoulder.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive), staging));
     }
 }

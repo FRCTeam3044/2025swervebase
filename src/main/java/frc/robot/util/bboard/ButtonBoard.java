@@ -178,24 +178,57 @@ public class ButtonBoard {
         return coralReefLevel;
     }
 
+    public DoubleSupplier getCoralReefReferenceDist(Drive drive) {
+        return () -> {
+            if (coralReefReferencePose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, coralReefReferencePose);
+        };
+    }
+
     public DoubleSupplier getCoralReefTargetDist(Drive drive) {
-        return () -> AutoTargetUtils.robotDistToPose(drive, coralReefReferencePose);
+        return () -> {
+            if (coralReefTargetPose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, coralReefTargetPose);
+        };
     }
 
     public Pose2d getAlgaeReefTarget() {
         return algaeReefTargetPose;
     }
 
-    public DoubleSupplier getAlgaeReefTargetDist(Drive drive) {
-        return () -> AutoTargetUtils.robotDistToPose(drive, algaeReefReferencePose);
+    public DoubleSupplier getAlgaeReefReferenceDist(Drive drive) {
+        return () -> {
+            if (algaeReefReferencePose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, algaeReefReferencePose);
+        };
     }
 
     public Pose2d getIntakeStationTarget() {
         return intakeStationPose;
     }
 
+    public DoubleSupplier getIntakeStationReferenceDist(Drive drive) {
+        return () -> {
+            if (intakeStationReferencePose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, intakeStationReferencePose);
+        };
+    }
+
     public DoubleSupplier getIntakeStationTargetDist(Drive drive) {
-        return () -> AutoTargetUtils.robotDistToPose(drive, intakeStationReferencePose);
+        return () -> {
+            if (intakeStationPose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, intakeStationPose);
+        };
     }
 
     public boolean isProcessor() {

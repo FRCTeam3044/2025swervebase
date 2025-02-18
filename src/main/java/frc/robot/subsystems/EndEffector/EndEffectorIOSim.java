@@ -2,6 +2,7 @@ package frc.robot.subsystems.EndEffector;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 
 public class EndEffectorIOSim implements EndEffectorIO {
     private XboxController controller;
@@ -13,18 +14,22 @@ public class EndEffectorIOSim implements EndEffectorIO {
     }
 
     @Override
-    public boolean hasCoral() {
-        if(controller.getAButtonPressed()) {
+    public void updateInputs(EndEffectorIOInputs inputs) {
+        if (controller.getAButtonPressed()) {
             SmartDashboard.putBoolean("HasCoral", !SmartDashboard.getBoolean("HasCoral", false));
         }
-        return SmartDashboard.getBoolean("HasCoral", false);
+        if (controller.getBButtonPressed()) {
+            SmartDashboard.putBoolean("HasAlgae", !SmartDashboard.getBoolean("HasAlgae", false));
+        }
+        inputs.hasCoral = SmartDashboard.getBoolean("HasCoral", false);
+        inputs.hasAlgae = SmartDashboard.getBoolean("HasAlgae", false);
     }
 
     @Override
-    public boolean hasAlgae() {
-        if(controller.getBButtonPressed()) {
-            SmartDashboard.putBoolean("HasAlgae", !SmartDashboard.getBoolean("HasAlgae", false));
+    public void setSpeed(double speed) {
+        if (speed < 0 && SmartDashboard.getBoolean("HasCoral", false)) {
+            RobotContainer.getInstance().shootCoral();
+            SmartDashboard.putBoolean("HasCoral", false);
         }
-        return SmartDashboard.getBoolean("HasAlgae", false);
     }
 }

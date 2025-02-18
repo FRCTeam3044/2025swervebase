@@ -57,11 +57,12 @@ public class ShoulderIOSim implements ShoulderIO {
                 (shoulderSim.getVelocityRadPerSec() * 60 * shoulderMotorReduction / (2 * Math.PI)),
                 RobotController.getBatteryVoltage(),
                 0.02);
-        inputs.leftShoulderAngleRad = shoulderSim.getAngleRads();
-        inputs.leftShoulderSpeedRadsPerSec = shoulderSim.getVelocityRadPerSec();
-        inputs.leftShoulderRots = sparkMax.getEncoder().getPosition();
-        inputs.leftShoulderSpeedRPM = sparkMax.getEncoder().getVelocity();
-        inputs.leftShoulderAppliedVoltage = sparkMax.getAppliedOutput() * RobotController.getBatteryVoltage();
+        inputs.leaderShoulderAngleRad = shoulderSim.getAngleRads();
+        inputs.leaderShoulderSpeedRadsPerSec = shoulderSim.getVelocityRadPerSec();
+        inputs.leaderShoulderRots = sparkMax.getEncoder().getPosition();
+        inputs.leaderShoulderSpeedRPM = sparkMax.getEncoder().getVelocity();
+        inputs.leaderShoulderAppliedVoltage = sparkMax.getAppliedOutput() * RobotController.getBatteryVoltage();
+        inputs.setpointAngleRad = currentTargetAngleRad;
     }
 
     @Override

@@ -33,8 +33,14 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.bboard.ButtonBoard;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class StateMachine extends StateMachineBase {
+        public static ConfigurableParameter<Double> stagingThreshold = new ConfigurableParameter<>(0.0,
+                        "Staging Distance Threshold");
+        public static ConfigurableParameter<Double> alignmentThreshold = new ConfigurableParameter<Double>(0.0,
+                        "Full Alignment Distance Threshold");
+
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
                         ButtonBoard buttonBoard, LoggedDashboardChooser<Command> chooser,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {

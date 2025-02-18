@@ -30,6 +30,9 @@ public class ShoulderIOSpark implements ShoulderIO {
         private final ProfiledPIDController controller = new ProfiledPIDController(kP, kI, kD, m_constraints, kDt);
         ArmFeedforward feedforward = new ArmFeedforward(kS, kG, kV);
 
+        private boolean positionControlMode = false;
+        private double currentTargetAngleRad;
+
         public ShoulderIOSpark() {
                 tryUntilOk(leaderMotor, 5, () -> leaderMotor.configure(ShoulderConfig.leaderConfig,
                                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
@@ -40,35 +43,33 @@ public class ShoulderIOSpark implements ShoulderIO {
 
         @Override
         public void updateInputs(ShoulderIOInputs inputs) {
-                ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leftShoulderAngleRad = value);
+                if (positionControlMode) {
+                        positionControlRio(currentTargetAngleRad);
+                }
+                inputs.setpointAngleRad = currentTargetAngleRad;
+                ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leaderShoulderAngleRad = value);
                 ifOk(leaderMotor, encoder::getVelocity,
-                                (value) -> inputs.leftShoulderSpeedRadsPerSec = value);
+                                (value) -> inputs.leaderShoulderSpeedRadsPerSec = value);
                 ifOk(leaderMotor, leaderMotor::getOutputCurrent,
-                                (value) -> inputs.leftShoulderCurrentAmps = value);
+                                (value) -> inputs.leaderShoulderCurrentAmps = value);
                 ifOk(
                                 leaderMotor,
                                 new DoubleSupplier[] { leaderMotor::getAppliedOutput,
                                                 leaderMotor::getBusVoltage },
-                                (values) -> inputs.leftShoulderAppliedVoltage = values[0] * values[1]);
+                                (values) -> inputs.leaderShoulderAppliedVoltage = values[0] * values[1]);
                 ifOk(leaderMotor, leaderMotor::getMotorTemperature,
-                                (value) -> inputs.leftTemperature = value);
-                ifOk(followerMotor, encoder::getPosition, (value) -> inputs.rightShoulderAngleRad = value);
-                ifOk(followerMotor, encoder::getVelocity,
-                                (value) -> inputs.rightShoulderSpeedRadsPerSec = value);
-                ifOk(followerMotor, followerMotor::getOutputCurrent,
-                                (value) -> inputs.rightShoulderCurrentAmps = value);
-                ifOk(
-                                followerMotor,
-                                new DoubleSupplier[] { followerMotor::getAppliedOutput,
-                                                followerMotor::getBusVoltage },
-                                (values) -> inputs.rightShoulderAppliedVoltage = values[0] * values[1]);
+                                (value) -> inputs.leaderTemperature = value);
                 ifOk(followerMotor, followerMotor::getMotorTemperature,
-                                (value) -> inputs.rightTemperature = value);
+                                (value) -> inputs.followerTemperature = value);
         }
 
         @Override
         public void setShoulderAngle(double desiredAngle) {
-                // TODO Auto-generated method stub
+                positionControlMode = true;
+                currentTargetAngleRad = desiredAngle;
+        }
+
+        public void positionControlRio(double desiredAngle) {
                 double lastSpeed = 0;
                 double lastTime = Timer.getFPGATimestamp();
                 double pidVal = controller.calculate(encoder.getPosition(), desiredAngle);
@@ -109,12 +110,13 @@ public class ShoulderIOSpark implements ShoulderIO {
 
         @Override
         public void setShoulderSpeed(double desiredSpeed) {
-                // TODO Auto-generated method stub
+                positionControlMode = false;
                 leaderMotor.set(desiredSpeed);
         }
 
         @Override
         public void setVoltage(double voltage) {
+                positionControlMode = false;
                 leaderMotor.setVoltage(voltage);
         }
 }

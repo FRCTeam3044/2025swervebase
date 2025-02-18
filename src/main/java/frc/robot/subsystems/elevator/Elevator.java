@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.util.ConfigurableLinearInterpolation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class Elevator extends SubsystemBase {
     private final ElevatorIO io;
@@ -23,6 +24,9 @@ public class Elevator extends SubsystemBase {
 
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Elevator Intake Heights");
+
+    private final ConfigurableParameter<Double> elevatorTargetThreshold = new ConfigurableParameter<>(0.075,
+            "Elevator Target Threshold");
 
     public Elevator(ElevatorIO io) {
         this.io = io;
@@ -59,7 +63,12 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command toCoral(CoralLevel level, DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(getHeightForCoral(level, robotDistance.getAsDouble())), this)
+        return Commands.run(() -> io.setPosition(getHeightForCoral(level, robotDistance.getAsDouble(), false)), this)
+                .withName("Elevator to CoralLevel");
+    }
+
+    public Command stageCoral(CoralLevel level) {
+        return Commands.run(() -> io.setPosition(getHeightForCoral(level, 0, true)), this)
                 .withName("Elevator to CoralLevel");
     }
 
@@ -68,16 +77,20 @@ public class Elevator extends SubsystemBase {
                 .withName("Elevator to intake");
     }
 
-    private double getHeightForCoral(CoralLevel level, double distance) {
+    public Command stageIntake() {
+        return Commands.run(() -> io.setPosition(intakeCoral.getY2()), this).withName("Elevator to intake");
+    }
+
+    private double getHeightForCoral(CoralLevel level, double distance, boolean staging) {
         switch (level) {
             case L1:
-                return L1.calculate(distance);
+                return staging ? L1.getY2() : L1.calculate(distance);
             case L2:
-                return L2.calculate(distance);
+                return staging ? L2.getY2() : L2.calculate(distance);
             case L3:
-                return L3.calculate(distance);
+                return staging ? L3.getY2() : L3.calculate(distance);
             case L4:
-                return L4.calculate(distance);
+                return staging ? L4.getY2() : L4.calculate(distance);
             default:
                 return 0;
         }
@@ -89,5 +102,9 @@ public class Elevator extends SubsystemBase {
 
     public double getElevatorHeight() {
         return inputs.elevatorHeightMeters;
+    }
+
+    public boolean isAtTarget() {
+        return Math.abs(inputs.elevatorHeightMeters - inputs.setpointMeters) < elevatorTargetThreshold.get();
     }
 }

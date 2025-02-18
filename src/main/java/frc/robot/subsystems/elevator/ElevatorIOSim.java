@@ -72,13 +72,13 @@ public class ElevatorIOSim implements ElevatorIO {
         // elevatorMotorSim.setAppliedOutput((pidOutput + feedforwardOutput) / 12.0);
 
         inputs.setpointMeters = currentTargetMeters;
-        inputs.leftPositionRot = elevatorEncoder.getPosition();
+        inputs.leaderPositionRot = elevatorEncoder.getPosition();
         inputs.elevatorHeightMeters = m_elevatorSim.getPositionMeters();
         // inputs.elevatorHeightCalc = (elevatorEncoder.getPosition() /
         // ElevatorConstants.kElevatorGearing)
         // * (ElevatorConstants.kElevatorDrumRadius * 2.0 * Math.PI);
-        inputs.leftAppliedVolts = sparkMaxSim.getAppliedOutput() * RobotController.getBatteryVoltage();
-        inputs.leftCurrentAmps = sparkMaxSim.getMotorCurrent();
+        inputs.leaderAppliedVolts = sparkMaxSim.getAppliedOutput() * RobotController.getBatteryVoltage();
+        inputs.leaderCurrentAmps = sparkMaxSim.getMotorCurrent();
         // inputs.pidOutput = pidOutput;
         // inputs.feedforwardOutput = feedforwardOutput;
     }

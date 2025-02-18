@@ -25,7 +25,8 @@ public class EndEffector extends SubsystemBase {
     }
 
     public Command runIntakeSpeed(DoubleSupplier desiredSpeed) {
-        return Commands.runEnd(() -> io.setCoralSpeed(desiredSpeed.getAsDouble()), () -> io.setCoralSpeed(0.0), this).withName("Run Intake Speed");
+        return Commands.runEnd(() -> io.setSpeed(desiredSpeed.getAsDouble()), () -> io.setSpeed(0.0), this)
+                .withName("Run Intake Speed");
     }
 
     public Command runIntake() {
@@ -37,10 +38,10 @@ public class EndEffector extends SubsystemBase {
     }
 
     public boolean hasCoral() {
-        return io.hasCoral();
+        return inputs.hasCoral;
     }
 
     public boolean hasAlgae() {
-        return io.hasAlgae();
+        return inputs.hasAlgae;
     }
 }

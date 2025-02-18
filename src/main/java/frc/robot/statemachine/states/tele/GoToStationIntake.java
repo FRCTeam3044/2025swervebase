@@ -1,6 +1,10 @@
 package frc.robot.statemachine.states.tele;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.statemachine.StateMachine;
+import frc.robot.statemachine.reusable.SmartTrigger;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
@@ -20,7 +24,9 @@ public class GoToStationIntake extends State {
         startWhenActive(goToIntake);
         t(buttonBoard::intakeJustChanged).onFalse(goToIntake);
         startWhenActive(LEDs.goingToCoralIntake());
-        startWhenActive(elevator.intakeCoral(buttonBoard.getIntakeStationTargetDist(drive)));
-        startWhenActive(shoulder.intakeCoral(buttonBoard.getIntakeStationTargetDist(drive)));
+        DoubleSupplier dist = buttonBoard.getIntakeStationTargetDist(drive);
+        SmartTrigger staging = t(() -> dist.getAsDouble() < StateMachine.stagingThreshold.get());
+        staging.whileTrue(elevator.stageIntake());
+        staging.whileTrue(shoulder.stageIntake());
     }
 }
