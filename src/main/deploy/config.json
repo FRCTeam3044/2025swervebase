@@ -1,5 +1,7 @@
 {
     "presentation": {
+        "Shoulder Intake Angles/x2": "0.0",
+        "Shoulder Intake Angles/x1": "0.0",
         "Shoulder L3 Angles/y2": "0.0",
         "Algae low scoring dist": {
             "comment": "Auto-Generated",
@@ -7,7 +9,7 @@
         },
         "Shoulder L3 Angles/y1": "0.0",
         "Processor score dist threshold": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance from processor to score algae",
             "value": "0.5"
         },
         "Pathfinding X Controller/I": "0.0",
@@ -19,8 +21,8 @@
         },
         "Shoulder L2 Angles/x2": "0.0",
         "Algae Flipped": {
-            "comment": "Auto-Generated",
-            "value": "false"
+            "comment": "Face forward or backwards when intaking algae",
+            "value": "true"
         },
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
@@ -32,23 +34,47 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
-        "Shoulder L4 Angles/y1": "0.0",
-        "Coral proximity distance": {
+        "Elevator Intake Heights/y1": "0.0",
+        "Elevator Intake Heights/y2": "0.0",
+        "Elevator Target Threshold": {
             "comment": "Auto-Generated",
+            "value": "0.075"
+        },
+        "Staging L1 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Shoulder L4 Angles/y1": "0.0",
+        "Staging Distance Threshold": {
+            "comment": "Distance to start staging elevator/coral",
+            "value": "0.0"
+        },
+        "Coral proximity distance": {
+            "comment": "Distance threshold for proximity sensor to think we have coral",
             "value": "15.0"
         },
         "Coral reef score dist threshold": {
-            "comment": "Auto-Generated",
+            "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "Shoulder Intake Angles/y2": "0.0",
+        "Algae Low Intake Distance": {
+            "comment": "Target distance from reef to intake low algae",
+            "value": "1.0"
+        },
         "Intake station flipped": {
-            "comment": "Auto-Generated",
+            "comment": "Face backwards when intaking coral",
             "value": "false"
+        },
+        "Shoulder Intake Angles/y1": "0.0",
+        "Intake Current threshold": {
+            "comment": "Current threshold for whether or not we have something",
+            "value": "1.0"
         },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         },
         "Current threshold": {
@@ -56,9 +82,27 @@
             "value": "1.0"
         },
         "Elevator L1 Heights/x2": "0.0",
-        "Elevator L1 Heights/x1": "0.0",
-        "Intake station dist threshold": {
+        "Shoulder Target Threshold": {
             "comment": "Auto-Generated",
+            "value": "0.07"
+        },
+        "Elevator L1 Heights/x1": "0.0",
+        "Elevator Intake Heights/x1": "0.0",
+        "Elevator Intake Heights/x2": "0.0",
+        "Staging Intake Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Full Alignment Distance Threshold": {
+            "comment": "Distance to move shoulder from staging to target",
+            "value": "0.0"
+        },
+        "Staging L2 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Intake station dist threshold": {
+            "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
         },
         "elevator/topPoint": {
@@ -78,7 +122,7 @@
         "Pathfinding Theta Controller/P": "6.0",
         "Elevator L4 Heights/y1": "0.0",
         "Intake speed": {
-            "comment": "Auto-Generated",
+            "comment": "Used for both forward & reverse",
             "value": "1.0"
         },
         "Elevator L4 Heights/y2": "0.0",
@@ -88,15 +132,27 @@
         "Pathfinding Y Controller/D": "0.0",
         "X Point Controller/D": "0.0",
         "Point Y Controller/D": "0.0",
+        "Intake Coral proximity distance": {
+            "comment": "Distance threshold for proximity sensor to think we have coral",
+            "value": "15.0"
+        },
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Staging L3 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "X Point Controller/P": "1.0",
         "Point Y Controller/P": "1.0",
         "Processor Flipped": {
-            "comment": "Auto-Generated",
+            "comment": "Face backwards when scoring algae in processor",
             "value": "false"
+        },
+        "Staging L4 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "Elevator L1 Heights/y2": "0.0",
         "Elevator L1 Heights/y1": "0.0",
@@ -107,22 +163,26 @@
         "Pathfinding Theta Controller/D": "0.0",
         "Shoulder L4 Angles/x2": "0.0",
         "Coral L4 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L4",
             "value": "1.0"
         },
         "Shoulder L4 Angles/x1": "0.0",
         "Coral L3 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L3",
             "value": "1.0"
         },
         "Coral L2 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L2",
             "value": "1.0"
         },
         "Elevator L2 Heights/y2": "0.0",
+        "Algae High Intake Distance": {
+            "comment": "Target distance from reef to intake high algae",
+            "value": "1.0"
+        },
         "Shoulder L3 Angles/x1": "0.0",
         "Coral L1 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L1",
             "value": "1.0"
         },
         "Elevator L2 Heights/y1": "0.0",
@@ -131,15 +191,15 @@
         "Elevator L4 Heights/x2": "0.0",
         "Shoulder L2 Angles/y1": "0.0",
         "Coral Flipped": {
-            "comment": "Auto-Generated",
-            "value": "false"
+            "comment": "Face backwards when scoring coral",
+            "value": "true"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
         "Drive Speed (m/s)": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         },
         "Elevator L3 Heights/y2": "0.0",
@@ -153,65 +213,109 @@
     },
     "mode": "simulation",
     "simulation": {
-        "Shoulder L3 Angles/y2": "0.0",
+        "Shoulder Intake Angles/x2": "1",
+        "Shoulder Intake Angles/x1": "0.5",
+        "Shoulder L3 Angles/y2": "2",
         "Algae low scoring dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "Shoulder L3 Angles/y1": "0.0",
+        "Shoulder L3 Angles/y1": "2",
         "Processor score dist threshold": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance from processor to score algae",
             "value": "0.5"
         },
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
-        "Shoulder L2 Angles/x1": "0.0",
+        "Shoulder L2 Angles/x1": "0.635",
         "Pathfinding Max Accel": {
             "comment": "Auto-Generated",
-            "value": "2.0"
+            "value": "1.8"
         },
-        "Shoulder L2 Angles/x2": "0.0",
+        "Shoulder L2 Angles/x2": "1",
         "Algae Flipped": {
-            "comment": "Auto-Generated",
-            "value": "false"
+            "comment": "Face forward or backwards when intaking algae",
+            "value": "true"
         },
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
         },
-        "Elevator L3 Heights/x2": "0.0",
-        "Elevator L3 Heights/x1": "0.0",
+        "Elevator L3 Heights/x2": "1",
+        "Elevator L3 Heights/x1": "0.635",
         "Net score dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
         },
-        "Shoulder L4 Angles/y1": "0.0",
-        "Coral proximity distance": {
+        "Elevator Intake Heights/y1": "1",
+        "Elevator Intake Heights/y2": "1",
+        "Elevator Target Threshold": {
             "comment": "Auto-Generated",
+            "value": "0.075"
+        },
+        "Staging L1 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Shoulder L4 Angles/y1": "0.0",
+        "Staging Distance Threshold": {
+            "comment": "Distance to start staging elevator/coral",
+            "value": "2"
+        },
+        "Coral proximity distance": {
+            "comment": "Distance threshold for proximity sensor to think we have coral",
             "value": "15.0"
         },
         "Coral reef score dist threshold": {
-            "comment": "Auto-Generated",
+            "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "Shoulder Intake Angles/y2": "-0.85",
+        "Algae Low Intake Distance": {
+            "comment": "Target distance from reef to intake low algae",
+            "value": "1.0"
+        },
         "Intake station flipped": {
-            "comment": "Auto-Generated",
+            "comment": "Face backwards when intaking coral",
             "value": "false"
+        },
+        "Shoulder Intake Angles/y1": "-0.85",
+        "Intake Current threshold": {
+            "comment": "Current threshold for whether or not we have something",
+            "value": "1.0"
         },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
-            "value": "4.8"
+            "comment": "Meters per second",
+            "value": "3.2"
         },
         "Current threshold": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
         "Elevator L1 Heights/x2": "0.0",
-        "Elevator L1 Heights/x1": "0.0",
-        "Intake station dist threshold": {
+        "Shoulder Target Threshold": {
             "comment": "Auto-Generated",
+            "value": "0.02"
+        },
+        "Elevator L1 Heights/x1": "1.0",
+        "Elevator Intake Heights/x1": "0.5",
+        "Elevator Intake Heights/x2": "1",
+        "Staging Intake Angle": {
+            "comment": "Auto-Generated",
+            "value": "-1"
+        },
+        "Full Alignment Distance Threshold": {
+            "comment": "Distance to move shoulder from staging to target",
+            "value": "0.1"
+        },
+        "Staging L2 Angle": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
+        "Intake station dist threshold": {
+            "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
         },
         "elevator/topPoint": {
@@ -219,19 +323,19 @@
             "value": "1.0"
         },
         "Shoulder L4 Angles/y2": "0.0",
-        "Elevator L2 Heights/x2": "0.0",
+        "Elevator L2 Heights/x2": "1",
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Elevator L2 Heights/x1": "0.0",
+        "Elevator L2 Heights/x1": "0.635",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "X Point Controller/I": "0.0",
         "Pathfinding Theta Controller/P": "6.0",
         "Elevator L4 Heights/y1": "0.0",
         "Intake speed": {
-            "comment": "Auto-Generated",
+            "comment": "Used for both forward & reverse",
             "value": "1.0"
         },
         "Elevator L4 Heights/y2": "0.0",
@@ -241,15 +345,27 @@
         "Pathfinding Y Controller/D": "0.0",
         "X Point Controller/D": "0.0",
         "Point Y Controller/D": "0.0",
+        "Intake Coral proximity distance": {
+            "comment": "Distance threshold for proximity sensor to think we have coral",
+            "value": "15.0"
+        },
         "Intake station dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.7"
         },
-        "X Point Controller/P": "1.0",
-        "Point Y Controller/P": "1.0",
-        "Processor Flipped": {
+        "Staging L3 Angle": {
             "comment": "Auto-Generated",
+            "value": "1.5"
+        },
+        "X Point Controller/P": "1.5",
+        "Point Y Controller/P": "1.5",
+        "Processor Flipped": {
+            "comment": "Face backwards when scoring algae in processor",
             "value": "false"
+        },
+        "Staging L4 Angle": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
         },
         "Elevator L1 Heights/y2": "0.0",
         "Elevator L1 Heights/y1": "0.0",
@@ -260,51 +376,57 @@
         "Pathfinding Theta Controller/D": "0.0",
         "Shoulder L4 Angles/x2": "0.0",
         "Coral L4 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L4",
             "value": "1.0"
         },
         "Shoulder L4 Angles/x1": "0.0",
         "Coral L3 scoring dist": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Coral L2 scoring dist": {
-            "comment": "Auto-Generated",
-            "value": "1.0"
-        },
-        "Elevator L2 Heights/y2": "0.0",
-        "Shoulder L3 Angles/x1": "0.0",
-        "Coral L1 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L3",
             "value": "0.6"
         },
-        "Elevator L2 Heights/y1": "0.0",
-        "Shoulder L2 Angles/y2": "0.0",
+        "Coral L2 scoring dist": {
+            "comment": "Target distance to score coral on L2",
+            "value": "0.6"
+        },
+        "Elevator L2 Heights/y2": "0.7",
+        "Algae High Intake Distance": {
+            "comment": "Target distance from reef to intake high algae",
+            "value": "1.0"
+        },
+        "Shoulder L3 Angles/x1": "0.635",
+        "Coral L1 scoring dist": {
+            "comment": "Target distance to score coral on L1",
+            "value": "0.6"
+        },
+        "Elevator L2 Heights/y1": "0.7",
+        "Shoulder L2 Angles/y2": "2",
         "Elevator L4 Heights/x1": "0.0",
         "Elevator L4 Heights/x2": "0.0",
-        "Shoulder L2 Angles/y1": "0.0",
+        "Shoulder L2 Angles/y1": "2",
         "Coral Flipped": {
-            "comment": "Auto-Generated",
-            "value": "false"
+            "comment": "Face backwards when scoring coral",
+            "value": "true"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
         "Drive Speed (m/s)": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         },
-        "Elevator L3 Heights/y2": "0.0",
-        "Elevator L3 Heights/y1": "0.0",
+        "Elevator L3 Heights/y2": "1",
+        "Elevator L3 Heights/y1": "1",
         "Point Theta Controller/D": "0.0",
         "Point Theta Controller/P": "6.0",
-        "Pathfinding Y Controller/P": "1.0",
-        "Shoulder L3 Angles/x2": "0.0",
-        "Pathfinding X Controller/P": "1.0",
+        "Pathfinding Y Controller/P": "3.0",
+        "Shoulder L3 Angles/x2": "1",
+        "Pathfinding X Controller/P": "3.0",
         "Point Theta Controller/I": "0.0"
     },
     "competition": {
+        "Shoulder Intake Angles/x2": "0.0",
+        "Shoulder Intake Angles/x1": "0.0",
         "Shoulder L3 Angles/y2": "0.0",
         "Algae low scoring dist": {
             "comment": "Auto-Generated",
@@ -312,7 +434,7 @@
         },
         "Shoulder L3 Angles/y1": "0.0",
         "Processor score dist threshold": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance from processor to score algae",
             "value": "0.5"
         },
         "Pathfinding X Controller/I": "0.0",
@@ -324,8 +446,8 @@
         },
         "Shoulder L2 Angles/x2": "0.0",
         "Algae Flipped": {
-            "comment": "Auto-Generated",
-            "value": "false"
+            "comment": "Face forward or backwards when intaking algae",
+            "value": "true"
         },
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
@@ -337,23 +459,47 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
-        "Shoulder L4 Angles/y1": "0.0",
-        "Coral proximity distance": {
+        "Elevator Intake Heights/y1": "0.0",
+        "Elevator Intake Heights/y2": "0.0",
+        "Elevator Target Threshold": {
             "comment": "Auto-Generated",
+            "value": "0.075"
+        },
+        "Staging L1 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Shoulder L4 Angles/y1": "0.0",
+        "Staging Distance Threshold": {
+            "comment": "Distance to start staging elevator/coral",
+            "value": "0.0"
+        },
+        "Coral proximity distance": {
+            "comment": "Distance threshold for proximity sensor to think we have coral",
             "value": "15.0"
         },
         "Coral reef score dist threshold": {
-            "comment": "Auto-Generated",
+            "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "Shoulder Intake Angles/y2": "0.0",
+        "Algae Low Intake Distance": {
+            "comment": "Target distance from reef to intake low algae",
+            "value": "1.0"
+        },
         "Intake station flipped": {
-            "comment": "Auto-Generated",
+            "comment": "Face backwards when intaking coral",
             "value": "false"
+        },
+        "Shoulder Intake Angles/y1": "0.0",
+        "Intake Current threshold": {
+            "comment": "Current threshold for whether or not we have something",
+            "value": "1.0"
         },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "4.8"
         },
         "Current threshold": {
@@ -361,9 +507,27 @@
             "value": "1.0"
         },
         "Elevator L1 Heights/x2": "0.0",
-        "Elevator L1 Heights/x1": "0.0",
-        "Intake station dist threshold": {
+        "Shoulder Target Threshold": {
             "comment": "Auto-Generated",
+            "value": "0.07"
+        },
+        "Elevator L1 Heights/x1": "0.0",
+        "Elevator Intake Heights/x1": "0.0",
+        "Elevator Intake Heights/x2": "0.0",
+        "Staging Intake Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Full Alignment Distance Threshold": {
+            "comment": "Distance to move shoulder from staging to target",
+            "value": "0.0"
+        },
+        "Staging L2 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
+        "Intake station dist threshold": {
+            "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
         },
         "elevator/topPoint": {
@@ -383,7 +547,7 @@
         "Pathfinding Theta Controller/P": "6.0",
         "Elevator L4 Heights/y1": "0.0",
         "Intake speed": {
-            "comment": "Auto-Generated",
+            "comment": "Used for both forward & reverse",
             "value": "1.0"
         },
         "Elevator L4 Heights/y2": "0.0",
@@ -393,15 +557,27 @@
         "Pathfinding Y Controller/D": "0.0",
         "X Point Controller/D": "0.0",
         "Point Y Controller/D": "0.0",
+        "Intake Coral proximity distance": {
+            "comment": "Distance threshold for proximity sensor to think we have coral",
+            "value": "15.0"
+        },
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Staging L3 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "X Point Controller/P": "1.0",
         "Point Y Controller/P": "1.0",
         "Processor Flipped": {
-            "comment": "Auto-Generated",
+            "comment": "Face backwards when scoring algae in processor",
             "value": "false"
+        },
+        "Staging L4 Angle": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
         },
         "Elevator L1 Heights/y2": "0.0",
         "Elevator L1 Heights/y1": "0.0",
@@ -412,22 +588,26 @@
         "Pathfinding Theta Controller/D": "0.0",
         "Shoulder L4 Angles/x2": "0.0",
         "Coral L4 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L4",
             "value": "1.0"
         },
         "Shoulder L4 Angles/x1": "0.0",
         "Coral L3 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L3",
             "value": "1.0"
         },
         "Coral L2 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L2",
             "value": "1.0"
         },
         "Elevator L2 Heights/y2": "0.0",
+        "Algae High Intake Distance": {
+            "comment": "Target distance from reef to intake high algae",
+            "value": "1.0"
+        },
         "Shoulder L3 Angles/x1": "0.0",
         "Coral L1 scoring dist": {
-            "comment": "Auto-Generated",
+            "comment": "Target distance to score coral on L1",
             "value": "1.0"
         },
         "Elevator L2 Heights/y1": "0.0",
@@ -436,15 +616,15 @@
         "Elevator L4 Heights/x2": "0.0",
         "Shoulder L2 Angles/y1": "0.0",
         "Coral Flipped": {
-            "comment": "Auto-Generated",
-            "value": "false"
+            "comment": "Face backwards when scoring coral",
+            "value": "true"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
         "Drive Speed (m/s)": {
-            "comment": "Auto-Generated",
+            "comment": "Meters per second",
             "value": "44"
         },
         "Elevator L3 Heights/y2": "0.0",

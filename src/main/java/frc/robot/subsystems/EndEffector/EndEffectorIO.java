@@ -5,23 +5,18 @@ import org.littletonrobotics.junction.AutoLog;
 public interface EndEffectorIO {
     @AutoLog
     public static class EndEffectorIOInputs {
-        public double coralAppliedVoltage = 0.0;
-        public double coralCurrentAmps = 0.0;
+        public double appliedVoltage = 0.0;
+        public double currentAmps = 0.0;
 
         public double proximitySensorDistance = 0.0;
+
+        public boolean hasCoral = false;
+        public boolean hasAlgae = false;
     }
 
     public default void updateInputs(EndEffectorIOInputs inputs) {
     };
 
-    public default void setCoralSpeed(double speed) {
-    };
-
-    public default boolean hasCoral() {
-        return false;
-    };
-
-    public default boolean hasAlgae() {
-        return false;
+    public default void setSpeed(double speed) {
     };
 }

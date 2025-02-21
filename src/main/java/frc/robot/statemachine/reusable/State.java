@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * A state in a state machine.
@@ -232,7 +233,7 @@ public abstract class State {
      */
     public void onExit() {
         loop.stop();
-        currentStartCommands.forEach(Command::cancel);
+        CommandScheduler.getInstance().cancel(currentStartCommands.toArray(new Command[0]));
         currentStartCommands.clear();
     }
 

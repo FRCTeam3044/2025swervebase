@@ -8,8 +8,8 @@ import frc.robot.RobotContainer;
 public class AutoRoutines {
     private final RobotContainer robotContainer = new RobotContainer();
 
-    public AutoRoutine pickupAndScoreAuto() {
-        AutoRoutine routine = robotContainer.autoFactory.newRoutine("taxi");
+    public AutoRoutine testAuto() {
+        AutoRoutine routine = robotContainer.autoFactory.newRoutine("Test");
 
         // Load the routine's trajectories
         AutoTrajectory driveToMiddle = routine.trajectory("Marcus");

@@ -156,6 +156,9 @@ public class Drive extends SubsystemBase implements VisionConsumer {
     var curPose = getPose();
     Logger.recordOutput("Odometry/RobotArray", new double[] { curPose.getTranslation().getX(),
         curPose.getTranslation().getY(), curPose.getRotation().getDegrees() });
+    // Calculate the actual net speed accounting for both components
+    Logger.recordOutput("Drive/Speed",
+        Math.sqrt(Math.pow(getVelocity().vxMetersPerSecond, 2) + Math.pow(getVelocity().vyMetersPerSecond, 2)));
   }
 
   /**
@@ -319,5 +322,10 @@ public class Drive extends SubsystemBase implements VisionConsumer {
     // Apply the generated speeds
     // TODO: Maybe convert to robot relative?
     runVelocity(speeds);
+  }
+
+  /** Returns the kinematics object. */
+  public SwerveDriveKinematics getKinematics() {
+    return kinematics;
   }
 }

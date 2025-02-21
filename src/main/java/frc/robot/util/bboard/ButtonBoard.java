@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.robot.util.bboard;
 
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -6,35 +6,30 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.GenericHID;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
+import frc.robot.util.AllianceUtil;
+import frc.robot.util.AutoTargetUtils;
+import frc.robot.util.AllianceUtil.AllianceColor;
 import frc.robot.util.AutoTargetUtils.IntakeStations;
 import frc.robot.util.AutoTargetUtils.Reef;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
-public class ButtonBoardUtil {
-    private static GenericHID padOne = new GenericHID(2);
-    private static GenericHID padTwo = new GenericHID(3);
-    private static GenericHID padThree = new GenericHID(4);
+public class ButtonBoard {
+    private final BBoardIO boardIO;
 
-    private static boolean isButtonPressed(int board, int button) {
-        return (board == 0 && padOne.getRawButtonPressed(button))
-                || (board == 1 && padTwo.getRawButtonPressed(button))
-                || (board == 2 && padThree.getRawButtonPressed(button));
+    public ButtonBoard(BBoardIO boardIO) {
+        this.boardIO = boardIO;
     }
 
     public record ButtonInfo(int board, int button) {
-        public boolean isPressed() {
-            return isButtonPressed(board, button);
-        }
     };
 
     public record SelectButtonInfo<T extends Enum<?>>(int board, int button, T value) {
-        public boolean isPressed() {
-            return isButtonPressed(board, button);
+        public ButtonInfo buttonInfo() {
+            return new ButtonInfo(board, button);
         }
     };
 
@@ -57,19 +52,19 @@ public class ButtonBoardUtil {
             new SelectButtonInfo<IntakeStation>(1, 1, IntakeStation.LeftOne),
             new SelectButtonInfo<IntakeStation>(1, 2, IntakeStation.LeftTwo),
             new SelectButtonInfo<IntakeStation>(1, 3, IntakeStation.LeftThree),
-            new SelectButtonInfo<IntakeStation>(1, 4, IntakeStation.RightOne),
-            new SelectButtonInfo<IntakeStation>(1, 5, IntakeStation.RightTwo),
-            new SelectButtonInfo<IntakeStation>(1, 6, IntakeStation.RightThree));
+            new SelectButtonInfo<IntakeStation>(1, 7, IntakeStation.RightOne),
+            new SelectButtonInfo<IntakeStation>(1, 6, IntakeStation.RightTwo),
+            new SelectButtonInfo<IntakeStation>(1, 5, IntakeStation.RightThree));
 
-    private ButtonInfo processor = new ButtonInfo(0, 19);
-    private List<SelectButtonInfo<CoralLevel>> levels = List.of(new SelectButtonInfo<CoralLevel>(2, 1, CoralLevel.L1),
-            new SelectButtonInfo<CoralLevel>(2, 2, CoralLevel.L2),
-            new SelectButtonInfo<CoralLevel>(2, 3, CoralLevel.L3),
-            new SelectButtonInfo<CoralLevel>(2, 4, CoralLevel.L4));
-    private ButtonInfo algaeModeToggle = new ButtonInfo(0, 24);
-    private ButtonInfo net = new ButtonInfo(0, 25);
-    private ButtonInfo climbUp = new ButtonInfo(0, 26);
-    private ButtonInfo climbDown = new ButtonInfo(0, 27);
+    private ButtonInfo processor = new ButtonInfo(2, 12);
+    private List<SelectButtonInfo<CoralLevel>> levels = List.of(new SelectButtonInfo<CoralLevel>(2, 10, CoralLevel.L1),
+            new SelectButtonInfo<CoralLevel>(2, 9, CoralLevel.L2),
+            new SelectButtonInfo<CoralLevel>(2, 8, CoralLevel.L3),
+            new SelectButtonInfo<CoralLevel>(2, 7, CoralLevel.L4));
+    private ButtonInfo algaeModeToggle = new ButtonInfo(1, 4);
+    private ButtonInfo net = new ButtonInfo(0, 11);
+    private ButtonInfo climbUp = new ButtonInfo(0, 5);
+    private ButtonInfo climbDown = new ButtonInfo(0, 6);
 
     // Reef
     private Pose2d coralReefTargetPose = null;
@@ -95,9 +90,31 @@ public class ButtonBoardUtil {
         return isProcessor;
     }
 
+    private AllianceColor lastAllianceColor = AllianceColor.UNKNOWN;
+    private boolean intakeJustChanged = false;
+    private boolean coralReefJustChanged = false;
+
     public void periodic(Drive drive) {
+        intakeJustChanged = false;
+        coralReefJustChanged = false;
+        if (lastAllianceColor != AllianceUtil.getAlliance()) {
+            if (coralReefLevel != null && coralReefLocation != null) {
+                coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
+                coralReefReferencePose = coralReefLocation.pose();
+            }
+            if (coralReefLocation != null) {
+                algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
+                algaeReefReferencePose = coralReefLocation.algae().pose();
+            }
+            if (intakeStation != null) {
+                intakeStationPose = IntakeStations.intakeStation(intakeStation);
+                intakeStationReferencePose = intakeStation.pose();
+            }
+        }
+        boardIO.periodic();
         for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
-            if (button.isPressed()) {
+            if (boardIO.isPressed(button)) {
+                coralReefJustChanged = true;
                 coralReefLocation = button.value();
                 coralReefReferencePose = coralReefLocation.pose();
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
@@ -108,7 +125,7 @@ public class ButtonBoardUtil {
             }
         }
         for (SelectButtonInfo<CoralLevel> button : levels) {
-            if (button.isPressed()) {
+            if (boardIO.isPressed(button)) {
                 coralReefLevel = button.value();
                 if (coralReefLocation != null)
                     coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
@@ -116,19 +133,20 @@ public class ButtonBoardUtil {
         }
 
         for (SelectButtonInfo<IntakeStation> button : intakeStationButtons) {
-            if (button.isPressed()) {
+            if (boardIO.isPressed(button)) {
+                intakeJustChanged = true;
                 intakeStation = button.value();
                 intakeStationPose = IntakeStations.intakeStation(intakeStation);
                 intakeStationReferencePose = intakeStation.pose();
             }
         }
-        if (algaeModeToggle.isPressed()) {
+        if (boardIO.isPressed(algaeModeToggle)) {
             algaeMode = !algaeMode;
         }
-        if (processor.isPressed()) {
+        if (boardIO.isPressed(processor)) {
             isProcessor = true;
         }
-        if (net.isPressed()) {
+        if (boardIO.isPressed(net)) {
             isProcessor = false;
         }
 
@@ -148,8 +166,8 @@ public class ButtonBoardUtil {
         Logger.recordOutput("ButtonBoard/CoralReefLevel", coralReefLevel);
         Logger.recordOutput("ButtonBoard/IntakeStation", intakeStation);
         Logger.recordOutput("ButtonBoard/IntakeStationPose", intakeStationPose);
-        Logger.recordOutput("ButtonBoard/ClimbUp", climbUp.isPressed());
-        Logger.recordOutput("ButtonBoard/ClimbDown", climbDown.isPressed());
+        Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
+        Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
     }
 
     public Pose2d getCoralReefTarget() {
@@ -160,24 +178,57 @@ public class ButtonBoardUtil {
         return coralReefLevel;
     }
 
+    public DoubleSupplier getCoralReefReferenceDist(Drive drive) {
+        return () -> {
+            if (coralReefReferencePose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, coralReefReferencePose);
+        };
+    }
+
     public DoubleSupplier getCoralReefTargetDist(Drive drive) {
-        return () -> AutoTargetUtils.robotDistToPose(drive, coralReefReferencePose);
+        return () -> {
+            if (coralReefTargetPose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, coralReefTargetPose);
+        };
     }
 
     public Pose2d getAlgaeReefTarget() {
         return algaeReefTargetPose;
     }
 
-    public DoubleSupplier getAlgaeReefTargetDist(Drive drive) {
-        return () -> AutoTargetUtils.robotDistToPose(drive, algaeReefReferencePose);
+    public DoubleSupplier getAlgaeReefReferenceDist(Drive drive) {
+        return () -> {
+            if (algaeReefReferencePose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, algaeReefReferencePose);
+        };
     }
 
     public Pose2d getIntakeStationTarget() {
         return intakeStationPose;
     }
 
+    public DoubleSupplier getIntakeStationReferenceDist(Drive drive) {
+        return () -> {
+            if (intakeStationReferencePose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, intakeStationReferencePose);
+        };
+    }
+
     public DoubleSupplier getIntakeStationTargetDist(Drive drive) {
-        return () -> AutoTargetUtils.robotDistToPose(drive, intakeStationReferencePose);
+        return () -> {
+            if (intakeStationPose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, intakeStationPose);
+        };
     }
 
     public boolean isProcessor() {
@@ -197,7 +248,8 @@ public class ButtonBoardUtil {
                 if (coralReefTargetPose == null) {
                     return false;
                 }
-                return AutoTargetUtils.robotDistToPose(drive, algaeReefTargetPose) < processorDistThreshold.get();
+                return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.processor()) < processorDistThreshold
+                        .get();
             } else {
                 // TODO: Net
                 return false;
@@ -217,9 +269,40 @@ public class ButtonBoardUtil {
 
     public boolean closeToIntakeTarget(Drive drive) {
         if (algaeMode) {
+            if (algaeReefTargetPose == null) {
+                return false;
+            }
             return AutoTargetUtils.robotDistToPose(drive, algaeReefTargetPose) < algaeReefDistThreshold.get();
         } else {
+            if (intakeStationPose == null) {
+                return false;
+            }
+
             return AutoTargetUtils.robotDistToPose(drive, intakeStationPose) < intakeStationDistThreshold.get();
         }
+    }
+
+    public boolean intakeSelected() {
+        if (algaeMode) {
+            return algaeReefTargetPose != null;
+        } else {
+            return intakeStationPose != null;
+        }
+    }
+
+    public boolean scoringSelected() {
+        if (algaeMode) {
+            return true;
+        } else {
+            return coralReefTargetPose != null;
+        }
+    }
+
+    public boolean intakeJustChanged() {
+        return intakeJustChanged;
+    }
+
+    public boolean coralReefJustChanged() {
+        return coralReefJustChanged;
     }
 }

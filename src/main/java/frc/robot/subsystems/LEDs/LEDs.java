@@ -42,7 +42,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command setBlinkingColor(Color color) {
-        return Commands.run(() -> io.setBlinkingColor(color));
+        return Commands.run(() -> io.setBlinkingColor(color)).withName("Blinking LEDs");
     }
 
     public Command intakingAndScoringCoral() {

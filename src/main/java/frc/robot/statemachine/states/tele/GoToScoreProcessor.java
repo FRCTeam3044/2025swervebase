@@ -5,10 +5,10 @@ import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.AutoTargetUtils;
-import frc.robot.util.ButtonBoardUtil;
+import frc.robot.util.bboard.ButtonBoard;
 
 public class GoToScoreProcessor extends State {
-    public GoToScoreProcessor(StateMachineBase stateMachine, ButtonBoardUtil buttonBoard, Drive drive) {
+    public GoToScoreProcessor(StateMachineBase stateMachine, ButtonBoard buttonBoard, Drive drive) {
         super(stateMachine);
 
         // TODO: change to processor

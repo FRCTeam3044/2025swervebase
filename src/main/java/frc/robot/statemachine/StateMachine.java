@@ -32,11 +32,17 @@ import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shoulder.Shoulder;
-import frc.robot.util.ButtonBoardUtil;
+import frc.robot.util.bboard.ButtonBoard;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class StateMachine extends StateMachineBase {
+        public static ConfigurableParameter<Double> stagingThreshold = new ConfigurableParameter<>(0.0,
+                        "Staging Distance Threshold");
+        public static ConfigurableParameter<Double> alignmentThreshold = new ConfigurableParameter<Double>(0.0,
+                        "Full Alignment Distance Threshold");
+
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
-                        ButtonBoardUtil buttonBoard, LoggedDashboardChooser<Command> chooser,
+                        ButtonBoard buttonBoard, LoggedDashboardChooser<Command> chooser,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super();
                 State disabled = new DisabledState(this);
@@ -58,13 +64,15 @@ public class StateMachine extends StateMachineBase {
                 ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector,
                                 LEDs);
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
-                IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, endEffector, LEDs);
+                IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, shoulder, endEffector,
+                                LEDs);
                 IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, endEffector, LEDs);
                 GoToIntake goToIntake = new GoToIntake(this);
                 GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive, LEDs);
-                GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, LEDs);
+                GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, elevator,
+                                shoulder, LEDs);
                 GoToScoringPosition goToScoringPosition = new GoToScoringPosition(this);
-                GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive);
+                GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive, elevator, shoulder);
                 GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);
                 GoToScoreNet goToScoreNet = new GoToScoreNet(this, buttonBoard, drive);
                 GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive);
@@ -82,11 +90,11 @@ public class StateMachine extends StateMachineBase {
                 scoreGamePiece.withChild(scoreCoral, endEffector::hasCoral, 0, "Has coral")
                                 .withChild(scoreAlgae, endEffector::hasAlgae, 1, "Has algae");
 
-                goToIntake.withChild(goToReefIntake, buttonBoard::getAlgaeMode, 0, "Reef selected")
-                                .withChild(goToStationIntake, () -> !buttonBoard.getAlgaeMode(), 1, "Station selected");
+                goToIntake.withChild(goToStationIntake, () -> !buttonBoard.getAlgaeMode(), 0, "Coral Mode")
+                                .withChild(goToReefIntake, buttonBoard::getAlgaeMode, 1, "Algae Mode");
 
-                intakeGamePiece.withChild(intakeCoral, () -> !buttonBoard.getAlgaeMode(), 0, "Reef selected")
-                                .withChild(intakeAlgae, buttonBoard::getAlgaeMode, 1, "Station selected");
+                intakeGamePiece.withChild(intakeCoral, () -> !buttonBoard.getAlgaeMode(), 0, "Coral Mode")
+                                .withChild(intakeAlgae, buttonBoard::getAlgaeMode, 1, "Algae Mode");
 
                 // Specific Algae intake and score
                 goToScoreAlgae.withChild(goToScoreNet, () -> !buttonBoard
@@ -102,11 +110,13 @@ public class StateMachine extends StateMachineBase {
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition,
                                 () -> driverController.rightTrigger().getAsBoolean()
-                                                && (endEffector.hasCoral() || endEffector.hasAlgae()),
+                                                && (endEffector.hasCoral() || endEffector.hasAlgae())
+                                                && buttonBoard.scoringSelected(),
                                 "Driver presses score")
                                 .withTransition(goToIntake,
                                                 () -> driverController.leftTrigger().getAsBoolean()
-                                                                && (!endEffector.hasCoral() && !endEffector.hasAlgae()),
+                                                                && (!endEffector.hasCoral() && !endEffector.hasAlgae())
+                                                                && buttonBoard.intakeSelected(),
                                                 "Driver presses intake");
 
                 goToScoringPosition

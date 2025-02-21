@@ -31,16 +31,19 @@ public class EndEffectorIOSpark implements EndEffectorIO {
     @Override
     public void updateInputs(EndEffectorIOInputs inputs) {
         isCurrentSpiking = checkCurrentSpike();
-        ifOk(motor, motor::getOutputCurrent, (value) -> inputs.coralCurrentAmps = value);
+        ifOk(motor, motor::getOutputCurrent, (value) -> inputs.currentAmps = value);
 
         ifOk(
                 motor,
                 new DoubleSupplier[] { motor::getAppliedOutput, motor::getBusVoltage },
-                (values) -> inputs.coralAppliedVoltage = values[0] * values[1]);
+                (values) -> inputs.appliedVoltage = values[0] * values[1]);
+
+        inputs.hasCoral = hasCoral();
+        inputs.hasAlgae = hasAlgae();
     }
 
     @Override
-    public void setCoralSpeed(double speed) {
+    public void setSpeed(double speed) {
         motor.set(speed);
     }
 
@@ -57,13 +60,11 @@ public class EndEffectorIOSpark implements EndEffectorIO {
         return d;
     }
 
-    @Override
-    public boolean hasCoral() {
+    private boolean hasCoral() {
         return isCurrentSpiking && readSensor() < coralProximityDistance.get();
     }
 
-    @Override
-    public boolean hasAlgae() {
+    private boolean hasAlgae() {
         return isCurrentSpiking && readSensor() > coralProximityDistance.get();
     }
 }

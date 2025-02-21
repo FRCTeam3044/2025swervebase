@@ -78,6 +78,7 @@ public class Robot extends LoggedRobot {
       case SIM:
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(new NT4Publisher());
+        // Logger.addDataReceiver(new WPILOGWriter());
         break;
 
       case REPLAY:
@@ -138,6 +139,8 @@ public class Robot extends LoggedRobot {
     }
     double[] dist = distances.stream().mapToDouble(Double::doubleValue).toArray();
     SmartDashboard.putNumberArray("Coral Reef Locations", dist);
+
+    robotContainer.updateMechanism();
   }
 
   /** This function is called once when the robot is disabled. */
@@ -196,7 +199,6 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    robotContainer.updateMechanism();
   }
 
   /** This function is called once when the robot is first started up. */

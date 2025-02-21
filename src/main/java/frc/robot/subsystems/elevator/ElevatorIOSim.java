@@ -26,15 +26,15 @@ public class ElevatorIOSim implements ElevatorIO {
             12.0,
             18.0,
             drumRadius,
-            0.6985,
+            0.5,
             2.0,
             true,
-            0,
+            0.5,
             0.001,
             0.0);
 
     private final ProfiledPIDController m_controller = new ProfiledPIDController(
-            kP,
+            kP * 16,
             kI,
             kD,
             new TrapezoidProfile.Constraints(2.45, 2.45));
@@ -58,47 +58,46 @@ public class ElevatorIOSim implements ElevatorIO {
         // Iterate the elevator and arm SPARK simulations
         sparkMaxSim.iterate(
                 ((m_elevatorSim.getVelocityMetersPerSecond()
-                        / (drumRadius * 2.0 * Math.PI))
-                        * motorReduction)
-                        * 60.0,
+                        / (drumRadius * 2.0 * Math.PI * motorReduction))
+                        * 60.0),
                 RobotController.getBatteryVoltage(),
                 0.02);
 
-        double currentTargetRotations = currentTargetMeters / (drumRadius * 2.0 * Math.PI);
         if (positionControlMode) {
-            m_controller.setGoal(currentTargetRotations);
-            // With the setpoint value we run PID control like normal
-            double pidOutput = m_controller.calculate(elevatorEncoder.getPosition());
+            m_controller.setGoal(currentTargetMeters);
+            double pidOutput = m_controller.calculate(m_elevatorSim.getPositionMeters());
             double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
-            sparkMax.set((pidOutput + feedforwardOutput) / 12.0);
+            sparkMax.setVoltage(pidOutput + feedforwardOutput);
         }
         // elevatorMotorSim.setAppliedOutput((pidOutput + feedforwardOutput) / 12.0);
 
         inputs.setpointMeters = currentTargetMeters;
-        inputs.setpointRotations = currentTargetRotations;
-        inputs.leftPositionRot = elevatorEncoder.getPosition();
+        inputs.leaderPositionRot = elevatorEncoder.getPosition();
         inputs.elevatorHeightMeters = m_elevatorSim.getPositionMeters();
         // inputs.elevatorHeightCalc = (elevatorEncoder.getPosition() /
         // ElevatorConstants.kElevatorGearing)
         // * (ElevatorConstants.kElevatorDrumRadius * 2.0 * Math.PI);
-        inputs.leftAppliedVolts = sparkMaxSim.getAppliedOutput() * RobotController.getBatteryVoltage();
-        inputs.leftCurrentAmps = sparkMaxSim.getMotorCurrent();
+        inputs.leaderAppliedVolts = sparkMaxSim.getAppliedOutput() * RobotController.getBatteryVoltage();
+        inputs.leaderCurrentAmps = sparkMaxSim.getMotorCurrent();
         // inputs.pidOutput = pidOutput;
         // inputs.feedforwardOutput = feedforwardOutput;
     }
 
     @Override
     public void setVoltage(double voltage) {
+        positionControlMode = false;
         sparkMax.set(voltage);
     }
 
     @Override
     public void setSpeed(double desiredSpeed) {
+        positionControlMode = false;
         sparkMax.set(desiredSpeed);
     }
 
     @Override
     public void setPosition(double position) {
+        positionControlMode = true;
         currentTargetMeters = position;
     }
 }
