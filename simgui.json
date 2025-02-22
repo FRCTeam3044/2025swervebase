@@ -89,6 +89,11 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/Scheduler": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
