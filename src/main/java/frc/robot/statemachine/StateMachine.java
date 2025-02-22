@@ -2,6 +2,7 @@ package frc.robot.statemachine;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import choreo.auto.AutoChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.statemachine.reusable.State;
@@ -42,14 +43,14 @@ public class StateMachine extends StateMachineBase {
                         "Full Alignment Distance Threshold");
 
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
-                        ButtonBoard buttonBoard, LoggedDashboardChooser<Command> chooser,
+                        ButtonBoard buttonBoard, AutoChooser autoChooser,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
                 super();
                 State disabled = new DisabledState(this);
                 currentState = disabled;
 
                 State teleop = new TeleState(this);
-                State auto = new AutoState(this, chooser);
+                State auto = new AutoState(this, drive, autoChooser);
                 State test = new TestState(this, driverController, elevator, shoulder, endEffector, LEDs);
 
                 this.registerToRootState(test, auto, teleop, disabled);

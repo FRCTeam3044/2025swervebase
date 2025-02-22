@@ -41,8 +41,8 @@ public class DriveConstants {
         public static final ConfigurableParameter<Double> maxSpeedMetersPerSec = new ConfigurableParameter<Double>(4.8,
                         "Drive Speed (m/s)");
         public static final double odometryFrequency = 100.0; // Hz
-        public static final double trackWidth = Units.inchesToMeters(26);
-        public static final double wheelBase = Units.inchesToMeters(26);
+        public static final double trackWidth = Units.inchesToMeters(22);
+        public static final double wheelBase = Units.inchesToMeters(22);
         public static final double driveBaseRadius = Math.hypot(trackWidth / 2.0, wheelBase / 2.0);
         public static final Translation2d[] moduleTranslations = new Translation2d[] {
                         new Translation2d(trackWidth / 2.0, wheelBase / 2.0),
@@ -119,7 +119,7 @@ public class DriveConstants {
         public static final Distance bumperSize = Inches.of(26.5);
         // Make crab bot look right in ascope
         public static final Distance mapleBumperSize = Constants.currentMode == Mode.SIM
-                        ? Inches.of(36.25)
+                        ? Inches.of(32.0)
                         : bumperSize;
 
         public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()

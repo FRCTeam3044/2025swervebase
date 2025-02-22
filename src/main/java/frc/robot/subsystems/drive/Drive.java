@@ -37,11 +37,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Mode;
 import frc.robot.subsystems.vision.Vision.VisionConsumer;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -291,6 +295,9 @@ public class Drive extends SubsystemBase implements VisionConsumer {
   /** Resets the current odometry pose. */
   public void resetOdometry(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
+    if (Robot.isSimulation()) {
+      RobotContainer.getInstance().resetSimulationField(pose);
+    }
   }
 
   /** Adds a new timestamped vision measurement. */
