@@ -105,25 +105,22 @@ public class ElevatorIOSpark implements ElevatorIO {
         if (positionControlMode)
             setPositionPPID(currentTargetRotations);
 
-        ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leftPositionRot = value);
-        ifOk(leaderMotor, encoder::getVelocity, (value) -> inputs.leftVelocityRPM = value);
+        ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leaderPositionRot = value);
+        ifOk(leaderMotor, encoder::getVelocity, (value) -> inputs.leaderVelocityRPM = value);
         ifOk(
                 leaderMotor,
                 new DoubleSupplier[] { leaderMotor::getAppliedOutput, leaderMotor::getBusVoltage },
-                (values) -> inputs.leftAppliedVolts = values[0] * values[1]);
-        ifOk(leaderMotor, leaderMotor::getOutputCurrent, (value) -> inputs.leftCurrentAmps = value);
-        ifOk(leaderMotor, leaderMotor::getMotorTemperature, (value) -> inputs.leftTemperature = value);
-        ifOk(followerMotor, encoder::getPosition, (value) -> inputs.rightPositionRot = value);
-        ifOk(followerMotor, encoder::getVelocity, (value) -> inputs.rightVelocityRPM = value);
+                (values) -> inputs.leaderAppliedVolts = values[0] * values[1]);
+        ifOk(leaderMotor, leaderMotor::getOutputCurrent, (value) -> inputs.leaderCurrentAmps = value);
+        ifOk(leaderMotor, leaderMotor::getMotorTemperature, (value) -> inputs.leaderTemperature = value);
         ifOk(
                 followerMotor,
                 new DoubleSupplier[] { followerMotor::getAppliedOutput, followerMotor::getBusVoltage },
-                (values) -> inputs.leftAppliedVolts = values[0] * values[1]);
-        ifOk(followerMotor, followerMotor::getOutputCurrent, (value) -> inputs.rightCurrentAmps = value);
-        ifOk(followerMotor, followerMotor::getMotorTemperature, (value) -> inputs.rightTemperature = value);
+                (values) -> inputs.leaderAppliedVolts = values[0] * values[1]);
+        ifOk(followerMotor, followerMotor::getMotorTemperature, (value) -> inputs.followerTemperature = value);
         inputs.setpointMeters = currentTargetMeters;
         inputs.setpointRotations = currentTargetRotations;
-        inputs.elevatorHeightMeters = inputs.leftPositionRot * drumRadius * 2.0 * Math.PI;
+        inputs.elevatorHeightMeters = inputs.leaderPositionRot * drumRadius * 2.0 * Math.PI;
         inputs.bottomEffectClosed = bottomHallEffect.get();
         inputs.topHallEffectClosed = topHallEffect.get();
 

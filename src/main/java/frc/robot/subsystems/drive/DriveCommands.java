@@ -39,7 +39,6 @@ import me.nabdev.pathfinding.structures.Vertex;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -188,14 +187,11 @@ public class DriveCommands {
         }).until(() -> timer.hasElapsed(traj.getTotalTimeSeconds()))
                 .finallyDo(timer::stop).withName("Follow Trajectory");
     };
-    // change stop
 
     private static Command goToPoint(Drive drive, Pose2d pose, Supplier<Rotation2d> desiredRotation,
             DoubleSupplier joystickRot, boolean useJoystick) {
-        return Commands.defer(
-                () -> followTrajectory(drive, generateTrajectory(drive, pose), desiredRotation, joystickRot,
-                        useJoystick),
-                new HashSet<>());
+        return Commands.deferredProxy(() -> followTrajectory(drive, generateTrajectory(drive, pose), desiredRotation,
+                joystickRot, useJoystick)).withName("Go To Point");
     }
 
     public static Command goToPointJoystickRot(Drive drive, Pose2d pose, DoubleSupplier joystickRot) {
@@ -203,13 +199,11 @@ public class DriveCommands {
     }
 
     public static Command goToPoint(Drive drive, Supplier<Pose2d> pose) {
-        return Commands.defer(
-                () -> {
-                    Pose2d curPose = pose.get();
-                    return followTrajectory(drive, generateTrajectory(drive, curPose), () -> curPose.getRotation(),
-                            null, false);
-                },
-                new HashSet<>());
+        return Commands.deferredProxy(() -> {
+            Pose2d curPose = pose.get();
+            return followTrajectory(drive, generateTrajectory(drive, curPose), () -> curPose.getRotation(),
+                    null, false);
+        }).withName("Go To Point");
     }
 
     public static Command pointControl(Drive drive, Supplier<Pose2d> pose) {
@@ -386,7 +380,7 @@ public class DriveCommands {
         Vector pathDir = start.createVectorTo(nextWaypoint).normalize();
         double speed = velocity.dotProduct(pathDir);
         config.setStartVelocity(speed);
-        // config.setKinematics(DriveConstants.kDriveKinematics);
+        config.setKinematics(drive.getKinematics());
         // config.setStartVelocity(10);
         return config;
     }

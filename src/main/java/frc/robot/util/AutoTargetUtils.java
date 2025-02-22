@@ -119,12 +119,12 @@ public class AutoTargetUtils {
             }
 
             public static POIData[] algaes = {
-                    POIData.create(0, 0, 0, 0), // AB
-                    POIData.create(0, 0, 0, 0), // CD
-                    POIData.create(0, 0, 0, 0), // EF
-                    POIData.create(0, 0, 0, 0), // GH
-                    POIData.create(0, 0, 0, 0), // IJ
-                    POIData.create(0, 0, 0, 0), // KL
+                    POIData.create(3.69725191, 4.02592267, 2.31406077, 4.02592267), // AB
+                    POIData.create(4.08734157, 3.35026829, 3.50063442, 2.33406171), // CD
+                    POIData.create(4.86752025, 3.35026865, 5.36061874, 2.49619702), // EF
+                    POIData.create(5.25760928, 4.0259234, 6.70907787, 4.0259234), // GH
+                    POIData.create(4.86751962, 4.70157778, 5.68693887, 6.12085356), // IJ
+                    POIData.create(4.08734093, 4.70157742, 3.47964389, 5.75413957), // KL
             };
 
             public POIData data() {
@@ -141,9 +141,9 @@ public class AutoTargetUtils {
         }
 
         public static ConfigurableParameter<Double> algaeLowDistance = new ConfigurableParameter<Double>(1.0,
-                "Algae low scoring dist");
+                "Algae Low Intake Distance");
         public static ConfigurableParameter<Double> algaeHighDistance = new ConfigurableParameter<Double>(1.0,
-                "Algae high scoring dist");
+                "Algae High Intake Distance");
         public static ConfigurableParameter<Boolean> algaeFlipped = new ConfigurableParameter<Boolean>(false,
                 "Algae Flipped");
 

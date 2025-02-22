@@ -50,4 +50,12 @@ public class ConfigurableLinearInterpolation implements ConfigurableClass {
     public double calculate(double x) {
         return y1.get() + (y2.get() - y1.get()) * (x - x1.get()) / (x2.get() - x1.get());
     }
+
+    public double getY1() {
+        return y1.get();
+    }
+
+    public double getY2() {
+        return y2.get();
+    }
 }
