@@ -57,7 +57,6 @@
         },
         "algae": {
           "arrows": false,
-          "image": "/home/nicholas/Documents/coding/robotics/2025/2025swervebase/algae.png",
           "length": 0.3499999940395355,
           "width": 0.3499999940395355
         },
@@ -71,7 +70,6 @@
             1.0,
             255.0
           ],
-          "image": "/home/nicholas/Documents/coding/robotics/2025/2025swervebase/coral.png",
           "length": 0.30000001192092896,
           "weight": 0.0,
           "width": 0.10999999940395355
@@ -86,11 +84,6 @@
         }
       },
       "/SmartDashboard/Mech2d": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Scheduler": {
         "window": {
           "visible": true
         }

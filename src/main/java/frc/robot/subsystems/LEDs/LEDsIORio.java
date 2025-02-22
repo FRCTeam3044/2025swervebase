@@ -46,60 +46,43 @@ public class LEDsIORio implements LEDsIO {
     }
 
     @Override
-    public void sayHi(boolean sayHi) {
-        while(sayHi == true) {
-            setSolidColor(LEDPattern.solid(Color.kYellow));
-            LEDPattern.kOff.applyTo(buffer, buffer);
-        }
-
-    }
-
-    @Override
     public void makeMorseCode(String phrase) {
         if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
                 .charAt(LEDsIOInputs.indexOfChar) == '.') {
             LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
-
             setSolidColor(LEDPattern.solid(Color.kYellow));
-
             if (LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.currentTime).lt(Seconds.of(Timer.getFPGATimestamp()))) {
                 if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
                         .length() < LEDsIOInputs.indexOfChar) {
                     LEDsIOInputs.indexOfChar = 0;
                     LEDsIOInputs.indexOfStr++;
-                    LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
-                    setSolidColor(LEDPattern.solid(Color.kYellow));
-                    if (LEDsIOInputs.currentTime
-                            .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
-                        setSolidColor(LEDPattern.solid(Color.kPurple));
-                    }
                 } else {
                     LEDsIOInputs.indexOfChar++;
                 }
-                setSolidColor(LEDPattern.solid(Color.kYellow));
+                setSolidColor(LEDPattern.solid(Color.kPurple));
             }
         } else {
             LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
-
             setSolidColor(LEDPattern.solid(Color.kYellow));
-
             if (LEDsIOInputs.currentTime.plus(LEDsIOInputs.timeOfDash)
                     .lt(Seconds.of(Timer.getFPGATimestamp()))) {
                 if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
                         .length() < LEDsIOInputs.indexOfChar) {
                     LEDsIOInputs.indexOfChar = 0;
                     LEDsIOInputs.indexOfStr++;
-                    LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
-
-                    setSolidColor(LEDPattern.solid(Color.kYellow));
-
-                    if (LEDsIOInputs.currentTime
-                            .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
-                        setSolidColor(LEDPattern.solid(Color.kPurple));
-                    }
                 } else {
                     LEDsIOInputs.indexOfChar++;
                 }
+                setSolidColor(LEDPattern.solid(Color.kPurple));
+            }
+        }
+        if(phrase.charAt(LEDsIOInputs.indexOfStr) == ' ') {
+            setSolidColor(LEDPattern.solid(Color.kYellow));
+            LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
+            if (LEDsIOInputs.currentTime.plus(LEDsIOInputs.timeOfDot)
+            .plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot)
+            .plus(LEDsIOInputs.timeOfDot) .lt(Seconds.of(Timer.getFPGATimestamp()))) {
+                setSolidColor(LEDPattern.solid(Color.kPurple));
             }
         }
     }
