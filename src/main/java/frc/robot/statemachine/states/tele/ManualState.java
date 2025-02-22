@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
+import frc.robot.statemachine.reusable.SmartTrigger;
 import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
@@ -57,7 +58,11 @@ public class ManualState extends State {
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);
 
-                startWhenActive(elevator.elevatorMove(rightY));
-                startWhenActive(shoulder.manualPivot(leftY));
+                SmartTrigger manualElevator = t(() -> Math.abs(rightY.getAsDouble()) > 0.1);
+                SmartTrigger manualShoulder = t(() -> Math.abs(leftY.getAsDouble()) > 0.1);
+
+                manualElevator.whileTrue(elevator.elevatorMove(rightY));
+                manualShoulder.whileTrue(shoulder.manualPivot(leftY));
+                manualElevator.whileFalse(elevator.idle());
         }
 }
