@@ -14,6 +14,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
@@ -245,10 +246,11 @@ public class RobotContainer {
                 elevatorSim = root
                                 .append(new MechanismLigament2d("elevator", elevator.getElevatorHeight(), 90));
                 shoulderSim = elevatorSim
-                                .append(new MechanismLigament2d("shoulder", 0.5, -90, 6.0,
+                                .append(new MechanismLigament2d("shoulder", Inches.of(15.75).in(Meters), -90, 6.0,
                                                 new Color8Bit(Color.kPurple)));
                 shoulderSim.append(
-                                new MechanismLigament2d("endEffector", 0.35, 90.0, 6.0, new Color8Bit(Color.kPurple)));
+                                new MechanismLigament2d("endEffector", Inches.of(13).in(Meters), 90.0, 6.0,
+                                                new Color8Bit(Color.kPurple)));
         }
 
         /**

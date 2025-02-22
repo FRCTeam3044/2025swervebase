@@ -58,17 +58,15 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command simMorseCode() {
-        return morseCode("HI");
+        return morseCode("HI test");
     }
 
     public Command morseCode(String phrase) {
         setColor(LEDPattern.solid(Color.kPurple));
-        // return Commands.run(() -> {
-        //     io.makeMorseCode(phrase);
-        // })
-        //         .until(() -> LEDsIOInputs.indexOfStr > ToMorseCode.toMorseCode(phrase).size())
-        //         .withName("Make Morse Code");
-
-        //return 
+         return Commands.run(() -> {
+             io.makeMorseCode(phrase);
+        })
+                .until(() -> LEDsIOInputs.indexOfStr > ToMorseCode.toMorseCode(phrase).size())
+               .withName("Make Morse Code"); 
     }
 }
