@@ -11,6 +11,7 @@ import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Seconds;
 import static frc.robot.subsystems.LEDs.LEDsConstants.*;
 
+import java.io.Reader;
 import java.util.Map;
 
 public class LEDsIORio implements LEDsIO {
@@ -42,6 +43,15 @@ public class LEDsIORio implements LEDsIO {
         LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
         pattern.applyTo(buffer);
         LEDStrip.setData(buffer);
+    }
+
+    @Override
+    public void sayHi(boolean sayHi) {
+        while(sayHi == true) {
+            setSolidColor(LEDPattern.solid(Color.kYellow));
+            LEDPattern.kOff.applyTo(buffer, buffer);
+        }
+
     }
 
     @Override
