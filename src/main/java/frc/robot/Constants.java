@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
-  public static final boolean simButtonBoard = false;
+  public static final boolean simButtonBoard = true;
   public static final boolean visionSim = false;
   // If true, drive controls are based off alliance like in real life. If false,
   // up is positive y, right is positive x.

@@ -57,7 +57,6 @@
         },
         "algae": {
           "arrows": false,
-          "image": "C:\\Users\\robot\\Documents\\2025\\AkitSwerveBase\\algae.png",
           "length": 0.3499999940395355,
           "width": 0.3499999940395355
         },
@@ -71,7 +70,6 @@
             1.0,
             255.0
           ],
-          "image": "C:\\Users\\robot\\Documents\\2025\\AkitSwerveBase\\coral.png",
           "length": 0.30000001192092896,
           "weight": 0.0,
           "width": 0.10999999940395355
@@ -116,6 +114,9 @@
       },
       "SmartDashboard": {
         "ButtonBoardSim": {
+          "double[]##v_/SmartDashboard/ButtonBoardSim/Pressed": {
+            "open": true
+          },
           "open": true
         },
         "Field": {
