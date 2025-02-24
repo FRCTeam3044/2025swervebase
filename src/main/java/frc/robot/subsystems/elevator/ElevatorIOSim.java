@@ -26,10 +26,10 @@ public class ElevatorIOSim implements ElevatorIO {
             12.0,
             18.0,
             drumRadius,
-            0.5,
-            2.0,
+            1,
+            1.83,
             true,
-            0.5,
+            1,
             0.001,
             0.0);
 

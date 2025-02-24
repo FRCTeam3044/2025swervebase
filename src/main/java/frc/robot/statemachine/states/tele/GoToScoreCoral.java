@@ -40,5 +40,7 @@ public class GoToScoreCoral extends State {
                 staging.whileTrue(Commands
                                 .defer(() -> shoulder.stageCoral(buttonBoard.getCoralReefLevel()), Set.of(shoulder))
                                 .withName("Shoulder to CoralLevel"));
+                staging.whileFalse(shoulder.idle());
+                startWhenActive(elevator.idle());
         }
 }
