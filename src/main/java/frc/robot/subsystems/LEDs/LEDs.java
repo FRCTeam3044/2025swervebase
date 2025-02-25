@@ -58,7 +58,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command simMorseCode() {
-        return morseCode("Hello From team 3044");
+        return morseCode("3044");
     }
 
     public Command morseCode(String phrase) {
