@@ -1,4 +1,4 @@
-package frc.robot.subsystems.EndEffector;
+package frc.robot.subsystems.endEffector;
 
 import me.nabdev.oxconfig.ConfigurableParameter;
 

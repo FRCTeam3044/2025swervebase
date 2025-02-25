@@ -36,11 +36,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
-import frc.robot.subsystems.EndEffector.EndEffector;
-import frc.robot.subsystems.EndEffector.EndEffectorIO;
-import frc.robot.subsystems.EndEffector.EndEffectorIOSim;
-import frc.robot.subsystems.EndEffector.EndEffectorIOSpark;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.LEDs.LEDsIO;
 import frc.robot.subsystems.LEDs.LEDsIORio;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
@@ -55,6 +52,10 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOSpark;
+import frc.robot.subsystems.endEffector.EndEffector;
+import frc.robot.subsystems.endEffector.EndEffectorIO;
+import frc.robot.subsystems.endEffector.EndEffectorIOSim;
+import frc.robot.subsystems.endEffector.EndEffectorIOSpark;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.subsystems.shoulder.ShoulderIO;
 import frc.robot.subsystems.shoulder.ShoulderIOSim;
@@ -123,19 +124,41 @@ public class RobotContainer {
                 switch (Constants.currentMode) {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
-                                drive = new Drive(
-                                                new GyroIONavX(),
-                                                new ModuleIOSpark(0),
-                                                new ModuleIOSpark(1),
-                                                new ModuleIOSpark(2),
-                                                new ModuleIOSpark(3));
+                                // drive = new Drive(
+                                // new GyroIONavX(),
+                                // new ModuleIOSpark(0),
+                                // new ModuleIOSpark(1),
+                                // new ModuleIOSpark(2),
+                                // new ModuleIOSpark(3));
 
-                                this.vision = new Vision(drive);
+                                // this.vision = new Vision(drive);
+                                // elevator = new Elevator(new ElevatorIOSpark());
+                                // shoulder = new Shoulder(new ShoulderIOSpark());
+                                // endEffector = new EndEffector(new EndEffectorIOSpark());
+                                // buttonBoard = new ButtonBoard(new BBoardIOReal());
+                                // LEDs = new LEDs(new LEDsIORio());
+                                drive = new Drive(
+                                                new GyroIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                });
+                                vision = new Vision(drive, new VisionIO() {
+                                }, new VisionIO() {
+                                });
                                 elevator = new Elevator(new ElevatorIOSpark());
-                                shoulder = new Shoulder(new ShoulderIOSpark());
-                                endEffector = new EndEffector(new EndEffectorIOSpark());
+                                shoulder = new Shoulder(new ShoulderIO() {
+                                });
+                                endEffector = new EndEffector(new EndEffectorIO() {
+                                });
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
-                                LEDs = new LEDs(new LEDsIORio());
+                                LEDs = new LEDs(new LEDsIO() {
+                                });
                                 break;
 
                         case SIM:

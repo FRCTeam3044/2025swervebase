@@ -1,12 +1,12 @@
-package frc.robot.subsystems.EndEffector;
+package frc.robot.subsystems.endEffector;
 
-import static frc.robot.subsystems.EndEffector.EndEffectorConstants.*;
 import static frc.robot.util.SparkUtil.tryUntilOk;
 
 import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 
+import static frc.robot.subsystems.endEffector.EndEffectorConstants.*;
 import static frc.robot.util.SparkUtil.ifOk;
 
 import com.revrobotics.spark.SparkBase.PersistMode;

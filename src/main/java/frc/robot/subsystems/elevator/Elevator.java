@@ -61,9 +61,13 @@ public class Elevator extends SubsystemBase {
         Logger.processInputs("Elevator", inputs);
     }
 
-    public Command elevatorMove(DoubleSupplier speed) {
+    public Command move(DoubleSupplier speed) {
         return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0), this)
                 .withName("Elevator manual move");
+    }
+
+    public Command toPosition(DoubleSupplier height) {
+        return Commands.run(() -> io.setPosition(height.getAsDouble()), this).withName("Elevator to position");
     }
 
     public Command toCoral(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {

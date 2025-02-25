@@ -83,6 +83,11 @@ public class Shoulder extends SubsystemBase {
         Logger.processInputs("Shoulder", inputs);
     }
 
+    public Command toPosition(DoubleSupplier positiin) {
+        return Commands.run(() -> io.setShoulderAngle(positiin.getAsDouble()), this)
+                .withName("Shoulder to Position");
+    }
+
     public Command manualPivot(DoubleSupplier desiredSpeed) {
         return Commands
                 .runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0), this)

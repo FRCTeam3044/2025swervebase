@@ -12,11 +12,11 @@ import frc.robot.statemachine.reusable.SmartTrigger;
 import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
-import frc.robot.subsystems.EndEffector.EndEffector;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.AllianceUtil;
 
@@ -61,7 +61,7 @@ public class ManualState extends State {
                 SmartTrigger manualElevator = t(() -> Math.abs(rightY.getAsDouble()) > 0.1);
                 SmartTrigger manualShoulder = t(() -> Math.abs(leftY.getAsDouble()) > 0.1);
 
-                manualElevator.whileTrue(elevator.elevatorMove(rightY));
+                manualElevator.whileTrue(elevator.move(rightY));
                 manualShoulder.whileTrue(shoulder.manualPivot(leftY));
                 manualElevator.whileFalse(elevator.idle());
         }
