@@ -148,6 +148,19 @@ public class DriveConstants {
                         new TrapezoidProfile.Constraints(8, 20),
                         "Pathfinding Theta Controller");
 
+        public static final PIDController choreoXController = new ConfigurablePIDController(10, 0, 0,
+                        "Choreo X Controller");
+        public static final PIDController choreoYController = new ConfigurablePIDController(10, 0, 0,
+                        "Choreo Y Controller");
+        public static final ProfiledPIDController choreAngleController = new ConfigurableProfiledPIDController(
+                        7.0,
+                        0,
+                        0,
+                        // new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond.get(),
+                        // kMaxAngularAccelerationRadiansPerSecondSquared.get()),
+                        new TrapezoidProfile.Constraints(8, 20),
+                        "Choreo Theta Controller");
+
         public static final HolonomicDriveController driveController = new HolonomicDriveController(
                         xController, yController, angleController);
 

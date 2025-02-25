@@ -339,6 +339,10 @@ public class RobotContainer {
                 SmartDashboard.putData("Mech2d", mech);
         }
 
+        public EndEffector getEndEffector() {
+                return endEffector;
+        }
+
         public void shootCoral() {
                 SimulatedArena.getInstance()
                                 .addGamePieceProjectile(new ReefscapeCoralOnFly(

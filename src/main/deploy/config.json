@@ -2,12 +2,15 @@
     "presentation": {
         "Shoulder Intake Angles/x2": "0.0",
         "Shoulder Intake Angles/x1": "0.0",
+        "Choreo Theta Controller/P": "7.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
         "Pathfinding Max Accel": {
             "comment": "Auto-Generated",
             "value": "2.0"
         },
+        "Choreo Theta Controller/D": "0.0",
+        "Choreo Theta Controller/I": "0.0",
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
@@ -20,6 +23,7 @@
             "comment": "Distance to start staging elevator/coral",
             "value": "0.0"
         },
+        "Choreo X Controller/I": "0.0",
         "Shoulder Intake Angles/y2": "0.0",
         "Algae Low Intake Distance": {
             "comment": "Target distance from reef to intake low algae",
@@ -30,6 +34,7 @@
             "comment": "Current threshold for whether or not we have something",
             "value": "1.0"
         },
+        "Choreo X Controller/D": "0.0",
         "Current threshold": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -48,6 +53,7 @@
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
         },
+        "Choreo X Controller/P": "10.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding Theta Controller/P": "6.0",
@@ -127,6 +133,7 @@
             "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "Choreo Y Controller/I": "0.0",
         "Intake station flipped": {
             "comment": "Face backwards when intaking coral",
             "value": "false"
@@ -136,6 +143,7 @@
             "value": "0.1"
         },
         "Shoulder L1 Angles/x1": "0.0",
+        "Choreo Y Controller/D": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
             "comment": "Meters per second",
@@ -151,6 +159,7 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Choreo Y Controller/P": "10.0",
         "Full Alignment Distance Threshold": {
             "comment": "Distance to move shoulder from staging to target",
             "value": "0.0"
@@ -223,12 +232,15 @@
     "simulation": {
         "Shoulder Intake Angles/x2": "1",
         "Shoulder Intake Angles/x1": "0.5",
+        "Choreo Theta Controller/P": "7.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
         "Pathfinding Max Accel": {
             "comment": "Auto-Generated",
             "value": "1.8"
         },
+        "Choreo Theta Controller/D": "0.0",
+        "Choreo Theta Controller/I": "0.0",
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
@@ -241,6 +253,7 @@
             "comment": "Distance to start staging elevator/coral",
             "value": "2"
         },
+        "Choreo X Controller/I": "0.0",
         "Shoulder Intake Angles/y2": "-0.85",
         "Algae Low Intake Distance": {
             "comment": "Target distance from reef to intake low algae",
@@ -251,6 +264,7 @@
             "comment": "Current threshold for whether or not we have something",
             "value": "1.0"
         },
+        "Choreo X Controller/D": "0.0",
         "Current threshold": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -269,6 +283,7 @@
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
         },
+        "Choreo X Controller/P": "10.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding Theta Controller/P": "6.0",
@@ -348,6 +363,7 @@
             "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "Choreo Y Controller/I": "0.0",
         "Intake station flipped": {
             "comment": "Face backwards when intaking coral",
             "value": "false"
@@ -357,6 +373,7 @@
             "value": "0.1"
         },
         "Shoulder L1 Angles/x1": "0.0",
+        "Choreo Y Controller/D": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
             "comment": "Meters per second",
@@ -372,6 +389,7 @@
             "comment": "Auto-Generated",
             "value": "-1"
         },
+        "Choreo Y Controller/P": "10.0",
         "Full Alignment Distance Threshold": {
             "comment": "Distance to move shoulder from staging to target",
             "value": "0.1"
@@ -443,12 +461,15 @@
     "competition": {
         "Shoulder Intake Angles/x2": "0.0",
         "Shoulder Intake Angles/x1": "0.0",
+        "Choreo Theta Controller/P": "7.0",
         "Pathfinding X Controller/I": "0.0",
         "Pathfinding X Controller/D": "0.0",
         "Pathfinding Max Accel": {
             "comment": "Auto-Generated",
             "value": "2.0"
         },
+        "Choreo Theta Controller/D": "0.0",
+        "Choreo Theta Controller/I": "0.0",
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.5"
@@ -461,6 +482,7 @@
             "comment": "Distance to start staging elevator/coral",
             "value": "0.0"
         },
+        "Choreo X Controller/I": "0.0",
         "Shoulder Intake Angles/y2": "0.0",
         "Algae Low Intake Distance": {
             "comment": "Target distance from reef to intake low algae",
@@ -471,6 +493,7 @@
             "comment": "Current threshold for whether or not we have something",
             "value": "1.0"
         },
+        "Choreo X Controller/D": "0.0",
         "Current threshold": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -489,6 +512,7 @@
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
         },
+        "Choreo X Controller/P": "10.0",
         "Pathfinding Y Controller/I": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
         "Pathfinding Theta Controller/P": "6.0",
@@ -568,6 +592,7 @@
             "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "Choreo Y Controller/I": "0.0",
         "Intake station flipped": {
             "comment": "Face backwards when intaking coral",
             "value": "false"
@@ -577,6 +602,7 @@
             "value": "0.1"
         },
         "Shoulder L1 Angles/x1": "0.0",
+        "Choreo Y Controller/D": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Pathfinding Max Speed": {
             "comment": "Meters per second",
@@ -592,6 +618,7 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Choreo Y Controller/P": "10.0",
         "Full Alignment Distance Threshold": {
             "comment": "Distance to move shoulder from staging to target",
             "value": "0.0"

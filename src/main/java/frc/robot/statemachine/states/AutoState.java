@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 
 import choreo.auto.AutoChooser;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.RobotContainer;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
@@ -27,7 +26,7 @@ public class AutoState extends State {
             return drive.getPose().getTranslation().getDistance(target.getTranslation()) < distanceThreshold.get();
         };
 
-        t(closeToTarget).onTrue(autoChooser.selectedCommandScheduler());
+        t(closeToTarget).onTrue(autoChooser.selectedCommandScheduler().withName("Run Choreo Auto"));
     }
 
     @Override

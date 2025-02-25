@@ -10,13 +10,15 @@ public class AutoRoutines {
         AutoRoutine routine = RobotContainer.getInstance().autoFactory.newRoutine("Test");
 
         // Load the routine's trajectories
-        AutoTrajectory driveToMiddle = routine.trajectory("Marcus");
-        RobotContainer.getInstance().startPose = driveToMiddle.getInitialPose().get();
+        AutoTrajectory example = routine.trajectory("Car");
+        RobotContainer.getInstance().startPose = example.getInitialPose().get();
         // When the routine begins, reset odometry and start the first trajectory (1)
         routine.active().onTrue(
                 Commands.sequence(
-                        driveToMiddle.resetOdometry(),
-                        driveToMiddle.cmd()));
+                        example.resetOdometry(),
+                        example.cmd()));
+
+        example.atTime("Score").onTrue(RobotContainer.getInstance().getEndEffector().runIntake());
 
         return routine;
     }
