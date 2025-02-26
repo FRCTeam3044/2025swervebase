@@ -104,7 +104,7 @@ public class RobotContainer {
 
         public final StateMachine stateMachine;
         private final AutoChooser choreoAutoChooser;
-        private final AutoRoutines choreoAutoRoutines = new AutoRoutines();
+        private final AutoRoutines choreoAutoRoutines;
         public Pose2d startPose;
 
         public static Field2d fieldSim = new Field2d();
@@ -202,6 +202,7 @@ public class RobotContainer {
                                 break;
                 }
 
+                choreoAutoRoutines = new AutoRoutines(drive, elevator, endEffector);
                 autoFactory = new AutoFactory(
                                 drive::getPose,
                                 drive::resetOdometry,
@@ -337,10 +338,6 @@ public class RobotContainer {
                 elevatorSim.setLength(elevator.getElevatorHeight());
                 shoulderSim.setAngle(Math.toDegrees(shoulder.getShoulderAngle()) - 90);
                 SmartDashboard.putData("Mech2d", mech);
-        }
-
-        public EndEffector getEndEffector() {
-                return endEffector;
         }
 
         public void shootCoral() {
