@@ -86,7 +86,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command idle() {
-        return Commands.run(() -> io.setPosition(idleHeight.get()), this).withName("Elevator to idle");
+        return Commands.runOnce(() -> io.setPosition(idleHeight.get()), this).withName("Elevator to idle");
     }
 
     private double getHeightForCoral(CoralLevel level, double distance, boolean staging) {

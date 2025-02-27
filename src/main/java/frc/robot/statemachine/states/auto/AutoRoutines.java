@@ -29,9 +29,8 @@ public class AutoRoutines {
         // Load the routine's trajectories
         AutoTrajectory example = routine.trajectory("Testy Testy", 0);
         Command outtake = Commands.waitUntil(elevator::isAtTarget)
-                .andThen(endEffector.runIntakeReverse().until(() -> !endEffector.hasCoral()))
-                .andThen(elevator.idle())
-                .withName("Intake when elevator ready");
+                .andThen(Commands.run(() -> System.out.println("Outtaking")).until(() -> !endEffector.hasCoral()))
+                .withName("Outtake when elevator ready");
 
         RobotContainer.getInstance().startPose = example.getInitialPose().get();
         // When the routine begins, reset odometry and start the first trajectory (1)
@@ -42,7 +41,7 @@ public class AutoRoutines {
                         Commands.runOnce(drive::stop)));
 
         example.atTime("elevator").onTrue(
-                elevator.toCoral(() -> CoralLevel.L2, distToEnd(example))
+                elevator.toCoral(() -> CoralLevel.L4, distToEnd(example))
                         .until(() -> !endEffector.hasCoral())
                         .andThen(elevator.idle()));
         example.inactive().onTrue(outtake);
