@@ -1,4 +1,4 @@
-package frc.robot.subsystems.EndEffector;
+package frc.robot.subsystems.endEffector;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 

@@ -2,6 +2,7 @@ package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.*;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -27,6 +28,9 @@ public class Elevator extends SubsystemBase {
 
     private final ConfigurableParameter<Double> elevatorTargetThreshold = new ConfigurableParameter<>(0.075,
             "Elevator Target Threshold");
+
+    private final ConfigurableParameter<Double> idleHeight = new ConfigurableParameter<>(0.5,
+            "Elevator Idle Height");
 
     public Elevator(ElevatorIO io) {
         this.io = io;
@@ -57,18 +61,18 @@ public class Elevator extends SubsystemBase {
         Logger.processInputs("Elevator", inputs);
     }
 
-    public Command elevatorMove(DoubleSupplier speed) {
+    public Command move(DoubleSupplier speed) {
         return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0), this)
                 .withName("Elevator manual move");
     }
 
-    public Command toCoral(CoralLevel level, DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(getHeightForCoral(level, robotDistance.getAsDouble(), false)), this)
-                .withName("Elevator to CoralLevel");
+    public Command toPosition(DoubleSupplier height) {
+        return Commands.run(() -> io.setPosition(height.getAsDouble()), this).withName("Elevator to position");
     }
 
-    public Command stageCoral(CoralLevel level) {
-        return Commands.run(() -> io.setPosition(getHeightForCoral(level, 0, true)), this)
+    public Command toCoral(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {
+        return Commands
+                .run(() -> io.setPosition(getHeightForCoral(level.get(), robotDistance.getAsDouble(), false)), this)
                 .withName("Elevator to CoralLevel");
     }
 
@@ -79,6 +83,10 @@ public class Elevator extends SubsystemBase {
 
     public Command stageIntake() {
         return Commands.run(() -> io.setPosition(intakeCoral.getY2()), this).withName("Elevator to intake");
+    }
+
+    public Command idle() {
+        return Commands.run(() -> io.setPosition(idleHeight.get()), this).withName("Elevator to idle");
     }
 
     private double getHeightForCoral(CoralLevel level, double distance, boolean staging) {

@@ -1,6 +1,6 @@
-package frc.robot.subsystems.EndEffector;
+package frc.robot.subsystems.endEffector;
 
-import static frc.robot.subsystems.EndEffector.EndEffectorConstants.*;
+import static frc.robot.subsystems.endEffector.EndEffectorConstants.*;
 
 import java.util.function.DoubleSupplier;
 

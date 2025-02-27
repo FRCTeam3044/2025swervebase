@@ -117,6 +117,9 @@
       },
       "SmartDashboard": {
         "ButtonBoardSim": {
+          "double[]##v_/SmartDashboard/ButtonBoardSim/Pressed": {
+            "open": true
+          },
           "open": true
         },
         "Field": {

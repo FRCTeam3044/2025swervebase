@@ -6,6 +6,7 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
 import frc.robot.util.AllianceUtil;
@@ -81,6 +82,7 @@ public class ButtonBoard {
 
     private boolean algaeMode = false;
     private boolean isProcessor = false;
+    private boolean isNet = false;
 
     public boolean getAlgaeMode() {
         return algaeMode;
@@ -147,7 +149,7 @@ public class ButtonBoard {
             isProcessor = true;
         }
         if (boardIO.isPressed(net)) {
-            isProcessor = false;
+            isNet = false;
         }
 
         if (coralReefReferencePose != null)
@@ -168,6 +170,28 @@ public class ButtonBoard {
         Logger.recordOutput("ButtonBoard/IntakeStationPose", intakeStationPose);
         Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
+
+        // Log to SmartDashboard for Button Board LED controller
+        SmartDashboard.putBoolean("ButtonBoard/AlgaeMode", algaeMode);
+        SmartDashboard.putBoolean("ButtonBoard/isProcessor", isProcessor);
+        SmartDashboard.putBoolean("ButtonBoard/isNet", isNet);
+        SmartDashboard.putBoolean("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
+        SmartDashboard.putBoolean("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
+        if(coralReefLocation != null) {
+            SmartDashboard.putString("ButtonBoard/CoralReefLocation", coralReefLocation.toString());
+        } else {
+            SmartDashboard.putString("ButtonBoard/CoralReefLocation", "null");
+        }
+        if(coralReefLevel != null) {
+            SmartDashboard.putString("ButtonBoard/CoralReefLevel", coralReefLevel.toString());
+        } else {
+            SmartDashboard.putString("ButtonBoard/CoralReefLevel", "null");
+        }
+        if(intakeStation != null) {
+            SmartDashboard.putString("ButtonBoard/IntakeStation", intakeStation.toString());
+        } else {
+            SmartDashboard.putString("ButtonBoard/IntakeStation", "null");
+        }
     }
 
     public Pose2d getCoralReefTarget() {

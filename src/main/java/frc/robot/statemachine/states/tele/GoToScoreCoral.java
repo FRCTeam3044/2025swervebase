@@ -33,11 +33,14 @@ public class GoToScoreCoral extends State {
 
                 DoubleSupplier dist = buttonBoard.getCoralReefTargetDist(drive);
                 SmartTrigger staging = t(() -> dist.getAsDouble() < StateMachine.stagingThreshold.get());
-                staging.whileTrue(Commands
-                                .defer(() -> elevator.stageCoral(buttonBoard.getCoralReefLevel()), Set.of(elevator))
-                                .withName("Elevator to CoralLevel"));
+                // staging.whileTrue(Commands
+                // .defer(() -> elevator.stageCoral(buttonBoard.getCoralReefLevel()),
+                // Set.of(elevator))
+                // .withName("Elevator to CoralLevel"));
                 staging.whileTrue(Commands
                                 .defer(() -> shoulder.stageCoral(buttonBoard.getCoralReefLevel()), Set.of(shoulder))
                                 .withName("Shoulder to CoralLevel"));
+                staging.whileFalse(shoulder.idle());
+                startWhenActive(elevator.idle());
         }
 }

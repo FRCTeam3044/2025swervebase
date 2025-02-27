@@ -1,0 +1,78 @@
+{
+ "name":"Optimized Liam Path",
+ "version":1,
+ "type":"Swerve",
+ "variables":{
+  "expressions":{},
+  "poses":{}
+ },
+ "config":{
+  "frontLeft":{
+   "x":{
+    "exp":"13 in",
+    "val":0.3302
+   },
+   "y":{
+    "exp":"13 in",
+    "val":0.3302
+   }
+  },
+  "backLeft":{
+   "x":{
+    "exp":"-13 in",
+    "val":-0.3302
+   },
+   "y":{
+    "exp":"13 in",
+    "val":0.3302
+   }
+  },
+  "mass":{
+   "exp":"130 lbs",
+   "val":58.9670081
+  },
+  "inertia":{
+   "exp":"6 kg m ^ 2",
+   "val":6.0
+  },
+  "gearing":{
+   "exp":"6.5",
+   "val":6.5
+  },
+  "radius":{
+   "exp":"1.5 in",
+   "val":0.038099999999999995
+  },
+  "vmax":{
+   "exp":"5874 RPM",
+   "val":615.1238415728815
+  },
+  "tmax":{
+   "exp":"3.35 N * m",
+   "val":3.35
+  },
+  "cof":{
+   "exp":"1.43",
+   "val":1.43
+  },
+  "bumper":{
+   "front":{
+    "exp":"18.0625 in",
+    "val":0.4587875
+   },
+   "side":{
+    "exp":"18.0625 in",
+    "val":0.4587875
+   },
+   "back":{
+    "exp":"18.0625 in",
+    "val":0.4587875
+   }
+  },
+  "differentialTrackWidth":{
+   "exp":"22 in",
+   "val":0.5588
+  }
+ },
+ "generationFeatures":[]
+}

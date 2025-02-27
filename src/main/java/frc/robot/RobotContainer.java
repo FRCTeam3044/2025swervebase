@@ -14,6 +14,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
@@ -36,29 +37,26 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.states.auto.AutoRoutines;
-import frc.robot.subsystems.EndEffector.EndEffector;
-import frc.robot.subsystems.EndEffector.EndEffectorIO;
-import frc.robot.subsystems.EndEffector.EndEffectorIOSim;
-import frc.robot.subsystems.EndEffector.EndEffectorIOSpark;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.LEDs.LEDsIO;
 import frc.robot.subsystems.LEDs.LEDsIORio;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOSpark;
+import frc.robot.subsystems.endEffector.EndEffector;
+import frc.robot.subsystems.endEffector.EndEffectorIO;
+import frc.robot.subsystems.endEffector.EndEffectorIOSim;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.subsystems.shoulder.ShoulderIO;
 import frc.robot.subsystems.shoulder.ShoulderIOSim;
-import frc.robot.subsystems.shoulder.ShoulderIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
@@ -130,19 +128,41 @@ public class RobotContainer {
                 switch (Constants.currentMode) {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
-                                drive = new Drive(
-                                                new GyroIONavX(),
-                                                new ModuleIOSpark(0),
-                                                new ModuleIOSpark(1),
-                                                new ModuleIOSpark(2),
-                                                new ModuleIOSpark(3));
+                                // drive = new Drive(
+                                // new GyroIONavX(),
+                                // new ModuleIOSpark(0),
+                                // new ModuleIOSpark(1),
+                                // new ModuleIOSpark(2),
+                                // new ModuleIOSpark(3));
 
-                                this.vision = new Vision(drive);
+                                // this.vision = new Vision(drive);
+                                // elevator = new Elevator(new ElevatorIOSpark());
+                                // shoulder = new Shoulder(new ShoulderIOSpark());
+                                // endEffector = new EndEffector(new EndEffectorIOSpark());
+                                // buttonBoard = new ButtonBoard(new BBoardIOReal());
+                                // LEDs = new LEDs(new LEDsIORio());
+                                drive = new Drive(
+                                                new GyroIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                });
+                                vision = new Vision(drive, new VisionIO() {
+                                }, new VisionIO() {
+                                });
                                 elevator = new Elevator(new ElevatorIOSpark());
-                                shoulder = new Shoulder(new ShoulderIOSpark());
-                                endEffector = new EndEffector(new EndEffectorIOSpark());
+                                shoulder = new Shoulder(new ShoulderIO() {
+                                });
+                                endEffector = new EndEffector(new EndEffectorIO() {
+                                });
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
-                                LEDs = new LEDs(new LEDsIORio());
+                                LEDs = new LEDs(new LEDsIO() {
+                                });
                                 break;
 
                         case SIM:
@@ -273,10 +293,11 @@ public class RobotContainer {
                 elevatorSim = root
                                 .append(new MechanismLigament2d("elevator", elevator.getElevatorHeight(), 90));
                 shoulderSim = elevatorSim
-                                .append(new MechanismLigament2d("shoulder", 0.5, -90, 6.0,
+                                .append(new MechanismLigament2d("shoulder", Inches.of(15.75).in(Meters), -90, 6.0,
                                                 new Color8Bit(Color.kPurple)));
                 shoulderSim.append(
-                                new MechanismLigament2d("endEffector", 0.35, 90.0, 6.0, new Color8Bit(Color.kPurple)));
+                                new MechanismLigament2d("endEffector", Inches.of(13).in(Meters), 90.0, 6.0,
+                                                new Color8Bit(Color.kPurple)));
         }
 
         /**

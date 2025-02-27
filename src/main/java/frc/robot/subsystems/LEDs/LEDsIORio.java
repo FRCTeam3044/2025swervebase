@@ -1,17 +1,18 @@
 package frc.robot.subsystems.LEDs;
 
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Seconds;
+import static frc.robot.subsystems.LEDs.LEDsConstants.PWM;
+import static frc.robot.subsystems.LEDs.LEDsConstants.length;
+
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.util.ToMorseCode;
-
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Seconds;
-import static frc.robot.subsystems.LEDs.LEDsConstants.*;
-
-import java.util.Map;
 
 public class LEDsIORio implements LEDsIO {
     private final AddressableLED LEDStrip = new AddressableLED(PWM);
@@ -46,50 +47,30 @@ public class LEDsIORio implements LEDsIO {
 
     @Override
     public void makeMorseCode(String phrase) {
-        if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
-                .charAt(LEDsIOInputs.indexOfChar) == '.') {
-            LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
+        // Convert the phrase to Morse code once
+        String currentSymbol = ToMorseCode.toMorseCode(phrase);
 
-            setSolidColor(LEDPattern.solid(Color.kYellow));
+        // Iterate over each character in the Morse code string
+        for (int i = 0; i < currentSymbol.length(); i++) {
+            char currentChar = currentSymbol.charAt(i);
 
-            if (LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.currentTime).lt(Seconds.of(Timer.getFPGATimestamp()))) {
-                if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
-                        .length() < LEDsIOInputs.indexOfChar) {
-                    LEDsIOInputs.indexOfChar = 0;
-                    LEDsIOInputs.indexOfStr++;
-                    LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
-                    setSolidColor(LEDPattern.solid(Color.kYellow));
-                    if (LEDsIOInputs.currentTime
-                            .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
-                        setSolidColor(LEDPattern.solid(Color.kPurple));
-                    }
-                } else {
-                    LEDsIOInputs.indexOfChar++;
-                }
-                setSolidColor(LEDPattern.solid(Color.kYellow));
-            }
-        } else {
-            LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
-
-            setSolidColor(LEDPattern.solid(Color.kYellow));
-
-            if (LEDsIOInputs.currentTime.plus(LEDsIOInputs.timeOfDash)
-                    .lt(Seconds.of(Timer.getFPGATimestamp()))) {
-                if (ToMorseCode.toMorseCode(phrase).get(LEDsIOInputs.indexOfStr).toString()
-                        .length() < LEDsIOInputs.indexOfChar) {
-                    LEDsIOInputs.indexOfChar = 0;
-                    LEDsIOInputs.indexOfStr++;
-                    LEDsIOInputs.currentTime = Seconds.of(Timer.getFPGATimestamp());
-
-                    setSolidColor(LEDPattern.solid(Color.kYellow));
-
-                    if (LEDsIOInputs.currentTime
-                            .lt(LEDsIOInputs.timeOfDot.plus(LEDsIOInputs.timeOfDot).plus(LEDsIOInputs.timeOfDot))) {
-                        setSolidColor(LEDPattern.solid(Color.kPurple));
-                    }
-                } else {
-                    LEDsIOInputs.indexOfChar++;
-                }
+            // Handle dot (.)
+            if (currentChar == '.') {
+                setSolidColor(LEDPattern.solid(Color.kYellow)); // Turn LED ON for dot
+                Timer.delay(0.2); // LED stays on for 0.2 seconds (adjust as needed)
+                setSolidColor(LEDPattern.solid(Color.kPurple)); // Turn LED OFF after dot
+                Timer.delay(0.2); // Pause between dots/dashes (adjust as needed)
+            } 
+            // Handle dash (-)
+            else if (currentChar == '-') {
+                setSolidColor(LEDPattern.solid(Color.kYellow)); // Turn LED ON for dash
+                Timer.delay(0.4); // LED stays on for 0.4 seconds (adjust as needed)
+                setSolidColor(LEDPattern.solid(Color.kPurple)); // Turn LED OFF after dash
+                Timer.delay(0.2); // Pause between dots/dashes (adjust as needed)
+            } 
+            // Handle space (Pause between words)
+            else if (currentChar == ' ') {
+                Timer.delay(0.6); // Longer pause between words (adjust as needed)
             }
         }
     }

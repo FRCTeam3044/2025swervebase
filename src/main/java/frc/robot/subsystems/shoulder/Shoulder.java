@@ -37,6 +37,9 @@ public class Shoulder extends SubsystemBase {
     private final ConfigurableParameter<Double> threshold = new ConfigurableParameter<>(0.07,
             "Shoulder Target Threshold");
 
+    private final ConfigurableParameter<Double> idle = new ConfigurableParameter<>(-Math.PI / 2,
+            "Shoulder Idle Angle (rad)");
+
     public Shoulder(ShoulderIO io) {
         this.io = io;
 
@@ -80,16 +83,21 @@ public class Shoulder extends SubsystemBase {
         Logger.processInputs("Shoulder", inputs);
     }
 
+    public Command toPosition(DoubleSupplier positiin) {
+        return Commands.run(() -> io.setShoulderAngle(positiin.getAsDouble()), this)
+                .withName("Shoulder to Position");
+    }
+
     public Command manualPivot(DoubleSupplier desiredSpeed) {
         return Commands
                 .runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0), this)
                 .withName("Shoulder Manual Pivot");
     }
 
-    public Command scoreCoral(CoralLevel level, DoubleSupplier robotDist, BooleanSupplier staging) {
+    public Command scoreCoral(Supplier<CoralLevel> level, DoubleSupplier robotDist, BooleanSupplier staging) {
         return Commands
                 .run(() -> io.setShoulderAngle(
-                        calculateAngleForCoral(level, robotDist.getAsDouble(), staging.getAsBoolean())), this)
+                        calculateAngleForCoral(level.get(), robotDist.getAsDouble(), staging.getAsBoolean())), this)
                 .withName("Shoulder to CoralLevel");
     }
 
@@ -107,6 +115,10 @@ public class Shoulder extends SubsystemBase {
 
     public Command stageIntake() {
         return Commands.run(() -> io.setShoulderAngle(stagingIntake.get()), this).withName("Shoulder to Intake");
+    }
+
+    public Command idle() {
+        return Commands.run(() -> io.setShoulderAngle(idle.get()), this).withName("Shoulder Idle");
     }
 
     private double calculateAngleForCoral(CoralLevel level, double robotDist, boolean staging) {
