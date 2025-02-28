@@ -19,10 +19,12 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.AllianceUtil;
+import frc.robot.util.bboard.ButtonBoard;
 
 public class ManualState extends State {
         public ManualState(StateMachineBase stateMachine, CommandXboxController driver, CommandXboxController operator,
-                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
+                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs,
+                        ButtonBoard bboard) {
                 super(stateMachine);
 
                 SmartXboxController driverController = new SmartXboxController(driver, loop);
@@ -58,11 +60,20 @@ public class ManualState extends State {
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);
 
-                SmartTrigger manualElevator = t(() -> Math.abs(rightY.getAsDouble()) > 0.1);
-                SmartTrigger manualShoulder = t(() -> Math.abs(leftY.getAsDouble()) > 0.1);
+                SmartTrigger manualElevator = t(() -> Math.abs(rightY.getAsDouble()) > 0.1 && bboard.fullManual());
+                SmartTrigger manualShoulder = t(() -> Math.abs(leftY.getAsDouble()) > 0.1 && bboard.fullManual());
 
                 manualElevator.whileTrue(elevator.move(rightY));
                 manualShoulder.whileTrue(shoulder.manualPivot(leftY));
                 manualElevator.whileFalse(elevator.idle());
+
+                SmartTrigger semiAuto = t(bboard::semiAuto);
+                SmartTrigger idle = t(bboard::idleInManual);
+                SmartTrigger intake = t(bboard::intakeInManual);
+
+                semiAuto.and(idle).whileTrue(elevator.idle().alongWith(shoulder.idle()));
+                semiAuto.and(intake).whileTrue(elevator.intakeCoral().alongWith(shoulder.intakeCoral()));
+                semiAuto.and(idle).and(intake).whileFalse(elevator.toCoral(bboard::getCoralReefLevel)
+                                .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
         }
 }

@@ -56,7 +56,7 @@ public class StateMachine extends StateMachineBase {
 
                 // Teleop
                 ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator,
-                                shoulder, endEffector, LEDs);
+                                shoulder, endEffector, LEDs, buttonBoard);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
                 ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
@@ -109,12 +109,14 @@ public class StateMachine extends StateMachineBase {
 
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition,
-                                () -> driverController.rightTrigger().getAsBoolean()
+                                () -> buttonBoard.fullAuto() &&
+                                                driverController.rightTrigger().getAsBoolean()
                                                 && (endEffector.hasCoral() || endEffector.hasAlgae())
                                                 && buttonBoard.scoringSelected(),
                                 "Driver presses score")
                                 .withTransition(goToIntake,
-                                                () -> driverController.leftTrigger().getAsBoolean()
+                                                () -> buttonBoard.fullAuto() &&
+                                                                driverController.leftTrigger().getAsBoolean()
                                                                 && (!endEffector.hasCoral() && !endEffector.hasAlgae())
                                                                 && buttonBoard.intakeSelected(),
                                                 "Driver presses intake");

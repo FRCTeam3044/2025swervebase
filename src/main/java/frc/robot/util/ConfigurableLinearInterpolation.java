@@ -58,4 +58,12 @@ public class ConfigurableLinearInterpolation implements ConfigurableClass {
     public double getY2() {
         return y2.get();
     }
+
+    public double getX1() {
+        return x1.get();
+    }
+
+    public double getX2() {
+        return x2.get();
+    }
 }

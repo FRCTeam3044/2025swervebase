@@ -124,6 +124,13 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 .withName("Shoulder to CoralLevel");
     }
 
+    public Command scoreCoral(Supplier<CoralLevel> level) {
+        return Commands
+                .run(() -> io.setShoulderAngle(
+                        calculateAngleForCoral(level.get(), getCloseCoralDistance(level.get()), false)), this)
+                .withName("Shoulder to CoralLevel");
+    }
+
     public Command stageCoral(CoralLevel level) {
         return Commands
                 .run(() -> io.setShoulderAngle(calculateAngleForCoral(level, 0.0, true)), this)
@@ -133,6 +140,11 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     public Command intakeCoral(DoubleSupplier robotAngle, BooleanSupplier staging) {
         return Commands.run(() -> io.setShoulderAngle(staging.getAsBoolean() ? stagingIntake.get()
                 : intakeCoral.calculate(robotAngle.getAsDouble())), this)
+                .withName("Shoulder to Intake");
+    }
+
+    public Command intakeCoral() {
+        return Commands.run(() -> io.setShoulderAngle(intakeCoral.getY1()), this)
                 .withName("Shoulder to Intake");
     }
 
@@ -171,6 +183,21 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 return stagingL3.get();
             case L4:
                 return stagingL4.get();
+            default:
+                return 0;
+        }
+    }
+
+    private double getCloseCoralDistance(CoralLevel level) {
+        switch (level) {
+            case L1:
+                return L1.getX1();
+            case L2:
+                return L2.getX1();
+            case L3:
+                return L3.getX1();
+            case L4:
+                return L4.getX1();
             default:
                 return 0;
         }
