@@ -236,6 +236,14 @@ public class ButtonBoard {
         }
     }
 
+    public boolean climbUp() {
+        return boardIO.isPressed(climbUp) && !boardIO.isPressed(climbDown);
+    }
+
+    public boolean climbDown() {
+        return boardIO.isPressed(climbDown) && !boardIO.isPressed(climbUp);
+    }
+
     public Pose2d getCoralReefTarget() {
         return coralReefTargetPose;
     }

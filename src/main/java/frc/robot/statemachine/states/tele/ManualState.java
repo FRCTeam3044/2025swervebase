@@ -13,6 +13,7 @@ import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.elevator.Elevator;
@@ -24,7 +25,7 @@ import frc.robot.util.bboard.ButtonBoard;
 public class ManualState extends State {
         public ManualState(StateMachineBase stateMachine, CommandXboxController driver, CommandXboxController operator,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs,
-                        ButtonBoard bboard) {
+                        ButtonBoard bboard, Climber climber) {
                 super(stateMachine);
 
                 SmartXboxController driverController = new SmartXboxController(driver, loop);
@@ -56,6 +57,9 @@ public class ManualState extends State {
 
                 operatorController.leftTrigger().whileTrue(endEffector.runIntakeReverse());
                 operatorController.rightTrigger().whileTrue(endEffector.runIntake());
+
+                t(bboard::climbUp).whileTrue(climber.up());
+                t(bboard::climbDown).whileTrue(climber.down());
 
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);
