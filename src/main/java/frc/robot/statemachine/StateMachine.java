@@ -50,7 +50,7 @@ public class StateMachine extends StateMachineBase {
                 State disabled = new DisabledState(this);
                 currentState = disabled;
 
-                State teleop = new TeleState(this);
+                State teleop = new TeleState(this, buttonBoard, endEffector);
                 State auto = new AutoState(this, chooser);
                 State test = new TestState(this, driverController, elevator, shoulder, endEffector, LEDs);
 
@@ -68,7 +68,8 @@ public class StateMachine extends StateMachineBase {
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
                 IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, shoulder, endEffector,
                                 LEDs);
-                IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, endEffector, LEDs);
+                IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, shoulder, endEffector,
+                                LEDs);
                 GoToIntake goToIntake = new GoToIntake(this);
                 GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive, LEDs);
                 GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, elevator,

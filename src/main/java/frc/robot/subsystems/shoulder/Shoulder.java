@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import me.nabdev.oxconfig.ConfigurableClass;
 import me.nabdev.oxconfig.ConfigurableClassParam;
@@ -36,6 +37,14 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ConfigurableClassParam<Double> stagingL4 = new ConfigurableClassParam<>(this, 0.0,
             "Staging L4 Angle");
 
+    private final ConfigurableLinearInterpolation lowAlgae = new ConfigurableLinearInterpolation("Shoulder Low Algae");
+    private final ConfigurableLinearInterpolation highAlgae = new ConfigurableLinearInterpolation(
+            "Shoulder High Algae");
+    private final ConfigurableClassParam<Double> stagingLowAlgae = new ConfigurableClassParam<>(this, 0.0,
+            "Staging Low Algae Angle");
+    private final ConfigurableClassParam<Double> stagingHighAlgae = new ConfigurableClassParam<>(this, 0.0,
+            "Staging High Algae Angle");
+
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Shoulder Intake Angles");
     private final ConfigurableClassParam<Double> stagingIntake = new ConfigurableClassParam<>(this, 0.0,
@@ -57,7 +66,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
             "Shoulder Danger Zone Two Max Angle (rad)");
 
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
-            idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax);
+            idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
+            stagingLowAlgae);
 
     public Shoulder(ShoulderIO io) {
         this.io = io;
@@ -134,10 +144,23 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 .withName("Shoulder to CoralLevel");
     }
 
-    public Command intakeCoral(DoubleSupplier robotAngle, BooleanSupplier staging) {
+    public Command intakeCoral(DoubleSupplier robotDist, BooleanSupplier staging) {
         return Commands.run(() -> io.setShoulderAngle(staging.getAsBoolean() ? stagingIntake.get()
-                : intakeCoral.calculate(robotAngle.getAsDouble())), this)
+                : intakeCoral.calculate(robotDist.getAsDouble())), this)
                 .withName("Shoulder to Intake");
+    }
+
+    public Command algaeIntake(Supplier<AlgaeReefLocation> algae, DoubleSupplier robotAngle, BooleanSupplier staging) {
+        return Commands.run(() -> {
+            double target;
+            if (algae.get().upperBranch()) {
+                target = staging.getAsBoolean() ? stagingHighAlgae.get()
+                        : highAlgae.calculate(robotAngle.getAsDouble());
+            } else {
+                target = staging.getAsBoolean() ? stagingLowAlgae.get() : lowAlgae.calculate(robotAngle.getAsDouble());
+            }
+            io.setShoulderAngle(target);
+        }).withName("Shoulder to Algae");
     }
 
     public Command intakeCoral() {

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import me.nabdev.oxconfig.ConfigurableClass;
 import me.nabdev.oxconfig.ConfigurableClassParam;
@@ -30,6 +31,10 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
 
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Elevator Intake Heights");
+
+    private final ConfigurableLinearInterpolation lowAlgae = new ConfigurableLinearInterpolation("Elevator Low Algae");
+    private final ConfigurableLinearInterpolation highAlgae = new ConfigurableLinearInterpolation(
+            "Elevator High Algae");
 
     private final ConfigurableClassParam<Double> elevatorTargetThreshold = new ConfigurableClassParam<>(this, 0.075,
             "Elevator Target Threshold");
@@ -111,6 +116,13 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
 
     public Command idle() {
         return Commands.run(() -> io.setPosition(idleHeight.get()), this).withName("Elevator to idle");
+    }
+
+    public Command algaeIntake(Supplier<AlgaeReefLocation> location, DoubleSupplier distance) {
+        return Commands.run(
+                () -> io.setPosition(location.get().upperBranch() ? highAlgae.calculate(distance.getAsDouble())
+                        : lowAlgae.calculate(distance.getAsDouble())),
+                this).withName("Elevator to algae intake");
     }
 
     private double getHeightForCoral(CoralLevel level, double distance, boolean staging) {
