@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shoulder;
 
+import com.revrobotics.spark.config.AbsoluteEncoderConfig;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -13,12 +14,16 @@ public class ShoulderConfig {
 
     public static SoftLimitConfig softLimitConfig = new SoftLimitConfig();
 
+    public static AbsoluteEncoderConfig absoluteEncoderConfig = new AbsoluteEncoderConfig();
+
     static {
         leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
         followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId);
 
         softLimitConfig.forwardSoftLimit(forwardSoftLimit);
         softLimitConfig.reverseSoftLimit(reverseSoftLimit);
+
+        absoluteEncoderConfig.positionConversionFactor(2 * Math.PI);
 
         leaderConfig.apply(softLimitConfig);
     }
