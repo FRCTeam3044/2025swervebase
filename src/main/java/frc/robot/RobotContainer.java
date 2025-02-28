@@ -232,7 +232,7 @@ public class RobotContainer {
                                 break;
                 }
 
-                choreoAutoRoutines = new AutoRoutines(drive, elevator, endEffector);
+                choreoAutoRoutines = new AutoRoutines(drive, elevator, endEffector, shoulder);
                 autoFactory = new AutoFactory(
                                 drive::getPose,
                                 drive::resetOdometry,
