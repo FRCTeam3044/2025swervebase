@@ -2,6 +2,7 @@ package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -12,11 +13,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.util.ConfigurableLinearInterpolation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
-import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.ConfigurableClass;
+import me.nabdev.oxconfig.ConfigurableClassParam;
+import me.nabdev.oxconfig.OxConfig;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableLinearInterpolation;
 
-public class Elevator extends SubsystemBase {
+public class Elevator extends SubsystemBase implements ConfigurableClass {
     private final ElevatorIO io;
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
     private final SysIdRoutine sysId;
@@ -28,11 +31,13 @@ public class Elevator extends SubsystemBase {
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Elevator Intake Heights");
 
-    private final ConfigurableParameter<Double> elevatorTargetThreshold = new ConfigurableParameter<>(0.075,
+    private final ConfigurableClassParam<Double> elevatorTargetThreshold = new ConfigurableClassParam<>(this, 0.075,
             "Elevator Target Threshold");
 
-    private final ConfigurableParameter<Double> idleHeight = new ConfigurableParameter<>(0.5,
+    private final ConfigurableClassParam<Double> idleHeight = new ConfigurableClassParam<>(this, 0.5,
             "Elevator Idle Height");
+
+    private final List<ConfigurableClassParam<?>> params = List.of(elevatorTargetThreshold, idleHeight);
 
     private final BooleanSupplier shoulderInDangerZone;
 
@@ -48,6 +53,8 @@ public class Elevator extends SubsystemBase {
                         (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
                 new SysIdRoutine.Mechanism(
                         (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+
+        OxConfig.registerConfigurableClass(this);
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -146,5 +153,15 @@ public class Elevator extends SubsystemBase {
 
     public boolean isAtTarget() {
         return Math.abs(inputs.elevatorHeightMeters - inputs.setpointMeters) < elevatorTargetThreshold.get();
+    }
+
+    @Override
+    public List<ConfigurableClassParam<?>> getParameters() {
+        return params;
+    }
+
+    @Override
+    public String getKey() {
+        return "Elevator";
     }
 }

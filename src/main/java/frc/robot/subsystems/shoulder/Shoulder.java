@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shoulder;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -14,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.util.ConfigurableLinearInterpolation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import me.nabdev.oxconfig.ConfigurableClass;
 import me.nabdev.oxconfig.ConfigurableClassParam;
 import me.nabdev.oxconfig.OxConfig;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableLinearInterpolation;
 
 public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ShoulderIO io;
@@ -57,13 +56,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ConfigurableClassParam<Double> dangerZoneTwoMax = new ConfigurableClassParam<>(this, 0.0,
             "Shoulder Danger Zone Two Max Angle (rad)");
 
-    private final ArrayList<ConfigurableClassParam<?>> params = new ArrayList<>();
+    private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
+            idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax);
 
     public Shoulder(ShoulderIO io) {
-        Collections.addAll(params, stagingL1, stagingL2, stagingL3, stagingL4, stagingIntake, threshold, idle,
-                dangerZoneOneMin,
-                dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax);
-        OxConfig.registerConfigurableClass(this);
         this.io = io;
 
         sysId = new SysIdRoutine(
@@ -74,6 +70,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                         (state) -> Logger.recordOutput("Shoulder/SysIdTestState", state.toString())),
                 new SysIdRoutine.Mechanism(
                         (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+        OxConfig.registerConfigurableClass(this);
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -224,7 +221,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     }
 
     @Override
-    public ArrayList<ConfigurableClassParam<?>> getParameters() {
+    public List<ConfigurableClassParam<?>> getParameters() {
         return params;
     }
 

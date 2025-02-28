@@ -143,8 +143,8 @@ public class ElevatorIOSpark implements ElevatorIO {
             encoder.setPosition(bottomPoint.get());
         }
 
-        if (topHallEffect.get()) {
-            encoder.setPosition(topPoint.get());
-        }
+        // if (topHallEffect.get()) {
+        // encoder.setPosition(topPoint.get());
+        // }
     }
 }
