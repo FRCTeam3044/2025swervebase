@@ -20,7 +20,7 @@ public interface ElevatorIO {
         public boolean bottomEffectClosed = false;
     }
 
-    public default void updateInputs(ElevatorIOInputs inputs) {
+    public default void updateInputs(ElevatorIOInputs inputs, boolean shoulderInDangerZone) {
     };
 
     public default void setPosition(double desiredPosition) {

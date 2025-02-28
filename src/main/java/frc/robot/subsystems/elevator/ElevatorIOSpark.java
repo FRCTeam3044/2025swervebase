@@ -41,6 +41,8 @@ public class ElevatorIOSpark implements ElevatorIO {
     private double currentTargetMeters;
     private boolean positionControlMode = false;
 
+    private boolean shoulderInDangerZone = false;
+
     public ElevatorIOSpark() {
         tryUntilOk(followerMotor, 5, () -> followerMotor.configure(ElevatorConfigs.followerConfig,
                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
@@ -91,19 +93,32 @@ public class ElevatorIOSpark implements ElevatorIO {
     @Override
     public void setSpeed(double desiredSpeed) {
         positionControlMode = false;
-        leaderMotor.set(desiredSpeed);
+
+        if (!shoulderInDangerZone) {
+            leaderMotor.set(desiredSpeed);
+        }
     }
 
     @Override
     public void setVoltage(double voltage) {
         positionControlMode = false;
-        leaderMotor.setVoltage(voltage);
+
+        if (!shoulderInDangerZone) {
+            leaderMotor.setVoltage(voltage);
+        }
     }
 
-    public void updateInputs(ElevatorIOInputs inputs) {
+    @Override
+    public void updateInputs(ElevatorIOInputs inputs, boolean shoulderInDangerZone) {
+        this.shoulderInDangerZone = shoulderInDangerZone;
         double currentTargetRotations = currentTargetMeters / (drumRadius * 2.0 * Math.PI);
-        if (positionControlMode)
-            setPositionPPID(currentTargetRotations);
+
+        if (shoulderInDangerZone) {
+            leaderMotor.set(0);
+        } else {
+            if (positionControlMode)
+                setPositionPPID(currentTargetRotations);
+        }
 
         ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leaderPositionRot = value);
         ifOk(leaderMotor, encoder::getVelocity, (value) -> inputs.leaderVelocityRPM = value);

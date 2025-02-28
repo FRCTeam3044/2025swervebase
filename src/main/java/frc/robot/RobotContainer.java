@@ -147,9 +147,9 @@ public class RobotContainer {
                                 vision = new Vision(drive, new VisionIO() {
                                 }, new VisionIO() {
                                 });
-                                elevator = new Elevator(new ElevatorIOSpark());
                                 shoulder = new Shoulder(new ShoulderIO() {
                                 });
+                                elevator = new Elevator(new ElevatorIOSpark(), shoulder::inDangerZone);
                                 endEffector = new EndEffector(new EndEffectorIO() {
                                 });
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
@@ -179,8 +179,8 @@ public class RobotContainer {
                                                                 camera1Name, robotToCamera1,
                                                                 driveSimulation::getSimulatedDriveTrainPose));
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
-                                elevator = new Elevator(new ElevatorIOSim());
                                 shoulder = new Shoulder(new ShoulderIOSim());
+                                elevator = new Elevator(new ElevatorIOSim(), shoulder::inDangerZone);
                                 endEffector = new EndEffector(new EndEffectorIOSim(driverController.getHID()));
                                 buttonBoard = new ButtonBoard(
                                                 Constants.simButtonBoard ? new BBoardIOSim() : new BBoardIOReal());
@@ -203,10 +203,10 @@ public class RobotContainer {
                                 vision = new Vision(drive, new VisionIO() {
                                 }, new VisionIO() {
                                 });
-                                elevator = new Elevator(new ElevatorIO() {
-                                });
                                 shoulder = new Shoulder(new ShoulderIO() {
                                 });
+                                elevator = new Elevator(new ElevatorIO() {
+                                }, shoulder::inDangerZone);
                                 endEffector = new EndEffector(new EndEffectorIO() {
                                 });
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());

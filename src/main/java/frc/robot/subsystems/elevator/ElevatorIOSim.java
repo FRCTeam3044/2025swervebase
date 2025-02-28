@@ -42,6 +42,7 @@ public class ElevatorIOSim implements ElevatorIO {
 
     private double currentTargetMeters;
     private boolean positionControlMode = false;
+    private boolean shoulderInDangerZone = false;
 
     // public ElevatorIOSim() {
     // tryUntilOk(sparkMax, 5, () -> sparkMax.configure(ElevatorConfigs.leftConfig,
@@ -50,7 +51,8 @@ public class ElevatorIOSim implements ElevatorIO {
     // }
 
     @Override
-    public void updateInputs(ElevatorIOInputs inputs) {
+    public void updateInputs(ElevatorIOInputs inputs, boolean shoulderInDangerZone) {
+        this.shoulderInDangerZone = shoulderInDangerZone;
         m_elevatorSim.setInput(sparkMax.getAppliedOutput() * RobotController.getBatteryVoltage());
         m_elevatorSim.update(0.020);
         RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
@@ -63,7 +65,7 @@ public class ElevatorIOSim implements ElevatorIO {
                 RobotController.getBatteryVoltage(),
                 0.02);
 
-        if (positionControlMode) {
+        if (positionControlMode && !shoulderInDangerZone) {
             m_controller.setGoal(currentTargetMeters);
             double pidOutput = m_controller.calculate(m_elevatorSim.getPositionMeters());
             double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
@@ -86,13 +88,19 @@ public class ElevatorIOSim implements ElevatorIO {
     @Override
     public void setVoltage(double voltage) {
         positionControlMode = false;
-        sparkMax.set(voltage);
+
+        if (!shoulderInDangerZone) {
+            sparkMax.set(voltage);
+        }
     }
 
     @Override
     public void setSpeed(double desiredSpeed) {
         positionControlMode = false;
-        sparkMax.set(desiredSpeed);
+
+        if (!shoulderInDangerZone) {
+            sparkMax.set(desiredSpeed);
+        }
     }
 
     @Override

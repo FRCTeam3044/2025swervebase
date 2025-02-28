@@ -1,6 +1,8 @@
 package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.*;
+
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -32,8 +34,11 @@ public class Elevator extends SubsystemBase {
     private final ConfigurableParameter<Double> idleHeight = new ConfigurableParameter<>(0.5,
             "Elevator Idle Height");
 
-    public Elevator(ElevatorIO io) {
+    private final BooleanSupplier shoulderInDangerZone;
+
+    public Elevator(ElevatorIO io, BooleanSupplier shoulderInDangerZone) {
         this.io = io;
+        this.shoulderInDangerZone = shoulderInDangerZone;
 
         sysId = new SysIdRoutine(
                 new SysIdRoutine.Config(
@@ -57,7 +62,7 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        io.updateInputs(inputs);
+        io.updateInputs(inputs, shoulderInDangerZone.getAsBoolean());
         Logger.processInputs("Elevator", inputs);
     }
 

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shoulder;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -14,33 +16,54 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.util.ConfigurableLinearInterpolation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
-import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.ConfigurableClass;
+import me.nabdev.oxconfig.ConfigurableClassParam;
+import me.nabdev.oxconfig.OxConfig;
 
-public class Shoulder extends SubsystemBase {
+public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ShoulderIO io;
     private final ShoulderIOInputsAutoLogged inputs = new ShoulderIOInputsAutoLogged();
     private final SysIdRoutine sysId;
     private final ConfigurableLinearInterpolation L1 = new ConfigurableLinearInterpolation("Shoulder L1 Angles");
-    private final ConfigurableParameter<Double> stagingL1 = new ConfigurableParameter<>(0.0, "Staging L1 Angle");
+    private final ConfigurableClassParam<Double> stagingL1 = new ConfigurableClassParam<>(this, 0.0,
+            "Staging L1 Angle");
     private final ConfigurableLinearInterpolation L2 = new ConfigurableLinearInterpolation("Shoulder L2 Angles");
-    private final ConfigurableParameter<Double> stagingL2 = new ConfigurableParameter<>(0.0, "Staging L2 Angle");
+    private final ConfigurableClassParam<Double> stagingL2 = new ConfigurableClassParam<>(this, 0.0,
+            "Staging L2 Angle");
     private final ConfigurableLinearInterpolation L3 = new ConfigurableLinearInterpolation("Shoulder L3 Angles");
-    private final ConfigurableParameter<Double> stagingL3 = new ConfigurableParameter<>(0.0, "Staging L3 Angle");
+    private final ConfigurableClassParam<Double> stagingL3 = new ConfigurableClassParam<>(this, 0.0,
+            "Staging L3 Angle");
     private final ConfigurableLinearInterpolation L4 = new ConfigurableLinearInterpolation("Shoulder L4 Angles");
-    private final ConfigurableParameter<Double> stagingL4 = new ConfigurableParameter<>(0.0, "Staging L4 Angle");
+    private final ConfigurableClassParam<Double> stagingL4 = new ConfigurableClassParam<>(this, 0.0,
+            "Staging L4 Angle");
 
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Shoulder Intake Angles");
-    private final ConfigurableParameter<Double> stagingIntake = new ConfigurableParameter<>(0.0,
+    private final ConfigurableClassParam<Double> stagingIntake = new ConfigurableClassParam<>(this, 0.0,
             "Staging Intake Angle");
 
-    private final ConfigurableParameter<Double> threshold = new ConfigurableParameter<>(0.07,
+    private final ConfigurableClassParam<Double> threshold = new ConfigurableClassParam<>(this, 0.07,
             "Shoulder Target Threshold");
 
-    private final ConfigurableParameter<Double> idle = new ConfigurableParameter<>(-Math.PI / 2,
+    private final ConfigurableClassParam<Double> idle = new ConfigurableClassParam<>(this, -Math.PI / 2,
             "Shoulder Idle Angle (rad)");
 
+    private final ConfigurableClassParam<Double> dangerZoneOneMin = new ConfigurableClassParam<>(this, 0.0,
+            "Shoulder Danger Zone One Min Angle (rad)");
+    private final ConfigurableClassParam<Double> dangerZoneOneMax = new ConfigurableClassParam<>(this, 0.0,
+            "Shoulder Danger Zone One Max Angle (rad)");
+    private final ConfigurableClassParam<Double> dangerZoneTwoMin = new ConfigurableClassParam<>(this, 0.0,
+            "Shoulder Danger Zone Two Min Angle (rad)");
+    private final ConfigurableClassParam<Double> dangerZoneTwoMax = new ConfigurableClassParam<>(this, 0.0,
+            "Shoulder Danger Zone Two Max Angle (rad)");
+
+    private final ArrayList<ConfigurableClassParam<?>> params = new ArrayList<>();
+
     public Shoulder(ShoulderIO io) {
+        Collections.addAll(params, stagingL1, stagingL2, stagingL3, stagingL4, stagingIntake, threshold, idle,
+                dangerZoneOneMin,
+                dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax);
+        OxConfig.registerConfigurableClass(this);
         this.io = io;
 
         sysId = new SysIdRoutine(
@@ -164,5 +187,27 @@ public class Shoulder extends SubsystemBase {
     public boolean isAtCoralTarget(Supplier<CoralLevel> level, DoubleSupplier robotDist) {
         return Math.abs(inputs.leaderShoulderAngleRad
                 - calculateAngleForCoral(level.get(), robotDist.getAsDouble(), false)) < threshold.get();
+    }
+
+    public boolean inDangerZone() {
+        return (inputs.leaderShoulderAngleRad > dangerZoneOneMin.get()
+                && inputs.leaderShoulderAngleRad < dangerZoneOneMax.get())
+                || (inputs.leaderShoulderAngleRad > dangerZoneTwoMin.get()
+                        && inputs.leaderShoulderAngleRad < dangerZoneTwoMax.get());
+    }
+
+    @Override
+    public ArrayList<ConfigurableClassParam<?>> getParameters() {
+        return params;
+    }
+
+    @Override
+    public String getKey() {
+        return "Shoulder";
+    }
+
+    @Override
+    public String getPrettyName() {
+        return "Shoulder";
     }
 }
