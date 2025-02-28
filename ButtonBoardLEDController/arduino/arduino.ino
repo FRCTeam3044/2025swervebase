@@ -2,17 +2,28 @@
 #include <Base64.h>
 #include <ArduinoJson.h>
 
-bool AlgaeMode = false;
-bool ClimbDown = false;
-bool ClimbUp = false;
+int startingIndex = 0; // 0 For arduino 1
+                       // 13 for arduino 2
+                       // 26 for arduino 3
 
 void setup() {
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+
   Serial.begin(115200);
   while (!Serial) {
     ;
   }
-  pinMode(13, OUTPUT);
-  pinMode(4, OUTPUT);
 }
 
 void loop() {
@@ -31,21 +42,16 @@ void loop() {
     DeserializationError error = deserializeJson(doc, decoded);
 
     if (error) {
-      digitalWrite(4, HIGH);
       // Serial.print(F("deserializeJson() failed: "));
       // Serial.println(error.f_str());
       return;
     } 
-    digitalWrite(4, LOW);
-
-    AlgaeMode = doc["AlgaeMode"];
-    ClimbDown = doc["ClimbDown"];
-    ClimbUp = doc["ClimbUp"];
-  }
-
-  if (AlgaeMode) {
-    digitalWrite(13, HIGH);
-  } else {
-    digitalWrite(13, LOW);
+    for (int i = 0 + startingIndex; i < 13 + startingIndex; i++) {
+      if(doc[i]) {
+        digitalWrite(i+2, HIGH);
+      } else {
+        digitalWrite(i+2, LOW);
+      }
+    }
   }
 }
