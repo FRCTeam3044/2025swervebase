@@ -29,6 +29,7 @@ import frc.robot.statemachine.states.tele.ScoreAlgaeProcessor;
 import frc.robot.statemachine.states.tele.ScoreCoral;
 import frc.robot.statemachine.states.tele.ScoreGamePiece;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endEffector.EndEffector;
@@ -43,8 +44,9 @@ public class StateMachine extends StateMachineBase {
                         "Full Alignment Distance Threshold");
 
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
-                        ButtonBoard buttonBoard, AutoChooser autoChooser,
-                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
+                        ButtonBoard buttonBoard, LoggedDashboardChooser<Command> chooser,
+                        Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs,
+                        Climber climber, AutoChooser autoChooser) {
                 super();
                 State disabled = new DisabledState(this);
                 currentState = disabled;
@@ -57,7 +59,7 @@ public class StateMachine extends StateMachineBase {
 
                 // Teleop
                 ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator,
-                                shoulder, endEffector, LEDs);
+                                shoulder, endEffector, LEDs, buttonBoard, climber);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
                 ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
@@ -110,12 +112,14 @@ public class StateMachine extends StateMachineBase {
 
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition,
-                                () -> driverController.rightTrigger().getAsBoolean()
+                                () -> buttonBoard.fullAuto() &&
+                                                driverController.rightTrigger().getAsBoolean()
                                                 && (endEffector.hasCoral() || endEffector.hasAlgae())
                                                 && buttonBoard.scoringSelected(),
                                 "Driver presses score")
                                 .withTransition(goToIntake,
-                                                () -> driverController.leftTrigger().getAsBoolean()
+                                                () -> buttonBoard.fullAuto() &&
+                                                                driverController.leftTrigger().getAsBoolean()
                                                                 && (!endEffector.hasCoral() && !endEffector.hasAlgae())
                                                                 && buttonBoard.intakeSelected(),
                                                 "Driver presses intake");

@@ -19,6 +19,10 @@ import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class ButtonBoard {
+    public enum ManualMode {
+        AUTO, SEMI, MANUAL
+    }
+
     private final BBoardIO boardIO;
 
     public ButtonBoard(BBoardIO boardIO) {
@@ -67,6 +71,11 @@ public class ButtonBoard {
     private ButtonInfo climbUp = new ButtonInfo(0, 5);
     private ButtonInfo climbDown = new ButtonInfo(0, 6);
 
+    private ButtonInfo extraOne = new ButtonInfo(2, 1);
+    private ButtonInfo extraTwo = new ButtonInfo(2, 2);
+    private ButtonInfo extraThree = new ButtonInfo(2, 3);
+    private ButtonInfo extraFour = new ButtonInfo(2, 4);
+
     // Reef
     private Pose2d coralReefTargetPose = null;
     private Pose2d coralReefReferencePose = null;
@@ -83,6 +92,10 @@ public class ButtonBoard {
     private boolean algaeMode = false;
     private boolean isProcessor = false;
     private boolean isNet = false;
+
+    private ManualMode manualMode = ManualMode.AUTO;
+    private boolean manualIdle = false;
+    private boolean manualIntake = false;
 
     public boolean getAlgaeMode() {
         return algaeMode;
@@ -128,6 +141,9 @@ public class ButtonBoard {
         }
         for (SelectButtonInfo<CoralLevel> button : levels) {
             if (boardIO.isPressed(button)) {
+                if (manualMode == ManualMode.MANUAL) {
+                    manualIdle = false;
+                }
                 coralReefLevel = button.value();
                 if (coralReefLocation != null)
                     coralReefTargetPose = Reef.coral(coralReefLocation, coralReefLevel);
@@ -151,6 +167,31 @@ public class ButtonBoard {
         if (boardIO.isPressed(net)) {
             isNet = false;
         }
+        if (boardIO.isPressed(extraOne) && boardIO.isPressed(extraThree) && boardIO.isPressed(extraFour)) {
+            if (boardIO.isPressed(extraTwo)) {
+                if (manualMode == ManualMode.MANUAL) {
+                    manualMode = ManualMode.AUTO;
+                } else {
+                    manualMode = ManualMode.MANUAL;
+                }
+            } else {
+                if (manualMode == ManualMode.SEMI) {
+                    manualMode = ManualMode.AUTO;
+                } else {
+                    manualMode = ManualMode.SEMI;
+                    manualIdle = true;
+                    manualIntake = false;
+                }
+            }
+        }
+        if (manualMode == ManualMode.SEMI && boardIO.isPressed(intakeStationButtons.get(5))) {
+            manualIdle = true;
+            manualIntake = false;
+        }
+        if (manualMode == ManualMode.SEMI && boardIO.isPressed(intakeStationButtons.get(3))) {
+            manualIdle = false;
+            manualIntake = true;
+        }
 
         if (coralReefReferencePose != null)
             Logger.recordOutput("Dist to coral reef position",
@@ -170,6 +211,7 @@ public class ButtonBoard {
         Logger.recordOutput("ButtonBoard/IntakeStationPose", intakeStationPose);
         Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
+        Logger.recordOutput("ButtonBoard/ManualMode", manualMode);
 
         // Log to SmartDashboard for Button Board LED controller
         SmartDashboard.putBoolean("ButtonBoard/AlgaeMode", algaeMode);
@@ -177,21 +219,29 @@ public class ButtonBoard {
         SmartDashboard.putBoolean("ButtonBoard/isNet", isNet);
         SmartDashboard.putBoolean("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         SmartDashboard.putBoolean("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
-        if(coralReefLocation != null) {
+        if (coralReefLocation != null) {
             SmartDashboard.putString("ButtonBoard/CoralReefLocation", coralReefLocation.toString());
         } else {
             SmartDashboard.putString("ButtonBoard/CoralReefLocation", "null");
         }
-        if(coralReefLevel != null) {
+        if (coralReefLevel != null) {
             SmartDashboard.putString("ButtonBoard/CoralReefLevel", coralReefLevel.toString());
         } else {
             SmartDashboard.putString("ButtonBoard/CoralReefLevel", "null");
         }
-        if(intakeStation != null) {
+        if (intakeStation != null) {
             SmartDashboard.putString("ButtonBoard/IntakeStation", intakeStation.toString());
         } else {
             SmartDashboard.putString("ButtonBoard/IntakeStation", "null");
         }
+    }
+
+    public boolean climbUp() {
+        return boardIO.isPressed(climbUp) && !boardIO.isPressed(climbDown);
+    }
+
+    public boolean climbDown() {
+        return boardIO.isPressed(climbDown) && !boardIO.isPressed(climbUp);
     }
 
     public Pose2d getCoralReefTarget() {
@@ -328,5 +378,25 @@ public class ButtonBoard {
 
     public boolean coralReefJustChanged() {
         return coralReefJustChanged;
+    }
+
+    public boolean fullManual() {
+        return manualMode == ManualMode.MANUAL;
+    }
+
+    public boolean semiAuto() {
+        return manualMode == ManualMode.SEMI;
+    }
+
+    public boolean fullAuto() {
+        return manualMode == ManualMode.AUTO;
+    }
+
+    public boolean idleInManual() {
+        return manualIdle;
+    }
+
+    public boolean intakeInManual() {
+        return manualIntake;
     }
 }

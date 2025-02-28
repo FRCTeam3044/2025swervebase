@@ -34,14 +34,14 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.states.auto.AutoRoutines;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.LEDs.LEDsIO;
 import frc.robot.subsystems.LEDs.LEDsIORio;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOSim;
@@ -91,6 +91,7 @@ public class RobotContainer {
         private final Shoulder shoulder;
         private final EndEffector endEffector;
         private final LEDs LEDs;
+        private final Climber climber;
         private SwerveDriveSimulation driveSimulation = null;
 
         // Controller
@@ -163,6 +164,9 @@ public class RobotContainer {
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIO() {
                                 });
+                                climber = new Climber(new ClimberIO() {
+
+                                });
                                 break;
 
                         case SIM:
@@ -193,6 +197,9 @@ public class RobotContainer {
                                 buttonBoard = new ButtonBoard(
                                                 Constants.simButtonBoard ? new BBoardIOSim() : new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIORio());
+                                climber = new Climber(new ClimberIO() {
+
+                                });
                                 break;
 
                         default:
@@ -219,6 +226,9 @@ public class RobotContainer {
                                 });
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIORio());
+                                climber = new Climber(new ClimberIO() {
+
+                                });
                                 break;
                 }
 
@@ -281,9 +291,8 @@ public class RobotContainer {
                 // choreoAutoChooser.addRoutine("Marcus",
                 // choreoAutoRoutines::pickupAndScoreAuto);
 
-                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, choreoAutoChooser,
-                                drive,
-                                elevator, shoulder, endEffector, LEDs);
+                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, autoChooser, drive,
+                                elevator, shoulder, endEffector, LEDs, climber, choreoAutoChooser);
 
                 // Configure the button bindings
                 configureButtonBindings();

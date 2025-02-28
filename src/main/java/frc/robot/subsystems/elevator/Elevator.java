@@ -75,6 +75,13 @@ public class Elevator extends SubsystemBase {
         return Commands.run(() -> io.setPosition(height.getAsDouble()), this).withName("Elevator to position");
     }
 
+    public Command toCoral(Supplier<CoralLevel> level) {
+        return Commands
+                .run(() -> io.setPosition(getHeightForCoral(level.get(), getCloseDistanceForCoral(level.get()), false)),
+                        this)
+                .withName("Elevator to CoralLevel");
+    }
+
     public Command toCoral(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {
         return Commands
                 .run(() -> io.setPosition(getHeightForCoral(level.get(), robotDistance.getAsDouble(), false)), this)
@@ -83,6 +90,11 @@ public class Elevator extends SubsystemBase {
 
     public Command intakeCoral(DoubleSupplier robotDistance) {
         return Commands.run(() -> io.setPosition(intakeCoral.calculate(robotDistance.getAsDouble())), this)
+                .withName("Elevator to intake");
+    }
+
+    public Command intakeCoral() {
+        return Commands.run(() -> io.setPosition(intakeCoral.calculate(intakeCoral.getX1())), this)
                 .withName("Elevator to intake");
     }
 
@@ -104,6 +116,21 @@ public class Elevator extends SubsystemBase {
                 return staging ? L3.getY2() : L3.calculate(distance);
             case L4:
                 return staging ? L4.getY2() : L4.calculate(distance);
+            default:
+                return 0;
+        }
+    }
+
+    private double getCloseDistanceForCoral(CoralLevel level) {
+        switch (level) {
+            case L1:
+                return L1.getX1();
+            case L2:
+                return L2.getX1();
+            case L3:
+                return L3.getX1();
+            case L4:
+                return L4.getX1();
             default:
                 return 0;
         }

@@ -7,6 +7,8 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Servo;
+
 import static frc.robot.util.SparkUtil.*;
 
 import static frc.robot.subsystems.climber.ClimberConstants.*;
@@ -18,6 +20,8 @@ public class ClimberIOSpark implements ClimberIO {
   private final RelativeEncoder encoder = leaderMotor.getEncoder();
 
   private final SparkMax followerMotor = new SparkMax(followerCanId, MotorType.kBrushless);
+
+  private final Servo servo = new Servo(servoPwmPort);
 
   public ClimberIOSpark() {
     tryUntilOk(leaderMotor, 5, () -> leaderMotor.configure(ClimberConfig.leaderConfig,
@@ -36,10 +40,17 @@ public class ClimberIOSpark implements ClimberIO {
         new DoubleSupplier[] { leaderMotor::getAppliedOutput, leaderMotor::getBusVoltage },
         (values) -> inputs.appliedVolts = values[0] * values[1]);
     ifOk(leaderMotor, leaderMotor::getOutputCurrent, (value) -> inputs.currentAmps = value);
+
+    inputs.servoPosition = servo.getAngle();
   }
 
   @Override
   public void setSpeed(double speed) {
     leaderMotor.set(speed);
+  }
+
+  @Override
+  public void setServoAngle(double angle) {
+    servo.setAngle(angle);
   }
 }
