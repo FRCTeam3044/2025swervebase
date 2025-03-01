@@ -31,7 +31,7 @@ public class ScoreCoral extends State {
                                         .get() && elevator.isAtTarget()
                                         && shoulder.isAtCoralTarget(buttonBoard::getCoralReefLevel, distanceToRef);
                 };
-                t(readyToScore).whileTrue(endEffector.runIntakeReverse());
+                t(readyToScore).whileTrue(endEffector.coralOut());
                 startWhenActive(LEDs.intakingAndScoringCoral());
         }
 }

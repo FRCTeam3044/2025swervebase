@@ -20,7 +20,7 @@ public class IntakeAlgae extends State {
         super(stateMachine);
 
         startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getAlgaeReefTarget));
-        startWhenActive(endEffector.runIntake());
+        startWhenActive(endEffector.algaeIn());
         BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
         DoubleSupplier dist = buttonBoard.getAlgaeReefTargetDist(drive);
         BooleanSupplier staging = () -> dist.getAsDouble() > stateMachine.alignmentThreshold.get()

@@ -35,8 +35,8 @@ public class TestState extends State {
                 startWhenActive(LEDs.simMorseCode());
                 startWhenActive(elevator.move(() -> rightY.getAsDouble() * testElevatorSpeed.get()));
                 startWhenActive(shoulder.manualPivot(() -> leftY.getAsDouble() * testShoulderSpeed.get()));
-                testController.a().whileTrue(endEffector.runIntake());
-                testController.b().whileTrue(endEffector.runIntakeReverse());
+                testController.a().whileTrue(endEffector.algaeIn());
+                testController.b().whileTrue(endEffector.algaeOut());
                 testController.x().whileTrue(elevator.toPosition(testElevatorHeight::get));
                 testController.y().whileTrue(shoulder.toPosition(testShoulderAngle::get));
         }

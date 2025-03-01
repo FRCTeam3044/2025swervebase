@@ -9,7 +9,7 @@ public class TeleState extends State {
     public TeleState(StateMachineBase stateMachine, ButtonBoard bboard, EndEffector endEffector) {
         super(stateMachine);
 
-        t(bboard::extraFour).whileTrue(endEffector.runIntakeReverse());
-        t(bboard::extraFour).whileTrue(endEffector.runIntake());
+        t(bboard::extraFour).whileTrue(endEffector.algaeOut());
+        t(bboard::extraFour).whileTrue(endEffector.algaeIn());
     }
 }

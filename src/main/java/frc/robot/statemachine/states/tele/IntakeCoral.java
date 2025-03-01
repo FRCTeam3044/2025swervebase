@@ -19,7 +19,7 @@ public class IntakeCoral extends State {
         super(stateMachine);
 
         startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getIntakeStationTarget));
-        startWhenActive(endEffector.runIntake());
+        startWhenActive(endEffector.coralIn());
         startWhenActive(LEDs.intakingAndScoringCoral());
         startWhenActive(elevator.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive)));
         BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
