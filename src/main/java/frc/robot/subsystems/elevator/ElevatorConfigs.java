@@ -17,8 +17,8 @@ public class ElevatorConfigs {
 
     static {
         // TODO: Soft Limit conversion factor
-        leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
-        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId);
+        leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit);
+        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId, true);
         followerConfig.signals.primaryEncoderPositionPeriodMs(500).primaryEncoderVelocityPeriodMs(500);
 
         leaderConfig.alternateEncoder.countsPerRevolution(8192).setSparkMaxDataPortConfig();

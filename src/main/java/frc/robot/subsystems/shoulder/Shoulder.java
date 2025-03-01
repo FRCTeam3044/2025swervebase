@@ -57,13 +57,13 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
             "Shoulder Idle Angle (rad)");
 
     private final ConfigurableClassParam<Double> dangerZoneOneMin = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone One Min Angle (rad)");
+            "Danger Zone One Min Angle (rad)");
     private final ConfigurableClassParam<Double> dangerZoneOneMax = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone One Max Angle (rad)");
+            "Danger Zone One Max Angle (rad)");
     private final ConfigurableClassParam<Double> dangerZoneTwoMin = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone Two Min Angle (rad)");
+            "Danger Zone Two Min Angle (rad)");
     private final ConfigurableClassParam<Double> dangerZoneTwoMax = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone Two Max Angle (rad)");
+            "Danger Zone Two Max Angle (rad)");
 
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
@@ -89,9 +89,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 .andThen(sysId.quasistatic(direction))
                 .until(() -> {
                     if (direction == SysIdRoutine.Direction.kForward) {
-                        return inputs.leaderShoulderAngleRad > 1.4 * Math.PI;
+                        return inputs.leaderShoulderAngleRad > 3.8;
                     } else {
-                        return inputs.leaderShoulderAngleRad < -Math.PI / 2.1;
+                        return inputs.leaderShoulderAngleRad < 0.51;
                     }
                 });
     }
@@ -99,9 +99,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return run(() -> io.setVoltage(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction)).until(() -> {
             if (direction == SysIdRoutine.Direction.kForward) {
-                return inputs.leaderShoulderAngleRad > 1.4 * Math.PI;
+                return inputs.leaderShoulderAngleRad > 3.8;
             } else {
-                return inputs.leaderShoulderAngleRad < -Math.PI / 2.1;
+                return inputs.leaderShoulderAngleRad < 0.51;
             }
         });
 
@@ -111,6 +111,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Shoulder", inputs);
+        Logger.recordOutput("ShoulderInDangerZone", inDangerZone());
     }
 
     public Command toPosition(DoubleSupplier positiin) {

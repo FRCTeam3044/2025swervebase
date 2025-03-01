@@ -6,8 +6,8 @@ public class ShoulderConstants {
     public static final double shoulderMotorReduction = 45.0;
     public static final int currentLimit = 40;
 
-    public static final double forwardSoftLimit = 0.0;
-    public static final double reverseSoftLimit = 0.0;
+    public static final double forwardSoftLimit = 4.92;
+    public static final double reverseSoftLimit = 0.08;
 
     public static double kDt = 0.02;
     public static double kMaxVelocity = 3;
