@@ -3,8 +3,8 @@ package frc.robot.subsystems.elevator;
 import edu.wpi.first.math.util.Units;
 
 public class ElevatorConstants {
-  public static final int leaderCanId = 21;
-  public static final int followerCanId = 22;
+  public static final int leaderCanId = 22;
+  public static final int followerCanId = 21;
   // Gearing is 12:1
   public static final double motorReduction = 12;
   public static final int currentLimit = 40;

@@ -5,7 +5,6 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
-import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
@@ -15,7 +14,7 @@ import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.bboard.ButtonBoard;
 
 public class IntakeAlgae extends State {
-    public IntakeAlgae(StateMachineBase stateMachine, ButtonBoard buttonBoard, Drive drive, Elevator elevator,
+    public IntakeAlgae(StateMachine stateMachine, ButtonBoard buttonBoard, Drive drive, Elevator elevator,
             Shoulder shoulder,
             EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
@@ -24,7 +23,7 @@ public class IntakeAlgae extends State {
         startWhenActive(endEffector.runIntake());
         BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
         DoubleSupplier dist = buttonBoard.getAlgaeReefTargetDist(drive);
-        BooleanSupplier staging = () -> dist.getAsDouble() > StateMachine.alignmentThreshold.get()
+        BooleanSupplier staging = () -> dist.getAsDouble() > stateMachine.alignmentThreshold.get()
                 || !elevatorCloseToTarget.getAsBoolean();
         startWhenActive(
                 elevator.algaeIntake(buttonBoard::getAlgaeReefLocation, buttonBoard.getAlgaeReefReferenceDist(drive)));

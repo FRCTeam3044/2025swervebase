@@ -1,8 +1,8 @@
 package frc.robot.subsystems.shoulder;
 
 public class ShoulderConstants {
-    public static final int leaderCanId = 28;
-    public static final int followerCanId = 29;
+    public static final int leaderCanId = 29;
+    public static final int followerCanId = 28;
     public static final double shoulderMotorReduction = 45.0;
     public static final int currentLimit = 40;
 

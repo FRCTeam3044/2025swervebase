@@ -14,10 +14,15 @@ import frc.robot.subsystems.shoulder.Shoulder;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class TestState extends State {
-        private static ConfigurableParameter<Double> testElevatorHeight = new ConfigurableParameter<>(1.0,
+        private ConfigurableParameter<Double> testElevatorHeight = new ConfigurableParameter<>(1.0,
                         "Test Elevator Height");
-        private static ConfigurableParameter<Double> testShoulderAngle = new ConfigurableParameter<>(0.0,
+        private ConfigurableParameter<Double> testShoulderAngle = new ConfigurableParameter<>(0.0,
                         "Test Shoulder Angle");
+
+        private ConfigurableParameter<Double> testShoulderSpeed = new ConfigurableParameter<>(0.2,
+                        "Test Shoulder Speed");
+        private ConfigurableParameter<Double> testElevatorSpeed = new ConfigurableParameter<>(0.2,
+                        "Test Elevator Speed");
 
         public TestState(StateMachineBase stateMachine, CommandXboxController controller, Elevator elevator,
                         Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
@@ -28,8 +33,8 @@ public class TestState extends State {
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(controller.getLeftY(), 0.1);
 
                 startWhenActive(LEDs.simMorseCode());
-                startWhenActive(elevator.move(rightY));
-                startWhenActive(shoulder.manualPivot(leftY));
+                startWhenActive(elevator.move(() -> rightY.getAsDouble() * testElevatorSpeed.get()));
+                startWhenActive(shoulder.manualPivot(() -> leftY.getAsDouble() * testShoulderSpeed.get()));
                 testController.a().whileTrue(endEffector.runIntake());
                 testController.b().whileTrue(endEffector.runIntakeReverse());
                 testController.x().whileTrue(elevator.toPosition(testElevatorHeight::get));

@@ -5,7 +5,6 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
-import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
@@ -15,7 +14,7 @@ import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.bboard.ButtonBoard;
 
 public class IntakeCoral extends State {
-    public IntakeCoral(StateMachineBase stateMachine, ButtonBoard buttonBoard, Drive drive, Elevator elevator,
+    public IntakeCoral(StateMachine stateMachine, ButtonBoard buttonBoard, Drive drive, Elevator elevator,
             Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
 
@@ -25,7 +24,7 @@ public class IntakeCoral extends State {
         startWhenActive(elevator.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive)));
         BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
         DoubleSupplier dist = buttonBoard.getIntakeStationTargetDist(drive);
-        BooleanSupplier staging = () -> dist.getAsDouble() > StateMachine.alignmentThreshold.get()
+        BooleanSupplier staging = () -> dist.getAsDouble() > stateMachine.alignmentThreshold.get()
                 || !elevatorCloseToTarget.getAsBoolean();
         startWhenActive(shoulder.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive), staging));
     }

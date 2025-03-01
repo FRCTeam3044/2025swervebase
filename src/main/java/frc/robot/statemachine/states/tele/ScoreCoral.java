@@ -5,7 +5,6 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
-import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
@@ -15,7 +14,7 @@ import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.bboard.ButtonBoard;
 
 public class ScoreCoral extends State {
-        public ScoreCoral(StateMachineBase stateMachine, ButtonBoard buttonBoard, Drive drive, EndEffector endEffector,
+        public ScoreCoral(StateMachine stateMachine, ButtonBoard buttonBoard, Drive drive, EndEffector endEffector,
                         Elevator elevator, Shoulder shoulder, LEDs LEDs) {
                 super(stateMachine);
 
@@ -28,7 +27,7 @@ public class ScoreCoral extends State {
 
                 DoubleSupplier distanceToTarget = buttonBoard.getCoralReefTargetDist(drive);
                 BooleanSupplier readyToScore = () -> {
-                        return distanceToTarget.getAsDouble() < StateMachine.alignmentThreshold
+                        return distanceToTarget.getAsDouble() < stateMachine.alignmentThreshold
                                         .get() && elevator.isAtTarget()
                                         && shoulder.isAtCoralTarget(buttonBoard::getCoralReefLevel, distanceToRef);
                 };

@@ -32,7 +32,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
-import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkClosedLoop;
+//import me.nabdev.oxconfig.sampleClasses.ConfigurableSparkClosedLoop;
 
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
@@ -160,10 +160,12 @@ public class ModuleIOSpark implements ModuleIO {
                                                 turnConfig, ResetMode.kResetSafeParameters,
                                                 PersistMode.kPersistParameters));
 
-                new ConfigurableSparkClosedLoop(driveConfig, driveSpark.configAccessor, driveSpark,
-                                "Drive Module " + module);
-                new ConfigurableSparkClosedLoop(turnConfig, turnSpark.configAccessor, turnSpark,
-                                "Turn Module " + module);
+                // new ConfigurableSparkClosedLoop(driveConfig, driveSpark.configAccessor,
+                // driveSpark,
+                // "Drive Module " + module);
+                // new ConfigurableSparkClosedLoop(turnConfig, turnSpark.configAccessor,
+                // turnSpark,
+                // "Turn Module " + module);
                 // Create odometry queues
                 timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
                 drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveSpark,

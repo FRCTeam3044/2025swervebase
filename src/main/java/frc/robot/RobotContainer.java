@@ -41,13 +41,16 @@ import frc.robot.subsystems.LEDs.LEDsIO;
 import frc.robot.subsystems.LEDs.LEDsIORio;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.climber.ClimberIOSpark;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
+import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
@@ -55,9 +58,11 @@ import frc.robot.subsystems.elevator.ElevatorIOSpark;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.subsystems.endEffector.EndEffectorIO;
 import frc.robot.subsystems.endEffector.EndEffectorIOSim;
+import frc.robot.subsystems.endEffector.EndEffectorIOSpark;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.subsystems.shoulder.ShoulderIO;
 import frc.robot.subsystems.shoulder.ShoulderIOSim;
+import frc.robot.subsystems.shoulder.ShoulderIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
@@ -123,44 +128,35 @@ public class RobotContainer {
                 switch (Constants.currentMode) {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
-                                // drive = new Drive(
-                                // new GyroIONavX(),
-                                // new ModuleIOSpark(0),
-                                // new ModuleIOSpark(1),
-                                // new ModuleIOSpark(2),
-                                // new ModuleIOSpark(3));
-
-                                // this.vision = new Vision(drive);
-                                // elevator = new Elevator(new ElevatorIOSpark());
-                                // shoulder = new Shoulder(new ShoulderIOSpark());
-                                // endEffector = new EndEffector(new EndEffectorIOSpark());
-                                // buttonBoard = new ButtonBoard(new BBoardIOReal());
-                                // LEDs = new LEDs(new LEDsIORio());
                                 drive = new Drive(
-                                                new GyroIO() {
-                                                },
-                                                new ModuleIO() {
-                                                },
-                                                new ModuleIO() {
-                                                },
-                                                new ModuleIO() {
-                                                },
-                                                new ModuleIO() {
-                                                });
-                                vision = new Vision(drive, new VisionIO() {
-                                }, new VisionIO() {
-                                });
-                                shoulder = new Shoulder(new ShoulderIO() {
-                                });
+                                                new GyroIONavX(),
+                                                new ModuleIOSpark(0),
+                                                new ModuleIOSpark(1),
+                                                new ModuleIOSpark(2),
+                                                new ModuleIOSpark(3));
+                                this.vision = new Vision(drive);
+                                shoulder = new Shoulder(new ShoulderIOSpark());
                                 elevator = new Elevator(new ElevatorIOSpark(), shoulder::inDangerZone);
-                                endEffector = new EndEffector(new EndEffectorIO() {
-                                });
+                                endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIO() {
                                 });
-                                climber = new Climber(new ClimberIO() {
+                                climber = new Climber(new ClimberIOSpark());
+                                // vision = new Vision(drive, new VisionIO() {
+                                // }, new VisionIO() {
+                                // });
+                                // shoulder = new Shoulder(new ShoulderIO() {
+                                // });
+                                // elevator = new Elevator(new ElevatorIO() {
+                                // }, shoulder::inDangerZone);
+                                // endEffector = new EndEffector(new EndEffectorIO() {
+                                // });
+                                // buttonBoard = new ButtonBoard(new BBoardIOReal());
+                                // LEDs = new LEDs(new LEDsIO() {
+                                // });
+                                // climber = new Climber(new ClimberIO() {
 
-                                });
+                                // });
                                 break;
 
                         case SIM:
