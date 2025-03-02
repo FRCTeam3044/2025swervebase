@@ -11,6 +11,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
@@ -84,24 +85,22 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
     }
 
     public Command toPosition(DoubleSupplier height) {
-        return Commands.run(() -> io.setPosition(height.getAsDouble()), this).withName("Elevator to position");
+        return new FunctionalCommand(io::resetPosControl, () -> io.setPosition(height.getAsDouble()),
+                (c) -> io.setVoltage(0), () -> false, this).withName("Elevator to position");
     }
 
     public Command toCoral(Supplier<CoralLevel> level) {
-        return Commands
-                .run(() -> io.setPosition(getHeightForCoral(level.get(), getCloseDistanceForCoral(level.get()), false)),
-                        this)
+        return toPosition(() -> getHeightForCoral(level.get(), getCloseDistanceForCoral(level.get()), false))
                 .withName("Elevator to CoralLevel");
     }
 
     public Command toCoral(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {
-        return Commands
-                .run(() -> io.setPosition(getHeightForCoral(level.get(), robotDistance.getAsDouble(), false)), this)
+        return toPosition(() -> getHeightForCoral(level.get(), robotDistance.getAsDouble(), false))
                 .withName("Elevator to CoralLevel");
     }
 
     public Command intakeCoral(DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(intakeCoral.calculate(robotDistance.getAsDouble())), this)
+        return toPosition(() -> intakeCoral.calculate(robotDistance.getAsDouble()))
                 .withName("Elevator to intake");
     }
 
@@ -111,18 +110,16 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
     }
 
     public Command stageIntake() {
-        return Commands.run(() -> io.setPosition(intakeCoral.getY2()), this).withName("Elevator to intake");
+        return toPosition(intakeCoral::getY2).withName("Elevator to intake");
     }
 
     public Command idle() {
-        return Commands.run(() -> io.setPosition(idleHeight.get()), this).withName("Elevator to idle");
+        return toPosition(idleHeight::get).withName("Elevator to idle");
     }
 
     public Command algaeIntake(Supplier<AlgaeReefLocation> location, DoubleSupplier distance) {
-        return Commands.run(
-                () -> io.setPosition(location.get().upperBranch() ? highAlgae.calculate(distance.getAsDouble())
-                        : lowAlgae.calculate(distance.getAsDouble())),
-                this).withName("Elevator to algae intake");
+        return toPosition(() -> location.get().upperBranch() ? highAlgae.calculate(distance.getAsDouble())
+                : lowAlgae.calculate(distance.getAsDouble())).withName("Elevator to algae intake");
     }
 
     private double getHeightForCoral(CoralLevel level, double distance, boolean staging) {

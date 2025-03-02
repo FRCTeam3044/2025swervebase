@@ -69,7 +69,7 @@ public class ElevatorIOSpark implements ElevatorIO {
         lastTime = Timer.getFPGATimestamp();
     }
 
-    // TODO: check if we can use trapezoid profile itself
+    // TOD: check if we can use trapezoid profile itself
     public void setPositionSpark(double desiredPosition) {
         double lastSpeed = 0;
         double lastTime = Timer.getFPGATimestamp();
@@ -80,7 +80,7 @@ public class ElevatorIOSpark implements ElevatorIO {
                 feedforward.calculate(controller.getSetpoint().velocity, acceleration));
     }
 
-    // TODO: test with and without FF
+    // TOD: test with and without FF
     public void setPositionMaxMotion(double desiredPosition) {
         double lastSpeed = 0;
         double lastTime = Timer.getFPGATimestamp();
@@ -146,5 +146,10 @@ public class ElevatorIOSpark implements ElevatorIO {
         // if (topHallEffect.get()) {
         // encoder.setPosition(topPoint.get());
         // }
+    }
+
+    @Override
+    public void resetPosControl() {
+        controller.reset(encoder.getPosition(), encoder.getVelocity());
     }
 }

@@ -115,8 +115,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
         Logger.recordOutput("ShoulderInDangerZone", inDangerZone());
     }
 
-    public Command toPosition(DoubleSupplier positiin) {
-        return new FunctionalCommand(() -> io.resetPosControl(), () -> io.setShoulderAngle(positiin.getAsDouble()),
+    public Command toPosition(DoubleSupplier position) {
+        return new FunctionalCommand(() -> io.resetPosControl(), () -> io.setShoulderAngle(position.getAsDouble()),
                 (b) -> io.setVoltage(0), () -> false, this)
                 .withName("Shoulder to Position");
     }
@@ -128,33 +128,28 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     }
 
     public Command scoreCoral(Supplier<CoralLevel> level, DoubleSupplier robotDist, BooleanSupplier staging) {
-        return Commands
-                .run(() -> io.setShoulderAngle(
-                        calculateAngleForCoral(level.get(), robotDist.getAsDouble(), staging.getAsBoolean())), this)
+        return toPosition(() -> calculateAngleForCoral(level.get(), robotDist.getAsDouble(), staging.getAsBoolean()))
                 .withName("Shoulder to CoralLevel");
     }
 
     public Command scoreCoral(Supplier<CoralLevel> level) {
-        return Commands
-                .run(() -> io.setShoulderAngle(
-                        calculateAngleForCoral(level.get(), getCloseCoralDistance(level.get()), false)), this)
+        return toPosition(() -> calculateAngleForCoral(level.get(), getCloseCoralDistance(level.get()), false))
                 .withName("Shoulder to CoralLevel");
     }
 
     public Command stageCoral(CoralLevel level) {
-        return Commands
-                .run(() -> io.setShoulderAngle(calculateAngleForCoral(level, 0.0, true)), this)
+        return toPosition(() -> calculateAngleForCoral(level, 0.0, true))
                 .withName("Shoulder to CoralLevel");
     }
 
     public Command intakeCoral(DoubleSupplier robotDist, BooleanSupplier staging) {
-        return Commands.run(() -> io.setShoulderAngle(staging.getAsBoolean() ? stagingIntake.get()
-                : intakeCoral.calculate(robotDist.getAsDouble())), this)
+        return toPosition(
+                () -> staging.getAsBoolean() ? stagingIntake.get() : intakeCoral.calculate(robotDist.getAsDouble()))
                 .withName("Shoulder to Intake");
     }
 
     public Command algaeIntake(Supplier<AlgaeReefLocation> algae, DoubleSupplier robotAngle, BooleanSupplier staging) {
-        return Commands.run(() -> {
+        return toPosition(() -> {
             double target;
             if (algae.get().upperBranch()) {
                 target = staging.getAsBoolean() ? stagingHighAlgae.get()
@@ -162,21 +157,20 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
             } else {
                 target = staging.getAsBoolean() ? stagingLowAlgae.get() : lowAlgae.calculate(robotAngle.getAsDouble());
             }
-            io.setShoulderAngle(target);
+            return target;
         }).withName("Shoulder to Algae");
     }
 
     public Command intakeCoral() {
-        return Commands.run(() -> io.setShoulderAngle(intakeCoral.getY1()), this)
-                .withName("Shoulder to Intake");
+        return toPosition(intakeCoral::getY1).withName("Shoulder to Intake");
     }
 
     public Command stageIntake() {
-        return Commands.run(() -> io.setShoulderAngle(stagingIntake.get()), this).withName("Shoulder to Intake");
+        return toPosition(stagingIntake::get).withName("Shoulder to Intake");
     }
 
     public Command idle() {
-        return Commands.run(() -> io.setShoulderAngle(idle.get()), this).withName("Shoulder Idle");
+        return toPosition(idle::get).withName("Shoulder Idle");
     }
 
     private double calculateAngleForCoral(CoralLevel level, double robotDist, boolean staging) {
