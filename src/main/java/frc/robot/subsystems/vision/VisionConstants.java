@@ -13,17 +13,31 @@
 
 package frc.robot.subsystems.vision;
 
+import java.io.IOException;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionConstants {
     // AprilTag layout
-    public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
-    // public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadFromResource(Filesystem.getDeployDirectory().toPath() + "april_tag_layout.json");
+    // public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+    public static AprilTagFieldLayout aprilTagLayout;
+
+    static {
+        try {
+            aprilTagLayout = AprilTagFieldLayout.loadFromResource(Filesystem.getDeployDirectory().toPath() + "/practice_field.json");
+            SmartDashboard.putBoolean("Using custom field layout", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+            SmartDashboard.putBoolean("Using custom field layout", false);
+        }
+    }
 
     // Camera names, must match names configured on coprocessor
     public static String camera0Name = "elevator";
