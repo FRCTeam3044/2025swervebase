@@ -10,12 +10,13 @@ public class ShoulderConstants {
     public static final double reverseSoftLimit = 0.08;
 
     public static double kDt = 0.02;
-    public static double kMaxVelocity = 3;
-    public static double kMaxAcceleration = 1.5;
-    public static double kP = 1.3;
+    public static double kMaxVelocity = 6;
+    public static double kMaxAcceleration = 5;
+    public static double kP = 0;
     public static double kI = 0.0;
     public static double kD = 0;
-    public static double kS = 1.1;
-    public static double kG = 1.2;
-    public static double kV = 1.3;
+    public static double kS = 0;
+    public static double kG = 1.3055;
+    public static double kV = 0;
+    public static double kOffsetToHoriz = -1.9743;
 }

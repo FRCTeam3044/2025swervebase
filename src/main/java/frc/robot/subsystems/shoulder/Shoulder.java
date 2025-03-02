@@ -11,6 +11,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
@@ -89,9 +90,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 .andThen(sysId.quasistatic(direction))
                 .until(() -> {
                     if (direction == SysIdRoutine.Direction.kForward) {
-                        return inputs.leaderShoulderAngleRad > 3.8;
+                        return inputs.leaderShoulderAngleRad > 3.58;
                     } else {
-                        return inputs.leaderShoulderAngleRad < 0.51;
+                        return inputs.leaderShoulderAngleRad < 0.58;
                     }
                 });
     }
@@ -99,9 +100,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return run(() -> io.setVoltage(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction)).until(() -> {
             if (direction == SysIdRoutine.Direction.kForward) {
-                return inputs.leaderShoulderAngleRad > 3.8;
+                return inputs.leaderShoulderAngleRad > 3.58;
             } else {
-                return inputs.leaderShoulderAngleRad < 0.51;
+                return inputs.leaderShoulderAngleRad < 0.58;
             }
         });
 
@@ -115,7 +116,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     }
 
     public Command toPosition(DoubleSupplier positiin) {
-        return Commands.run(() -> io.setShoulderAngle(positiin.getAsDouble()), this)
+        return new FunctionalCommand(() -> io.resetPosControl(), () -> io.setShoulderAngle(positiin.getAsDouble()),
+                (b) -> io.setVoltage(0), () -> false, this)
                 .withName("Shoulder to Position");
     }
 

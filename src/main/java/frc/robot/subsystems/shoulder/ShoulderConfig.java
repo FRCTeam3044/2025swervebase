@@ -27,8 +27,10 @@ public class ShoulderConfig {
         softLimitConfig.forwardSoftLimit(forwardSoftLimit).forwardSoftLimitEnabled(true);
         softLimitConfig.reverseSoftLimit(reverseSoftLimit).reverseSoftLimitEnabled(true);
 
-        absoluteEncoderConfig.positionConversionFactor(2 * Math.PI).inverted(true);
+        absoluteEncoderConfig.positionConversionFactor(2 * Math.PI).velocityConversionFactor(2 * Math.PI)
+                .inverted(true);
 
+        leaderConfig.closedLoop.pid(0, 0, 0);
         leaderConfig.apply(absoluteEncoderConfig);
         leaderConfig.apply(softLimitConfig);
     }

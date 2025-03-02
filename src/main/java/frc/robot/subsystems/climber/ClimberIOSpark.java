@@ -42,6 +42,10 @@ public class ClimberIOSpark implements ClimberIO {
     ifOk(leaderMotor, leaderMotor::getOutputCurrent, (value) -> inputs.currentAmps = value);
 
     inputs.servoPosition = servo.getAngle();
+
+    if (leaderMotor.getReverseLimitSwitch().isPressed()) {
+      leaderMotor.getEncoder().setPosition(0);
+    }
   }
 
   @Override
