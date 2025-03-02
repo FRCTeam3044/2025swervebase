@@ -16,6 +16,8 @@ package frc.robot.subsystems.vision;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +47,9 @@ public class VisionIOPhotonVision implements VisionIO {
         // Read new camera observations
         Set<Short> tagIds = new HashSet<>();
         List<PoseObservation> poseObservations = new LinkedList<>();
-        for (var result : camera.getAllUnreadResults()) {
+        var unread = camera.getAllUnreadResults();
+        SmartDashboard.putNumber("Unread", unread.size());
+        for (var result : unread) {
             // Update latest target observation
             if (result.hasTargets()) {
                 inputs.latestTargetObservation = new TargetObservation(
@@ -85,6 +89,7 @@ public class VisionIOPhotonVision implements VisionIO {
         }
 
         // Save pose observations to inputs object
+        SmartDashboard.putNumber("poseObservations", poseObservations.size());
         inputs.poseObservations = new PoseObservation[poseObservations.size()];
         for (int i = 0; i < poseObservations.size(); i++) {
             inputs.poseObservations[i] = poseObservations.get(i);

@@ -104,6 +104,7 @@
             "comment": "Auto-Generated",
             "value": "0.075"
         },
+        "Elevator Profiled PID/D": "0.0",
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Drive Module 0/Max": "1.0",
@@ -120,12 +121,14 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Elevator Profiled PID/I": "0.0",
         "Full Alignment Distance Threshold": {
             "comment": "Distance to move shoulder from staging to target",
             "value": "0.0"
         },
         "Shoulder/Staging L2 Angle": "0.0",
         "Shoulder/Danger Zone Two Max Angle (rad)": "0.0",
+        "Elevator Profiled PID/P": "0.0",
         "Elevator L2 Heights/x2": "0.0",
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",
@@ -455,6 +458,7 @@
             "comment": "Auto-Generated",
             "value": "0.075"
         },
+        "Elevator Profiled PID/D": "0.0",
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Drive Module 0/Max": "1.0",
@@ -471,12 +475,14 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Elevator Profiled PID/I": "0.0",
         "Full Alignment Distance Threshold": {
             "comment": "Distance to move shoulder from staging to target",
             "value": "0.1"
         },
         "Shoulder/Staging L2 Angle": "1.5",
         "Shoulder/Danger Zone Two Max Angle (rad)": "0.0",
+        "Elevator Profiled PID/P": "0.0",
         "Elevator L2 Heights/x2": "1",
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",
@@ -805,6 +811,7 @@
             "comment": "Auto-Generated",
             "value": "0.075"
         },
+        "Elevator Profiled PID/D": "0.0",
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Drive Module 0/Max": "1.0",
@@ -821,12 +828,14 @@
             "comment": "Auto-Generated",
             "value": "0.5"
         },
+        "Elevator Profiled PID/I": "0.0",
         "Full Alignment Distance Threshold": {
             "comment": "Distance to move shoulder from staging to target",
             "value": "0.0"
         },
         "Shoulder/Staging L2 Angle": "0.0",
         "Shoulder/Danger Zone Two Max Angle (rad)": "6.28",
+        "Elevator Profiled PID/P": "0.0",
         "Elevator L2 Heights/x2": "0.0",
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",

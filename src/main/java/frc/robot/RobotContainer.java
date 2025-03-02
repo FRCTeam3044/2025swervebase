@@ -64,7 +64,9 @@ import frc.robot.subsystems.shoulder.ShoulderIO;
 import frc.robot.subsystems.shoulder.ShoulderIOSim;
 import frc.robot.subsystems.shoulder.ShoulderIOSpark;
 import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceUtil;
 import frc.robot.util.bboard.BBoardIOReal;
@@ -134,7 +136,13 @@ public class RobotContainer {
                                                 new ModuleIOSpark(1),
                                                 new ModuleIOSpark(2),
                                                 new ModuleIOSpark(3));
-                                this.vision = new Vision(drive);
+                                this.vision = new Vision(drive,
+                                                new VisionIOPhotonVision(VisionConstants.camera0Name,
+                                                                VisionConstants.robotToCamera0),
+                                                new VisionIOPhotonVision(VisionConstants.camera1Name,
+                                                                VisionConstants.robotToCamera1),
+                                                new VisionIOPhotonVision(VisionConstants.camera2Name,
+                                                                VisionConstants.robotToCamera2));
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 elevator = new Elevator(new ElevatorIOSpark(), shoulder::inDangerZone);
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
