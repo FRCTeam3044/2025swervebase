@@ -15,12 +15,13 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
 
+@SuppressWarnings("unused")
 public class ElevatorIOSpark implements ElevatorIO {
     private final SparkMax leaderMotor = new SparkMax(leaderCanId, MotorType.kBrushless);
     private final SparkMax followerMotor = new SparkMax(followerCanId, MotorType.kBrushless);
@@ -35,8 +36,15 @@ public class ElevatorIOSpark implements ElevatorIO {
 
     private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity,
             kMaxAcceleration);
-    private final ProfiledPIDController controller = new ProfiledPIDController(kP, kI, kD, m_constraints, kDt);
+    private final ConfigurableProfiledPIDController controller = new ConfigurableProfiledPIDController(kP, kI, kD,
+            m_constraints, "Elevator Profiled PID");
     private final ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV);
+    private final ConfigurableParameter<Double> shoulderKs = new ConfigurableParameter<>(kS, "Shoulder kS",
+            feedforward::setKs);
+    private final ConfigurableParameter<Double> shoulderKg = new ConfigurableParameter<>(kG, "Shoulder kG",
+            feedforward::setKg);
+    private final ConfigurableParameter<Double> shoulderKv = new ConfigurableParameter<>(kV, "Shoulder kV",
+            feedforward::setKv);
 
     private double currentTargetMeters;
     private boolean positionControlMode = false;
@@ -58,15 +66,10 @@ public class ElevatorIOSpark implements ElevatorIO {
     }
 
     private void setPositionPPID(double desiredPosition) {
-        double lastSpeed = 0;
-        double lastTime = Timer.getFPGATimestamp();
         double pidVal = controller.calculate(encoder.getPosition(), desiredPosition);
-        double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
         leaderMotor.setVoltage(
                 pidVal
-                        + feedforward.calculate(controller.getSetpoint().velocity, acceleration));
-        lastSpeed = controller.getSetpoint().velocity;
-        lastTime = Timer.getFPGATimestamp();
+                        + feedforward.calculate(controller.getSetpoint().velocity));
     }
 
     // TOD: check if we can use trapezoid profile itself
