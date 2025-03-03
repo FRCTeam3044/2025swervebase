@@ -35,4 +35,8 @@ public interface ElevatorIO {
     public default void resetPosControl() {
 
     }
+
+    public default void zero() {
+
+    }
 }

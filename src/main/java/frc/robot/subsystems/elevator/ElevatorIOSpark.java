@@ -155,4 +155,9 @@ public class ElevatorIOSpark implements ElevatorIO {
     public void resetPosControl() {
         controller.reset(encoder.getPosition(), encoder.getVelocity());
     }
+
+    @Override
+    public void zero() {
+        encoder.setPosition(bottomPoint.get());
+    }
 }

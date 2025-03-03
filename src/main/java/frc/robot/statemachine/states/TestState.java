@@ -3,6 +3,7 @@ package frc.robot.statemachine.states;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.statemachine.reusable.SmartXboxController;
 import frc.robot.statemachine.reusable.State;
@@ -39,5 +40,6 @@ public class TestState extends State {
                 testController.b().whileTrue(endEffector.algaeOut());
                 testController.x().whileTrue(elevator.toPosition(testElevatorHeight::get));
                 testController.y().whileTrue(shoulder.toPosition(testShoulderAngle::get));
+                testController.leftBumper().onTrue(Commands.runOnce(elevator::zero));
         }
 }

@@ -173,4 +173,8 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
     public String getKey() {
         return "Elevator";
     }
+
+    public void zero() {
+        io.zero();
+    }
 }
