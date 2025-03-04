@@ -10,6 +10,8 @@ public interface BBoardIO {
 
     public boolean isPressed(SelectButtonInfo<?> button);
 
+    public boolean isBeingPressed(SelectButtonInfo<?> button);
+
     public default void periodic() {
     };
 }

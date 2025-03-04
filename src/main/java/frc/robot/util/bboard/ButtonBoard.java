@@ -185,11 +185,11 @@ public class ButtonBoard {
                 }
             }
         }
-        if (manualMode == ManualMode.SEMI && boardIO.isPressed(intakeStationButtons.get(5))) {
+        if (manualMode == ManualMode.SEMI && boardIO.isBeingPressed(intakeStationButtons.get(5))) {
             manualIdle = true;
             manualIntake = false;
         }
-        if (manualMode == ManualMode.SEMI && boardIO.isPressed(intakeStationButtons.get(3))) {
+        if (manualMode == ManualMode.SEMI && boardIO.isBeingPressed(intakeStationButtons.get(3))) {
             manualIdle = false;
             manualIntake = true;
         }

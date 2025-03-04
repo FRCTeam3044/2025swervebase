@@ -35,4 +35,13 @@ public class BBoardIOReal implements BBoardIO {
                 || (board == 1 && padTwo.getRawButton(button))
                 || (board == 2 && padThree.getRawButton(button));
     }
+
+    @Override
+    public boolean isBeingPressed(SelectButtonInfo<?> buttonInfo) {
+        int board = buttonInfo.board();
+        int button = buttonInfo.button();
+        return (board == 0 && padOne.getRawButton(button))
+                || (board == 1 && padTwo.getRawButton(button))
+                || (board == 2 && padThree.getRawButton(button));
+    }
 }

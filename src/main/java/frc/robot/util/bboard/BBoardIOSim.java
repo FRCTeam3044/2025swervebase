@@ -38,4 +38,9 @@ public class BBoardIOSim implements BBoardIO {
         return pressedButtons.contains(button.buttonInfo());
     }
 
+    @Override
+    public boolean isBeingPressed(SelectButtonInfo<?> button) {
+        return pressedButtons.contains(button.buttonInfo());
+    }
+
 }
