@@ -38,6 +38,8 @@ public class EndEffectorIOSpark implements EndEffectorIO {
                 new DoubleSupplier[] { motor::getAppliedOutput, motor::getBusVoltage },
                 (values) -> inputs.appliedVoltage = values[0] * values[1]);
 
+        inputs.proximitySensorDistance = readSensor();
+
         inputs.hasCoral = hasCoral();
         inputs.hasAlgae = hasAlgae();
     }

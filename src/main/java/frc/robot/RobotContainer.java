@@ -190,8 +190,7 @@ public class RobotContainer {
                                                                 driveSimulation::getSimulatedDriveTrainPose),
                                                 new VisionIOPhotonVisionSim(
                                                                 camera2Name, robotToCamera2,
-                                                                driveSimulation::getSimulatedDriveTrainPose)
-                                );
+                                                                driveSimulation::getSimulatedDriveTrainPose));
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
                                 shoulder = new Shoulder(new ShoulderIOSim());
                                 elevator = new Elevator(new ElevatorIOSim(), shoulder::inDangerZone);

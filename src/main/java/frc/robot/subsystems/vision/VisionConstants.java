@@ -28,12 +28,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionConstants {
     // AprilTag layout
-    // public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+    // public static AprilTagFieldLayout aprilTagLayout =
+    // AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
     public static AprilTagFieldLayout aprilTagLayout;
 
     static {
         try {
-            // aprilTagLayout = AprilTagFieldLayout.loadFromResource(Filesystem.getDeployDirectory().toPath() + "/practice_field.json");
+            // aprilTagLayout =
+            // AprilTagFieldLayout.loadFromResource(Filesystem.getDeployDirectory().toPath()
+            // + "/practice_field.json");
             aprilTagLayout = AprilTagFieldLayout.loadFromResource("/Users/alex/Downloads/field_calibration.json");
             SmartDashboard.putBoolean("Using custom field layout", true);
         } catch (IOException e) {
@@ -48,33 +51,35 @@ public class VisionConstants {
     public static String camera1Name = "swerve_port";
     public static String camera2Name = "swerve_star";
 
-
     // Robot to camera transforms
     // (Not used by Limelight, configure in web UI instead)
-    public static Transform3d robotToCamera0 = new Transform3d(-0.004028, 0.325, 0.957391, new Rotation3d(0, Units.degreesToRadians(30), Units.degreesToRadians(10)));
-    public static Transform3d robotToCamera1 = new Transform3d(0.265453, 0.243077, 0.137454, new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-115)));
-    public static Transform3d robotToCamera2 = new Transform3d(0.265453, -0.243077, 0.137454, new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(115)));
+    public static Transform3d robotToCamera0 = new Transform3d(0.004028, 0.325, 1.0033,
+            new Rotation3d(0, Units.degreesToRadians(-30), Units.degreesToRadians(190)));
+
+    public static Transform3d robotToCamera1 = new Transform3d(0.254, 0.244475, 0.14605,
+            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-115)));
+
+    public static Transform3d robotToCamera2 = new Transform3d(0.254, -0.244475, 0.14605,
+            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(35)));
 
     // Basic filtering thresholds
-  public static double maxAmbiguity = 0.3;
-  public static double maxZError = 0.75;
+    public static double maxAmbiguity = 0.3;
+    public static double maxZError = 0.75;
 
-  // Standard deviation baselines, for 1 meter distance and 1 tag
-  // (Adjusted automatically based on distance and # of tags)
-  public static double linearStdDevBaseline = 0.02; // Meters
-  public static double angularStdDevBaseline = 0.06; // Radians
+    // Standard deviation baselines, for 1 meter distance and 1 tag
+    // (Adjusted automatically based on distance and # of tags)
+    public static double linearStdDevBaseline = 0.02; // Meters
+    public static double angularStdDevBaseline = 0.06; // Radians
 
-  // Standard deviation multipliers for each camera
-  // (Adjust to trust some cameras more than others)
-  public static double[] cameraStdDevFactors =
-      new double[] {
-        1.0, // Camera 0
-        1.0, // Camera 1
-        1.0 // Camera 2
-      };
+    // Standard deviation multipliers for each camera
+    // (Adjust to trust some cameras more than others)
+    public static double[] cameraStdDevFactors = new double[] {
+            0.8, // Camera 0
+            0.5, // Camera 1
+            0.5 // Camera 2
+    };
 
-  // Multipliers to apply for MegaTag 2 observations
-  public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
-  public static double angularStdDevMegatag2Factor =
-      Double.POSITIVE_INFINITY; // No rotation data available
-    }
+    // Multipliers to apply for MegaTag 2 observations
+    public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
+    public static double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
+}

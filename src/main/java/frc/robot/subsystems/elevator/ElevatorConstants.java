@@ -12,8 +12,10 @@ public class ElevatorConstants {
   public static final double drumRadius = Units.inchesToMeters(1.432) / 2;
 
   public static double kDt = 0.02;
-  public static double kMaxVelocity = 1.75;
-  public static double kMaxAcceleration = 0.75;
+  // public static double kMaxVelocity = 8;
+  // public static double kMaxAcceleration = 6;
+  public static double kMaxVelocity = 8;
+  public static double kMaxAcceleration = 10;
   public static double kP = 0;
   public static double kI = 0.0;
   public static double kD = 0.0;
@@ -21,6 +23,6 @@ public class ElevatorConstants {
   public static double kG = 0;
   public static double kV = 0;
 
-  public static final double forwardSoftLimit = 0.0;
+  public static final double forwardSoftLimit = 5.85;
   public static final double reverseSoftLimit = 0.0;
 }
