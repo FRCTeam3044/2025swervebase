@@ -38,9 +38,9 @@ import frc.robot.util.bboard.ButtonBoard;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class StateMachine extends StateMachineBase {
-        public static ConfigurableParameter<Double> stagingThreshold = new ConfigurableParameter<>(0.0,
+        public ConfigurableParameter<Double> stagingThreshold = new ConfigurableParameter<>(0.0,
                         "Staging Distance Threshold");
-        public static ConfigurableParameter<Double> alignmentThreshold = new ConfigurableParameter<Double>(0.0,
+        public ConfigurableParameter<Double> alignmentThreshold = new ConfigurableParameter<Double>(0.0,
                         "Full Alignment Distance Threshold");
 
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
@@ -51,9 +51,9 @@ public class StateMachine extends StateMachineBase {
                 State disabled = new DisabledState(this);
                 currentState = disabled;
 
-                State teleop = new TeleState(this);
                 State auto = new AutoState(this, drive, autoChooser);
-                State test = new TestState(this, driverController, elevator, shoulder, endEffector, LEDs);
+                State teleop = new TeleState(this, buttonBoard, endEffector);
+                State test = new TestState(this, driverController, elevator, shoulder, endEffector, climber, LEDs);
 
                 this.registerToRootState(test, auto, teleop, disabled);
 
@@ -69,7 +69,8 @@ public class StateMachine extends StateMachineBase {
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
                 IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, shoulder, endEffector,
                                 LEDs);
-                IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, endEffector, LEDs);
+                IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, shoulder, endEffector,
+                                LEDs);
                 GoToIntake goToIntake = new GoToIntake(this);
                 GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive, LEDs);
                 GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, elevator,

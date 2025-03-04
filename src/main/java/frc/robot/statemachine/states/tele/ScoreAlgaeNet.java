@@ -15,7 +15,7 @@ public class ScoreAlgaeNet extends State {
 
         // TODO: change to net
         startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getCoralReefTarget));
-        startWhenActive(endEffector.runIntakeReverse());
+        startWhenActive(endEffector.algaeOut());
         startWhenActive(LEDs.intakingAndScoringAlgae());
     }
 }

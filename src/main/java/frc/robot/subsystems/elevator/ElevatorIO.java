@@ -31,4 +31,12 @@ public interface ElevatorIO {
 
     public default void setVoltage(double voltage) {
     };
+
+    public default void resetPosControl() {
+
+    }
+
+    public default void zero() {
+
+    }
 }

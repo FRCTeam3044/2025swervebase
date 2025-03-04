@@ -2,6 +2,7 @@ package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -10,13 +11,17 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.util.ConfigurableLinearInterpolation;
+import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
-import me.nabdev.oxconfig.ConfigurableParameter;
+import me.nabdev.oxconfig.ConfigurableClass;
+import me.nabdev.oxconfig.ConfigurableClassParam;
+import me.nabdev.oxconfig.OxConfig;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableLinearInterpolation;
 
-public class Elevator extends SubsystemBase {
+public class Elevator extends SubsystemBase implements ConfigurableClass {
     private final ElevatorIO io;
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
     private final SysIdRoutine sysId;
@@ -28,11 +33,17 @@ public class Elevator extends SubsystemBase {
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Elevator Intake Heights");
 
-    private final ConfigurableParameter<Double> elevatorTargetThreshold = new ConfigurableParameter<>(0.075,
+    private final ConfigurableLinearInterpolation lowAlgae = new ConfigurableLinearInterpolation("Elevator Low Algae");
+    private final ConfigurableLinearInterpolation highAlgae = new ConfigurableLinearInterpolation(
+            "Elevator High Algae");
+
+    private final ConfigurableClassParam<Double> elevatorTargetThreshold = new ConfigurableClassParam<>(this, 0.075,
             "Elevator Target Threshold");
 
-    private final ConfigurableParameter<Double> idleHeight = new ConfigurableParameter<>(0.5,
+    private final ConfigurableClassParam<Double> idleHeight = new ConfigurableClassParam<>(this, 0.5,
             "Elevator Idle Height");
+
+    private final List<ConfigurableClassParam<?>> params = List.of(elevatorTargetThreshold, idleHeight);
 
     private final BooleanSupplier shoulderInDangerZone;
 
@@ -48,6 +59,8 @@ public class Elevator extends SubsystemBase {
                         (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
                 new SysIdRoutine.Mechanism(
                         (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+
+        OxConfig.registerConfigurableClass(this);
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -72,24 +85,22 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command toPosition(DoubleSupplier height) {
-        return Commands.run(() -> io.setPosition(height.getAsDouble()), this).withName("Elevator to position");
+        return new FunctionalCommand(io::resetPosControl, () -> io.setPosition(height.getAsDouble()),
+                (c) -> io.setVoltage(0), () -> false, this).withName("Elevator to position");
     }
 
     public Command toCoral(Supplier<CoralLevel> level) {
-        return Commands
-                .run(() -> io.setPosition(getHeightForCoral(level.get(), getCloseDistanceForCoral(level.get()), false)),
-                        this)
+        return toPosition(() -> getHeightForCoral(level.get(), getCloseDistanceForCoral(level.get()), false))
                 .withName("Elevator to CoralLevel");
     }
 
     public Command toCoral(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {
-        return Commands
-                .run(() -> io.setPosition(getHeightForCoral(level.get(), robotDistance.getAsDouble(), false)), this)
+        return toPosition(() -> getHeightForCoral(level.get(), robotDistance.getAsDouble(), false))
                 .withName("Elevator to CoralLevel");
     }
 
     public Command intakeCoral(DoubleSupplier robotDistance) {
-        return Commands.run(() -> io.setPosition(intakeCoral.calculate(robotDistance.getAsDouble())), this)
+        return toPosition(() -> intakeCoral.calculate(robotDistance.getAsDouble()))
                 .withName("Elevator to intake");
     }
 
@@ -99,11 +110,16 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command stageIntake() {
-        return Commands.run(() -> io.setPosition(intakeCoral.getY2()), this).withName("Elevator to intake");
+        return toPosition(intakeCoral::getY2).withName("Elevator to intake");
     }
 
     public Command idle() {
-        return Commands.runOnce(() -> io.setPosition(idleHeight.get()), this).withName("Elevator to idle");
+        return toPosition(idleHeight::get).withName("Elevator to idle");
+    }
+
+    public Command algaeIntake(Supplier<AlgaeReefLocation> location, DoubleSupplier distance) {
+        return toPosition(() -> location.get().upperBranch() ? highAlgae.calculate(distance.getAsDouble())
+                : lowAlgae.calculate(distance.getAsDouble())).withName("Elevator to algae intake");
     }
 
     private double getHeightForCoral(CoralLevel level, double distance, boolean staging) {
@@ -146,5 +162,19 @@ public class Elevator extends SubsystemBase {
 
     public boolean isAtTarget() {
         return Math.abs(inputs.elevatorHeightMeters - inputs.setpointMeters) < elevatorTargetThreshold.get();
+    }
+
+    @Override
+    public List<ConfigurableClassParam<?>> getParameters() {
+        return params;
+    }
+
+    @Override
+    public String getKey() {
+        return "Elevator";
+    }
+
+    public void zero() {
+        io.zero();
     }
 }

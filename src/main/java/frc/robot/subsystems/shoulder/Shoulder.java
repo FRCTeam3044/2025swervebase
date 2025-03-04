@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shoulder;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -12,13 +11,15 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.util.ConfigurableLinearInterpolation;
+import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import me.nabdev.oxconfig.ConfigurableClass;
 import me.nabdev.oxconfig.ConfigurableClassParam;
 import me.nabdev.oxconfig.OxConfig;
+import me.nabdev.oxconfig.sampleClasses.ConfigurableLinearInterpolation;
 
 public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ShoulderIO io;
@@ -37,6 +38,14 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ConfigurableClassParam<Double> stagingL4 = new ConfigurableClassParam<>(this, 0.0,
             "Staging L4 Angle");
 
+    private final ConfigurableLinearInterpolation lowAlgae = new ConfigurableLinearInterpolation("Shoulder Low Algae");
+    private final ConfigurableLinearInterpolation highAlgae = new ConfigurableLinearInterpolation(
+            "Shoulder High Algae");
+    private final ConfigurableClassParam<Double> stagingLowAlgae = new ConfigurableClassParam<>(this, 0.0,
+            "Staging Low Algae Angle");
+    private final ConfigurableClassParam<Double> stagingHighAlgae = new ConfigurableClassParam<>(this, 0.0,
+            "Staging High Algae Angle");
+
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Shoulder Intake Angles");
     private final ConfigurableClassParam<Double> stagingIntake = new ConfigurableClassParam<>(this, 0.0,
@@ -49,21 +58,19 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
             "Shoulder Idle Angle (rad)");
 
     private final ConfigurableClassParam<Double> dangerZoneOneMin = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone One Min Angle (rad)");
+            "Danger Zone One Min Angle (rad)");
     private final ConfigurableClassParam<Double> dangerZoneOneMax = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone One Max Angle (rad)");
+            "Danger Zone One Max Angle (rad)");
     private final ConfigurableClassParam<Double> dangerZoneTwoMin = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone Two Min Angle (rad)");
+            "Danger Zone Two Min Angle (rad)");
     private final ConfigurableClassParam<Double> dangerZoneTwoMax = new ConfigurableClassParam<>(this, 0.0,
-            "Shoulder Danger Zone Two Max Angle (rad)");
+            "Danger Zone Two Max Angle (rad)");
 
-    private final ArrayList<ConfigurableClassParam<?>> params = new ArrayList<>();
+    private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
+            idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
+            stagingLowAlgae);
 
     public Shoulder(ShoulderIO io) {
-        Collections.addAll(params, stagingL1, stagingL2, stagingL3, stagingL4, stagingIntake, threshold, idle,
-                dangerZoneOneMin,
-                dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax);
-        OxConfig.registerConfigurableClass(this);
         this.io = io;
 
         sysId = new SysIdRoutine(
@@ -74,6 +81,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                         (state) -> Logger.recordOutput("Shoulder/SysIdTestState", state.toString())),
                 new SysIdRoutine.Mechanism(
                         (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+        OxConfig.registerConfigurableClass(this);
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -82,9 +90,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 .andThen(sysId.quasistatic(direction))
                 .until(() -> {
                     if (direction == SysIdRoutine.Direction.kForward) {
-                        return inputs.leaderShoulderAngleRad > 1.4 * Math.PI;
+                        return inputs.leaderShoulderAngleRad > 3.58;
                     } else {
-                        return inputs.leaderShoulderAngleRad < -Math.PI / 2.1;
+                        return inputs.leaderShoulderAngleRad < 0.58;
                     }
                 });
     }
@@ -92,9 +100,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return run(() -> io.setVoltage(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction)).until(() -> {
             if (direction == SysIdRoutine.Direction.kForward) {
-                return inputs.leaderShoulderAngleRad > 1.4 * Math.PI;
+                return inputs.leaderShoulderAngleRad > 3.58;
             } else {
-                return inputs.leaderShoulderAngleRad < -Math.PI / 2.1;
+                return inputs.leaderShoulderAngleRad < 0.58;
             }
         });
 
@@ -104,10 +112,12 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Shoulder", inputs);
+        Logger.recordOutput("ShoulderInDangerZone", inDangerZone());
     }
 
-    public Command toPosition(DoubleSupplier positiin) {
-        return Commands.run(() -> io.setShoulderAngle(positiin.getAsDouble()), this)
+    public Command toPosition(DoubleSupplier position) {
+        return new FunctionalCommand(() -> io.resetPosControl(), () -> io.setShoulderAngle(position.getAsDouble()),
+                (b) -> io.setVoltage(0), () -> false, this)
                 .withName("Shoulder to Position");
     }
 
@@ -118,42 +128,49 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     }
 
     public Command scoreCoral(Supplier<CoralLevel> level, DoubleSupplier robotDist, BooleanSupplier staging) {
-        return Commands
-                .run(() -> io.setShoulderAngle(
-                        calculateAngleForCoral(level.get(), robotDist.getAsDouble(), staging.getAsBoolean())), this)
+        return toPosition(() -> calculateAngleForCoral(level.get(), robotDist.getAsDouble(), staging.getAsBoolean()))
                 .withName("Shoulder to CoralLevel");
     }
 
     public Command scoreCoral(Supplier<CoralLevel> level) {
-        return Commands
-                .run(() -> io.setShoulderAngle(
-                        calculateAngleForCoral(level.get(), getCloseCoralDistance(level.get()), false)), this)
+        return toPosition(() -> calculateAngleForCoral(level.get(), getCloseCoralDistance(level.get()), false))
                 .withName("Shoulder to CoralLevel");
     }
 
     public Command stageCoral(CoralLevel level) {
-        return Commands
-                .run(() -> io.setShoulderAngle(calculateAngleForCoral(level, 0.0, true)), this)
+        return toPosition(() -> calculateAngleForCoral(level, 0.0, true))
                 .withName("Shoulder to CoralLevel");
     }
 
-    public Command intakeCoral(DoubleSupplier robotAngle, BooleanSupplier staging) {
-        return Commands.run(() -> io.setShoulderAngle(staging.getAsBoolean() ? stagingIntake.get()
-                : intakeCoral.calculate(robotAngle.getAsDouble())), this)
+    public Command intakeCoral(DoubleSupplier robotDist, BooleanSupplier staging) {
+        return toPosition(
+                () -> staging.getAsBoolean() ? stagingIntake.get() : intakeCoral.calculate(robotDist.getAsDouble()))
                 .withName("Shoulder to Intake");
+    }
+
+    public Command algaeIntake(Supplier<AlgaeReefLocation> algae, DoubleSupplier robotAngle, BooleanSupplier staging) {
+        return toPosition(() -> {
+            double target;
+            if (algae.get().upperBranch()) {
+                target = staging.getAsBoolean() ? stagingHighAlgae.get()
+                        : highAlgae.calculate(robotAngle.getAsDouble());
+            } else {
+                target = staging.getAsBoolean() ? stagingLowAlgae.get() : lowAlgae.calculate(robotAngle.getAsDouble());
+            }
+            return target;
+        }).withName("Shoulder to Algae");
     }
 
     public Command intakeCoral() {
-        return Commands.run(() -> io.setShoulderAngle(intakeCoral.getY1()), this)
-                .withName("Shoulder to Intake");
+        return toPosition(intakeCoral::getY1).withName("Shoulder to Intake");
     }
 
     public Command stageIntake() {
-        return Commands.run(() -> io.setShoulderAngle(stagingIntake.get()), this).withName("Shoulder to Intake");
+        return toPosition(stagingIntake::get).withName("Shoulder to Intake");
     }
 
     public Command idle() {
-        return Commands.run(() -> io.setShoulderAngle(idle.get()), this).withName("Shoulder Idle");
+        return toPosition(idle::get).withName("Shoulder Idle");
     }
 
     private double calculateAngleForCoral(CoralLevel level, double robotDist, boolean staging) {
@@ -224,7 +241,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     }
 
     @Override
-    public ArrayList<ConfigurableClassParam<?>> getParameters() {
+    public List<ConfigurableClassParam<?>> getParameters() {
         return params;
     }
 

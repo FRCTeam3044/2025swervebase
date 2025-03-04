@@ -16,7 +16,7 @@ public class ScoreAlgaeProcessor extends State {
 
         // TODO: change to processor
         startWhenActive(DriveCommands.pointControl(drive, AutoTargetUtils::processor));
-        startWhenActive(endEffector.runIntakeReverse());
+        startWhenActive(endEffector.algaeOut());
         startWhenActive(LEDs.intakingAndScoringAlgae());
     }
 }

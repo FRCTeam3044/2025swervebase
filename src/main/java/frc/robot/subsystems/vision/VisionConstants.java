@@ -13,23 +13,54 @@
 
 package frc.robot.subsystems.vision;
 
+import java.io.IOException;
+
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionConstants {
     // AprilTag layout
-    public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    // public static AprilTagFieldLayout aprilTagLayout =
+    // AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+    public static AprilTagFieldLayout aprilTagLayout;
+
+    static {
+        try {
+            // aprilTagLayout =
+            // AprilTagFieldLayout.loadFromResource(Filesystem.getDeployDirectory().toPath()
+            // + "/practice_field.json");
+            aprilTagLayout = AprilTagFieldLayout.loadFromResource("/Users/alex/Downloads/field_calibration.json");
+            SmartDashboard.putBoolean("Using custom field layout", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+            SmartDashboard.putBoolean("Using custom field layout", false);
+        }
+    }
 
     // Camera names, must match names configured on coprocessor
-    public static String camera0Name = "camera_0";
-    public static String camera1Name = "camera_1";
+    public static String camera0Name = "elevator";
+    public static String camera1Name = "swerve_port";
+    public static String camera2Name = "swerve_star";
 
     // Robot to camera transforms
     // (Not used by Limelight, configure in web UI instead)
-    public static Transform3d robotToCamera0 = new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0));
-    public static Transform3d robotToCamera1 = new Transform3d(-0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, Math.PI));
+    public static Transform3d robotToCamera0 = new Transform3d(0.004028, 0.325, 1.0033,
+            new Rotation3d(0, Units.degreesToRadians(-30), Units.degreesToRadians(190)));
+
+    public static Transform3d robotToCamera1 = new Transform3d(0.254, 0.244475, 0.14605,
+            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-115)));
+
+    public static Transform3d robotToCamera2 = new Transform3d(0.254, -0.244475, 0.14605,
+            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(35)));
 
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
@@ -43,8 +74,9 @@ public class VisionConstants {
     // Standard deviation multipliers for each camera
     // (Adjust to trust some cameras more than others)
     public static double[] cameraStdDevFactors = new double[] {
-            1.0, // Camera 0
-            1.0 // Camera 1
+            0.8, // Camera 0
+            0.5, // Camera 1
+            0.5 // Camera 2
     };
 
     // Multipliers to apply for MegaTag 2 observations

@@ -14,6 +14,7 @@ import frc.robot.util.AutoTargetUtils;
 import frc.robot.util.AllianceUtil.AllianceColor;
 import frc.robot.util.AutoTargetUtils.IntakeStations;
 import frc.robot.util.AutoTargetUtils.Reef;
+import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import me.nabdev.oxconfig.ConfigurableParameter;
@@ -274,12 +275,25 @@ public class ButtonBoard {
         return algaeReefTargetPose;
     }
 
+    public AlgaeReefLocation getAlgaeReefLocation() {
+        return coralReefLocation.algae();
+    }
+
     public DoubleSupplier getAlgaeReefReferenceDist(Drive drive) {
         return () -> {
             if (algaeReefReferencePose == null) {
                 return Double.MAX_VALUE;
             }
             return AutoTargetUtils.robotDistToPose(drive, algaeReefReferencePose);
+        };
+    }
+
+    public DoubleSupplier getAlgaeReefTargetDist(Drive drive) {
+        return () -> {
+            if (algaeReefTargetPose == null) {
+                return Double.MAX_VALUE;
+            }
+            return AutoTargetUtils.robotDistToPose(drive, algaeReefTargetPose);
         };
     }
 
@@ -398,5 +412,9 @@ public class ButtonBoard {
 
     public boolean intakeInManual() {
         return manualIntake;
+    }
+
+    public boolean extraFour() {
+        return boardIO.isPressed(extraFour);
     }
 }

@@ -55,8 +55,8 @@ public class ManualState extends State {
                 driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive).withName("X mode"));
                 driverController.x().onFalse(joystickDrive);
 
-                operatorController.leftTrigger().whileTrue(endEffector.runIntakeReverse());
-                operatorController.rightTrigger().whileTrue(endEffector.runIntake());
+                operatorController.leftTrigger().whileTrue(endEffector.algaeIn());
+                operatorController.rightTrigger().whileTrue(endEffector.algaeOut());
 
                 t(bboard::climbUp).whileTrue(climber.up());
                 t(bboard::climbDown).whileTrue(climber.down());

@@ -71,7 +71,7 @@ public class DriveConstants {
 
         // Drive motor configuration
         public static final int driveMotorCurrentLimit = 40;
-        public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
+        public static final double wheelRadiusMeters = Units.inchesToMeters(1.408);
         public static final double driveMotorReduction = (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion
                                                                                         // teeth
         // and 22 spur teeth
@@ -87,8 +87,8 @@ public class DriveConstants {
         // Drive PID configuration
         public static final double driveKp = 0.0;
         public static final double driveKd = 0.0;
-        public static final double driveKs = 0.0;
-        public static final double driveKv = 0.1;
+        public static final double driveKs = 0.21965;
+        public static final double driveKv = 0.09869;
         public static final double driveSimP = 0.05;
         public static final double driveSimD = 0.0;
         public static final double driveSimKs = 0.0;
@@ -116,7 +116,7 @@ public class DriveConstants {
         // MapleSim configuration
         public static final Mass robotMassKg = Kilogram.of(74.088);
         public static final double wheelCOF = 1.43;
-        public static final Distance bumperSize = Inches.of(26.5);
+        public static final Distance bumperSize = Inches.of(36.125);
         // Make crab bot look right in ascope
         public static final Distance mapleBumperSize = Constants.currentMode == Mode.SIM
                         ? Inches.of(32.0)

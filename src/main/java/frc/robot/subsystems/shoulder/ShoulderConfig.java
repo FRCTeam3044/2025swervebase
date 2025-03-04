@@ -4,6 +4,8 @@ import com.revrobotics.spark.config.AbsoluteEncoderConfig;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+
 import static frc.robot.subsystems.shoulder.ShoulderConstants.*;
 
 public class ShoulderConfig {
@@ -18,13 +20,18 @@ public class ShoulderConfig {
 
     static {
         leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
-        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId);
+        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId, true);
+        followerConfig.signals.primaryEncoderPositionPeriodMs(500).primaryEncoderVelocityPeriodMs(500);
+        leaderConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).positionWrappingEnabled(false);
 
-        softLimitConfig.forwardSoftLimit(forwardSoftLimit);
-        softLimitConfig.reverseSoftLimit(reverseSoftLimit);
+        softLimitConfig.forwardSoftLimit(forwardSoftLimit).forwardSoftLimitEnabled(true);
+        softLimitConfig.reverseSoftLimit(reverseSoftLimit).reverseSoftLimitEnabled(true);
 
-        absoluteEncoderConfig.positionConversionFactor(2 * Math.PI);
+        absoluteEncoderConfig.positionConversionFactor(2 * Math.PI).velocityConversionFactor(2 * Math.PI)
+                .inverted(true);
 
+        leaderConfig.closedLoop.pid(0, 0, 0);
+        leaderConfig.apply(absoluteEncoderConfig);
         leaderConfig.apply(softLimitConfig);
     }
 }
