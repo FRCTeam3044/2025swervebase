@@ -168,8 +168,8 @@ public class ButtonBoard {
         if (boardIO.isPressed(net)) {
             isNet = false;
         }
-        if (boardIO.isPressed(extraOne) && boardIO.isPressed(extraThree) && boardIO.isPressed(extraFour)) {
-            if (boardIO.isPressed(extraTwo)) {
+        if (boardIO.isBeingPressed(extraOne) && boardIO.isBeingPressed(extraTwo) && boardIO.isPressed(extraFour)) {
+            if (boardIO.isBeingPressed(extraThree)) {
                 if (manualMode == ManualMode.MANUAL) {
                     manualMode = ManualMode.AUTO;
                 } else {

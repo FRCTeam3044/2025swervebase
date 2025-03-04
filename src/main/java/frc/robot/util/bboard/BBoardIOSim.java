@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.bboard.ButtonBoard.ButtonInfo;
 import frc.robot.util.bboard.ButtonBoard.SelectButtonInfo;
 
-public class BBoardIOSim implements BBoardIO{
+public class BBoardIOSim implements BBoardIO {
     public BBoardIOSim() {
         SmartDashboard.putNumberArray("ButtonBoardSim/Pressed", new double[0]);
     }
@@ -14,7 +14,7 @@ public class BBoardIOSim implements BBoardIO{
     private ArrayList<ButtonInfo> pressedButtons = new ArrayList<>();
 
     @Override
-    public void periodic(){
+    public void periodic() {
         double[] pressed = SmartDashboard.getNumberArray("ButtonBoardSim/Pressed", new double[0]);
         pressedButtons.clear();
         for (int i = 0; i < pressed.length - 1; i += 2) {
@@ -29,8 +29,13 @@ public class BBoardIOSim implements BBoardIO{
     }
 
     @Override
+    public boolean isBeingPressed(ButtonInfo button) {
+        return pressedButtons.contains(button);
+    }
+
+    @Override
     public boolean isPressed(SelectButtonInfo<?> button) {
         return pressedButtons.contains(button.buttonInfo());
     }
-    
+
 }
