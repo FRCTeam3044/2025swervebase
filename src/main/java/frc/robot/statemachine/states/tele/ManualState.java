@@ -77,7 +77,7 @@ public class ManualState extends State {
 
                 semiAuto.and(idle).whileTrue(elevator.idle().alongWith(shoulder.idle()));
                 semiAuto.and(intake).whileTrue(elevator.intakeCoral().alongWith(shoulder.intakeCoral()));
-                semiAuto.and(idle).and(intake).whileFalse(elevator.toCoral(bboard::getCoralReefLevel)
+                semiAuto.and(idle.or((intake)).negate()).whileTrue(elevator.toCoral(bboard::getCoralReefLevel)
                                 .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
         }
 }

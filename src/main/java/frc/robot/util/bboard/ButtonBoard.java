@@ -142,7 +142,7 @@ public class ButtonBoard {
         }
         for (SelectButtonInfo<CoralLevel> button : levels) {
             if (boardIO.isPressed(button)) {
-                if (manualMode == ManualMode.MANUAL) {
+                if (manualMode == ManualMode.SEMI) {
                     manualIdle = false;
                 }
                 coralReefLevel = button.value();
@@ -213,6 +213,8 @@ public class ButtonBoard {
         Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
         Logger.recordOutput("ButtonBoard/ManualMode", manualMode);
+        Logger.recordOutput("ButtonBoard/ManualIntake", manualIntake);
+        Logger.recordOutput("ButtonBoard/ManualIdle", manualIdle);
 
         // Log to SmartDashboard for Button Board LED controller
         SmartDashboard.putBoolean("ButtonBoard/AlgaeMode", algaeMode);
