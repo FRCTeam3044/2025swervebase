@@ -122,6 +122,14 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
                 : lowAlgae.calculate(distance.getAsDouble())).withName("Elevator to algae intake");
     }
 
+    public Command lowAlgae() {
+        return toPosition(lowAlgae::getY1).withName("Elevator to low algae");
+    }
+
+    public Command highAlgae() {
+        return toPosition(highAlgae::getY1).withName("Elevator to high algae");
+    }
+
     private double getHeightForCoral(CoralLevel level, double distance, boolean staging) {
         switch (level) {
             case L1:

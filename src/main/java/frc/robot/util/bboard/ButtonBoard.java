@@ -95,8 +95,16 @@ public class ButtonBoard {
     private boolean isNet = false;
 
     private ManualMode manualMode = ManualMode.AUTO;
-    private boolean manualIdle = false;
-    private boolean manualIntake = false;
+
+    public enum SemiAutoState {
+        IDLE,
+        INTAKE,
+        LOW_ALGAE,
+        HIGH_ALGAE,
+        CORAL
+    }
+
+    private SemiAutoState semiAutoState = SemiAutoState.IDLE;
 
     public boolean getAlgaeMode() {
         return algaeMode;
@@ -143,7 +151,7 @@ public class ButtonBoard {
         for (SelectButtonInfo<CoralLevel> button : levels) {
             if (boardIO.isPressed(button)) {
                 if (manualMode == ManualMode.SEMI) {
-                    manualIdle = false;
+                    semiAutoState = SemiAutoState.CORAL;
                 }
                 coralReefLevel = button.value();
                 if (coralReefLocation != null)
@@ -180,18 +188,20 @@ public class ButtonBoard {
                     manualMode = ManualMode.AUTO;
                 } else {
                     manualMode = ManualMode.SEMI;
-                    manualIdle = true;
-                    manualIntake = false;
+                    semiAutoState = SemiAutoState.IDLE;
                 }
             }
         }
-        if (manualMode == ManualMode.SEMI && boardIO.isBeingPressed(intakeStationButtons.get(5))) {
-            manualIdle = true;
-            manualIntake = false;
-        }
-        if (manualMode == ManualMode.SEMI && boardIO.isBeingPressed(intakeStationButtons.get(3))) {
-            manualIdle = false;
-            manualIntake = true;
+        if (manualMode == ManualMode.SEMI) {
+            if (boardIO.isBeingPressed(intakeStationButtons.get(5))) {
+                semiAutoState = SemiAutoState.IDLE;
+            } else if (boardIO.isBeingPressed(intakeStationButtons.get(3))) {
+                semiAutoState = SemiAutoState.INTAKE;
+            } else if (boardIO.isBeingPressed(intakeStationButtons.get(0))) {
+                semiAutoState = SemiAutoState.HIGH_ALGAE;
+            } else if (boardIO.isBeingPressed(intakeStationButtons.get(2))) {
+                semiAutoState = SemiAutoState.LOW_ALGAE;
+            }
         }
 
         if (coralReefReferencePose != null)
@@ -213,8 +223,7 @@ public class ButtonBoard {
         Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
         Logger.recordOutput("ButtonBoard/ManualMode", manualMode);
-        Logger.recordOutput("ButtonBoard/ManualIntake", manualIntake);
-        Logger.recordOutput("ButtonBoard/ManualIdle", manualIdle);
+        Logger.recordOutput("ButtonBoard/SemiAutoState", semiAutoState);
 
         // Log to SmartDashboard for Button Board LED controller
         SmartDashboard.putBoolean("ButtonBoard/AlgaeMode", algaeMode);
@@ -409,11 +418,23 @@ public class ButtonBoard {
     }
 
     public boolean idleInManual() {
-        return manualIdle;
+        return semiAutoState == SemiAutoState.IDLE;
     }
 
     public boolean intakeInManual() {
-        return manualIntake;
+        return semiAutoState == SemiAutoState.INTAKE;
+    }
+
+    public boolean lowAlgaeInManual() {
+        return semiAutoState == SemiAutoState.LOW_ALGAE;
+    }
+
+    public boolean highAlgaeInManual() {
+        return semiAutoState == SemiAutoState.HIGH_ALGAE;
+    }
+
+    public boolean coralInManual() {
+        return semiAutoState == SemiAutoState.CORAL;
     }
 
     public boolean extraFour() {

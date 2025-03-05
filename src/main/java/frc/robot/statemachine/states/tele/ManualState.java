@@ -74,10 +74,15 @@ public class ManualState extends State {
                 SmartTrigger semiAuto = t(bboard::semiAuto);
                 SmartTrigger idle = t(bboard::idleInManual);
                 SmartTrigger intake = t(bboard::intakeInManual);
+                SmartTrigger coral = t(bboard::coralInManual);
+                SmartTrigger lowAlgae = t(bboard::lowAlgaeInManual);
+                SmartTrigger highAlgae = t(bboard::highAlgaeInManual);
 
                 semiAuto.and(idle).whileTrue(elevator.idle().alongWith(shoulder.idle()));
                 semiAuto.and(intake).whileTrue(elevator.intakeCoral().alongWith(shoulder.intakeCoral()));
-                semiAuto.and(idle.or((intake)).negate()).whileTrue(elevator.toCoral(bboard::getCoralReefLevel)
+                semiAuto.and(coral).whileTrue(elevator.toCoral(bboard::getCoralReefLevel)
                                 .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
+                semiAuto.and(lowAlgae).whileTrue(elevator.lowAlgae());
+                semiAuto.and(highAlgae).whileTrue(elevator.highAlgae());
         }
 }
