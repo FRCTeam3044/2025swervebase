@@ -14,58 +14,61 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 
 public class AutoRoutines {
-    private Drive drive;
-    private Elevator elevator;
-    private EndEffector endEffector;
-    private Shoulder shoulder;
+        private Drive drive;
+        private Elevator elevator;
+        private EndEffector endEffector;
+        private Shoulder shoulder;
 
-    public AutoRoutines(Drive drive, Elevator elevator, EndEffector endEffector, Shoulder shoulder) {
-        this.drive = drive;
-        this.elevator = elevator;
-        this.endEffector = endEffector;
-        this.shoulder = shoulder;
-    }
+        public AutoRoutines(Drive drive, Elevator elevator, EndEffector endEffector, Shoulder shoulder) {
+                this.drive = drive;
+                this.elevator = elevator;
+                this.endEffector = endEffector;
+                this.shoulder = shoulder;
+        }
 
-    public AutoRoutine testAuto() {
-        AutoRoutine routine = RobotContainer.getInstance().autoFactory.newRoutine("Test");
+        public AutoRoutine testAuto() {
+                AutoRoutine routine = RobotContainer.getInstance().autoFactory.newRoutine("Test");
 
-        // Load the routine's trajectories
-        AutoTrajectory path = routine.trajectory("Testy Testy");
-        AutoTrajectory scoring = routine.trajectory("Testy Testy", 1);
-        AutoTrajectory intaking = routine.trajectory("Testy Testy", 2);
+                // Load the routine's trajectories
+                AutoTrajectory path = routine.trajectory("Testy Testy");
+                AutoTrajectory part1 = routine.trajectory("Testy Testy", 1);
+                AutoTrajectory part2 = routine.trajectory("Testy Testy", 2);
+                AutoTrajectory part3 = routine.trajectory("Testy Testy", 3);
 
-        Command score = Commands.runOnce(drive::stop)
-                .andThen(elevator.toCoral(() -> CoralLevel.L4)
-                        .alongWith(Commands.waitUntil(elevator::isAtTarget)
-                                .andThen(shoulder.scoreCoral(() -> CoralLevel.L4).alongWith(
-                                        Commands.waitUntil(() -> shoulder.isAtCoralTarget(() -> CoralLevel.L4))
-                                                .andThen(endEffector.coralOut()))))
-                        .until(() -> !endEffector.hasCoral())
-                        .withName("Score"));
+                Command score = Commands.runOnce(drive::stop)
+                                .andThen(elevator.toCoral(() -> CoralLevel.L4)
+                                                .alongWith(Commands.waitUntil(elevator::isAtTarget)
+                                                                .andThen(shoulder.scoreCoral(() -> CoralLevel.L4)
+                                                                                .alongWith(
+                                                                                                Commands.waitUntil(
+                                                                                                                () -> shoulder.isAtCoralTarget(
+                                                                                                                                () -> CoralLevel.L4))
+                                                                                                                .andThen(endEffector
+                                                                                                                                .coralOut()))))
+                                                .withName("Score"));
 
-        Command intake = Commands.runOnce(drive::stop)
-                .andThen(shoulder.intakeCoral())
-                .andThen(endEffector.coralIn())
-                .until(endEffector::hasCoral)
-                .withName("Intake");
+                Command intake = Commands.runOnce(drive::stop)
+                                .andThen(shoulder.intakeCoral())
+                                .andThen(endEffector.coralIn())
+                                .until(endEffector::hasCoral)
+                                .withName("Intake");
 
-        Command stageShoulder = shoulder.stageCoral(CoralLevel.L4)
-                .until(() -> shoulder.isAtCoralStagingTarget(() -> CoralLevel.L4)).withName("Stage shoulder");
+                Command stageShoulder = shoulder.stageCoral(CoralLevel.L4)
+                                .withName("Stage shoulder");
 
-        RobotContainer.getInstance().startPose = path.getInitialPose().get();
-        // When the routine begins, reset odometry and start the first trajectory (1)
-        routine.active().onTrue(
-                Commands.sequence(
-                        path.resetOdometry(),
-                        stageShoulder,
-                        scoring.cmd(),
-                        score,
-                        Commands.runOnce(drive::stop)));
+                RobotContainer.getInstance().startPose = path.getInitialPose().get();
+                // When the routine begins, reset odometry and start the first trajectory (1)
+                routine.active().onTrue(
+                                Commands.sequence(
+                                                path.resetOdometry(),
+                                                part1.cmd(),
+                                                Commands.runOnce(drive::stop)));
 
-        return routine;
-    }
+                return routine;
+        }
 
-    private DoubleSupplier distToEnd(AutoTrajectory trajectory) {
-        return () -> trajectory.getFinalPose().get().getTranslation().getDistance(drive.getPose().getTranslation());
-    }
+        private DoubleSupplier distToEnd(AutoTrajectory trajectory) {
+                return () -> trajectory.getFinalPose().get().getTranslation()
+                                .getDistance(drive.getPose().getTranslation());
+        }
 }
