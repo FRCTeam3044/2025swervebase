@@ -63,7 +63,8 @@ public class ToMorseCode {
             } 
             else {
                 morseList.add(MorseCode.valueOf(String.valueOf(cur)).getCode());
-            }  
+            }
+            break;
         }
 
         return String.join(" ", morseList);  // Join the Morse codes with spaces
