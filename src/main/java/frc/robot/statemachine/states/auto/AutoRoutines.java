@@ -30,37 +30,37 @@ public class AutoRoutines {
         AutoRoutine routine = RobotContainer.getInstance().autoFactory.newRoutine("Test");
 
         // Load the routine's trajectories
-        AutoTrajectory example = routine.trajectory("Testy Testy");
-        AutoTrajectory intaking = routine.trajectory("Testy Testy", 0);
+        AutoTrajectory path = routine.trajectory("Testy Testy");
         AutoTrajectory scoring = routine.trajectory("Testy Testy", 1);
-        Command outtake = Commands.waitUntil(elevator::isAtTarget)
-                .andThen(endEffector::runIntakeReverse).until(() -> !endEffector.hasCoral())
-                .withName("Outtake when elevator ready");
+        AutoTrajectory intaking = routine.trajectory("Testy Testy", 2);
 
-        Command intake = Commands.run(endEffector::runIntake).withName("Intake");
+        Command score = Commands.runOnce(drive::stop)
+                .andThen(elevator.toCoral(() -> CoralLevel.L4)
+                        .alongWith(Commands.waitUntil(elevator::isAtTarget)
+                                .andThen(shoulder.scoreCoral(() -> CoralLevel.L4).alongWith(
+                                        Commands.waitUntil(() -> shoulder.isAtCoralTarget(() -> CoralLevel.L4))
+                                                .andThen(endEffector.coralOut()))))
+                        .until(() -> !endEffector.hasCoral())
+                        .withName("Score"));
 
-        RobotContainer.getInstance().startPose = intaking.getInitialPose().get();
+        Command intake = Commands.runOnce(drive::stop)
+                .andThen(shoulder.intakeCoral())
+                .andThen(endEffector.coralIn())
+                .until(endEffector::hasCoral)
+                .withName("Intake");
+
+        Command stageShoulder = shoulder.stageCoral(CoralLevel.L4)
+                .until(() -> shoulder.isAtCoralStagingTarget(() -> CoralLevel.L4)).withName("Stage shoulder");
+
+        RobotContainer.getInstance().startPose = path.getInitialPose().get();
         // When the routine begins, reset odometry and start the first trajectory (1)
         routine.active().onTrue(
                 Commands.sequence(
-                        example.resetOdometry(),
-                        example.cmd(),
+                        path.resetOdometry(),
+                        stageShoulder,
+                        scoring.cmd(),
+                        score,
                         Commands.runOnce(drive::stop)));
-
-        scoring.atTime("elevator").onTrue(
-                Commands.runOnce(drive::stop)
-                        .andThen(elevator.toCoral(() -> CoralLevel.L4, distToEnd(example)))
-                        .until(() -> !endEffector.hasCoral())
-                        .andThen(elevator.idle()));
-
-        scoring.atTime("stage_shoulder").onTrue(shoulder.stageCoral(CoralLevel.L4));
-
-        example.atTime("intake").onTrue(
-                Commands.runOnce(drive::stop)
-                        .andThen(elevator.intakeCoral()).andThen(intake).until(endEffector::hasCoral)
-                        .andThen(elevator.idle().alongWith(scoring.cmd())));
-
-        example.inactive().onTrue(outtake);
 
         return routine;
     }

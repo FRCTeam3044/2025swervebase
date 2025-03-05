@@ -233,6 +233,11 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 - calculateAngleForCoral(level.get(), robotDist.getAsDouble(), false)) < threshold.get();
     }
 
+    public boolean isAtCoralTarget(Supplier<CoralLevel> level) {
+        return Math.abs(inputs.leaderShoulderAngleRad
+                - calculateAngleForCoral(level.get(), getCloseCoralDistance(level.get()), false)) < threshold.get();
+    }
+
     public boolean inDangerZone() {
         return (inputs.leaderShoulderAngleRad > dangerZoneOneMin.get()
                 && inputs.leaderShoulderAngleRad < dangerZoneOneMax.get())
