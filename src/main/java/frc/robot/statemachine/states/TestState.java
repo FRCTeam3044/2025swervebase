@@ -46,7 +46,7 @@ public class TestState extends State {
                 DoubleSupplier rightYTwo = () -> -MathUtil.applyDeadband(controllerTwo.getRightY(), 0.1);
                 DoubleSupplier leftYTwo = () -> -MathUtil.applyDeadband(controllerTwo.getLeftY(), 0.1);
 
-                // startWhenActive(LEDs.simMorseCode());
+                startWhenActive(LEDs.simMorseCode());
                 startWhenActive(elevator.move(() -> rightYTwo.getAsDouble() * testElevatorSpeed.get()));
                 startWhenActive(shoulder.manualPivot(() -> leftYTwo.getAsDouble() * testShoulderSpeed.get()));
                 testControllerOne.a().or(testControllerTwo.a()).whileTrue(endEffector.algaeIn());
