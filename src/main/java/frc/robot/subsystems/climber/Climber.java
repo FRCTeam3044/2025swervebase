@@ -28,7 +28,7 @@ public class Climber extends SubsystemBase {
         Logger.processInputs("Climber", inputs);
     }
 
-    private Command move(DoubleSupplier speed) {
+    public Command move(DoubleSupplier speed) {
         return Commands.runEnd(() -> io.setSpeed(speed.getAsDouble()), () -> io.setSpeed(0.0), this);
     }
 
@@ -49,5 +49,13 @@ public class Climber extends SubsystemBase {
     public Command servoClose() {
         return Commands.run(() -> io.setServoAngle(servoClosed.get()), this)
                 .until(() -> Math.abs(inputs.servoPosition - servoClosed.get()) < servoTolerance.get());
+    }
+
+    public Command servoForward() {
+        return Commands.runEnd(() -> io.setSpeed(0.5), () -> io.setSpeed(0));
+    }
+
+    public Command servoBackward() {
+        return Commands.runEnd(() -> io.setSpeed(-0.5), () -> io.setSpeed(0));
     }
 }

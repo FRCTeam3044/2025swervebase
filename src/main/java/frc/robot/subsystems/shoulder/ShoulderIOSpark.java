@@ -95,8 +95,10 @@ public class ShoulderIOSpark implements ShoulderIO {
                 controller.disableContinuousInput();
                 double pidVal = controller.calculate(encoder.getPosition() + kOffsetToHoriz,
                                 desiredAngle + kOffsetToHoriz);
-                Logger.recordOutput("Shoulder Profile Pos", controller.getSetpoint().position);
-                Logger.recordOutput("Shoulder Profile vel", controller.getSetpoint().velocity);
+                // Logger.recordOutput("Shoulder Profile Pos",
+                // controller.getSetpoint().position);
+                // Logger.recordOutput("Shoulder Profile vel",
+                // controller.getSetpoint().velocity);
 
                 // double acceleration = (controller.getSetpoint().velocity - lastSpeed)
                 // / (Timer.getFPGATimestamp() - lastTime);

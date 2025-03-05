@@ -168,8 +168,8 @@ public class ButtonBoard {
         if (boardIO.isPressed(net)) {
             isNet = false;
         }
-        if (boardIO.isPressed(extraOne) && boardIO.isPressed(extraThree) && boardIO.isPressed(extraFour)) {
-            if (boardIO.isPressed(extraTwo)) {
+        if (boardIO.isBeingPressed(extraOne) && boardIO.isBeingPressed(extraTwo) && boardIO.isPressed(extraFour)) {
+            if (boardIO.isBeingPressed(extraThree)) {
                 if (manualMode == ManualMode.MANUAL) {
                     manualMode = ManualMode.AUTO;
                 } else {
@@ -185,11 +185,11 @@ public class ButtonBoard {
                 }
             }
         }
-        if (manualMode == ManualMode.SEMI && boardIO.isPressed(intakeStationButtons.get(5))) {
+        if (manualMode == ManualMode.SEMI && boardIO.isBeingPressed(intakeStationButtons.get(5))) {
             manualIdle = true;
             manualIntake = false;
         }
-        if (manualMode == ManualMode.SEMI && boardIO.isPressed(intakeStationButtons.get(3))) {
+        if (manualMode == ManualMode.SEMI && boardIO.isBeingPressed(intakeStationButtons.get(3))) {
             manualIdle = false;
             manualIntake = true;
         }

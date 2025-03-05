@@ -6,6 +6,8 @@ import static frc.robot.util.SparkUtil.tryUntilOk;
 
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -39,11 +41,11 @@ public class ElevatorIOSpark implements ElevatorIO {
     private final ConfigurableProfiledPIDController controller = new ConfigurableProfiledPIDController(kP, kI, kD,
             m_constraints, "Elevator Profiled PID");
     private final ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV);
-    private final ConfigurableParameter<Double> shoulderKs = new ConfigurableParameter<>(kS, "Shoulder kS",
+    private final ConfigurableParameter<Double> shoulderKs = new ConfigurableParameter<>(kS, "Elevator kS",
             feedforward::setKs);
-    private final ConfigurableParameter<Double> shoulderKg = new ConfigurableParameter<>(kG, "Shoulder kG",
+    private final ConfigurableParameter<Double> shoulderKg = new ConfigurableParameter<>(kG, "Elevator kG",
             feedforward::setKg);
-    private final ConfigurableParameter<Double> shoulderKv = new ConfigurableParameter<>(kV, "Shoulder kV",
+    private final ConfigurableParameter<Double> shoulderKv = new ConfigurableParameter<>(kV, "Elevator kV",
             feedforward::setKv);
 
     private double currentTargetMeters;
@@ -65,8 +67,15 @@ public class ElevatorIOSpark implements ElevatorIO {
         currentTargetMeters = desiredPosition;
     }
 
+    private ConfigurableParameter<Double> elevatorTestVelocity = new ConfigurableParameter<>(0.0,
+            "Elevator Test Velocity");
+
     private void setPositionPPID(double desiredPosition) {
         double pidVal = controller.calculate(encoder.getPosition(), desiredPosition);
+        Logger.recordOutput("Elevator Position Setpoint", controller.getSetpoint().position);
+        Logger.recordOutput("Elevator Velocity Setpoint", controller.getSetpoint().velocity);
+        // Logger.recordOutput("Elevator Velocity Setpoint",
+        // elevatorTestVelocity.get());
         leaderMotor.setVoltage(
                 pidVal
                         + feedforward.calculate(controller.getSetpoint().velocity));
@@ -139,10 +148,10 @@ public class ElevatorIOSpark implements ElevatorIO {
         inputs.setpointMeters = currentTargetMeters;
         inputs.setpointRotations = currentTargetRotations;
         inputs.elevatorHeightMeters = inputs.leaderPositionRot * drumRadius * 2.0 * Math.PI;
-        inputs.bottomEffectClosed = bottomHallEffect.get();
-        inputs.topHallEffectClosed = topHallEffect.get();
+        inputs.bottomEffectClosed = !bottomHallEffect.get();
+        inputs.topHallEffectClosed = !topHallEffect.get();
 
-        if (bottomHallEffect.get()) {
+        if (inputs.bottomEffectClosed) {
             encoder.setPosition(bottomPoint.get());
         }
 
@@ -154,5 +163,10 @@ public class ElevatorIOSpark implements ElevatorIO {
     @Override
     public void resetPosControl() {
         controller.reset(encoder.getPosition(), encoder.getVelocity());
+    }
+
+    @Override
+    public void zero() {
+        encoder.setPosition(bottomPoint.get());
     }
 }

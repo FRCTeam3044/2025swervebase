@@ -14,7 +14,6 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.shoulder.ShoulderConstants.kS;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -72,7 +71,7 @@ public class DriveConstants {
 
         // Drive motor configuration
         public static final int driveMotorCurrentLimit = 40;
-        public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
+        public static final double wheelRadiusMeters = Units.inchesToMeters(1.408);
         public static final double driveMotorReduction = (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion
                                                                                         // teeth
         // and 22 spur teeth

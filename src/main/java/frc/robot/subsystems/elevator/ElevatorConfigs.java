@@ -17,14 +17,15 @@ public class ElevatorConfigs {
 
     static {
         // TODO: Soft Limit conversion factor
-        leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit);
+        leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
         followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId, true);
         followerConfig.signals.primaryEncoderPositionPeriodMs(500).primaryEncoderVelocityPeriodMs(500);
 
-        leaderConfig.alternateEncoder.countsPerRevolution(8192).setSparkMaxDataPortConfig();
+        leaderConfig.alternateEncoder.countsPerRevolution(8192).inverted(true).velocityConversionFactor(1.0 / 60.0)
+                .setSparkMaxDataPortConfig();
         leaderConfig.closedLoop.feedbackSensor(FeedbackSensor.kAlternateOrExternalEncoder);
-        softLimitConfig.forwardSoftLimit(forwardSoftLimit);
-        softLimitConfig.reverseSoftLimit(reverseSoftLimit);
+        softLimitConfig.forwardSoftLimit(forwardSoftLimit).forwardSoftLimitEnabled(true);
+        // softLimitConfig.reverseSoftLimit(reverseSoftLimit).reverseSoftLimitEnabled(true);
 
         leaderConfig.apply(softLimitConfig);
     }
