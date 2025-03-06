@@ -4,8 +4,11 @@ import static frc.robot.subsystems.endEffector.EndEffectorConstants.*;
 
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class EndEffector extends SubsystemBase {
     private final EndEffectorIO io;
     private final EndEffectorIOInputsAutoLogged inputs = new EndEffectorIOInputsAutoLogged();
+
+    private final Debouncer noGamePieceDebouncer = new Debouncer(0.5, DebounceType.kRising);
 
     public EndEffector(EndEffectorIO io) {
         this.io = io;
@@ -51,5 +56,11 @@ public class EndEffector extends SubsystemBase {
 
     public boolean hasAlgae() {
         return inputs.hasAlgae;
+    }
+
+    @AutoLogOutput(key = "NoGamePiece")
+    public boolean noGamePiece() {
+        boolean hasNoGamePiece = !hasCoral() && !hasAlgae();
+        return noGamePieceDebouncer.calculate(hasNoGamePiece);
     }
 }

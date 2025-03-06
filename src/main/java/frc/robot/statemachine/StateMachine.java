@@ -136,7 +136,7 @@ public class StateMachine extends StateMachineBase {
                                 "Far from scoring location")
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released")
-                                .withTransition(manual, () -> !endEffector.hasCoral() && !endEffector.hasAlgae(),
+                                .withTransition(manual, () -> endEffector.noGamePiece(),
                                                 "No game piece in robot");
 
                 goToIntake.withTransition(intakeGamePiece, () -> buttonBoard.closeToIntakeTarget(drive),

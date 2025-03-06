@@ -249,11 +249,29 @@ public class ButtonBoard {
     }
 
     public boolean climbUp() {
-        return boardIO.isPressed(climbUp) && !boardIO.isPressed(climbDown);
+        return boardIO.isBeingPressed(climbUp) && !boardIO.isBeingPressed(climbDown);
     }
 
     public boolean climbDown() {
-        return boardIO.isPressed(climbDown) && !boardIO.isPressed(climbUp);
+        return boardIO.isBeingPressed(climbDown) && !boardIO.isBeingPressed(climbUp);
+    }
+
+    public boolean intake() {
+        if (manualMode == ManualMode.SEMI) {
+            return boardIO.isBeingPressed(processor) && !boardIO.isBeingPressed(net);
+        } else if (manualMode == ManualMode.AUTO) {
+            return boardIO.isBeingPressed(extraThree) && !boardIO.isBeingPressed(extraFour);
+        }
+        return false;
+    }
+
+    public boolean outtake() {
+        if (manualMode == ManualMode.SEMI) {
+            return !boardIO.isBeingPressed(processor) && boardIO.isBeingPressed(net);
+        } else if (manualMode == ManualMode.AUTO) {
+            return !boardIO.isBeingPressed(extraThree) && boardIO.isBeingPressed(extraFour);
+        }
+        return false;
     }
 
     public Pose2d getCoralReefTarget() {

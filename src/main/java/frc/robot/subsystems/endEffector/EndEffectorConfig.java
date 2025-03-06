@@ -10,6 +10,6 @@ public class EndEffectorConfig {
     public static SparkMaxConfig motorConfig = new SparkMaxConfig();
 
     static {
-        motorConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
+        motorConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(currentLimit).inverted(true);
     }
 }

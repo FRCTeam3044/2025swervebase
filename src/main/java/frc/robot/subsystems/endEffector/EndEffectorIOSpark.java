@@ -12,16 +12,17 @@ import static frc.robot.util.SparkUtil.ifOk;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class EndEffectorIOSpark implements EndEffectorIO {
     private final SparkMax motor = new SparkMax(canId, MotorType.kBrushless);
-    private final AnalogInput proximitySensor = new AnalogInput(proximityChannel);
     Debouncer debouncer = new Debouncer(0.1, Debouncer.DebounceType.kBoth);
-    private boolean isCurrentSpiking;
+    private DigitalInput coralSwitch = new DigitalInput(3);
+    private RelativeEncoder encoder = motor.getEncoder();
 
     public EndEffectorIOSpark() {
         tryUntilOk(motor, 5, () -> motor.configure(EndEffectorConfig.motorConfig,
@@ -30,18 +31,19 @@ public class EndEffectorIOSpark implements EndEffectorIO {
 
     @Override
     public void updateInputs(EndEffectorIOInputs inputs) {
-        isCurrentSpiking = checkCurrentSpike();
         ifOk(motor, motor::getOutputCurrent, (value) -> inputs.currentAmps = value);
+        ifOk(motor, encoder::getVelocity, (value) -> inputs.velocity = value);
 
         ifOk(
                 motor,
                 new DoubleSupplier[] { motor::getAppliedOutput, motor::getBusVoltage },
                 (values) -> inputs.appliedVoltage = values[0] * values[1]);
 
-        inputs.proximitySensorDistance = readSensor();
+        inputs.wheelsStuck = checkWheelsStuck(inputs);
+        inputs.limitSwitchPressed = limitSwitchPressed();
 
         inputs.hasCoral = hasCoral();
-        inputs.hasAlgae = hasAlgae();
+        inputs.hasAlgae = hasAlgae(inputs);
     }
 
     @Override
@@ -49,24 +51,22 @@ public class EndEffectorIOSpark implements EndEffectorIO {
         motor.set(speed);
     }
 
-    @AutoLogOutput(key = "IsCurrentSpiking")
-    private boolean checkCurrentSpike() {
-        isCurrentSpiking = motor.getOutputCurrent() > currentThreshold.get();
-        return debouncer.calculate(isCurrentSpiking);
-    }
-
-    public double readSensor() {
-        double v = proximitySensor.getAverageVoltage();
-        // Freaky magic numbers to convert to cm (maybe)
-        double d = 26.449 * (Math.pow(v, -1.226));
-        return d;
+    @AutoLogOutput(key = "WheelsAreStuck")
+    private boolean checkWheelsStuck(EndEffectorIOInputs inputs) {
+        boolean stuck = Math.abs(inputs.appliedVoltage) > voltageThreshold.get()
+                && Math.abs(inputs.velocity) < speedThreshold.get();
+        return debouncer.calculate(stuck);
     }
 
     private boolean hasCoral() {
-        return isCurrentSpiking && readSensor() < coralProximityDistance.get();
+        return limitSwitchPressed();
     }
 
-    private boolean hasAlgae() {
-        return isCurrentSpiking && readSensor() > coralProximityDistance.get();
+    private boolean hasAlgae(EndEffectorIOInputs inputs) {
+        return inputs.wheelsStuck && !limitSwitchPressed();
+    }
+
+    private boolean limitSwitchPressed() {
+        return !coralSwitch.get();
     }
 }

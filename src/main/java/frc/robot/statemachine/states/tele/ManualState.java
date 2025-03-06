@@ -61,6 +61,9 @@ public class ManualState extends State {
                 t(bboard::climbUp).whileTrue(climber.up());
                 t(bboard::climbDown).whileTrue(climber.down());
 
+                t(bboard::intake).whileTrue(endEffector.algaeIn());
+                t(bboard::outtake).whileTrue(endEffector.algaeOut());
+
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);
 
