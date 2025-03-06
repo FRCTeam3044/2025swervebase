@@ -24,7 +24,7 @@ public class ElevatorIOSim implements ElevatorIO {
 
     public final ElevatorSim m_elevatorSim = new ElevatorSim(gearBox,
             12.0,
-            18.0,
+            0.1,
             drumRadius,
             1,
             1.83,
@@ -34,7 +34,7 @@ public class ElevatorIOSim implements ElevatorIO {
             0.0);
 
     private final ProfiledPIDController m_controller = new ProfiledPIDController(
-            kP * 16,
+            16,
             kI,
             kD,
             new TrapezoidProfile.Constraints(2.45, 2.45));

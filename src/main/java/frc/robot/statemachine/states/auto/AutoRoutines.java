@@ -62,10 +62,9 @@ public class AutoRoutines {
                 AutoRoutine routine = autoFactory.newRoutine("Test");
 
                 // Load the routine's trajectories
-                AutoTrajectory path = routine.trajectory("Testy Testy");
-                AutoTrajectory scorePreload = routine.trajectory("Testy Testy", 0);
-                AutoTrajectory part2 = routine.trajectory("Testy Testy", 1);
-                AutoTrajectory part3 = routine.trajectory("Testy Testy", 2);
+                AutoTrajectory goToFirstScore = routine.trajectory("Testy Testy", 0);
+                AutoTrajectory goToFirstIntake = routine.trajectory("Testy Testy", 1);
+                AutoTrajectory goToSecondScore = routine.trajectory("Testy Testy", 2);
 
                 Command intake = Commands.runOnce(drive::stop)
                                 .andThen(shoulder.intakeCoral())
@@ -73,13 +72,12 @@ public class AutoRoutines {
                                 .until(endEffector::hasCoral)
                                 .withName("Intake");
 
-                scorePreload.inactive().and(endEffector::noGamePiece).onTrue(part2.cmd());
-
-                RobotContainer.getInstance().startPose = path.getInitialPose().get();
+                RobotContainer.getInstance().startPose = goToFirstScore.getInitialPose().get();
                 // When the routine begins, reset odometry and start the first trajectory (1)
-                routine.active().onTrue(path.resetOdometry().andThen(scorePreload.cmd()));
+                routine.active().onTrue(goToFirstScore.resetOdometry().andThen(goToFirstScore.cmd()));
 
+                goToFirstScore.inactive().and(endEffector::noGamePiece).onTrue(goToFirstIntake.cmd());
+                goToFirstIntake.inactive().and(endEffector::hasCoral).onTrue(goToSecondScore.cmd());
                 return routine;
         }
-
 }

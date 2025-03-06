@@ -107,12 +107,8 @@
           },
           "StateMachine": {
             "open": true
-          },
-          "open": true
+          }
         },
-        "open": true
-      },
-      "LiveWindow": {
         "open": true
       },
       "SmartDashboard": {
@@ -129,7 +125,8 @@
           "double[]##v_/SmartDashboard/Field/notes": {
             "open": false
           }
-        }
+        },
+        "open": true
       }
     }
   },
