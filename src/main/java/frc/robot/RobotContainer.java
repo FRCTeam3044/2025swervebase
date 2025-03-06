@@ -78,7 +78,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import choreo.auto.AutoChooser;
-import choreo.auto.AutoFactory;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -114,8 +113,6 @@ public class RobotContainer {
         public Pose2d startPose;
 
         public static Field2d fieldSim = new Field2d();
-
-        public final AutoFactory autoFactory;
 
         private final Mechanism2d mech;
         private final MechanismRoot2d root;
@@ -240,12 +237,6 @@ public class RobotContainer {
                 }
 
                 choreoAutoRoutines = new AutoRoutines(drive, elevator, endEffector, shoulder);
-                autoFactory = new AutoFactory(
-                                drive::getPose,
-                                drive::resetOdometry,
-                                drive::choreoDriveController,
-                                true,
-                                drive);
 
                 choreoAutoChooser = new AutoChooser();
 

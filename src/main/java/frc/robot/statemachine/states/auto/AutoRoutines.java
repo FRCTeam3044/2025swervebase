@@ -2,6 +2,7 @@ package frc.robot.statemachine.states.auto;
 
 import java.util.function.DoubleSupplier;
 
+import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,34 +20,52 @@ public class AutoRoutines {
         private EndEffector endEffector;
         private Shoulder shoulder;
 
+        private AutoFactory autoFactory;
+
         public AutoRoutines(Drive drive, Elevator elevator, EndEffector endEffector, Shoulder shoulder) {
                 this.drive = drive;
                 this.elevator = elevator;
                 this.endEffector = endEffector;
                 this.shoulder = shoulder;
+                autoFactory = new AutoFactory(
+                                drive::getPose,
+                                drive::resetOdometry,
+                                drive::choreoDriveController,
+                                true,
+                                drive);
+
+                autoFactory.bind("stageL4", shoulder.stageCoral(CoralLevel.L4));
+                autoFactory.bind("stageL3", shoulder.stageCoral(CoralLevel.L3));
+                autoFactory.bind("stageL2", shoulder.stageCoral(CoralLevel.L2));
+                autoFactory.bind("scorel4", getScoreCommand(CoralLevel.L4));
+                autoFactory.bind("scorel3", getScoreCommand(CoralLevel.L3));
+                autoFactory.bind("scorel2", getScoreCommand(CoralLevel.L2));
+
+        }
+
+        private Command getScoreCommand(CoralLevel level) {
+                Command moveElevator = elevator.toCoral(() -> level);
+                Command stageShoulder = shoulder.stageCoral(level);
+
+                Command prep = stageShoulder.until(elevator::isAtTarget);
+
+                Command scoreShoulder = shoulder.scoreCoral(() -> level);
+                Command score = Commands.parallel(scoreShoulder,
+                                Commands.waitUntil(() -> shoulder.isAtCoralTarget(() -> level))
+                                                .andThen(endEffector.coralOut()));
+
+                return Commands.deadline(prep.andThen(score.until(endEffector::noGamePiece)), moveElevator,
+                                Commands.runOnce(drive::stop));
         }
 
         public AutoRoutine testAuto() {
-                AutoRoutine routine = RobotContainer.getInstance().autoFactory.newRoutine("Test");
+                AutoRoutine routine = autoFactory.newRoutine("Test");
 
                 // Load the routine's trajectories
                 AutoTrajectory path = routine.trajectory("Testy Testy");
-                AutoTrajectory part1 = routine.trajectory("Testy Testy", 0);
+                AutoTrajectory scorePreload = routine.trajectory("Testy Testy", 0);
                 AutoTrajectory part2 = routine.trajectory("Testy Testy", 1);
                 AutoTrajectory part3 = routine.trajectory("Testy Testy", 2);
-
-                Command score = Commands.runOnce(drive::stop)
-                                .andThen(elevator.toCoral(() -> CoralLevel.L4)
-                                                .alongWith(Commands.waitUntil(elevator::isAtTarget)
-                                                                .andThen(shoulder.scoreCoral(() -> CoralLevel.L4)
-                                                                                .alongWith(
-                                                                                                Commands.waitUntil(
-                                                                                                                () -> shoulder.isAtCoralTarget(
-                                                                                                                                () -> CoralLevel.L4))
-                                                                                                                .andThen(endEffector
-                                                                                                                                .coralOut()))))
-                                                .until(() -> !endEffector.hasCoral())
-                                                .withName("Score"));
 
                 Command intake = Commands.runOnce(drive::stop)
                                 .andThen(shoulder.intakeCoral())
@@ -54,23 +73,13 @@ public class AutoRoutines {
                                 .until(endEffector::hasCoral)
                                 .withName("Intake");
 
-                Command stageShoulder = shoulder.stageCoral(CoralLevel.L4)
-                                .withName("Stage shoulder");
+                scorePreload.inactive().and(endEffector::noGamePiece).onTrue(part2.cmd());
 
                 RobotContainer.getInstance().startPose = path.getInitialPose().get();
                 // When the routine begins, reset odometry and start the first trajectory (1)
-                routine.active().onTrue(
-                                Commands.sequence(
-                                                path.resetOdometry(),
-                                                score,
-                                                part1.cmd(),
-                                                Commands.runOnce(drive::stop)));
+                routine.active().onTrue(path.resetOdometry().andThen(scorePreload.cmd()));
 
                 return routine;
         }
 
-        private DoubleSupplier distToEnd(AutoTrajectory trajectory) {
-                return () -> trajectory.getFinalPose().get().getTranslation()
-                                .getDistance(drive.getPose().getTranslation());
-        }
 }
