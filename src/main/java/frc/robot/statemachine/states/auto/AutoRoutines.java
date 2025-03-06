@@ -31,9 +31,9 @@ public class AutoRoutines {
 
                 // Load the routine's trajectories
                 AutoTrajectory path = routine.trajectory("Testy Testy");
-                AutoTrajectory part1 = routine.trajectory("Testy Testy", 1);
-                AutoTrajectory part2 = routine.trajectory("Testy Testy", 2);
-                AutoTrajectory part3 = routine.trajectory("Testy Testy", 3);
+                AutoTrajectory part1 = routine.trajectory("Testy Testy", 0);
+                AutoTrajectory part2 = routine.trajectory("Testy Testy", 1);
+                AutoTrajectory part3 = routine.trajectory("Testy Testy", 2);
 
                 Command score = Commands.runOnce(drive::stop)
                                 .andThen(elevator.toCoral(() -> CoralLevel.L4)
@@ -45,6 +45,7 @@ public class AutoRoutines {
                                                                                                                                 () -> CoralLevel.L4))
                                                                                                                 .andThen(endEffector
                                                                                                                                 .coralOut()))))
+                                                .until(() -> !endEffector.hasCoral())
                                                 .withName("Score"));
 
                 Command intake = Commands.runOnce(drive::stop)
@@ -61,6 +62,7 @@ public class AutoRoutines {
                 routine.active().onTrue(
                                 Commands.sequence(
                                                 path.resetOdometry(),
+                                                score,
                                                 part1.cmd(),
                                                 Commands.runOnce(drive::stop)));
 
