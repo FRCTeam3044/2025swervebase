@@ -116,6 +116,9 @@
         "open": true
       },
       "SmartDashboard": {
+        "ButtonBoard": {
+          "open": true
+        },
         "ButtonBoardSim": {
           "double[]##v_/SmartDashboard/ButtonBoardSim/Pressed": {
             "open": true
@@ -126,8 +129,7 @@
           "double[]##v_/SmartDashboard/Field/notes": {
             "open": false
           }
-        },
-        "open": true
+        }
       }
     }
   },

@@ -26,7 +26,7 @@ public class ToMorseCode {
         phrase = phrase.toUpperCase(); // Convert to uppercase to ensure correct enum matching
         ArrayList<String> morseList = new ArrayList<>();
 
-        for (int i = 0; i < phrase.length(); i++) {
+        for (int i = 0; i < phrase.length();) {
             char cur = phrase.charAt(i);
             if (cur == ' ') {
                 morseList.add(MorseCode.Space.getCode()); 
@@ -63,7 +63,8 @@ public class ToMorseCode {
             } 
             else {
                 morseList.add(MorseCode.valueOf(String.valueOf(cur)).getCode());
-            }  
+            }
+            break;
         }
 
         return String.join(" ", morseList);  // Join the Morse codes with spaces

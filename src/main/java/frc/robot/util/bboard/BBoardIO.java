@@ -5,6 +5,13 @@ import frc.robot.util.bboard.ButtonBoard.SelectButtonInfo;
 
 public interface BBoardIO {
     public boolean isPressed(ButtonInfo button);
+
+    public boolean isBeingPressed(ButtonInfo button);
+
     public boolean isPressed(SelectButtonInfo<?> button);
-    public default void periodic(){};
+
+    public boolean isBeingPressed(SelectButtonInfo<?> button);
+
+    public default void periodic() {
+    };
 }

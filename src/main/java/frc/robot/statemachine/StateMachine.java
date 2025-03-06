@@ -53,7 +53,7 @@ public class StateMachine extends StateMachineBase {
 
                 State auto = new AutoState(this, drive, autoChooser);
                 State teleop = new TeleState(this, buttonBoard, endEffector);
-                State test = new TestState(this, driverController, elevator, shoulder, endEffector, climber, LEDs);
+                State test = new TestState(this, driverController, operatorController, elevator, shoulder, endEffector, climber, LEDs,drive);
 
                 this.registerToRootState(test, auto, teleop, disabled);
 
@@ -135,7 +135,7 @@ public class StateMachine extends StateMachineBase {
                                 "Far from scoring location")
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released")
-                                .withTransition(manual, () -> !endEffector.hasCoral() && !endEffector.hasAlgae(),
+                                .withTransition(manual, () -> endEffector.noGamePiece(),
                                                 "No game piece in robot");
 
                 goToIntake.withTransition(intakeGamePiece, () -> buttonBoard.closeToIntakeTarget(drive),

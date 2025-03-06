@@ -874,7 +874,7 @@
             "value": "1.3055"
         },
         "Shoulder L2 Angles/x1": "0.0",
-        "Elevator/Elevator Idle Height": "0.5",
+        "Elevator/Elevator Idle Height": "0.01",
         "Shoulder L2 Angles/x2": "0.0",
         "Drive Module 3/Min": "-1.0",
         "Elevator Target Threshold": {
@@ -920,8 +920,8 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Elevator L4 Heights/y1": "0.0",
-        "Elevator L4 Heights/y2": "0.0",
+        "Elevator L4 Heights/y1": "0.668",
+        "Elevator L4 Heights/y2": "0.668",
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Drive Module 2/FF": "0.0",
@@ -939,7 +939,7 @@
         "Elevator L2 Heights/y1": "0.0",
         "Shoulder L2 Angles/y2": "0.0",
         "Elevator L4 Heights/x1": "0.0",
-        "Elevator L4 Heights/x2": "0.0",
+        "Elevator L4 Heights/x2": "1.0",
         "Shoulder L2 Angles/y1": "0.0",
         "Intake algae out speed": {
             "comment": "Auto-Generated",
@@ -1037,7 +1037,7 @@
             "comment": "Auto-Generated",
             "value": "0.185"
         },
-        "Shoulder/Shoulder Idle Angle (rad)": "-1.5707963267948966",
+        "Shoulder/Shoulder Idle Angle (rad)": "0.5",
         "Elevator kV": {
             "comment": "Auto-Generated",
             "value": "2.25"
@@ -1070,9 +1070,9 @@
         "Shoulder/Staging Low Algae Angle": "0.0",
         "Test Shoulder Speed": {
             "comment": "Auto-Generated",
-            "value": "0.7"
+            "value": "0.9"
         },
-        "Shoulder L4 Angles/y1": "0.0",
+        "Shoulder L4 Angles/y1": "4.0",
         "Coral proximity distance": {
             "comment": "Distance threshold for proximity sensor to think we have coral",
             "value": "15.0"
@@ -1114,7 +1114,7 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "Shoulder L4 Angles/y2": "0.0",
+        "Shoulder L4 Angles/y2": "4.0",
         "Drive Module 0/Min": "-1.0",
         "Turn Module 1/I": "0.0",
         "X Point Controller/I": "0.0",
@@ -1137,7 +1137,7 @@
         "Drive Module 2/I": "0.0",
         "Shoulder High Algae/x2": "0.0",
         "Shoulder High Algae/x1": "0.0",
-        "Shoulder L4 Angles/x2": "0.0",
+        "Shoulder L4 Angles/x2": "1.0",
         "Shoulder L4 Angles/x1": "0.0",
         "Turn Module 1/IZone": "0.0",
         "Drive Module 1/IZone": "0.0",
@@ -1149,7 +1149,7 @@
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",
-            "value": "1.33"
+            "value": "3.9"
         },
         "Elevator L3 Heights/y2": "0.0",
         "Elevator L3 Heights/y1": "0.0",

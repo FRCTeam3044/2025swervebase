@@ -7,6 +7,7 @@ public class EndEffectorConstants {
         public static final int proximityChannel = 0;
         public static final double coralMotorReduction = 1.0;
         public static final int currentLimit = 40;
+
         public static final ConfigurableParameter<Double> algaeInSpeed = new ConfigurableParameter<>(1.0,
                         "Intake algae in speed");
         public static final ConfigurableParameter<Double> algaeOutSpeed = new ConfigurableParameter<>(1.0,
@@ -18,6 +19,8 @@ public class EndEffectorConstants {
         public static final ConfigurableParameter<Double> coralProximityDistance = new ConfigurableParameter<Double>(
                         15.0,
                         "Intake Coral proximity distance");
-        public static final ConfigurableParameter<Double> currentThreshold = new ConfigurableParameter<Double>(1.0,
-                        "Intake Current threshold");
+        public static final ConfigurableParameter<Double> speedThreshold = new ConfigurableParameter<Double>(1.0,
+                        "Intake Speed threshold");
+        public static final ConfigurableParameter<Double> voltageThreshold = new ConfigurableParameter<Double>(1.0,
+                        "Intake Voltage threshold");
 }
