@@ -15,69 +15,82 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 
 public class AutoRoutines {
-        private Drive drive;
-        private Elevator elevator;
-        private EndEffector endEffector;
-        private Shoulder shoulder;
+	private Drive drive;
+	private Elevator elevator;
+	private EndEffector endEffector;
+	private Shoulder shoulder;
 
-        private AutoFactory autoFactory;
+	private AutoFactory autoFactory;
 
-        public AutoRoutines(Drive drive, Elevator elevator, EndEffector endEffector, Shoulder shoulder) {
-                this.drive = drive;
-                this.elevator = elevator;
-                this.endEffector = endEffector;
-                this.shoulder = shoulder;
-                autoFactory = new AutoFactory(
-                                drive::getPose,
-                                drive::resetOdometry,
-                                drive::choreoDriveController,
-                                true,
-                                drive);
+	public AutoRoutines(Drive drive, Elevator elevator, EndEffector endEffector, Shoulder shoulder) {
+		this.drive = drive;
+		this.elevator = elevator;
+		this.endEffector = endEffector;
+		this.shoulder = shoulder;
+		autoFactory = new AutoFactory(
+				drive::getPose,
+				drive::resetOdometry,
+				drive::choreoDriveController,
+				true,
+				drive);
 
-                autoFactory.bind("stageL4", shoulder.stageCoral(CoralLevel.L4));
-                autoFactory.bind("stageL3", shoulder.stageCoral(CoralLevel.L3));
-                autoFactory.bind("stageL2", shoulder.stageCoral(CoralLevel.L2));
-                autoFactory.bind("scorel4", getScoreCommand(CoralLevel.L4));
-                autoFactory.bind("scorel3", getScoreCommand(CoralLevel.L3));
-                autoFactory.bind("scorel2", getScoreCommand(CoralLevel.L2));
+		autoFactory.bind("intake", intakeCommand());
+		autoFactory.bind("stagel4", shoulder.stageCoral(CoralLevel.L4));
+		autoFactory.bind("stagel3", shoulder.stageCoral(CoralLevel.L3));
+		autoFactory.bind("stagel2", shoulder.stageCoral(CoralLevel.L2));
+		autoFactory.bind("scorel4", getScoreCommand(CoralLevel.L4));
+		autoFactory.bind("scorel3", getScoreCommand(CoralLevel.L3));
+		autoFactory.bind("scorel2", getScoreCommand(CoralLevel.L2));
 
-        }
+	}
 
-        private Command getScoreCommand(CoralLevel level) {
-                Command moveElevator = elevator.toCoral(() -> level);
-                Command stageShoulder = shoulder.stageCoral(level);
+	private Command toIdle() {
+		return Commands.deadline(shoulder.idle(), elevator.idle());
+	}
 
-                Command prep = stageShoulder.until(elevator::isAtTarget);
+	private Command getScoreCommand(CoralLevel level) {
+		Command moveElevator = elevator.toCoral(() -> level);
+		Command stageShoulder = shoulder.stageCoral(level);
 
-                Command scoreShoulder = shoulder.scoreCoral(() -> level);
-                Command score = Commands.parallel(scoreShoulder,
-                                Commands.waitUntil(() -> shoulder.isAtCoralTarget(() -> level))
-                                                .andThen(endEffector.coralOut()));
+		Command prep = stageShoulder.until(elevator::isAtTarget);
 
-                return Commands.deadline(prep.andThen(score.until(endEffector::noGamePiece)), moveElevator,
-                                Commands.runOnce(drive::stop));
-        }
+		Command scoreShoulder = shoulder.scoreCoral(() -> level);
+		Command score = Commands.parallel(scoreShoulder,
+				Commands.waitUntil(() -> shoulder.isAtCoralTarget(() -> level))
+						.andThen(endEffector.coralOut()));
 
-        public AutoRoutine testAuto() {
-                AutoRoutine routine = autoFactory.newRoutine("Test");
+		return Commands.deadline(prep.andThen(score.until(endEffector::noGamePiece)), moveElevator,
+				Commands.runOnce(drive::stop)).andThen(toIdle());
+	}
 
-                // Load the routine's trajectories
-                AutoTrajectory goToFirstScore = routine.trajectory("Testy Testy", 0);
-                AutoTrajectory goToFirstIntake = routine.trajectory("Testy Testy", 1);
-                AutoTrajectory goToSecondScore = routine.trajectory("Testy Testy", 2);
+	private Command intakeCommand() {
+		Command moveElevator = elevator.intakeCoral();
+		Command stageShoulder = shoulder.stageIntake();
+		Command intakeShoulder = shoulder.intakeCoral();
 
-                Command intake = Commands.runOnce(drive::stop)
-                                .andThen(shoulder.intakeCoral())
-                                .andThen(endEffector.coralIn())
-                                .until(endEffector::hasCoral)
-                                .withName("Intake");
+		Command prep = stageShoulder.until(elevator::isAtTarget);
 
-                RobotContainer.getInstance().startPose = goToFirstScore.getInitialPose().get();
-                // When the routine begins, reset odometry and start the first trajectory (1)
-                routine.active().onTrue(goToFirstScore.resetOdometry().andThen(goToFirstScore.cmd()));
+		Command intake = Commands.parallel(intakeShoulder, endEffector.coralIn());
 
-                goToFirstScore.inactive().and(endEffector::noGamePiece).onTrue(goToFirstIntake.cmd());
-                goToFirstIntake.inactive().and(endEffector::hasCoral).onTrue(goToSecondScore.cmd());
-                return routine;
-        }
+		return Commands.deadline(prep.andThen(intake.until(endEffector::hasCoral)),
+				moveElevator, Commands.runOnce(drive::stop));
+	}
+
+	public AutoRoutine testAuto() {
+		AutoRoutine routine = autoFactory.newRoutine("Test");
+
+		// Load the routine's trajectories
+		AutoTrajectory goToFirstScore = routine.trajectory("Testy Testy", 0);
+		AutoTrajectory goToFirstIntake = routine.trajectory("Testy Testy", 1);
+		AutoTrajectory goToSecondScore = routine.trajectory("Testy Testy", 2);
+
+		RobotContainer.getInstance().startPose = goToFirstScore.getInitialPose().get();
+		// When the routine begins, reset odometry and start the first trajectory (1)
+		routine.active().onTrue(goToFirstScore.resetOdometry().andThen(goToFirstScore.cmd()));
+
+		goToFirstScore.inactive().and(endEffector::noGamePiece).onTrue(goToFirstIntake.cmd());
+		goToFirstIntake.inactive().and(endEffector::hasCoral).onTrue(goToSecondScore.cmd());
+
+		return routine;
+	}
 }
