@@ -38,7 +38,7 @@ public class ShoulderIOSim implements ShoulderIO {
     private double currentTargetAngleRad;
 
     @Override
-    public void updateInputs(ShoulderIOInputs inputs) {
+    public void updateInputs(ShoulderIOInputs inputs, boolean elevatorNotAtTarget) {
         Logger.recordOutput("ShoulderPosControl", positionControlMode);
         Logger.recordOutput("ShoulderTarget", currentTargetAngleRad);
         if (positionControlMode) {

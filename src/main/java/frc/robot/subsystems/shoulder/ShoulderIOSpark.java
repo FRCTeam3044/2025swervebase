@@ -3,6 +3,7 @@ package frc.robot.subsystems.shoulder;
 import static frc.robot.subsystems.shoulder.ShoulderConstants.*;
 import static frc.robot.util.SparkUtil.tryUntilOk;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -41,6 +42,10 @@ public class ShoulderIOSpark implements ShoulderIO {
                         feedforward::setKg);
         private final ConfigurableParameter<Double> shoulderKv = new ConfigurableParameter<>(kV, "Shoulder kV",
                         feedforward::setKv);
+        private final ConfigurableParameter<Double> safeZoneMin = new ConfigurableParameter<>(0.0,
+                        "Shoulder Safe Zone Min");
+        private final ConfigurableParameter<Double> safeZoneMax = new ConfigurableParameter<>(Math.PI,
+                        "Shoulder Safe Zone Max");
 
         private boolean positionControlMode = false;
         private double currentTargetAngleRad;
@@ -56,11 +61,15 @@ public class ShoulderIOSpark implements ShoulderIO {
         }
 
         @Override
-        public void updateInputs(ShoulderIOInputs inputs) {
-                if (positionControlMode) {
-                        positionControlRio(currentTargetAngleRad);
+        public void updateInputs(ShoulderIOInputs inputs, boolean elevatorNotAtTarget) {
+                double currentSetpoint = currentTargetAngleRad;
+                if (elevatorNotAtTarget) {
+                        currentSetpoint = Math.min(Math.max(currentSetpoint, safeZoneMin.get()), safeZoneMax.get());
                 }
-                inputs.setpointAngleRad = currentTargetAngleRad;
+                if (positionControlMode) {
+                        positionControlRio(currentSetpoint);
+                }
+                inputs.setpointAngleRad = currentSetpoint;
                 inputs.setpointAngleFromHorizontal = currentTargetAngleRad + kOffsetToHoriz;
                 ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leaderShoulderAngleRad = value);
                 ifOk(leaderMotor, encoder::getPosition,
