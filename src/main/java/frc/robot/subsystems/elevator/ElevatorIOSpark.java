@@ -41,12 +41,16 @@ public class ElevatorIOSpark implements ElevatorIO {
     private final ConfigurableProfiledPIDController controller = new ConfigurableProfiledPIDController(kP, kI, kD,
             m_constraints, "Elevator Profiled PID");
     private final ElevatorFeedforward feedforward = new ElevatorFeedforward(kS, kG, kV);
-    private final ConfigurableParameter<Double> shoulderKs = new ConfigurableParameter<>(kS, "Elevator kS",
+    private final ConfigurableParameter<Double> elevatorKs = new ConfigurableParameter<>(kS, "Elevator kS",
             feedforward::setKs);
-    private final ConfigurableParameter<Double> shoulderKg = new ConfigurableParameter<>(kG, "Elevator kG",
+    private final ConfigurableParameter<Double> elevatorKg = new ConfigurableParameter<>(kG, "Elevator kG",
             feedforward::setKg);
-    private final ConfigurableParameter<Double> shoulderKv = new ConfigurableParameter<>(kV, "Elevator kV",
+    private final ConfigurableParameter<Double> elevatorKv = new ConfigurableParameter<>(kV, "Elevator kV",
             feedforward::setKv);
+    private final ConfigurableParameter<Double> elevatorKgVariable = new ConfigurableParameter<>(0.0,
+            "Elevator kG Variable");
+    private final ConfigurableParameter<Double> elevatorKgVariableThreshold = new ConfigurableParameter<>(0.0,
+            "Elevator kG Variable Threshold");
 
     private double currentTargetMeters;
     private boolean positionControlMode = false;
@@ -67,40 +71,44 @@ public class ElevatorIOSpark implements ElevatorIO {
         currentTargetMeters = desiredPosition;
     }
 
-    private ConfigurableParameter<Double> elevatorTestVelocity = new ConfigurableParameter<>(0.0,
-            "Elevator Test Velocity");
-
     private void setPositionPPID(double desiredPosition) {
         double pidVal = controller.calculate(encoder.getPosition(), desiredPosition);
         Logger.recordOutput("Elevator Position Setpoint", controller.getSetpoint().position);
         Logger.recordOutput("Elevator Velocity Setpoint", controller.getSetpoint().velocity);
         // Logger.recordOutput("Elevator Velocity Setpoint",
         // elevatorTestVelocity.get());
+        double kgVariableOutput = Math.max(0, encoder.getPosition() - elevatorKgVariableThreshold.get())
+                * elevatorKgVariable.get();
+        Logger.recordOutput("Elevator kG Variable Output", kgVariableOutput);
         leaderMotor.setVoltage(
                 pidVal
-                        + feedforward.calculate(controller.getSetpoint().velocity));
+                        + feedforward.calculate(controller.getSetpoint().velocity) + kgVariableOutput);
     }
 
     // TOD: check if we can use trapezoid profile itself
-    public void setPositionSpark(double desiredPosition) {
-        double lastSpeed = 0;
-        double lastTime = Timer.getFPGATimestamp();
-        controller.calculate(encoder.getPosition(), desiredPosition);
-        double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        leaderMotor.getClosedLoopController().setReference(controller.getSetpoint().position,
-                ControlType.kPosition, ClosedLoopSlot.kSlot0,
-                feedforward.calculate(controller.getSetpoint().velocity, acceleration));
-    }
+    // public void setPositionSpark(double desiredPosition) {
+    // double lastSpeed = 0;
+    // double lastTime = Timer.getFPGATimestamp();
+    // controller.calculate(encoder.getPosition(), desiredPosition);
+    // double acceleration = (controller.getSetpoint().velocity - lastSpeed) /
+    // (Timer.getFPGATimestamp() - lastTime);
+    // leaderMotor.getClosedLoopController().setReference(controller.getSetpoint().position,
+    // ControlType.kPosition, ClosedLoopSlot.kSlot0,
+    // feedforward.calculate(controller.getSetpoint().velocity, acceleration));
+    // }
 
-    // TOD: test with and without FF
-    public void setPositionMaxMotion(double desiredPosition) {
-        double lastSpeed = 0;
-        double lastTime = Timer.getFPGATimestamp();
-        controller.calculate(encoder.getPosition(), desiredPosition);
-        double acceleration = (controller.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-        leaderMotor.getClosedLoopController().setReference(desiredPosition, ControlType.kMAXMotionPositionControl,
-                ClosedLoopSlot.kSlot0, feedforward.calculate(controller.getSetpoint().velocity, acceleration));
-    }
+    // // TOD: test with and without FF
+    // public void setPositionMaxMotion(double desiredPosition) {
+    // double lastSpeed = 0;
+    // double lastTime = Timer.getFPGATimestamp();
+    // controller.calculate(encoder.getPosition(), desiredPosition);
+    // double acceleration = (controller.getSetpoint().velocity - lastSpeed) /
+    // (Timer.getFPGATimestamp() - lastTime);
+    // leaderMotor.getClosedLoopController().setReference(desiredPosition,
+    // ControlType.kMAXMotionPositionControl,
+    // ClosedLoopSlot.kSlot0,
+    // feedforward.calculate(controller.getSetpoint().velocity, acceleration));
+    // }
 
     @Override
     public void setSpeed(double desiredSpeed) {

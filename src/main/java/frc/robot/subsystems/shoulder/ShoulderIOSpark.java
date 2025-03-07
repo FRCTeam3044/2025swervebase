@@ -46,6 +46,8 @@ public class ShoulderIOSpark implements ShoulderIO {
         private double currentTargetAngleRad;
 
         public ShoulderIOSpark() {
+                controller.setIZone(1);
+                controller.setIntegratorRange(-2, 2);
                 tryUntilOk(leaderMotor, 5, () -> leaderMotor.configure(ShoulderConfig.leaderConfig,
                                 ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
 
@@ -95,10 +97,10 @@ public class ShoulderIOSpark implements ShoulderIO {
                 controller.disableContinuousInput();
                 double pidVal = controller.calculate(encoder.getPosition() + kOffsetToHoriz,
                                 desiredAngle + kOffsetToHoriz);
-                // Logger.recordOutput("Shoulder Profile Pos",
-                // controller.getSetpoint().position);
-                // Logger.recordOutput("Shoulder Profile vel",
-                // controller.getSetpoint().velocity);
+                Logger.recordOutput("Shoulder Profile Pos",
+                                controller.getSetpoint().position);
+                Logger.recordOutput("Shoulder Profile vel",
+                                controller.getSetpoint().velocity);
 
                 // double acceleration = (controller.getSetpoint().velocity - lastSpeed)
                 // / (Timer.getFPGATimestamp() - lastTime);
