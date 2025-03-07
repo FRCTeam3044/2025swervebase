@@ -68,7 +68,7 @@ public class ButtonBoard {
             new SelectButtonInfo<CoralLevel>(2, 8, CoralLevel.L3),
             new SelectButtonInfo<CoralLevel>(2, 7, CoralLevel.L4));
     private ButtonInfo algaeModeToggle = new ButtonInfo(1, 4);
-    private ButtonInfo net = new ButtonInfo(0, 11);
+    private ButtonInfo net = new ButtonInfo(2, 11);
     private ButtonInfo climbUp = new ButtonInfo(0, 5);
     private ButtonInfo climbDown = new ButtonInfo(0, 6);
 
@@ -258,7 +258,7 @@ public class ButtonBoard {
 
     public boolean intake() {
         if (manualMode == ManualMode.SEMI) {
-            return boardIO.isBeingPressed(processor) && !boardIO.isBeingPressed(net);
+            return !boardIO.isBeingPressed(processor) && boardIO.isBeingPressed(net);
         } else if (manualMode == ManualMode.AUTO) {
             return boardIO.isBeingPressed(extraThree) && !boardIO.isBeingPressed(extraFour);
         }
@@ -267,7 +267,7 @@ public class ButtonBoard {
 
     public boolean outtake() {
         if (manualMode == ManualMode.SEMI) {
-            return !boardIO.isBeingPressed(processor) && boardIO.isBeingPressed(net);
+            return boardIO.isBeingPressed(processor) && !boardIO.isBeingPressed(net);
         } else if (manualMode == ManualMode.AUTO) {
             return !boardIO.isBeingPressed(extraThree) && boardIO.isBeingPressed(extraFour);
         }

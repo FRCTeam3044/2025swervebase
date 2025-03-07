@@ -813,16 +813,16 @@
             "comment": "Current threshold for whether or not we have something",
             "value": "1.0"
         },
-        "Shoulder Profiled PID Controller/D": "1.2",
+        "Shoulder Profiled PID Controller/D": "0.5",
         "Servo Open Position": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
         "Turn Module 3/IZone": "0.0",
-        "Shoulder Profiled PID Controller/I": "20",
+        "Shoulder Profiled PID Controller/I": "0",
         "Elevator Intake Heights/x1": "0.0",
-        "Shoulder Profiled PID Controller/P": "15",
-        "Elevator Intake Heights/x2": "0.0",
+        "Shoulder Profiled PID Controller/P": "9",
+        "Elevator Intake Heights/x2": "1.0",
         "Shoulder/Shoulder Danger Zone Two Max Angle (rad)": "0.0",
         "Pathfinding Y Controller/I": "0.0",
         "Shoulder/Staging Intake Angle": "0.0",
@@ -877,7 +877,7 @@
         "Shoulder L3 Angles/y1": "0.0",
         "Shoulder kG": {
             "comment": "Auto-Generated",
-            "value": "2.5403"
+            "value": "1.3287"
         },
         "Shoulder L2 Angles/x1": "0.0",
         "Elevator/Elevator Idle Height": "0.01",
@@ -893,11 +893,11 @@
         "Drive Module 0/Max": "1.0",
         "Shoulder kV": {
             "comment": "Auto-Generated",
-            "value": "0.53816"
+            "value": "0.79259"
         },
         "Shoulder kS": {
             "comment": "Auto-Generated",
-            "value": "1.2647"
+            "value": "0.52398"
         },
         "Drive Module 3/FF": "0.0",
         "Climber Speed": {
@@ -945,7 +945,7 @@
         "Shoulder L2 Angles/y1": "0.0",
         "Intake algae out speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.7"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",
@@ -1047,7 +1047,7 @@
             "value": "2.25"
         },
         "Turn Module 0/Max": "1.0",
-        "Shoulder L3 Angles/x2": "0.0",
+        "Shoulder L3 Angles/x2": "1.0",
         "Turn Module 2/Min": "-1.0",
         "Elevator kG Variable Threshold": {
             "comment": "Auto-Generated",
@@ -1084,7 +1084,7 @@
             "comment": "Auto-Generated",
             "value": "0.9"
         },
-        "Shoulder L4 Angles/y1": "4.0",
+        "Shoulder L4 Angles/y1": "4.15",
         "Coral proximity distance": {
             "comment": "Distance threshold for proximity sensor to think we have coral",
             "value": "15.0"
@@ -1123,7 +1123,7 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "Shoulder L4 Angles/y2": "4.0",
+        "Shoulder L4 Angles/y2": "4.15",
         "Drive Module 0/Min": "-1.0",
         "Turn Module 1/I": "0.0",
         "X Point Controller/I": "0.0",
@@ -1158,7 +1158,7 @@
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",
-            "value": "4.1"
+            "value": "1.3"
         },
         "Elevator L3 Heights/y2": "0.0",
         "Elevator L3 Heights/y1": "0.0",
