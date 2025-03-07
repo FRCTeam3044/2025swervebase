@@ -172,6 +172,14 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
         return Math.abs(inputs.elevatorHeightMeters - inputs.setpointMeters) < elevatorTargetThreshold.get();
     }
 
+    public boolean notAtTarget() {
+        return !isAtTarget() && inPosControlMode();
+    }
+
+    public boolean inPosControlMode() {
+        return inputs.inPosControlMode;
+    }
+
     @Override
     public List<ConfigurableClassParam<?>> getParameters() {
         return params;

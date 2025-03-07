@@ -137,17 +137,15 @@ public class RobotContainer {
                                                 new ModuleIOSpark(2),
                                                 new ModuleIOSpark(3));
                                 this.vision = new Vision(drive,
-                                                new VisionIOPhotonVision(VisionConstants.camera0Name,
-                                                                VisionConstants.robotToCamera0),
+                                                // new VisionIOPhotonVision(VisionConstants.camera0Name,
+                                                // VisionConstants.robotToCamera0),
                                                 // new VisionIOPhotonVision(VisionConstants.camera1Name,
                                                 // VisionConstants.robotToCamera1),
                                                 new VisionIOPhotonVision(VisionConstants.camera2Name,
                                                                 VisionConstants.robotToCamera2));
                                 shoulder = new Shoulder(new ShoulderIOSpark());
                                 elevator = new Elevator(new ElevatorIOSpark(), shoulder::inDangerZone);
-                                shoulder.setElevatorNotAtTargetSupplier(() -> {
-                                        return !elevator.isAtTarget();
-                                });
+                                shoulder.setElevatorNotAtTargetSupplier(elevator::notAtTarget);
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
                                 LEDs = new LEDs(new LEDsIO() {
@@ -197,9 +195,7 @@ public class RobotContainer {
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
                                 shoulder = new Shoulder(new ShoulderIOSim());
                                 elevator = new Elevator(new ElevatorIOSim(), shoulder::inDangerZone);
-                                shoulder.setElevatorNotAtTargetSupplier(() -> {
-                                        return !elevator.isAtTarget();
-                                });
+                                shoulder.setElevatorNotAtTargetSupplier(elevator::notAtTarget);
                                 endEffector = new EndEffector(new EndEffectorIOSim(driverController.getHID()));
                                 buttonBoard = new ButtonBoard(
                                                 Constants.simButtonBoard ? new BBoardIOSim() : new BBoardIOReal());
@@ -229,9 +225,7 @@ public class RobotContainer {
                                 });
                                 elevator = new Elevator(new ElevatorIO() {
                                 }, shoulder::inDangerZone);
-                                shoulder.setElevatorNotAtTargetSupplier(() -> {
-                                        return !elevator.isAtTarget();
-                                });
+                                shoulder.setElevatorNotAtTargetSupplier(elevator::notAtTarget);
                                 endEffector = new EndEffector(new EndEffectorIO() {
                                 });
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());

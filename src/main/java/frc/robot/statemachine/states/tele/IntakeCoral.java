@@ -3,6 +3,7 @@ package frc.robot.statemachine.states.tele;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.subsystems.LEDs.LEDs;
@@ -26,6 +27,9 @@ public class IntakeCoral extends State {
         DoubleSupplier dist = buttonBoard.getIntakeStationTargetDist(drive);
         BooleanSupplier staging = () -> dist.getAsDouble() > stateMachine.alignmentThreshold.get()
                 || !elevatorCloseToTarget.getAsBoolean();
+        startWhenActive(
+                Commands.print("Dist: " + buttonBoard.getIntakeStationReferenceDist(drive) + ", Staging: " + staging)
+                        .repeatedly());
         startWhenActive(shoulder.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive), staging));
     }
 }

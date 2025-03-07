@@ -140,6 +140,8 @@ public class ElevatorIOSpark implements ElevatorIO {
                 setPositionPPID(currentTargetRotations);
         }
 
+        inputs.inPosControlMode = positionControlMode;
+
         ifOk(leaderMotor, encoder::getPosition, (value) -> inputs.leaderPositionRot = value);
         ifOk(leaderMotor, encoder::getVelocity, (value) -> inputs.leaderVelocityRPM = value);
         ifOk(

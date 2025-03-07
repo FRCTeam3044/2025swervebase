@@ -67,6 +67,6 @@ public class EndEffectorIOSpark implements EndEffectorIO {
     }
 
     private boolean limitSwitchPressed() {
-        return coralSwitch.get();
+        return !coralSwitch.get();
     }
 }
