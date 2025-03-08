@@ -63,8 +63,11 @@ public class ManualState extends State {
                 t(bboard::climbUp).whileTrue(climber.up());
                 t(bboard::climbDown).whileTrue(climber.down());
 
+                SmartTrigger slowOuttake = t(() -> bboard.semiAuto()
+                                && ((bboard.coralInManual() && bboard.getCoralReefLevel() == CoralLevel.L1)
+                                                || bboard.processorInManual()));
                 t(bboard::intake).whileTrue(endEffector.algaeIn());
-                t(bboard::outtake).whileTrue(endEffector.algaeOut());
+                t(bboard::outtake).and(slowOuttake.negate()).whileTrue(endEffector.algaeOut());
 
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);
@@ -90,8 +93,8 @@ public class ManualState extends State {
                 semiAuto.and(coral).and(t(shouldDoL2Kick).negate())
                                 .runWhileTrue(elevator.toCoral(bboard::getCoralReefLevel)
                                                 .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
-                semiAuto.and(lowAlgae).whileTrue(elevator.lowAlgae());
-                semiAuto.and(highAlgae).whileTrue(elevator.highAlgae());
+                semiAuto.and(lowAlgae).whileTrue(elevator.lowAlgae().alongWith(shoulder.lowAlgae()));
+                semiAuto.and(highAlgae).whileTrue(elevator.highAlgae().alongWith(shoulder.highAlgae()));
 
                 semiAuto.and(shouldDoL2Kick).whileTrue(Commands.waitSeconds(0.125).andThen(shoulder.intakeCoral()));
         }

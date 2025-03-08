@@ -54,29 +54,29 @@ public class VisionConstants {
     // Robot to camera transforms
     // (Not used by Limelight, configure in web UI instead)
     public static Transform3d robotToCamera0 = new Transform3d(0.004028, 0.325, 1.0033,
-            new Rotation3d(0, Units.degreesToRadians(-30), Units.degreesToRadians(190)));
+            new Rotation3d(0, Units.degreesToRadians(-30), Units.degreesToRadians(187)));
 
     public static Transform3d robotToCamera1 = new Transform3d(0.254, 0.244475, 0.14605,
-            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-35)));
+            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(-24.5)));
 
     public static Transform3d robotToCamera2 = new Transform3d(0.254, -0.244475, 0.14605,
-            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(35)));
+            new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(24.5)));
 
     // Basic filtering thresholds
-    public static double maxAmbiguity = 0.3;
+    public static double maxAmbiguity = 0.2;
     public static double maxZError = 0.75;
 
     // Standard deviation baselines, for 1 meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
-    public static double linearStdDevBaseline = 0.02; // Meters
+    public static double linearStdDevBaseline = 0.05; // Meters
     public static double angularStdDevBaseline = 0.06; // Radians
 
     // Standard deviation multipliers for each camera
     // (Adjust to trust some cameras more than others)
     public static double[] cameraStdDevFactors = new double[] {
             0.8, // Camera 0
-            0.5, // Camera 1
-            0.5 // Camera 2
+            1.6, // Camera 1
+            1.6 // Camera 2
     };
 
     // Multipliers to apply for MegaTag 2 observations

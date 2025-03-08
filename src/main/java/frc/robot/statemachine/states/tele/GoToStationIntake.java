@@ -23,7 +23,7 @@ public class GoToStationIntake extends State {
         startWhenActive(goToIntake);
         t(buttonBoard::intakeJustChanged).onFalse(goToIntake);
         startWhenActive(LEDs.goingToCoralIntake());
-        DoubleSupplier dist = buttonBoard.getIntakeStationTargetDist(drive);
+        DoubleSupplier dist = () -> buttonBoard.getIntakeStationTargetDist(drive);
         SmartTrigger staging = t(() -> dist.getAsDouble() < stateMachine.stagingThreshold.get());
         // staging.whileTrue(elevator.stageIntake());
         staging.whileTrue(shoulder.stageIntake());

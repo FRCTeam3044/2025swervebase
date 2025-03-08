@@ -23,13 +23,12 @@ public class IntakeCoral extends State {
         startWhenActive(endEffector.coralIn());
         startWhenActive(LEDs.intakingAndScoringCoral());
         startWhenActive(elevator.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive)));
-        BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
-        DoubleSupplier dist = buttonBoard.getIntakeStationTargetDist(drive);
-        BooleanSupplier staging = () -> dist.getAsDouble() > stateMachine.alignmentThreshold.get()
-                || !elevatorCloseToTarget.getAsBoolean();
-        startWhenActive(
-                Commands.print("Dist: " + buttonBoard.getIntakeStationReferenceDist(drive) + ", Staging: " + staging)
-                        .repeatedly());
+        // BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
+        // DoubleSupplier dist = () -> buttonBoard.getIntakeStationTargetDist(drive);
+        // BooleanSupplier staging = () -> dist.getAsDouble() >
+        // stateMachine.alignmentThreshold.get()
+        // || !elevatorCloseToTarget.getAsBoolean();
+        BooleanSupplier staging = () -> false;
         startWhenActive(shoulder.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive), staging));
     }
 }

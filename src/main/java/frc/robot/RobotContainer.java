@@ -137,10 +137,10 @@ public class RobotContainer {
                                                 new ModuleIOSpark(2),
                                                 new ModuleIOSpark(3));
                                 this.vision = new Vision(drive,
-                                                // new VisionIOPhotonVision(VisionConstants.camera0Name,
-                                                // VisionConstants.robotToCamera0),
-                                                // new VisionIOPhotonVision(VisionConstants.camera1Name,
-                                                // VisionConstants.robotToCamera1),
+                                                new VisionIOPhotonVision(VisionConstants.camera0Name,
+                                                                VisionConstants.robotToCamera0),
+                                                new VisionIOPhotonVision(VisionConstants.camera1Name,
+                                                                VisionConstants.robotToCamera1),
                                                 new VisionIOPhotonVision(VisionConstants.camera2Name,
                                                                 VisionConstants.robotToCamera2));
                                 shoulder = new Shoulder(new ShoulderIOSpark());

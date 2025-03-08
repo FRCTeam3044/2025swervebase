@@ -167,6 +167,14 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
         }).withName("Shoulder to Algae");
     }
 
+    public Command highAlgae() {
+        return toPosition(() -> highAlgae.getY1()).withName("Shoulder to high algae");
+    }
+
+    public Command lowAlgae() {
+        return toPosition(() -> lowAlgae.getY1()).withName("Shoulder to low algae");
+    }
+
     public Command intakeCoral() {
         return toPosition(intakeCoral::getY1).withName("Shoulder to Intake");
     }
