@@ -18,6 +18,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -131,9 +132,10 @@ public class DriveConstants {
                         .withSwerveModule(COTS.ofMAXSwerve(driveGearbox, turnGearbox, wheelCOF, 2));
 
         public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.REEFSCAPE_2025))
-                        .setNormalizeCorners(false).setCornerDist(0.5)
-                        .setRobotLength(mapleBumperSize.in(Meters) + 0.3)
-                        .setRobotWidth(mapleBumperSize.in(Meters) + 0.3).build();
+                        .setNormalizeCorners(false).setCornerDist(1)
+                        .setCornerPointSpacing(0.06)
+                        .setRobotLength(mapleBumperSize.in(Meters) + 0.5)
+                        .setRobotWidth(mapleBumperSize.in(Meters) + 0.5).build();
 
         public static final PIDController xController = new ConfigurablePIDController(1, 0, 0,
                         "Pathfinding X Controller");
@@ -165,4 +167,8 @@ public class DriveConstants {
                         "Point Theta Controller");
         public static final HolonomicDriveController pointController = new HolonomicDriveController(
                         xPointController, yPointController, anglePointController);
+
+        static {
+                pointController.setTolerance(new Pose2d(0.03, 0.03, new Rotation2d(1)));
+        }
 }

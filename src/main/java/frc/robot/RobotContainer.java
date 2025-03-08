@@ -94,7 +94,7 @@ public class RobotContainer {
         public final ButtonBoard buttonBoard;
         private final Vision vision;
         private final Elevator elevator;
-        private final Shoulder shoulder;
+        public final Shoulder shoulder;
         private final EndEffector endEffector;
         private final LEDs LEDs;
         private final Climber climber;

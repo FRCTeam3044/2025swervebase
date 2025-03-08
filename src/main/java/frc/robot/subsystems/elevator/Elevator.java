@@ -7,6 +7,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -77,6 +78,7 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
     public void periodic() {
         io.updateInputs(inputs, shoulderInDangerZone.getAsBoolean());
         Logger.processInputs("Elevator", inputs);
+        Logger.recordOutput("Elevator at target", isAtTarget());
     }
 
     public Command move(DoubleSupplier speed) {
@@ -168,6 +170,7 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
         return inputs.elevatorHeightMeters;
     }
 
+    @AutoLogOutput(key = "IsAtTarget")
     public boolean isAtTarget() {
         return Math.abs(inputs.elevatorHeightMeters - inputs.setpointMeters) < elevatorTargetThreshold.get();
     }

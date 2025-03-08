@@ -25,6 +25,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
+import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -57,6 +58,8 @@ public class DriveCommands {
             "Pathfinding Max Speed");
     private static ConfigurableParameter<Double> pathfindingMaxAccel = new ConfigurableParameter<>(2.0,
             "Pathfinding Max Accel");
+    private static ConfigurableParameter<Double> pathfindingRotationMaxSpeed = new ConfigurableParameter<>(Math.PI / 2,
+            "Pathfinding Max Rotation Speed");
 
     private DriveCommands() {
     }
@@ -197,8 +200,14 @@ public class DriveCommands {
         return Commands.run(() -> {
             double curTime = timer.get();
             State desiredState = traj.sample(curTime);
+            Logger.recordOutput("Trajectory Desired Velocity", desiredState.velocityMetersPerSecond);
+            Logger.recordOutput("Trajectory Desired Pose", desiredState.poseMeters);
             ChassisSpeeds targetChassisSpeeds = m_controller.calculate(drive.getPose(), desiredState,
                     desiredRotationSupplier.get());
+            if (!RobotContainer.getInstance().shoulder.inSafeZone())
+                targetChassisSpeeds.omegaRadiansPerSecond = 0;
+            targetChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(targetChassisSpeeds.omegaRadiansPerSecond,
+                    -pathfindingRotationMaxSpeed.get(), pathfindingRotationMaxSpeed.get());
             if (useJoystick) {
                 double omega = MathUtil.applyDeadband(joystickRot.getAsDouble(), DEADBAND);
 
@@ -233,14 +242,29 @@ public class DriveCommands {
         }).withName("Go To Point");
     }
 
+    public static Command goToPoint(Drive drive, Supplier<Pose2d> pose, Supplier<Rotation2d> rotation) {
+        return Commands.deferredProxy(() -> {
+            Pose2d curPose = pose.get();
+            return followTrajectory(drive, generateTrajectory(drive, curPose), rotation,
+                    null, false);
+        }).withName("Go To Point");
+    }
+
     public static Command pointControl(Drive drive, Supplier<Pose2d> pose) {
         return Commands.startRun(() -> {
             DriveConstants.anglePointController.reset(drive.getPose().getRotation().getRadians());
         }, () -> {
             Pose2d targetPose = pose.get();
-            drive.runVelocity(DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
-                    targetPose.getRotation()));
-        }).withName("Point Control");
+            ChassisSpeeds speeds = DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
+                    targetPose.getRotation());
+            if (DriveConstants.pointController.atReference()) {
+                speeds = new ChassisSpeeds(0, 0, 0);
+            }
+
+            drive.runVelocity(speeds);
+            Logger.recordOutput("PointControllerDist",
+                    drive.getPose().getTranslation().getDistance(targetPose.getTranslation()));
+        }, drive).withName("Point Control");
     }
 
     /**
@@ -398,7 +422,6 @@ public class DriveCommands {
     private static TrajectoryConfig getTrajectoryConfig(Drive drive, Path path) {
         TrajectoryConfig config = new TrajectoryConfig(pathfindingMaxSpeed.get(), pathfindingMaxAccel.get());
 
-        // TODO: This is wrong, it stutters still on path change
         ChassisSpeeds chassisSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getVelocity(), drive.getRotation());
         Vector velocity = new Vector(chassisSpeed.vxMetersPerSecond,
                 chassisSpeed.vyMetersPerSecond);
@@ -406,7 +429,9 @@ public class DriveCommands {
         Vertex nextWaypoint = path.size() > 0 ? path.get(0) : path.getTarget();
         Vector pathDir = start.createVectorTo(nextWaypoint).normalize();
         double speed = velocity.dotProduct(pathDir);
+
         config.setStartVelocity(speed);
+
         config.setKinematics(drive.getKinematics());
         // config.setStartVelocity(10);
         return config;

@@ -2,7 +2,10 @@ package frc.robot.statemachine.states.tele;
 
 import java.util.Set;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.statemachine.StateMachine;
@@ -19,8 +22,14 @@ public class GoToScoreCoral extends State {
                         Shoulder shoulder) {
                 super(stateMachine);
 
+                Supplier<Rotation2d> angle = () -> {
+                        Translation2d reef = buttonBoard.getCoralReefReference().getTranslation();
+                        Translation2d robot = drive.getPose().getTranslation();
+                        Translation2d diff = reef.minus(robot);
+                        return Rotation2d.fromRadians(Math.atan2(diff.getY(), diff.getX()));
+                };
                 // Command ends when the target changes
-                Command goToReef = DriveCommands.goToPoint(drive, buttonBoard::getCoralReefTarget)
+                Command goToReef = DriveCommands.goToPoint(drive, buttonBoard::getCoralReefTarget, angle)
                                 .until(buttonBoard::coralReefJustChanged);
 
                 // Start command initially

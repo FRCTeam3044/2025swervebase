@@ -82,6 +82,10 @@ public class StateMachine extends StateMachineBase {
                 GoToScoreNet goToScoreNet = new GoToScoreNet(this, buttonBoard, drive);
                 GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive);
 
+                State dummyScoring = new State(this) {
+
+                };
+
                 teleop.withModeTransitions(disabled, teleop, auto, test)
                                 .withDefaultChild(manual)
                                 .withChild(goToScoringPosition)
@@ -93,7 +97,8 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToScoreAlgae, endEffector::hasAlgae, 1, "Has algae");
 
                 scoreGamePiece.withChild(scoreCoral, endEffector::hasCoral, 0, "Has coral")
-                                .withChild(scoreAlgae, endEffector::hasAlgae, 1, "Has algae");
+                                .withChild(scoreAlgae, endEffector::hasAlgae, 1, "Has algae")
+                                .withDefaultChild(dummyScoring);
 
                 goToIntake.withChild(goToStationIntake, () -> !buttonBoard.getAlgaeMode(), 0, "Coral Mode")
                                 .withChild(goToReefIntake, buttonBoard::getAlgaeMode, 1, "Algae Mode");
@@ -136,7 +141,7 @@ public class StateMachine extends StateMachineBase {
                                 "Far from scoring location")
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released")
-                                .withTransition(manual, () -> endEffector.noGamePiece(),
+                                .withTransition(manual, () -> endEffector.noGamePiece(), // && shoulder.inSafeZone(),
                                                 "No game piece in robot");
 
                 goToIntake.withTransition(intakeGamePiece, () -> buttonBoard.closeToIntakeTarget(drive),
@@ -154,6 +159,8 @@ public class StateMachine extends StateMachineBase {
                 intakeCoral.withTransition(manual, () -> endEffector.hasCoral(), "Has coral");
 
                 intakeAlgae.withTransition(manual, () -> endEffector.hasAlgae(), "Has algae");
+
+                dummyScoring.withTransition(manual, () -> true, "Go back to manual");
 
                 // Auto
                 auto.withModeTransitions(disabled, teleop, auto, test);

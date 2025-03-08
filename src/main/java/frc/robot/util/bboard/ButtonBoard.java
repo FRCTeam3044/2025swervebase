@@ -285,6 +285,10 @@ public class ButtonBoard {
         return coralReefTargetPose;
     }
 
+    public Pose2d getCoralReefReference() {
+        return coralReefReferencePose;
+    }
+
     public CoralLevel getCoralReefLevel() {
         return coralReefLevel;
     }

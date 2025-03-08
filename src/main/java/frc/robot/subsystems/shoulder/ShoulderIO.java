@@ -17,6 +17,8 @@ public interface ShoulderIO {
 
         public double setpointAngleRad = 0.0;
         public double setpointAngleFromHorizontal = 0.0;
+
+        public boolean inSafeZone = false;
     }
 
     public default void updateInputs(ShoulderIOInputs inputs, boolean elevatorNotAtTarget) {

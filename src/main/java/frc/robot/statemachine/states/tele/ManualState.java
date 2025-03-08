@@ -75,11 +75,14 @@ public class ManualState extends State {
                 SmartTrigger manualElevator = t(() -> Math.abs(rightY.getAsDouble()) > 0.1 && bboard.fullManual());
                 SmartTrigger manualShoulder = t(() -> Math.abs(leftY.getAsDouble()) > 0.1 && bboard.fullManual());
 
+                SmartTrigger semiAuto = t(bboard::semiAuto);
+
                 manualElevator.whileTrue(elevator.move(rightY));
                 manualShoulder.whileTrue(shoulder.manualPivot(leftY));
-                manualElevator.whileFalse(elevator.idle());
+                manualElevator.or(semiAuto).runWhileFalse(elevator.idle());
 
-                SmartTrigger semiAuto = t(bboard::semiAuto);
+                manualShoulder.or(semiAuto).runWhileFalse(shoulder.idle());
+
                 SmartTrigger idle = t(bboard::idleInManual);
                 SmartTrigger intake = t(bboard::intakeInManual);
                 SmartTrigger coral = t(bboard::coralInManual);

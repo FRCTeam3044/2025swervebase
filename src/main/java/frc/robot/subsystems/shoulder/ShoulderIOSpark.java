@@ -87,6 +87,8 @@ public class ShoulderIOSpark implements ShoulderIO {
                                 (value) -> inputs.leaderTemperature = value);
                 ifOk(followerMotor, followerMotor::getMotorTemperature,
                                 (value) -> inputs.followerTemperature = value);
+                inputs.inSafeZone = inputs.leaderShoulderAngleRad < safeZoneMax.get()
+                                && inputs.leaderShoulderAngleRad > safeZoneMin.get();
         }
 
         @Override

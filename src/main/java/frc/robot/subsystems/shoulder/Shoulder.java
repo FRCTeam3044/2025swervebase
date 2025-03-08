@@ -68,7 +68,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
-            stagingLowAlgae);
+            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4);
 
     private BooleanSupplier elevatorNotAtTarget;
 
@@ -267,5 +267,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     @Override
     public String getPrettyName() {
         return "Shoulder";
+    }
+
+    public boolean inSafeZone() {
+        return inputs.inSafeZone;
     }
 }
