@@ -83,13 +83,21 @@ public class AutoRoutines {
 		AutoTrajectory goToFirstScore = routine.trajectory("Testy Testy", 0);
 		AutoTrajectory goToFirstIntake = routine.trajectory("Testy Testy", 1);
 		AutoTrajectory goToSecondScore = routine.trajectory("Testy Testy", 2);
+		AutoTrajectory goToSecondIntake = routine.trajectory("Testy Testy", 3);
+		AutoTrajectory goToThirdScore = routine.trajectory("Testy Testy", 4);
+		AutoTrajectory goToThirdIntake = routine.trajectory("Testy Testy", 5);
+		AutoTrajectory goToFourthScore = routine.trajectory("Testy Testy", 6);
 
 		RobotContainer.getInstance().startPose = goToFirstScore.getInitialPose().get();
 		// When the routine begins, reset odometry and start the first trajectory (1)
 		routine.active().onTrue(goToFirstScore.resetOdometry().andThen(goToFirstScore.cmd()));
 
-		goToFirstScore.inactive().and(endEffector::noGamePiece).onTrue(goToFirstIntake.cmd());
-		goToFirstIntake.inactive().and(endEffector::hasCoral).onTrue(goToSecondScore.cmd());
+		goToFirstScore.done().onTrue(Commands.waitUntil(endEffector::noGamePiece).andThen(goToFirstIntake.cmd()));
+		goToFirstIntake.done().onTrue(Commands.waitUntil(endEffector::hasCoral).andThen(goToSecondScore.cmd()));
+		goToSecondScore.done().onTrue(Commands.waitUntil(endEffector::noGamePiece).andThen(goToSecondIntake.cmd()));
+		goToSecondIntake.done().onTrue(Commands.waitUntil(endEffector::hasCoral).andThen(goToThirdScore.cmd()));
+		goToThirdScore.done().onTrue(Commands.waitUntil(endEffector::noGamePiece).andThen(goToThirdIntake.cmd()));
+		goToThirdIntake.done().onTrue(Commands.waitUntil(endEffector::hasCoral).andThen(goToFourthScore.cmd()));
 
 		return routine;
 	}

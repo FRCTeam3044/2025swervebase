@@ -23,7 +23,7 @@ public class ElevatorIOSim implements ElevatorIO {
     private RelativeEncoder elevatorEncoder = sparkMax.getEncoder();
 
     public final ElevatorSim m_elevatorSim = new ElevatorSim(gearBox,
-            12.0,
+            1.0,
             0.1,
             drumRadius,
             1,
