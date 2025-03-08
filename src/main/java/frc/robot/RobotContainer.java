@@ -148,8 +148,7 @@ public class RobotContainer {
                                 shoulder.setElevatorNotAtTargetSupplier(elevator::notAtTarget);
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
-                                LEDs = new LEDs(new LEDsIO() {
-                                });
+                                LEDs = new LEDs(new LEDsIORio());
                                 climber = new Climber(new ClimberIOSpark());
                                 // vision = new Vision(drive, new VisionIO() {
                                 // }, new VisionIO() {

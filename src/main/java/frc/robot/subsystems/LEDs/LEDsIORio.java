@@ -40,7 +40,7 @@ public class LEDsIORio implements LEDsIO {
     @Override
     public void setSpinningColor(Color color1, Color color2) {
         LEDPattern step = LEDPattern.steps(Map.of(0, color1, 0.46, color2, 0.5, color1, 0.96, color2));
-        LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+        LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(15));
         pattern.applyTo(buffer);
         LEDStrip.setData(buffer);
     }
@@ -60,14 +60,14 @@ public class LEDsIORio implements LEDsIO {
                 Timer.delay(0.2); // LED stays on for 0.2 seconds (adjust as needed)
                 setSolidColor(LEDPattern.solid(Color.kPurple)); // Turn LED OFF after dot
                 Timer.delay(0.2); // Pause between dots/dashes (adjust as needed)
-            } 
+            }
             // Handle dash (-)
             else if (currentChar == '-') {
                 setSolidColor(LEDPattern.solid(Color.kYellow)); // Turn LED ON for dash
                 Timer.delay(0.4); // LED stays on for 0.4 seconds (adjust as needed)
                 setSolidColor(LEDPattern.solid(Color.kPurple)); // Turn LED OFF after dash
                 Timer.delay(0.2); // Pause between dots/dashes (adjust as needed)
-            } 
+            }
             // Handle space (Pause between words)
             else if (currentChar == ' ') {
                 Timer.delay(0.6); // Longer pause between words (adjust as needed)

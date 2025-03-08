@@ -810,7 +810,7 @@
         "Elevator Low Algae/y2": "0.0013",
         "Pathfinding X Controller/I": "0.0",
         "Elevator Low Algae/y1": "0.0013",
-        "Pathfinding X Controller/D": "0.0",
+        "Pathfinding X Controller/D": "0.2",
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
             "value": "0.51"
@@ -859,7 +859,7 @@
         "Drive Module 0/P": "0.0",
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
-        "Pathfinding Y Controller/D": "0.0",
+        "Pathfinding Y Controller/D": "0.2",
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "0.46"
@@ -890,7 +890,7 @@
         },
         "Shoulder/Staging L4 Angle": "0.0",
         "Shoulder/Shoulder Danger Zone One Min Angle (rad)": "0.0",
-        "Pathfinding Y Controller/P": "0.7",
+        "Pathfinding Y Controller/P": "1.5",
         "Shoulder/Shoulder Danger Zone Two Min Angle (rad)": "0.0",
         "Turn Module 0/P": "2.0",
         "Elevator Test Velocity": {
@@ -987,7 +987,7 @@
             "comment": "Auto-Generated",
             "value": "0.2"
         },
-        "Pathfinding X Controller/P": "0.7",
+        "Pathfinding X Controller/P": "1.5",
         "Point Theta Controller/I": "0.0",
         "Shoulder/Danger Zone One Min Angle (rad)": "0.0",
         "Intake coral in speed": {
