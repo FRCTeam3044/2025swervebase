@@ -1,5 +1,6 @@
 package frc.robot.statemachine.states.tele;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.subsystems.shoulder.Shoulder;
 import frc.robot.util.AllianceUtil;
+import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.bboard.ButtonBoard;
 
 public class ManualState extends State {
@@ -61,8 +63,11 @@ public class ManualState extends State {
                 t(bboard::climbUp).whileTrue(climber.up());
                 t(bboard::climbDown).whileTrue(climber.down());
 
+                SmartTrigger slowOuttake = t(() -> bboard.semiAuto()
+                                && ((bboard.coralInManual() && bboard.getCoralReefLevel() == CoralLevel.L1)
+                                                || bboard.processorInManual()));
                 t(bboard::intake).whileTrue(endEffector.algaeIn());
-                t(bboard::outtake).whileTrue(endEffector.algaeOut());
+                t(bboard::outtake).and(slowOuttake.negate()).whileTrue(endEffector.algaeOut());
 
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);
@@ -81,11 +86,16 @@ public class ManualState extends State {
                 SmartTrigger lowAlgae = t(bboard::lowAlgaeInManual);
                 SmartTrigger highAlgae = t(bboard::highAlgaeInManual);
 
+                BooleanSupplier shouldDoL2Kick = () -> bboard.getCoralReefLevel() == CoralLevel.L2 && bboard.outtake();
+
                 semiAuto.and(idle).whileTrue(elevator.idle().alongWith(shoulder.idle()));
                 semiAuto.and(intake).whileTrue(elevator.intakeCoral().alongWith(shoulder.intakeCoral()));
-                semiAuto.and(coral).whileTrue(elevator.toCoral(bboard::getCoralReefLevel)
-                                .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
-                semiAuto.and(lowAlgae).whileTrue(elevator.lowAlgae());
-                semiAuto.and(highAlgae).whileTrue(elevator.highAlgae());
+                semiAuto.and(coral).and(t(shouldDoL2Kick).negate())
+                                .runWhileTrue(elevator.toCoral(bboard::getCoralReefLevel)
+                                                .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
+                semiAuto.and(lowAlgae).whileTrue(elevator.lowAlgae().alongWith(shoulder.lowAlgae()));
+                semiAuto.and(highAlgae).whileTrue(elevator.highAlgae().alongWith(shoulder.highAlgae()));
+
+                semiAuto.and(shouldDoL2Kick).whileTrue(Commands.waitSeconds(0.125).andThen(shoulder.intakeCoral()));
         }
 }

@@ -19,7 +19,7 @@ public interface ShoulderIO {
         public double setpointAngleFromHorizontal = 0.0;
     }
 
-    public default void updateInputs(ShoulderIOInputs inputs) {
+    public default void updateInputs(ShoulderIOInputs inputs, boolean elevatorNotAtTarget) {
     };
 
     public default void setShoulderAngle(double angle) {

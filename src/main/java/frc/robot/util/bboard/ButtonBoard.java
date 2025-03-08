@@ -68,7 +68,7 @@ public class ButtonBoard {
             new SelectButtonInfo<CoralLevel>(2, 8, CoralLevel.L3),
             new SelectButtonInfo<CoralLevel>(2, 7, CoralLevel.L4));
     private ButtonInfo algaeModeToggle = new ButtonInfo(1, 4);
-    private ButtonInfo net = new ButtonInfo(0, 11);
+    private ButtonInfo net = new ButtonInfo(2, 11);
     private ButtonInfo climbUp = new ButtonInfo(0, 5);
     private ButtonInfo climbDown = new ButtonInfo(0, 6);
 
@@ -101,7 +101,9 @@ public class ButtonBoard {
         INTAKE,
         LOW_ALGAE,
         HIGH_ALGAE,
-        CORAL
+        CORAL,
+        PROCESSOR,
+        NET
     }
 
     private SemiAutoState semiAutoState = SemiAutoState.IDLE;
@@ -201,6 +203,10 @@ public class ButtonBoard {
                 semiAutoState = SemiAutoState.HIGH_ALGAE;
             } else if (boardIO.isBeingPressed(intakeStationButtons.get(2))) {
                 semiAutoState = SemiAutoState.LOW_ALGAE;
+            } else if (boardIO.isBeingPressed(intakeStationButtons.get(1))) {
+                semiAutoState = SemiAutoState.NET;
+            } else if (boardIO.isBeingPressed(intakeStationButtons.get(1))) {
+                semiAutoState = SemiAutoState.PROCESSOR;
             }
         }
 
@@ -220,6 +226,7 @@ public class ButtonBoard {
         Logger.recordOutput("ButtonBoard/CoralReefLevel", coralReefLevel);
         Logger.recordOutput("ButtonBoard/IntakeStation", intakeStation);
         Logger.recordOutput("ButtonBoard/IntakeStationPose", intakeStationPose);
+        Logger.recordOutput("ButtonBoard/IntakeStationRefPose", intakeStationReferencePose);
         Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
         Logger.recordOutput("ButtonBoard/ManualMode", manualMode);
@@ -258,7 +265,7 @@ public class ButtonBoard {
 
     public boolean intake() {
         if (manualMode == ManualMode.SEMI) {
-            return boardIO.isBeingPressed(processor) && !boardIO.isBeingPressed(net);
+            return !boardIO.isBeingPressed(processor) && boardIO.isBeingPressed(net);
         } else if (manualMode == ManualMode.AUTO) {
             return boardIO.isBeingPressed(extraThree) && !boardIO.isBeingPressed(extraFour);
         }
@@ -267,7 +274,7 @@ public class ButtonBoard {
 
     public boolean outtake() {
         if (manualMode == ManualMode.SEMI) {
-            return !boardIO.isBeingPressed(processor) && boardIO.isBeingPressed(net);
+            return boardIO.isBeingPressed(processor) && !boardIO.isBeingPressed(net);
         } else if (manualMode == ManualMode.AUTO) {
             return !boardIO.isBeingPressed(extraThree) && boardIO.isBeingPressed(extraFour);
         }
@@ -339,13 +346,11 @@ public class ButtonBoard {
         };
     }
 
-    public DoubleSupplier getIntakeStationTargetDist(Drive drive) {
-        return () -> {
-            if (intakeStationPose == null) {
-                return Double.MAX_VALUE;
-            }
-            return AutoTargetUtils.robotDistToPose(drive, intakeStationPose);
-        };
+    public double getIntakeStationTargetDist(Drive drive) {
+        if (intakeStationPose == null) {
+            return Double.MAX_VALUE;
+        }
+        return AutoTargetUtils.robotDistToPose(drive, intakeStationPose);
     }
 
     public boolean isProcessor() {
@@ -453,6 +458,14 @@ public class ButtonBoard {
 
     public boolean coralInManual() {
         return semiAutoState == SemiAutoState.CORAL;
+    }
+
+    public boolean processorInManual() {
+        return semiAutoState == SemiAutoState.PROCESSOR;
+    }
+
+    public boolean netInManual() {
+        return semiAutoState == SemiAutoState.NET;
     }
 
     public boolean extraFour() {

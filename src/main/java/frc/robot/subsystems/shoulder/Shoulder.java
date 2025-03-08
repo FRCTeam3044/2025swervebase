@@ -70,6 +70,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
             stagingLowAlgae);
 
+    private BooleanSupplier elevatorNotAtTarget;
+
     public Shoulder(ShoulderIO io) {
         this.io = io;
 
@@ -82,6 +84,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 new SysIdRoutine.Mechanism(
                         (voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
         OxConfig.registerConfigurableClass(this);
+    }
+
+    public void setElevatorNotAtTargetSupplier(BooleanSupplier elevatorNotAtTarget) {
+        this.elevatorNotAtTarget = elevatorNotAtTarget;
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -110,7 +116,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     @Override
     public void periodic() {
-        io.updateInputs(inputs);
+        io.updateInputs(inputs, elevatorNotAtTarget.getAsBoolean());
         Logger.processInputs("Shoulder", inputs);
         Logger.recordOutput("ShoulderInDangerZone", inDangerZone());
     }
@@ -159,6 +165,14 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
             }
             return target;
         }).withName("Shoulder to Algae");
+    }
+
+    public Command highAlgae() {
+        return toPosition(() -> highAlgae.getY1()).withName("Shoulder to high algae");
+    }
+
+    public Command lowAlgae() {
+        return toPosition(() -> lowAlgae.getY1()).withName("Shoulder to low algae");
     }
 
     public Command intakeCoral() {
