@@ -46,6 +46,8 @@ public class StateMachine extends StateMachineBase {
                         "Staging Distance Threshold");
         public ConfigurableParameter<Double> alignmentThreshold = new ConfigurableParameter<Double>(0.0,
                         "Full Alignment Distance Threshold");
+        public ConfigurableParameter<Double> algaeLeaveThreshold = new ConfigurableParameter<Double>(1.0,
+                        "Algae Leave Threshold");
 
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
                         ButtonBoard buttonBoard, LoggedDashboardChooser<Command> chooser,
@@ -77,7 +79,7 @@ public class StateMachine extends StateMachineBase {
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
                 ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector, LEDs);
                 ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector,
-                                LEDs);
+                                LEDs, elevator, shoulder);
                 IntakeGamePiece intakeGamePiece = new IntakeGamePiece(this);
                 IntakeCoral intakeCoral = new IntakeCoral(this, buttonBoard, drive, elevator, shoulder, endEffector,
                                 LEDs);
@@ -91,13 +93,18 @@ public class StateMachine extends StateMachineBase {
                 GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive, elevator, shoulder);
                 GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);
                 GoToScoreNet goToScoreNet = new GoToScoreNet(this, buttonBoard, drive);
-                GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive);
+                GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive, elevator,
+                                shoulder);
 
                 State dummyScoring = new State(this) {
 
                 };
 
                 State dummyCoralScoring = new State(this) {
+
+                };
+
+                State dummyGoToScore = new State(this) {
 
                 };
 
@@ -109,8 +116,8 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(intakeGamePiece);
 
                 goToScoringPosition.withChild(goToScoreCoral, endEffector::hasCoral, 0, "Has coral")
-                                .withChild(goToScoreAlgae, endEffector::hasAlgae, 1, "Has algae");
-
+                                .withChild(goToScoreAlgae, endEffector::hasAlgae, 1, "Has algae")
+                                .withDefaultChild(dummyGoToScore);
                 scoreGamePiece.withChild(scoreCoral, endEffector::hasCoral, 0, "Has coral")
                                 .withChild(scoreAlgae, endEffector::hasAlgae, 1, "Has algae")
                                 .withDefaultChild(dummyScoring);
@@ -185,7 +192,14 @@ public class StateMachine extends StateMachineBase {
                                 "Intake location changed")
                                 .withTransition(manual, () -> !driverController.leftTrigger()
                                                 .getAsBoolean(), "Intake button released")
-                                .withTransition(manual, () -> endEffector.hasCoral() || endEffector.hasAlgae(),
+                                .withTransition(manual, () -> {
+                                        if (buttonBoard.getAlgaeMode()) {
+                                                return shoulder.getShoulderAngle() < algaeLeaveThreshold.get()
+                                                                && endEffector.hasAlgae();
+                                        } else {
+                                                return endEffector.hasCoral();
+                                        }
+                                },
                                                 "Game piece in robot");
 
                 intakeCoral.withTransition(manual, () -> endEffector.hasCoral(), "Has coral");
@@ -194,6 +208,7 @@ public class StateMachine extends StateMachineBase {
 
                 dummyScoring.withTransition(manual, () -> true, "Go back to manual");
                 dummyCoralScoring.withTransition(manual, () -> true, "Go back to manual");
+                dummyGoToScore.withTransition(manual, () -> true, "Go back to manual");
 
                 scoreL1.withTransition(scoreL2, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L2, "L2 Selected")
                                 .withTransition(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3,

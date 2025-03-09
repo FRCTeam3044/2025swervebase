@@ -17,6 +17,7 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.RobotContainer;
 
 public class EndEffectorIOSpark implements EndEffectorIO {
     private final SparkMax motor = new SparkMax(canId, MotorType.kBrushless);
@@ -45,7 +46,7 @@ public class EndEffectorIOSpark implements EndEffectorIO {
         inputs.limitSwitchPressed = limitSwitchPressed();
 
         inputs.hasCoral = hasCoral();
-        inputs.hasAlgae = hasAlgae(inputs);
+        inputs.hasAlgae = RobotContainer.getInstance().buttonBoard.extraTwo();
     }
 
     @Override

@@ -297,8 +297,11 @@ public class RobotContainer {
                                                 new Color8Bit(Color.kPurple)));
 
                 endEffector.setDefaultCommand(endEffector
-                                .runIntakeSpeed(() -> endEffector.hasAlgae() ? EndEffectorConstants.algaeInSpeed.get()
-                                                : idleIntakeSpeed.get()));
+                                .runIntakeSpeed(() -> /*
+                                                       * endEffector.hasAlgae() ?
+                                                       * EndEffectorConstants.algaeInSpeed.get()
+                                                       * :
+                                                       */ idleIntakeSpeed.get()));
         }
 
         /**

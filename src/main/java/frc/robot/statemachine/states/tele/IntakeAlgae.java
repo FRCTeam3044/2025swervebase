@@ -3,6 +3,7 @@ package frc.robot.statemachine.states.tele;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.subsystems.LEDs.LEDs;
@@ -21,14 +22,15 @@ public class IntakeAlgae extends State {
 
                 startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getAlgaeReefTarget));
                 startWhenActive(endEffector.algaeIn());
-                BooleanSupplier elevatorCloseToTarget = elevator::isAtTarget;
                 DoubleSupplier dist = buttonBoard.getAlgaeReefTargetDist(drive);
-                BooleanSupplier staging = () -> dist.getAsDouble() > stateMachine.alignmentThreshold.get()
-                                || !elevatorCloseToTarget.getAsBoolean();
+
+                Command shoulderToAlgae = shoulder.algaeIntake(buttonBoard::getAlgaeReefLocation, dist, () -> false);
                 startWhenActive(
                                 elevator.algaeIntake(buttonBoard::getAlgaeReefLocation,
                                                 buttonBoard.getAlgaeReefReferenceDist(drive)));
-                startWhenActive(shoulder.algaeIntake(buttonBoard::getAlgaeReefLocation, dist, () -> false));
+                startWhenActive(shoulderToAlgae);
+
                 startWhenActive(LEDs.intakingAndScoringAlgae());
+                t(endEffector::hasAlgae).whileTrue(shoulder.idle()).whileFalse(shoulderToAlgae);
         }
 }

@@ -204,7 +204,7 @@ public class AutoTargetUtils {
         }
     }
 
-    private static POIData processor = POIData.create(0, 0, 0, 0);
+    private static POIData processor = POIData.create(5.965735966001007, 0, 5.965735966001007, 1);
     private static ConfigurableParameter<Double> processorDistance = new ConfigurableParameter<Double>(1.0,
             "Processor dist");
     private static ConfigurableParameter<Boolean> processorFlipped = new ConfigurableParameter<Boolean>(false,

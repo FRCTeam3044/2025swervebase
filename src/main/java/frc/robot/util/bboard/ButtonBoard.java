@@ -92,8 +92,7 @@ public class ButtonBoard {
     private IntakeStation intakeStation;
 
     private boolean algaeMode = false;
-    private boolean isProcessor = false;
-    private boolean isNet = false;
+    private boolean isProcessor = true;
 
     private ManualMode manualMode = ManualMode.AUTO;
 
@@ -177,7 +176,7 @@ public class ButtonBoard {
             isProcessor = true;
         }
         if (boardIO.isPressed(net)) {
-            isNet = false;
+            isProcessor = false;
         }
         if (boardIO.isBeingPressed(extraOne) && boardIO.isBeingPressed(extraTwo) && boardIO.isPressed(extraFour)) {
             if (boardIO.isBeingPressed(extraThree)) {
@@ -236,7 +235,6 @@ public class ButtonBoard {
         // Log to SmartDashboard for Button Board LED controller
         SmartDashboard.putBoolean("ButtonBoard/AlgaeMode", algaeMode);
         SmartDashboard.putBoolean("ButtonBoard/isProcessor", isProcessor);
-        SmartDashboard.putBoolean("ButtonBoard/isNet", isNet);
         SmartDashboard.putBoolean("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         SmartDashboard.putBoolean("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
         if (coralReefLocation != null) {
@@ -376,9 +374,6 @@ public class ButtonBoard {
     public boolean closeToScoringTarget(Drive drive) {
         if (RobotContainer.getInstance().endEffector.hasAlgae()) {
             if (isProcessor) {
-                if (coralReefTargetPose == null) {
-                    return false;
-                }
                 return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.processor()) < processorDistThreshold
                         .get();
             } else {
@@ -479,5 +474,9 @@ public class ButtonBoard {
 
     public boolean extraFour() {
         return boardIO.isPressed(extraFour);
+    }
+
+    public boolean extraTwo() {
+        return boardIO.isBeingPressed(extraTwo);
     }
 }

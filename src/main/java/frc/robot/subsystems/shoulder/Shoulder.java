@@ -31,6 +31,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ConfigurableLinearInterpolation L2 = new ConfigurableLinearInterpolation("Shoulder L2 Angles");
     private final ConfigurableClassParam<Double> manualL2 = new ConfigurableClassParam<Double>(this, 0.96,
             "Shoulder Manual L2 Angle");
+    private final ConfigurableClassParam<Double> processor = new ConfigurableClassParam<Double>(this, 0.5,
+            "Shoulder Processor Angle");
 
     private final ConfigurableClassParam<Double> stagingL2 = new ConfigurableClassParam<>(this, 0.0,
             "Staging L2 Angle");
@@ -71,7 +73,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
-            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4);
+            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor);
 
     private BooleanSupplier elevatorNotAtTarget;
 
@@ -190,6 +192,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
         return toPosition(idle::get).withName("Shoulder Idle");
     }
 
+    public Command processor() {
+        return toPosition(processor::get).withName("Shoulder Processor");
+    }
+
     private double calculateAngleForCoral(CoralLevel level, double robotDist, boolean staging) {
         if (staging)
             return getStagingAngle(level);
@@ -248,6 +254,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     public boolean isAtCoralTarget(Supplier<CoralLevel> level, DoubleSupplier robotDist) {
         return Math.abs(inputs.leaderShoulderAngleRad
                 - calculateAngleForCoral(level.get(), robotDist.getAsDouble(), false)) < threshold.get();
+    }
+
+    public boolean isAtProcessorTarget() {
+        return Math.abs(inputs.leaderShoulderAngleRad - processor.get()) < threshold.get();
     }
 
     public boolean inDangerZone() {
