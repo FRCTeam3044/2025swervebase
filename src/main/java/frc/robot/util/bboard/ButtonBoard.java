@@ -293,6 +293,10 @@ public class ButtonBoard {
         return coralReefLevel;
     }
 
+    public CoralReefLocation getCoralReefLocation() {
+        return coralReefLocation;
+    }
+
     public DoubleSupplier getCoralReefReferenceDist(Drive drive) {
         return () -> {
             if (coralReefReferencePose == null) {

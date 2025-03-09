@@ -8,6 +8,7 @@ import static frc.robot.subsystems.LEDs.LEDsConstants.length;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLED.ColorOrder;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
@@ -20,6 +21,7 @@ public class LEDsIORio implements LEDsIO {
 
     public LEDsIORio() {
         LEDStrip.setLength(buffer.getLength());
+        LEDStrip.setColorOrder(ColorOrder.kRGB);
         LEDStrip.start();
     }
 
@@ -40,7 +42,7 @@ public class LEDsIORio implements LEDsIO {
     @Override
     public void setSpinningColor(Color color1, Color color2) {
         LEDPattern step = LEDPattern.steps(Map.of(0, color1, 0.46, color2, 0.5, color1, 0.96, color2));
-        LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(15));
+        LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(20));
         pattern.applyTo(buffer);
         LEDStrip.setData(buffer);
     }

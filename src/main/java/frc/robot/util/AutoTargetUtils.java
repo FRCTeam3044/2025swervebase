@@ -85,7 +85,7 @@ public class AutoTargetUtils {
                 "Coral L3 scoring dist");
         private static final ConfigurableParameter<Double> coralL4Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L4 scoring dist");
-        private static final ConfigurableParameter<Boolean> flipped = new ConfigurableParameter<Boolean>(false,
+        public static final ConfigurableParameter<Boolean> flipped = new ConfigurableParameter<Boolean>(false,
                 "Coral Flipped");
 
         public static double coralDistance(CoralLevel level) {
@@ -104,7 +104,8 @@ public class AutoTargetUtils {
         }
 
         public static Pose2d coral(CoralReefLocation location, CoralLevel level) {
-            return location.data().poseFacing(coralDistance(level), flipped.get());
+            return location.data().poseFacing(coralDistance(level),
+                    /* level == CoralLevel.L2 ? true : */ flipped.get());
         }
 
         public static enum AlgaeReefLocation {

@@ -37,7 +37,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.LEDs.LEDs;
-import frc.robot.subsystems.LEDs.LEDsIO;
 import frc.robot.subsystems.LEDs.LEDsIORio;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.ClimberIO;
@@ -72,6 +71,7 @@ import frc.robot.util.AllianceUtil;
 import frc.robot.util.bboard.BBoardIOReal;
 import frc.robot.util.bboard.BBoardIOSim;
 import frc.robot.util.bboard.ButtonBoard;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -121,6 +121,9 @@ public class RobotContainer {
         public static RobotContainer getInstance() {
                 return instance;
         }
+
+        private ConfigurableParameter<Double> idleIntakeSpeed = new ConfigurableParameter<Double>(-0.05,
+                        "Idle Intake Speed");
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -291,6 +294,8 @@ public class RobotContainer {
                 shoulderSim.append(
                                 new MechanismLigament2d("endEffector", Inches.of(13).in(Meters), 90.0, 6.0,
                                                 new Color8Bit(Color.kPurple)));
+
+                endEffector.setDefaultCommand(endEffector.runIntakeSpeed(idleIntakeSpeed::get));
         }
 
         /**

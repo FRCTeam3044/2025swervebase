@@ -1,4 +1,4 @@
-package frc.robot.statemachine.states.tele;
+package frc.robot.statemachine.states.tele.scoreCoral;
 
 import java.util.function.BooleanSupplier;
 import frc.robot.statemachine.StateMachine;
@@ -27,6 +27,7 @@ public class IntakeCoral extends State {
         // || !elevatorCloseToTarget.getAsBoolean();
         BooleanSupplier staging = () -> false;
 
-        startWhenActive(shoulder.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive), staging));
+        t(() -> DriveCommands.pointControllerRotConverged)
+                .onTrue(shoulder.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive), staging));
     }
 }

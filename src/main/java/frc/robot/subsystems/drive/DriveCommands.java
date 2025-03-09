@@ -14,6 +14,7 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
+import static frc.robot.subsystems.drive.DriveConstants.pointControllerTolerance;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -25,7 +26,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
-import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -42,6 +42,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -60,6 +61,9 @@ public class DriveCommands {
             "Pathfinding Max Accel");
     private static ConfigurableParameter<Double> pathfindingRotationMaxSpeed = new ConfigurableParameter<>(Math.PI / 2,
             "Pathfinding Max Rotation Speed");
+
+    public static boolean pointControllerConverged = false;
+    public static boolean pointControllerRotConverged = false;
 
     private DriveCommands() {
     }
@@ -259,12 +263,75 @@ public class DriveCommands {
                     targetPose.getRotation());
             if (DriveConstants.pointController.atReference()) {
                 speeds = new ChassisSpeeds(0, 0, 0);
+                pointControllerConverged = true;
+                pointControllerRotConverged = false;
+            } else {
+                pointControllerConverged = false;
+            }
+
+            if (Math.abs(targetPose.getRotation().minus(drive.getPose().getRotation())
+                    .getRadians()) < 1) {
+                pointControllerRotConverged = true;
+            } else {
+                pointControllerRotConverged = false;
             }
 
             drive.runVelocity(speeds);
             Logger.recordOutput("PointControllerDist",
                     drive.getPose().getTranslation().getDistance(targetPose.getTranslation()));
-        }, drive).withName("Point Control");
+        }, drive).finallyDo(() -> {
+            pointControllerConverged = false;
+            pointControllerRotConverged = false;
+        }).withName("Point Control");
+    }
+
+    private static ConfigurableParameter<Double> slowMaxSpeed = new ConfigurableParameter<Double>(0.1,
+            "Slow Point Controller Max");
+    private static ConfigurableParameter<Double> slowMaxRotSpeed = new ConfigurableParameter<Double>(0.1,
+            "Slow Point Controller Max Rotation Speed");
+
+    public static Command pointControlSlow(Drive drive, Supplier<Pose2d> pose, BooleanSupplier slowDrive,
+            BooleanSupplier slowRot) {
+        return Commands.startRun(() -> {
+            DriveConstants.anglePointController.reset(drive.getPose().getRotation().getRadians());
+        }, () -> {
+            Pose2d targetPose = pose.get();
+            ChassisSpeeds speeds = DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
+                    targetPose.getRotation());
+            if (DriveConstants.pointController.atReference()) {
+                speeds = new ChassisSpeeds(0, 0, 0);
+                pointControllerConverged = true;
+                pointControllerRotConverged = true;
+            } else {
+                pointControllerConverged = false;
+            }
+
+            if (Math.abs(targetPose.getRotation().minus(drive.getPose().getRotation())
+                    .getRadians()) < 1) {
+                pointControllerRotConverged = true;
+            } else {
+                pointControllerRotConverged = false;
+            }
+
+            if (slowDrive.getAsBoolean()) {
+                speeds.vxMetersPerSecond = MathUtil.clamp(speeds.vxMetersPerSecond, -slowMaxSpeed.get(),
+                        slowMaxSpeed.get());
+                speeds.vyMetersPerSecond = MathUtil.clamp(speeds.vyMetersPerSecond, -slowMaxSpeed.get(),
+                        slowMaxSpeed.get());
+            }
+
+            if (slowRot.getAsBoolean()) {
+                speeds.omegaRadiansPerSecond = MathUtil.clamp(speeds.omegaRadiansPerSecond, -slowMaxRotSpeed.get(),
+                        slowMaxRotSpeed.get());
+            }
+
+            drive.runVelocity(speeds);
+            Logger.recordOutput("PointControllerDist",
+                    drive.getPose().getTranslation().getDistance(targetPose.getTranslation()));
+        }, drive).finallyDo(() -> {
+            pointControllerConverged = false;
+            pointControllerRotConverged = false;
+        }).withName("Point Control (Slow)");
     }
 
     /**

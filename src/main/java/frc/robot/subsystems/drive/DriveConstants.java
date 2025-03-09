@@ -72,9 +72,9 @@ public class DriveConstants {
 
         // Drive motor configuration
         public static final int driveMotorCurrentLimit = 40;
-        public static final double wheelRadiusMeters = Units.inchesToMeters(1.408);
-        public static final double driveMotorReduction = (45.0 * 22.0) / (13.0 * 15.0); // MAXSwerve with 14 pinion
-                                                                                        // teeth
+        public static final double wheelRadiusMeters = Units.inchesToMeters(1.477);
+        public static final double driveMotorReduction = (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 13 pinion
+                                                                                        // teeth and 22 spur teeth
         // and 22 spur teeth
         public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 
@@ -167,8 +167,9 @@ public class DriveConstants {
                         "Point Theta Controller");
         public static final HolonomicDriveController pointController = new HolonomicDriveController(
                         xPointController, yPointController, anglePointController);
-
+        public static final Pose2d pointControllerTolerance = new Pose2d(0.01, 0.01, new Rotation2d(0.03));
         static {
-                pointController.setTolerance(new Pose2d(0.03, 0.03, new Rotation2d(1)));
+                pointController.setTolerance(pointControllerTolerance);
         }
 }
+//

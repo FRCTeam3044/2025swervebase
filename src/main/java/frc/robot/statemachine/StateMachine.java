@@ -13,26 +13,31 @@ import frc.robot.statemachine.states.TestState;
 import frc.robot.statemachine.states.tele.GoToIntake;
 import frc.robot.statemachine.states.tele.GoToReefIntake;
 import frc.robot.statemachine.states.tele.GoToScoreAlgae;
-import frc.robot.statemachine.states.tele.GoToScoreCoral;
 import frc.robot.statemachine.states.tele.GoToScoreNet;
 import frc.robot.statemachine.states.tele.GoToScoreProcessor;
 import frc.robot.statemachine.states.tele.GoToScoringPosition;
 import frc.robot.statemachine.states.tele.GoToStationIntake;
 import frc.robot.statemachine.states.tele.IntakeAlgae;
-import frc.robot.statemachine.states.tele.IntakeCoral;
 import frc.robot.statemachine.states.tele.IntakeGamePiece;
 import frc.robot.statemachine.states.tele.ManualState;
 import frc.robot.statemachine.states.tele.ScoreAlgae;
 import frc.robot.statemachine.states.tele.ScoreAlgaeNet;
 import frc.robot.statemachine.states.tele.ScoreAlgaeProcessor;
-import frc.robot.statemachine.states.tele.ScoreCoral;
 import frc.robot.statemachine.states.tele.ScoreGamePiece;
+import frc.robot.statemachine.states.tele.scoreCoral.GoToScoreCoral;
+import frc.robot.statemachine.states.tele.scoreCoral.IntakeCoral;
+import frc.robot.statemachine.states.tele.scoreCoral.ScoreCoral;
+import frc.robot.statemachine.states.tele.scoreCoral.ScoreL1;
+import frc.robot.statemachine.states.tele.scoreCoral.ScoreL2;
+import frc.robot.statemachine.states.tele.scoreCoral.ScoreL3;
+import frc.robot.statemachine.states.tele.scoreCoral.ScoreL4;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.subsystems.shoulder.Shoulder;
+import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.bboard.ButtonBoard;
 import me.nabdev.oxconfig.ConfigurableParameter;
 
@@ -62,7 +67,13 @@ public class StateMachine extends StateMachineBase {
                 ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator,
                                 shoulder, endEffector, LEDs, buttonBoard, climber);
                 ScoreGamePiece scoreGamePiece = new ScoreGamePiece(this);
-                ScoreCoral scoreCoral = new ScoreCoral(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
+                ScoreCoral scoreCoral = new ScoreCoral(this, LEDs);
+
+                ScoreL1 scoreL1 = new ScoreL1(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
+                ScoreL2 scoreL2 = new ScoreL2(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
+                ScoreL3 scoreL3 = new ScoreL3(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
+                ScoreL4 scoreL4 = new ScoreL4(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
+
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
                 ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector, LEDs);
                 ScoreAlgaeProcessor scoreAlgaeProcessor = new ScoreAlgaeProcessor(this, buttonBoard, drive, endEffector,
@@ -83,6 +94,10 @@ public class StateMachine extends StateMachineBase {
                 GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive);
 
                 State dummyScoring = new State(this) {
+
+                };
+
+                State dummyCoralScoring = new State(this) {
 
                 };
 
@@ -117,6 +132,16 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(scoreAlgaeProcessor,
                                                 buttonBoard::getSelectedAlgaeLocation, 1, "Processor selected");
 
+                scoreCoral.withDefaultChild(dummyCoralScoring)
+                                .withChild(scoreL1, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L1, 0,
+                                                "L1 Selected")
+                                .withChild(scoreL2, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L2, 0,
+                                                "L2 Selected")
+                                .withChild(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3, 0,
+                                                "L3 Selected")
+                                .withChild(scoreL4, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4, 0,
+                                                "L4 Selected");
+
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition,
                                 () -> buttonBoard.fullAuto() &&
@@ -141,7 +166,14 @@ public class StateMachine extends StateMachineBase {
                                 "Far from scoring location")
                                 .withTransition(manual, () -> !driverController.rightTrigger()
                                                 .getAsBoolean(), "Score button released")
-                                .withTransition(manual, () -> endEffector.noGamePiece(), // && shoulder.inSafeZone(),
+                                .withTransition(manual, () -> {
+                                        if (buttonBoard.getCoralReefLevel() == CoralLevel.L4
+                                                        && !buttonBoard.getAlgaeMode()) {
+                                                return endEffector.noGamePiece() && shoulder.inSafeZone();
+                                        } else {
+                                                return endEffector.noGamePiece();
+                                        }
+                                }, // && shoulder.inSafeZone(),
                                                 "No game piece in robot");
 
                 goToIntake.withTransition(intakeGamePiece, () -> buttonBoard.closeToIntakeTarget(drive),
@@ -161,6 +193,28 @@ public class StateMachine extends StateMachineBase {
                 intakeAlgae.withTransition(manual, () -> endEffector.hasAlgae(), "Has algae");
 
                 dummyScoring.withTransition(manual, () -> true, "Go back to manual");
+                dummyCoralScoring.withTransition(manual, () -> true, "Go back to manual");
+
+                scoreL1.withTransition(scoreL2, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L2, "L2 Selected")
+                                .withTransition(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3,
+                                                "L3 Selected")
+                                .withTransition(scoreL4, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4,
+                                                "L4 Selected");
+                scoreL2.withTransition(scoreL1, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L1, "L1 Selected")
+                                .withTransition(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3,
+                                                "L3 Selected")
+                                .withTransition(scoreL4, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4,
+                                                "L4 Selected");
+                scoreL3.withTransition(scoreL1, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L1, "L1 Selected")
+                                .withTransition(scoreL2, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L2,
+                                                "L2 Selected")
+                                .withTransition(scoreL4, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4,
+                                                "L4 Selected");
+                scoreL4.withTransition(scoreL1, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L1, "L1 Selected")
+                                .withTransition(scoreL2, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L2,
+                                                "L2 Selected")
+                                .withTransition(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3,
+                                                "L3 Selected");
 
                 // Auto
                 auto.withModeTransitions(disabled, teleop, auto, test);

@@ -29,6 +29,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ConfigurableClassParam<Double> stagingL1 = new ConfigurableClassParam<>(this, 0.0,
             "Staging L1 Angle");
     private final ConfigurableLinearInterpolation L2 = new ConfigurableLinearInterpolation("Shoulder L2 Angles");
+    private final ConfigurableClassParam<Double> manualL2 = new ConfigurableClassParam<Double>(this, 0.96,
+            "Shoulder Manual L2 Angle");
+
     private final ConfigurableClassParam<Double> stagingL2 = new ConfigurableClassParam<>(this, 0.0,
             "Staging L2 Angle");
     private final ConfigurableLinearInterpolation L3 = new ConfigurableLinearInterpolation("Shoulder L3 Angles");

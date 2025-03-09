@@ -1,4 +1,4 @@
-package frc.robot.statemachine.states.tele;
+package frc.robot.statemachine.states.tele.scoreCoral;
 
 import java.util.Set;
 import java.util.function.DoubleSupplier;
@@ -15,6 +15,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.shoulder.Shoulder;
+import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.bboard.ButtonBoard;
 
 public class GoToScoreCoral extends State {
@@ -27,6 +28,7 @@ public class GoToScoreCoral extends State {
                         Translation2d robot = drive.getPose().getTranslation();
                         Translation2d diff = reef.minus(robot);
                         return Rotation2d.fromRadians(Math.atan2(diff.getY(), diff.getX()));
+                        // + (buttonBoard.getCoralReefLevel() == CoralLevel.L2 ? Math.PI : 0));
                 };
                 // Command ends when the target changes
                 Command goToReef = DriveCommands.goToPoint(drive, buttonBoard::getCoralReefTarget, angle)
@@ -45,10 +47,12 @@ public class GoToScoreCoral extends State {
                 // .defer(() -> elevator.stageCoral(buttonBoard.getCoralReefLevel()),
                 // Set.of(elevator))
                 // .withName("Elevator to CoralLevel"));
-                staging.whileTrue(Commands
-                                .defer(() -> shoulder.stageCoral(buttonBoard.getCoralReefLevel()), Set.of(shoulder))
-                                .withName("Shoulder to CoralLevel"));
-                staging.whileFalse(shoulder.idle());
+                // staging.whileTrue(Commands
+                // .defer(() -> shoulder.stageCoral(buttonBoard.getCoralReefLevel()),
+                // Set.of(shoulder))
+                // .withName("Shoulder to CoralLevel"));
+                // staging.whileFalse(shoulder.idle());
+                startWhenActive(shoulder.idle());
                 startWhenActive(elevator.idle());
         }
 }

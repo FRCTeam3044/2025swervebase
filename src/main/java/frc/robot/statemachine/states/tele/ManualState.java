@@ -100,5 +100,6 @@ public class ManualState extends State {
                 semiAuto.and(highAlgae).whileTrue(elevator.highAlgae().alongWith(shoulder.highAlgae()));
 
                 semiAuto.and(shouldDoL2Kick).whileTrue(Commands.waitSeconds(0.125).andThen(shoulder.intakeCoral()));
+
         }
 }
