@@ -14,6 +14,7 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
+import static frc.robot.subsystems.drive.DriveConstants.pointController;
 import static frc.robot.subsystems.drive.DriveConstants.pointControllerTolerance;
 
 import edu.wpi.first.math.MathUtil;
@@ -290,10 +291,26 @@ public class DriveCommands {
     private static ConfigurableParameter<Double> slowMaxRotSpeed = new ConfigurableParameter<Double>(0.1,
             "Slow Point Controller Max Rotation Speed");
 
+    public static final Timer timeSincePointControl = new Timer();
+    public static double initialVx = 0;
+    public static double initialVy = 0;
+    public static double maxVx = 0;
+    public static double maxVy = 0;
+
+    private static ConfigurableParameter<Double> interpolateTime = new ConfigurableParameter<Double>(0.5,
+            "Slow Point Controller Interpolation Time");
+
     public static Command pointControlSlow(Drive drive, Supplier<Pose2d> pose, BooleanSupplier slowDrive,
             BooleanSupplier slowRot) {
         return Commands.startRun(() -> {
             DriveConstants.anglePointController.reset(drive.getPose().getRotation().getRadians());
+            // timeSincePointControl.reset();
+            // timeSincePointControl.start();
+            // ChassisSpeeds speeds = drive.getVelocity();
+            // initialVx = speeds.vxMetersPerSecond;
+            // initialVy = speeds.vyMetersPerSecond;
+            // maxVx = initialVx;
+            // maxVy = initialVy;
         }, () -> {
             Pose2d targetPose = pose.get();
             ChassisSpeeds speeds = DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
@@ -305,6 +322,10 @@ public class DriveCommands {
             } else {
                 pointControllerConverged = false;
             }
+            // double time = Math.min(timeSincePointControl.get() / interpolateTime.get(),
+            // 1);
+            // maxVx = MathUtil.interpolate(initialVx, slowMaxSpeed.get(), time);
+            // maxVy = MathUtil.interpolate(initialVy, slowMaxSpeed.get(), time);
 
             if (Math.abs(targetPose.getRotation().minus(drive.getPose().getRotation())
                     .getRadians()) < 1) {
@@ -331,6 +352,7 @@ public class DriveCommands {
         }, drive).finallyDo(() -> {
             pointControllerConverged = false;
             pointControllerRotConverged = false;
+            drive.stop();
         }).withName("Point Control (Slow)");
     }
 

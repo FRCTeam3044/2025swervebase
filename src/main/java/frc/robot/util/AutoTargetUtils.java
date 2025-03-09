@@ -21,6 +21,10 @@ public class AutoTargetUtils {
             return create(new Vertex(pos1x, pos1y), new Vertex(pos2x, pos2y));
         }
 
+        public Vector perpindicular() {
+            return new Vector(-normal().y, normal().x).normalize();
+        }
+
         public Pose2d poseWithRot(double distance, Rotation2d rotation) {
             Vertex robotPos = pos().moveByVector(normal().scale(distance));
             return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
@@ -28,6 +32,13 @@ public class AutoTargetUtils {
 
         public Pose2d poseFacing(double distance, boolean flipped) {
             Vertex robotPos = pos().moveByVector(normal().scale(distance));
+            double sign = flipped ? 1 : -1;
+            Rotation2d rotation = Rotation2d.fromRadians(Math.atan2(sign * normal().y, sign * normal().x));
+            return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
+        }
+
+        public Pose2d offsetPoseFacing(double distance, boolean flipped, double offset) {
+            Vertex robotPos = pos().moveByVector(normal().scale(distance)).moveByVector(perpindicular().scale(offset));
             double sign = flipped ? 1 : -1;
             Rotation2d rotation = Rotation2d.fromRadians(Math.atan2(sign * normal().y, sign * normal().x));
             return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
@@ -147,10 +158,15 @@ public class AutoTargetUtils {
                 "Algae High Intake Distance");
         public static ConfigurableParameter<Boolean> algaeFlipped = new ConfigurableParameter<Boolean>(false,
                 "Algae Flipped");
+        public static ConfigurableParameter<Double> algaeHighOffset = new ConfigurableParameter<Double>(0.1,
+                "Algae High Offset");
+        public static ConfigurableParameter<Double> algaeLowOffset = new ConfigurableParameter<Double>(0.15,
+                "Algae Low Offset");
 
         public static Pose2d algae(AlgaeReefLocation location) {
-            return location.data().poseFacing(location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
-                    algaeFlipped.get());
+            return location.data().offsetPoseFacing(
+                    location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
+                    algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get());
         }
     }
 

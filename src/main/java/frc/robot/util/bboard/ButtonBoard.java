@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
 import frc.robot.util.AllianceUtil;
@@ -373,7 +374,7 @@ public class ButtonBoard {
             "Net score dist threshold");
 
     public boolean closeToScoringTarget(Drive drive) {
-        if (algaeMode) {
+        if (RobotContainer.getInstance().endEffector.hasAlgae()) {
             if (isProcessor) {
                 if (coralReefTargetPose == null) {
                     return false;

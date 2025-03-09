@@ -168,7 +168,7 @@ public class StateMachine extends StateMachineBase {
                                                 .getAsBoolean(), "Score button released")
                                 .withTransition(manual, () -> {
                                         if (buttonBoard.getCoralReefLevel() == CoralLevel.L4
-                                                        && !buttonBoard.getAlgaeMode()) {
+                                                        && endEffector.hasCoral()) {
                                                 return endEffector.noGamePiece() && shoulder.inSafeZone();
                                         } else {
                                                 return endEffector.noGamePiece();

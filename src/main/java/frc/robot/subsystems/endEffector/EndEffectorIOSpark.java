@@ -20,7 +20,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class EndEffectorIOSpark implements EndEffectorIO {
     private final SparkMax motor = new SparkMax(canId, MotorType.kBrushless);
-    Debouncer debouncer = new Debouncer(0.1, Debouncer.DebounceType.kBoth);
+    Debouncer stuckDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kBoth);
+    Debouncer algaeDebouncer = new Debouncer(0.2, Debouncer.DebounceType.kBoth);
+
     private DigitalInput coralSwitch = new DigitalInput(2);
     private RelativeEncoder encoder = motor.getEncoder();
 
@@ -55,7 +57,7 @@ public class EndEffectorIOSpark implements EndEffectorIO {
     private boolean checkWheelsStuck(EndEffectorIOInputs inputs) {
         boolean stuck = Math.abs(inputs.appliedVoltage) > voltageThreshold.get()
                 && Math.abs(inputs.velocity) < speedThreshold.get();
-        return debouncer.calculate(stuck);
+        return stuckDebouncer.calculate(stuck);
     }
 
     private boolean hasCoral() {
@@ -63,7 +65,7 @@ public class EndEffectorIOSpark implements EndEffectorIO {
     }
 
     private boolean hasAlgae(EndEffectorIOInputs inputs) {
-        return inputs.wheelsStuck && !limitSwitchPressed();
+        return algaeDebouncer.calculate(inputs.wheelsStuck && !limitSwitchPressed());
     }
 
     private boolean limitSwitchPressed() {

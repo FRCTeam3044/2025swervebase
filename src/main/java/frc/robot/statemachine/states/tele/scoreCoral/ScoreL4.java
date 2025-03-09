@@ -3,8 +3,6 @@ package frc.robot.statemachine.states.tele.scoreCoral;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,12 +29,8 @@ public class ScoreL4 extends State {
             Elevator elevator, Shoulder shoulder, LEDs LEDs) {
         super(stateMachine);
 
-        Supplier<Pose2d> farTarget = () -> {
-            return buttonBoard.getCoralReefLocation().data().poseFacing(postScoreDist.get(),
-                    Reef.flipped.get());
-
-        };
-        startWhenActive(Commands.run(() -> Logger.recordOutput("L4 Far Target", farTarget.get())));
+        Supplier<Pose2d> farTarget = () -> buttonBoard.getCoralReefLocation().data().poseFacing(postScoreDist.get(),
+                Reef.flipped.get());
 
         DoubleSupplier distToRef = buttonBoard.getCoralReefReferenceDist(drive);
 
@@ -44,17 +38,23 @@ public class ScoreL4 extends State {
                 .toCoral(() -> CoralLevel.L4, distToRef)
                 .alongWith(shoulder.scoreCoral(() -> CoralLevel.L4, distToRef, () -> false));
 
-        Command far = DriveCommands.pointControlSlow(drive, farTarget, () -> false, () -> true)
+        Command far = DriveCommands.pointControlSlow(drive, farTarget, () -> true, () -> true)
                 .until(() -> DriveCommands.pointControllerConverged);
         Command close = Commands
                 .waitUntil(() -> shoulder.isAtCoralTarget(() -> CoralLevel.L4, distToRef) && elevator.isAtTarget())
                 .andThen(DriveCommands.pointControlSlow(drive, buttonBoard::getCoralReefTarget, () -> true, () -> true)
                         .until(() -> DriveCommands.pointControllerConverged).withTimeout(1.2));
-        startWhenActive(Commands.sequence(far, Commands.sequence(close, shoulder.idle())
-                .alongWith(
-                        Commands.waitUntil(() -> distToRef.getAsDouble() < scoreDist.get())
-                                .andThen(endEffector.algaeOut()))));
 
+        startWhenActive(Commands.sequence(far,
+                close.alongWith(Commands.waitUntil(() -> distToRef.getAsDouble() < scoreDist.get())
+                        .andThen(endEffector.algaeOut())))
+                .withName("l4 Scoring Sequence"));
+
+        t(endEffector::noGamePiece)
+                .whileTrue(Commands.deadline(Commands.waitSeconds(0.3), elevator
+                        .toCoral(() -> CoralLevel.L4, distToRef)
+                        .alongWith(shoulder.scoreCoral(() -> CoralLevel.L4, distToRef, () -> false)))
+                        .andThen(Commands.parallel(elevator.idle(), shoulder.idle())));
         startWhenActive(alignElevatorAndShoulder);
 
         // BooleanSupplier staging = () -> !elevator.isAtTarget();

@@ -57,6 +57,8 @@ public class ManualState extends State {
                 driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive).withName("X mode"));
                 driverController.x().onFalse(joystickDrive);
 
+                driverController.b().whileTrue(shoulder.intakeCoral());
+
                 operatorController.leftTrigger().whileTrue(endEffector.algaeIn());
                 operatorController.rightTrigger().whileTrue(endEffector.algaeOut());
 
@@ -81,7 +83,7 @@ public class ManualState extends State {
                 manualShoulder.whileTrue(shoulder.manualPivot(leftY));
                 manualElevator.or(semiAuto).runWhileFalse(elevator.idle());
 
-                manualShoulder.or(semiAuto).runWhileFalse(shoulder.idle());
+                manualShoulder.or(semiAuto).or(driverController.b()).runWhileFalse(shoulder.idle());
 
                 SmartTrigger idle = t(bboard::idleInManual);
                 SmartTrigger intake = t(bboard::intakeInManual);

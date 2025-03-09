@@ -55,6 +55,7 @@ import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOSpark;
 import frc.robot.subsystems.endEffector.EndEffector;
+import frc.robot.subsystems.endEffector.EndEffectorConstants;
 import frc.robot.subsystems.endEffector.EndEffectorIO;
 import frc.robot.subsystems.endEffector.EndEffectorIOSim;
 import frc.robot.subsystems.endEffector.EndEffectorIOSpark;
@@ -95,7 +96,7 @@ public class RobotContainer {
         private final Vision vision;
         private final Elevator elevator;
         public final Shoulder shoulder;
-        private final EndEffector endEffector;
+        public final EndEffector endEffector;
         private final LEDs LEDs;
         private final Climber climber;
         private SwerveDriveSimulation driveSimulation = null;
@@ -295,7 +296,9 @@ public class RobotContainer {
                                 new MechanismLigament2d("endEffector", Inches.of(13).in(Meters), 90.0, 6.0,
                                                 new Color8Bit(Color.kPurple)));
 
-                endEffector.setDefaultCommand(endEffector.runIntakeSpeed(idleIntakeSpeed::get));
+                endEffector.setDefaultCommand(endEffector
+                                .runIntakeSpeed(() -> endEffector.hasAlgae() ? EndEffectorConstants.algaeInSpeed.get()
+                                                : idleIntakeSpeed.get()));
         }
 
         /**
