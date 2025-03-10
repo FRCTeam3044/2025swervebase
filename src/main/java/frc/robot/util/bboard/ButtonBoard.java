@@ -25,10 +25,20 @@ public class ButtonBoard {
         AUTO, SEMI, MANUAL
     }
 
-    private final BBoardIO boardIO;
+    private BBoardIO mainBoardIO;
+    private BBoardIO boardIO;
 
     public ButtonBoard(BBoardIO boardIO) {
         this.boardIO = boardIO;
+        this.mainBoardIO = boardIO;
+    }
+
+    public void setAutoIO(BBoardIO io) {
+        boardIO = io;
+    }
+
+    public void normalIO() {
+        boardIO = mainBoardIO;
     }
 
     public record ButtonInfo(int board, int button) {
@@ -40,7 +50,7 @@ public class ButtonBoard {
         }
     };
 
-    private List<SelectButtonInfo<CoralReefLocation>> reefButtons = List.of(
+    public List<SelectButtonInfo<CoralReefLocation>> reefButtons = List.of(
             new SelectButtonInfo<CoralReefLocation>(0, 1, CoralReefLocation.A),
             new SelectButtonInfo<CoralReefLocation>(0, 2, CoralReefLocation.B),
             new SelectButtonInfo<CoralReefLocation>(0, 3, CoralReefLocation.C),
@@ -55,7 +65,7 @@ public class ButtonBoard {
             new SelectButtonInfo<CoralReefLocation>(0, 12, CoralReefLocation.L));
 
     // 13 - 18
-    private List<SelectButtonInfo<IntakeStation>> intakeStationButtons = List.of(
+    public List<SelectButtonInfo<IntakeStation>> intakeStationButtons = List.of(
             new SelectButtonInfo<IntakeStation>(1, 1, IntakeStation.LeftOne),
             new SelectButtonInfo<IntakeStation>(1, 2, IntakeStation.LeftTwo),
             new SelectButtonInfo<IntakeStation>(1, 3, IntakeStation.LeftThree),
@@ -64,7 +74,7 @@ public class ButtonBoard {
             new SelectButtonInfo<IntakeStation>(1, 5, IntakeStation.RightThree));
 
     private ButtonInfo processor = new ButtonInfo(2, 12);
-    private List<SelectButtonInfo<CoralLevel>> levels = List.of(new SelectButtonInfo<CoralLevel>(2, 10, CoralLevel.L1),
+    public List<SelectButtonInfo<CoralLevel>> levels = List.of(new SelectButtonInfo<CoralLevel>(2, 10, CoralLevel.L1),
             new SelectButtonInfo<CoralLevel>(2, 9, CoralLevel.L2),
             new SelectButtonInfo<CoralLevel>(2, 8, CoralLevel.L3),
             new SelectButtonInfo<CoralLevel>(2, 7, CoralLevel.L4));
