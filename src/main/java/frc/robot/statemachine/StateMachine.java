@@ -106,7 +106,7 @@ public class StateMachine extends StateMachineBase {
 
                 };
 
-                teleop.withModeTransitions(disabled, teleop, test)
+                teleop
                                 .withDefaultChild(manual)
                                 .withChild(goToScoringPosition)
                                 .withChild(scoreGamePiece)
@@ -229,10 +229,18 @@ public class StateMachine extends StateMachineBase {
                                 .withTransition(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3,
                                                 "L3 Selected");
 
-                // Test
+                // For normal autos (comment out for sysid)
+                teleop.withModeTransitions(disabled, teleop, test);
                 test.withModeTransitions(disabled, teleop, test);
-
-                // Disabled
                 disabled.withModeTransitions(disabled, teleop, test);
+
+                // For SYSID (comment out for normal autos)
+                /*
+                 * AutoState auto = new AutoState(this, chooser);
+                 * teleop.withModeTransitions(disabled, teleop, auto, test);
+                 * test.withModeTransitions(disabled, teleop, auto, test);
+                 * disabled.withModeTransitions(disabled, teleop, auto, test);
+                 * auto.withModeTransitions(disabled, teleop, auto, test);
+                 */
         }
 }
