@@ -89,7 +89,7 @@ public class StateMachine extends StateMachineBase {
                                 shoulder, LEDs);
                 GoToScoringPosition goToScoringPosition = new GoToScoringPosition(this);
                 GoToScoreCoral goToScoreCoral = new GoToScoreCoral(this, buttonBoard, drive, elevator, shoulder);
-                GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this);
+                GoToScoreAlgae goToScoreAlgae = new GoToScoreAlgae(this, LEDs);
                 GoToScoreNet goToScoreNet = new GoToScoreNet(this, buttonBoard, drive);
                 GoToScoreProcessor goToScoreProcessor = new GoToScoreProcessor(this, buttonBoard, drive, elevator,
                                 shoulder);
