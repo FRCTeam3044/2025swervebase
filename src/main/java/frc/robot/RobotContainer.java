@@ -20,8 +20,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.subsystems.vision.VisionConstants.*;
 
-import java.util.List;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,7 +35,6 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Autos.AutoStep;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.LEDs.LEDsIORio;
@@ -110,7 +107,6 @@ public class RobotContainer {
 
         // Dashboard inputs
         private final LoggedDashboardChooser<Command> sysidChooser;
-        private final LoggedDashboardChooser<List<AutoStep>> autoChooser;
 
         public final StateMachine stateMachine;
 
@@ -282,9 +278,6 @@ public class RobotContainer {
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kForward));
                 sysidChooser.addOption("Shoulder SysId (Dynamic Reverse)",
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
-                autoChooser = new LoggedDashboardChooser<>("Auto Routines");
-                autoChooser.addOption("None", List.of());
 
                 stateMachine = new StateMachine(driverController, operatorController, buttonBoard, sysidChooser, drive,
                                 elevator, shoulder, endEffector, LEDs, climber);

@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Autos.AutoStep;
 import frc.robot.util.AllianceUtil;
 import frc.robot.util.AutoTargetUtils.Reef;
-import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import frc.robot.util.bboard.BBoardIOAuto;
@@ -162,8 +161,7 @@ public class Robot extends LoggedRobot {
     AllianceUtil.setAlliance();
   }
 
-  private List<AutoStep> auto = List
-      .of(robotContainer.autos.scoreCoral(CoralReefLocation.A, CoralLevel.L1, IntakeStation.RightTwo));
+  private List<AutoStep> auto;
   private int currentAutoStep = 0;
   private BBoardIOAuto boardIOAuto = new BBoardIOAuto();
 
@@ -173,6 +171,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void autonomousInit() {
+    auto = robotContainer.autos.autoChooser.get();
     robotContainer.buttonBoard.setAutoIO(boardIOAuto);
     AllianceUtil.setAlliance();
   }

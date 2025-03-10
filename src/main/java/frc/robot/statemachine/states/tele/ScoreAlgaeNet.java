@@ -4,7 +4,6 @@ import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.util.bboard.ButtonBoard;
 
@@ -13,9 +12,10 @@ public class ScoreAlgaeNet extends State {
             EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
 
-        // TODO: change to net
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getCoralReefTarget));
-        startWhenActive(endEffector.algaeOut());
-        startWhenActive(LEDs.intakingAndScoringAlgae());
+        // TODO: Net
+        // startWhenActive(DriveCommands.pointControl(drive,
+        // buttonBoard::getCoralReefTarget));
+        // startWhenActive(endEffector.algaeOut());
+        // startWhenActive(LEDs.intakingAndScoringAlgae());
     }
 }
