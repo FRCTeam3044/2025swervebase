@@ -65,6 +65,7 @@ public class EndEffectorIOSpark implements EndEffectorIO {
         return limitSwitchPressed();
     }
 
+    @SuppressWarnings("unused")
     private boolean hasAlgae(EndEffectorIOInputs inputs) {
         return algaeDebouncer.calculate(inputs.wheelsStuck && !limitSwitchPressed());
     }

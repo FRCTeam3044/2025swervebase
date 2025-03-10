@@ -55,7 +55,6 @@ import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOSpark;
 import frc.robot.subsystems.endEffector.EndEffector;
-import frc.robot.subsystems.endEffector.EndEffectorConstants;
 import frc.robot.subsystems.endEffector.EndEffectorIO;
 import frc.robot.subsystems.endEffector.EndEffectorIOSim;
 import frc.robot.subsystems.endEffector.EndEffectorIOSpark;
@@ -100,13 +99,14 @@ public class RobotContainer {
         private final LEDs LEDs;
         private final Climber climber;
         private SwerveDriveSimulation driveSimulation = null;
+        public Autos autos;
 
         // Controller
         private final CommandXboxController driverController = new CommandXboxController(0);
         private final CommandXboxController operatorController = new CommandXboxController(1);
 
         // Dashboard inputs
-        private final LoggedDashboardChooser<Command> autoChooser;
+        private final LoggedDashboardChooser<Command> sysidChooser;
 
         public final StateMachine stateMachine;
 
@@ -242,44 +242,44 @@ public class RobotContainer {
                 AllianceUtil.setRobot(drive::getPose);
 
                 // Set up auto routines
-                autoChooser = new LoggedDashboardChooser<>("Auto Choices");
+                sysidChooser = new LoggedDashboardChooser<>("SysID Routines");
 
                 // Set up SysId routines
-                autoChooser.addOption(
+                sysidChooser.addOption(
                                 "Drive Wheel Radius Characterization",
                                 DriveCommands.wheelRadiusCharacterization(drive));
-                autoChooser.addOption(
+                sysidChooser.addOption(
                                 "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-                autoChooser.addOption(
+                sysidChooser.addOption(
                                 "Drive SysId (Quasistatic Forward)",
                                 drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption(
+                sysidChooser.addOption(
                                 "Drive SysId (Quasistatic Reverse)",
                                 drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption(
+                sysidChooser.addOption(
                                 "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption(
+                sysidChooser.addOption(
                                 "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-                autoChooser.addOption("Elevator SysID (Quasistatic Forward)",
+                sysidChooser.addOption("Elevator SysID (Quasistatic Forward)",
                                 elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Elevator SysId (Quasistatic Reverse)",
+                sysidChooser.addOption("Elevator SysId (Quasistatic Reverse)",
                                 elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption("Elevator SysId (Dynamic Forward)",
+                sysidChooser.addOption("Elevator SysId (Dynamic Forward)",
                                 elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Elevator SysId (Dynamic Reverse)",
+                sysidChooser.addOption("Elevator SysId (Dynamic Reverse)",
                                 elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-                autoChooser.addOption("Shoulder SysID (Quasistatic Forward)",
+                sysidChooser.addOption("Shoulder SysID (Quasistatic Forward)",
                                 shoulder.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Shoulder SysId (Quasistatic Reverse)",
+                sysidChooser.addOption("Shoulder SysId (Quasistatic Reverse)",
                                 shoulder.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption("Shoulder SysId (Dynamic Forward)",
+                sysidChooser.addOption("Shoulder SysId (Dynamic Forward)",
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption("Shoulder SysId (Dynamic Reverse)",
+                sysidChooser.addOption("Shoulder SysId (Dynamic Reverse)",
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, autoChooser, drive,
+                stateMachine = new StateMachine(driverController, operatorController, buttonBoard, sysidChooser, drive,
                                 elevator, shoulder, endEffector, LEDs, climber);
 
                 // Configure the button bindings
@@ -302,6 +302,8 @@ public class RobotContainer {
                                                        * EndEffectorConstants.algaeInSpeed.get()
                                                        * :
                                                        */ idleIntakeSpeed.get()));
+
+                autos = new Autos(buttonBoard, endEffector);
         }
 
         /**

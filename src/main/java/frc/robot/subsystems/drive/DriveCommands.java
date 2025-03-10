@@ -14,8 +14,6 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
-import static frc.robot.subsystems.drive.DriveConstants.pointController;
-import static frc.robot.subsystems.drive.DriveConstants.pointControllerTolerance;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -297,8 +295,9 @@ public class DriveCommands {
     public static double maxVx = 0;
     public static double maxVy = 0;
 
-    private static ConfigurableParameter<Double> interpolateTime = new ConfigurableParameter<Double>(0.5,
-            "Slow Point Controller Interpolation Time");
+    // private static ConfigurableParameter<Double> interpolateTime = new
+    // ConfigurableParameter<Double>(0.5,
+    // "Slow Point Controller Interpolation Time");
 
     public static Command pointControlSlow(Drive drive, Supplier<Pose2d> pose, BooleanSupplier slowDrive,
             BooleanSupplier slowRot) {

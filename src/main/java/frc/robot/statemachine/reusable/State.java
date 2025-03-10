@@ -143,6 +143,26 @@ public abstract class State {
     }
 
     /**
+     * Configure mode transitions for this state, using tele as the auto state.
+     * 
+     * @param disabled The state to transition to when disabled
+     * @param teleop   The state to transition to when teleop is enabled
+     * @param auto     The state to transition to when auto is enabled
+     * @param test     The state to transition to when test is enabled
+     */
+    public State withModeTransitions(State disabled, State teleop, State test) {
+        if (disabled != this)
+            withTransition(disabled, DriverStation::isDisabled, "Robot Disabled");
+        if (teleop != this)
+            withTransition(teleop, DriverStation::isTeleopEnabled, "Teleop Enabled");
+        if (teleop != this)
+            withTransition(teleop, DriverStation::isAutonomousEnabled, "Auto Enabled");
+        if (test != this)
+            withTransition(test, DriverStation::isTestEnabled, "Test Enabled");
+        return this;
+    }
+
+    /**
      * Add a child state to this state.
      *
      * @param child     The child state

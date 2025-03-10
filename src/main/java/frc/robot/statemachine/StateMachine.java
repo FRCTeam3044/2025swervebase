@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
-import frc.robot.statemachine.states.AutoState;
 import frc.robot.statemachine.states.DisabledState;
 import frc.robot.statemachine.states.TeleState;
 import frc.robot.statemachine.states.TestState;
@@ -58,12 +57,11 @@ public class StateMachine extends StateMachineBase {
                 currentState = disabled;
 
                 State teleop = new TeleState(this, buttonBoard, endEffector);
-                State auto = new AutoState(this, chooser);
                 State test = new TestState(this, driverController, operatorController, elevator, shoulder, endEffector,
                                 climber, LEDs,
                                 drive);
 
-                this.registerToRootState(test, auto, teleop, disabled);
+                this.registerToRootState(test, teleop, disabled);
 
                 // Teleop
                 ManualState manual = new ManualState(this, driverController, operatorController, drive, elevator,
@@ -108,7 +106,7 @@ public class StateMachine extends StateMachineBase {
 
                 };
 
-                teleop.withModeTransitions(disabled, teleop, auto, test)
+                teleop.withModeTransitions(disabled, teleop, test)
                                 .withDefaultChild(manual)
                                 .withChild(goToScoringPosition)
                                 .withChild(scoreGamePiece)
@@ -231,13 +229,10 @@ public class StateMachine extends StateMachineBase {
                                 .withTransition(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3,
                                                 "L3 Selected");
 
-                // Auto
-                auto.withModeTransitions(disabled, teleop, auto, test);
-
                 // Test
-                test.withModeTransitions(disabled, teleop, auto, test);
+                test.withModeTransitions(disabled, teleop, test);
 
                 // Disabled
-                disabled.withModeTransitions(disabled, teleop, auto, test);
+                disabled.withModeTransitions(disabled, teleop, test);
         }
 }

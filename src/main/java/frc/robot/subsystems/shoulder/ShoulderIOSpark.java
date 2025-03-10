@@ -123,30 +123,30 @@ public class ShoulderIOSpark implements ShoulderIO {
                 // lastTime = Timer.getFPGATimestamp();
         }
 
-        // TODO: check if we can use trapezoid profile itself
-        public void setShoulderAngleSpark(double desiredAngle) {
-                double lastSpeed = 0;
-                double lastTime = Timer.getFPGATimestamp();
-                controller.calculate(encoder.getPosition() + kOffsetToHoriz, desiredAngle);
-                double acceleration = (controller.getSetpoint().velocity - lastSpeed)
-                                / (Timer.getFPGATimestamp() - lastTime);
-                leaderMotor.getClosedLoopController().setReference(controller.getSetpoint().position,
-                                ControlType.kPosition, ClosedLoopSlot.kSlot0,
-                                feedforward.calculate(controller.getSetpoint().velocity, acceleration));
-        }
+        // TOD: check if we can use trapezoid profile itself
+        // public void setShoulderAngleSpark(double desiredAngle) {
+        // double lastSpeed = 0;
+        // double lastTime = Timer.getFPGATimestamp();
+        // controller.calculate(encoder.getPosition() + kOffsetToHoriz, desiredAngle);
+        // double acceleration = (controller.getSetpoint().velocity - lastSpeed)
+        // / (Timer.getFPGATimestamp() - lastTime);
+        // leaderMotor.getClosedLoopController().setReference(controller.getSetpoint().position,
+        // ControlType.kPosition, ClosedLoopSlot.kSlot0,
+        // feedforward.calculate(controller.getSetpoint().velocity, acceleration));
+        // }
 
-        // TODO: test with and without FF
-        public void setShoulderAngleMaxMotion(double desiredAngle) {
-                double lastSpeed = 0;
-                double lastTime = Timer.getFPGATimestamp();
-                controller.calculate(encoder.getPosition() + kOffsetToHoriz, desiredAngle);
-                double acceleration = (controller.getSetpoint().velocity - lastSpeed)
-                                / (Timer.getFPGATimestamp() - lastTime);
-                leaderMotor.getClosedLoopController().setReference(desiredAngle,
-                                ControlType.kMAXMotionPositionControl,
-                                ClosedLoopSlot.kSlot0,
-                                feedforward.calculate(controller.getSetpoint().velocity, acceleration));
-        }
+        // TOD: test with and without FF
+        // public void setShoulderAngleMaxMotion(double desiredAngle) {
+        // double lastSpeed = 0;
+        // double lastTime = Timer.getFPGATimestamp();
+        // controller.calculate(encoder.getPosition() + kOffsetToHoriz, desiredAngle);
+        // double acceleration = (controller.getSetpoint().velocity - lastSpeed)
+        // / (Timer.getFPGATimestamp() - lastTime);
+        // leaderMotor.getClosedLoopController().setReference(desiredAngle,
+        // ControlType.kMAXMotionPositionControl,
+        // ClosedLoopSlot.kSlot0,
+        // feedforward.calculate(controller.getSetpoint().velocity, acceleration));
+        // }
 
         @Override
         public void setShoulderSpeed(double desiredSpeed) {

@@ -18,13 +18,16 @@ import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Autos.AutoStep;
 import frc.robot.util.AllianceUtil;
 import frc.robot.util.AutoTargetUtils.Reef;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
+import frc.robot.util.bboard.BBoardIOAuto;
 import me.nabdev.oxconfig.OxConfig;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -47,6 +50,8 @@ import org.littletonrobotics.urcl.URCL;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+
+  public List<AutoStep> currentAuto;
 
   public Robot() {
     // Record metadata
@@ -156,12 +161,18 @@ public class Robot extends LoggedRobot {
     AllianceUtil.setAlliance();
   }
 
+  private List<AutoStep> auto;
+  private int currentAutoStep = 0;
+  private BBoardIOAuto boardIOAuto = new BBoardIOAuto();
+
   /**
    * This autonomous runs the autonomous command selected by your
    * {@link RobotContainer} class.
    */
   @Override
   public void autonomousInit() {
+    auto = robotContainer.autos.autoChooser.get();
+    robotContainer.buttonBoard.setAutoIO(boardIOAuto);
     AllianceUtil.setAlliance();
   }
 
@@ -169,11 +180,20 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousPeriodic() {
     AllianceUtil.setIfUnknown();
+    if (currentAutoStep >= auto.size()) {
+      return;
+    }
+    AutoStep current = auto.get(currentAutoStep);
+    if (current.exit().getAsBoolean()) {
+      currentAutoStep++;
+    }
+    boardIOAuto.setSelectPressed(current.buttons());
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    robotContainer.buttonBoard.normalIO();
     AllianceUtil.setAlliance();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -193,6 +213,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
+    robotContainer.buttonBoard.normalIO();
   }
 
   /** This function is called periodically during test mode. */
