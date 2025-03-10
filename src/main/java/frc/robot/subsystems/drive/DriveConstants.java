@@ -134,8 +134,8 @@ public class DriveConstants {
         public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.REEFSCAPE_2025))
                         .setNormalizeCorners(false).setCornerDist(1)
                         .setCornerPointSpacing(0.06)
-                        .setRobotLength(mapleBumperSize.in(Meters) + 0.5)
-                        .setRobotWidth(mapleBumperSize.in(Meters) + 0.5).build();
+                        .setRobotLength(mapleBumperSize.in(Meters) + 0.35)
+                        .setRobotWidth(mapleBumperSize.in(Meters) + 0.35).build();
 
         public static final PIDController xController = new ConfigurablePIDController(1, 0, 0,
                         "Pathfinding X Controller");
@@ -167,7 +167,7 @@ public class DriveConstants {
                         "Point Theta Controller");
         public static final HolonomicDriveController pointController = new HolonomicDriveController(
                         xPointController, yPointController, anglePointController);
-        public static final Pose2d pointControllerTolerance = new Pose2d(0.02, 0.02, new Rotation2d(0.03));
+        public static final Pose2d pointControllerTolerance = new Pose2d(0.027, 0.027, new Rotation2d(0.05));
         static {
                 pointController.setTolerance(pointControllerTolerance);
         }

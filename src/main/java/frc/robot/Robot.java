@@ -146,6 +146,7 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putNumberArray("Coral Reef Locations", dist);
 
     robotContainer.updateMechanism();
+    robotContainer.displayRealFieldToSmartDashboard();
   }
 
   /** This function is called once when the robot is disabled. */
@@ -173,6 +174,7 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     auto = robotContainer.autos.autoChooser.get();
     robotContainer.buttonBoard.setAutoIO(boardIOAuto);
+    currentAutoStep = 0;
     AllianceUtil.setAlliance();
   }
 

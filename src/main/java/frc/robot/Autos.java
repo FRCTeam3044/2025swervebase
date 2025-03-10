@@ -6,6 +6,8 @@ import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
@@ -17,6 +19,8 @@ public class Autos {
     private final ButtonBoard board;
     private final EndEffector endEffector;
     public final LoggedDashboardChooser<List<AutoStep>> autoChooser;
+
+    private Debouncer hasCoralDebouncer = new Debouncer(0.2, DebounceType.kFalling);
 
     public Autos(ButtonBoard board, EndEffector endEffector) {
         this.board = board;
@@ -43,7 +47,7 @@ public class Autos {
         AtomicBoolean hadCoral = new AtomicBoolean(true);
 
         return new AutoStep(buttons, () -> {
-            boolean hasCoral = endEffector.hasCoral();
+            boolean hasCoral = hasCoralDebouncer.calculate(endEffector.hasCoral());
             if (hasCoral && !hadCoral.get()) {
                 return true;
             }

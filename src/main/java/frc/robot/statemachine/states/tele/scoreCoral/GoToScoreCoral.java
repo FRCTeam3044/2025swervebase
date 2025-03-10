@@ -25,7 +25,8 @@ public class GoToScoreCoral extends State {
 
                 Supplier<Rotation2d> angle = () -> {
                         Translation2d reef = buttonBoard.getCoralReefReference().getTranslation();
-                        Translation2d robot = drive.getPose().getTranslation();
+                        // Translation2d robot = drive.getPose().getTranslation();
+                        Translation2d robot = buttonBoard.getCoralReefTarget().getTranslation();
                         Translation2d diff = reef.minus(robot);
                         return Rotation2d.fromRadians(Math.atan2(diff.getY(), diff.getX()));
                         // + (buttonBoard.getCoralReefLevel() == CoralLevel.L2 ? Math.PI : 0));

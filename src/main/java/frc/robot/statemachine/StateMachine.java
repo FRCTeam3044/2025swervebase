@@ -2,6 +2,7 @@ package frc.robot.statemachine;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.statemachine.reusable.State;
@@ -150,13 +151,15 @@ public class StateMachine extends StateMachineBase {
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition,
                                 () -> buttonBoard.fullAuto() &&
-                                                driverController.rightTrigger().getAsBoolean()
+                                                (driverController.rightTrigger().getAsBoolean()
+                                                                || DriverStation.isAutonomousEnabled())
                                                 && (endEffector.hasCoral() || endEffector.hasAlgae())
                                                 && buttonBoard.scoringSelected(),
                                 "Driver presses score")
                                 .withTransition(goToIntake,
                                                 () -> buttonBoard.fullAuto() &&
-                                                                driverController.leftTrigger().getAsBoolean()
+                                                                (driverController.leftTrigger().getAsBoolean()
+                                                                                || DriverStation.isAutonomousEnabled())
                                                                 && (!endEffector.hasCoral() && !endEffector.hasAlgae())
                                                                 && buttonBoard.intakeSelected(),
                                                 "Driver presses intake");
@@ -164,13 +167,17 @@ public class StateMachine extends StateMachineBase {
                 goToScoringPosition
                                 .withTransition(scoreGamePiece, () -> buttonBoard.closeToScoringTarget(drive),
                                                 "Close to scoring location")
-                                .withTransition(manual, () -> !driverController.rightTrigger()
-                                                .getAsBoolean(), "Score button released");
+                                .withTransition(manual,
+                                                () -> !driverController.rightTrigger().getAsBoolean()
+                                                                && !DriverStation.isAutonomousEnabled(),
+                                                "Score button released");
 
                 scoreGamePiece.withTransition(goToScoringPosition, () -> !buttonBoard.closeToScoringTarget(drive),
                                 "Far from scoring location")
-                                .withTransition(manual, () -> !driverController.rightTrigger()
-                                                .getAsBoolean(), "Score button released")
+                                .withTransition(manual,
+                                                () -> !driverController.rightTrigger().getAsBoolean()
+                                                                && !DriverStation.isAutonomousEnabled(),
+                                                "Score button released")
                                 .withTransition(manual, () -> {
                                         if (buttonBoard.getCoralReefLevel() == CoralLevel.L4
                                                         && endEffector.hasCoral()) {
@@ -183,13 +190,17 @@ public class StateMachine extends StateMachineBase {
 
                 goToIntake.withTransition(intakeGamePiece, () -> buttonBoard.closeToIntakeTarget(drive),
                                 "Close to intake location")
-                                .withTransition(manual, () -> !driverController.leftTrigger()
-                                                .getAsBoolean(), "Intake button released");
+                                .withTransition(manual,
+                                                () -> !driverController.leftTrigger().getAsBoolean()
+                                                                && !DriverStation.isAutonomousEnabled(),
+                                                "Intake button released");
 
                 intakeGamePiece.withTransition(goToIntake, () -> !buttonBoard.closeToIntakeTarget(drive),
                                 "Intake location changed")
-                                .withTransition(manual, () -> !driverController.leftTrigger()
-                                                .getAsBoolean(), "Intake button released")
+                                .withTransition(manual,
+                                                () -> !driverController.leftTrigger().getAsBoolean()
+                                                                && !DriverStation.isAutonomousEnabled(),
+                                                "Intake button released")
                                 .withTransition(manual, () -> {
                                         if (buttonBoard.getAlgaeMode()) {
                                                 return shoulder.getShoulderAngle() < algaeLeaveThreshold.get()

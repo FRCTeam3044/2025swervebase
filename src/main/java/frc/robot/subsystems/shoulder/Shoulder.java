@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -251,9 +252,11 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
         return Math.abs(inputs.leaderShoulderAngleRad - getStagingAngle(level.get())) < threshold.get();
     }
 
+    private Debouncer atCoralDebouncer = new Debouncer(0.2);
+
     public boolean isAtCoralTarget(Supplier<CoralLevel> level, DoubleSupplier robotDist) {
-        return Math.abs(inputs.leaderShoulderAngleRad
-                - calculateAngleForCoral(level.get(), robotDist.getAsDouble(), false)) < threshold.get();
+        return atCoralDebouncer.calculate(Math.abs(inputs.leaderShoulderAngleRad
+                - calculateAngleForCoral(level.get(), robotDist.getAsDouble(), false)) < threshold.get());
     }
 
     public boolean isAtProcessorTarget() {

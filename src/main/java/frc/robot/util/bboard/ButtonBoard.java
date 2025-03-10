@@ -150,7 +150,8 @@ public class ButtonBoard {
         boardIO.periodic();
         for (SelectButtonInfo<CoralReefLocation> button : reefButtons) {
             if (boardIO.isPressed(button)) {
-                coralReefJustChanged = true;
+                if (button.value() != coralReefLocation)
+                    coralReefJustChanged = true;
                 coralReefLocation = button.value();
                 coralReefReferencePose = coralReefLocation.pose();
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
@@ -173,7 +174,8 @@ public class ButtonBoard {
 
         for (SelectButtonInfo<IntakeStation> button : intakeStationButtons) {
             if (boardIO.isPressed(button)) {
-                intakeJustChanged = true;
+                if (intakeStation != button.value())
+                    intakeJustChanged = true;
                 intakeStation = button.value();
                 intakeStationPose = IntakeStations.intakeStation(intakeStation);
                 intakeStationReferencePose = intakeStation.pose();

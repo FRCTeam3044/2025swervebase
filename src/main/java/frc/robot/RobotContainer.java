@@ -123,7 +123,7 @@ public class RobotContainer {
                 return instance;
         }
 
-        private ConfigurableParameter<Double> idleIntakeSpeed = new ConfigurableParameter<Double>(-0.05,
+        public ConfigurableParameter<Double> idleIntakeSpeed = new ConfigurableParameter<Double>(-0.05,
                         "Idle Intake Speed");
 
         /**
@@ -357,6 +357,15 @@ public class RobotContainer {
                                                                         p.getTranslation().getY(),
                                                                         new Rotation2d(p.getRotation().getZ()));
                                                 }).toArray(Pose2d[]::new));
+
+                SmartDashboard.putData("Field", fieldSim);
+        }
+
+        public void displayRealFieldToSmartDashboard() {
+                if (Constants.currentMode == Constants.Mode.SIM)
+                        return;
+
+                fieldSim.setRobotPose(drive.getPose());
 
                 SmartDashboard.putData("Field", fieldSim);
         }

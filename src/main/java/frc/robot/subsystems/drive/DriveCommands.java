@@ -14,6 +14,7 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
+import static frc.robot.subsystems.drive.DriveConstants.pointController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -204,7 +205,8 @@ public class DriveCommands {
             double curTime = timer.get();
             State desiredState = traj.sample(curTime);
             Logger.recordOutput("Trajectory Desired Velocity", desiredState.velocityMetersPerSecond);
-            Logger.recordOutput("Trajectory Desired Pose", desiredState.poseMeters);
+            Logger.recordOutput("Trajectory Desired Pose", new Pose2d(desiredState.poseMeters.getX(),
+                    desiredState.poseMeters.getY(), desiredRotationSupplier.get()));
             ChassisSpeeds targetChassisSpeeds = m_controller.calculate(drive.getPose(), desiredState,
                     desiredRotationSupplier.get());
             if (!RobotContainer.getInstance().shoulder.inSafeZone())
@@ -519,6 +521,10 @@ public class DriveCommands {
         double speed = velocity.dotProduct(pathDir);
 
         config.setStartVelocity(speed);
+        // config.setEndVelocity(Math.min(Math.abs(pointController.getXController().getP()
+        // * RobotContainer.getInstance().buttonBoard.coralReefDistThreshold.get()),
+        // slowMaxSpeed.get()));
+        config.setEndVelocity(0);
 
         config.setKinematics(drive.getKinematics());
         // config.setStartVelocity(10);
