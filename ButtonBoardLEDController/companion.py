@@ -42,7 +42,7 @@ def write(arduino, message):
 def connect_network_tables():
     inst = ntcore.NetworkTableInstance.getDefault()
     inst.startClient4("Button Board LED Controller Companion")
-    inst.setServer("localhost")
+    inst.setServer("10.30.44.2")
     table = inst.getTable("SmartDashboard/ButtonBoard")
     print("Connected to Network Tables")
     return table
@@ -60,13 +60,6 @@ def callback(key, value, isNew):
 data_to_send = []
 
 while True:
-    # if arduino1 is None or not arduino1.is_open:
-    #     arduino1 = connect_arduino()
-    # if arduino2 is None or not arduino1.is_open:
-    #     arduino2 = connect_arduino()
-    # if arduino3 is None or not arduino1.is_open:
-    #     arduino3 = connect_arduino()
-
 # Board A
     def check_location():
         location = table.getString("CoralReefLocation", "A")
@@ -75,15 +68,15 @@ while True:
         return data_to_send
     data_to_send = check_location()
 # Board B
-    data_to_send.append((table.getString("IntakeStation", "L1") == "L1"))
-    data_to_send.append((table.getString("IntakeStation", "L1") == "L2"))
-    data_to_send.append((table.getString("IntakeStation", "L1") == "L3"))
+    data_to_send.append((table.getString("IntakeStation", "null") == "LeftOne"))
+    data_to_send.append((table.getString("IntakeStation", "null") == "LeftTwo"))
+    data_to_send.append((table.getString("IntakeStation", "null") == "LeftThree"))
 
     data_to_send.append(table.getBoolean("AlgaeMode", False))
 
-    data_to_send.append((table.getString("IntakeStation", "L1") == "R1"))
-    data_to_send.append((table.getString("IntakeStation", "L1") == "R2"))
-    data_to_send.append((table.getString("IntakeStation", "L1") == "R3"))
+    data_to_send.append((table.getString("IntakeStation", "null") == "RightOne"))
+    data_to_send.append((table.getString("IntakeStation", "null") == "RightTwo"))
+    data_to_send.append((table.getString("IntakeStation", "null") == "RightThree"))
     data_to_send.append(False)
     data_to_send.append(False)
     data_to_send.append(False)
@@ -100,10 +93,10 @@ while True:
     data_to_send.append(False)
 
     # ReefLevel
-    data_to_send.append(table.getString("CoralReefLevel", "4") == "4")
-    data_to_send.append(table.getString("CoralReefLevel", "4") == "3")
-    data_to_send.append(table.getString("CoralReefLevel", "4") == "2")
-    data_to_send.append(table.getString("CoralReefLevel", "4") == "1")
+    data_to_send.append(table.getString("CoralReefLevel", "null") == "4")
+    data_to_send.append(table.getString("CoralReefLevel", "null") == "3")
+    data_to_send.append(table.getString("CoralReefLevel", "null") == "2")
+    data_to_send.append(table.getString("CoralReefLevel", "null") == "1")
 
     # Net/Processor
     data_to_send.append(False)

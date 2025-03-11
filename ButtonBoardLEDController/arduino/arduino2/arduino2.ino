@@ -2,9 +2,9 @@
 #include <Base64.h>
 #include <ArduinoJson.h>
 
-int startingIndex = 0; // 0 For arduino 1
-                       // 13 for arduino 2
-                       // 26 for arduino 3
+int startingIndex = 12; // 0 For arduino 1
+                       // 12 for arduino 2
+                       // 25 for arduino 3
 
 void setup() {
   pinMode(2, OUTPUT);
@@ -46,8 +46,8 @@ void loop() {
       // Serial.println(error.f_str());
       return;
     } 
-    for (int i = 0 + startingIndex; i < 13 + startingIndex; i++) {
-      if(doc[i]) {
+    for (int i = 0; i < 13; i++) {
+      if(doc[i + startingIndex]) {
         digitalWrite(i+2, HIGH);
       } else {
         digitalWrite(i+2, LOW);
