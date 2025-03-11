@@ -181,9 +181,10 @@ public class ButtonBoard {
                 intakeStationReferencePose = intakeStation.pose();
             }
         }
-        if (boardIO.isPressed(algaeModeToggle)) {
-            algaeMode = !algaeMode;
-        }
+        // if (boardIO.isPressed(algaeModeToggle)) {
+        // algaeMode = !algaeMode;
+        // }
+        algaeMode = boardIO.isBeingPressed(algaeModeToggle);
         if (boardIO.isPressed(processor)) {
             isProcessor = true;
         }

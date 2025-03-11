@@ -952,7 +952,7 @@
         "Pathfinding Y Controller/I": "0.0",
         "Shoulder/Staging Intake Angle": "0.0",
         "Pathfinding Theta Controller/I": "0.0",
-        "Pathfinding Theta Controller/P": "4.0",
+        "Pathfinding Theta Controller/P": "6.0",
         "Intake speed": {
             "comment": "Used for both forward & reverse",
             "value": "0.5"
@@ -1318,7 +1318,7 @@
         "Shoulder High Algae/x1": "0.0",
         "Pathfinding Max Rotation Speed": {
             "comment": "Auto-Generated",
-            "value": "2.2"
+            "value": "1.5707963267948966"
         },
         "Shoulder L4 Angles/x2": "0.64",
         "Shoulder L4 Angles/x1": "0.57",
