@@ -92,6 +92,7 @@ public class ButtonBoard {
     private Pose2d coralReefTargetPose = null;
     private Pose2d coralReefReferencePose = null;
     private Pose2d algaeReefTargetPose = null;
+    private Pose2d algaeReefRemovalTargetPose = null;
     private Pose2d algaeReefReferencePose = null;
 
     private CoralReefLocation coralReefLocation;
@@ -140,6 +141,7 @@ public class ButtonBoard {
             }
             if (coralReefLocation != null) {
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
+                algaeReefRemovalTargetPose = Reef.algaeRemoval(coralReefLocation.algae());
                 algaeReefReferencePose = coralReefLocation.algae().pose();
             }
             if (intakeStation != null) {
@@ -155,6 +157,7 @@ public class ButtonBoard {
                 coralReefLocation = button.value();
                 coralReefReferencePose = coralReefLocation.pose();
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
+                algaeReefRemovalTargetPose = Reef.algaeRemoval(coralReefLocation.algae());
                 algaeReefReferencePose = coralReefLocation.algae().pose();
 
                 if (coralReefLevel != null)
@@ -329,6 +332,10 @@ public class ButtonBoard {
 
     public Pose2d getAlgaeReefTarget() {
         return algaeReefTargetPose;
+    }
+
+    public Pose2d getAlgaeReefRemovalTarget() {
+        return algaeReefRemovalTargetPose;
     }
 
     public AlgaeReefLocation getAlgaeReefLocation() {

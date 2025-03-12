@@ -20,6 +20,7 @@ import frc.robot.statemachine.states.tele.GoToStationIntake;
 import frc.robot.statemachine.states.tele.IntakeAlgae;
 import frc.robot.statemachine.states.tele.IntakeGamePiece;
 import frc.robot.statemachine.states.tele.ManualState;
+import frc.robot.statemachine.states.tele.RemoveAlgae;
 import frc.robot.statemachine.states.tele.ScoreAlgae;
 import frc.robot.statemachine.states.tele.ScoreAlgaeNet;
 import frc.robot.statemachine.states.tele.ScoreAlgaeProcessor;
@@ -84,6 +85,8 @@ public class StateMachine extends StateMachineBase {
                                 LEDs);
                 IntakeAlgae intakeAlgae = new IntakeAlgae(this, buttonBoard, drive, elevator, shoulder, endEffector,
                                 LEDs);
+                RemoveAlgae removeAlgae = new RemoveAlgae(this, drive, buttonBoard, endEffector, shoulder, elevator,
+                                LEDs);
                 GoToIntake goToIntake = new GoToIntake(this);
                 GoToReefIntake goToReefIntake = new GoToReefIntake(this, buttonBoard, drive, LEDs);
                 GoToStationIntake goToStationIntake = new GoToStationIntake(this, buttonBoard, drive, elevator,
@@ -125,7 +128,14 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(goToReefIntake, buttonBoard::getAlgaeMode, 1, "Algae Mode");
 
                 intakeGamePiece.withChild(intakeCoral, () -> !buttonBoard.getAlgaeMode(), 0, "Coral Mode")
-                                .withChild(intakeAlgae, buttonBoard::getAlgaeMode, 1, "Algae Mode");
+                                .withChild(intakeAlgae,
+                                                () -> buttonBoard.getAlgaeMode()
+                                                                && driverController.getHID().getLeftBumperButton(),
+                                                1, "Algae Mode")
+                                .withChild(removeAlgae,
+                                                () -> buttonBoard.getAlgaeMode()
+                                                                && !driverController.getHID().getLeftBumperButton(),
+                                                1, "Algae Removal Mode");
 
                 // Specific Algae intake and score
                 goToScoreAlgae.withChild(goToScoreNet, () -> !buttonBoard
@@ -214,6 +224,10 @@ public class StateMachine extends StateMachineBase {
                 intakeCoral.withTransition(manual, () -> endEffector.hasCoral(), "Has coral");
 
                 intakeAlgae.withTransition(manual, () -> endEffector.hasAlgae(), "Has algae");
+                intakeAlgae.withTransition(removeAlgae, () -> !driverController.getHID().getLeftBumperButton(),
+                                "Switch to removal mode");
+                removeAlgae.withTransition(intakeAlgae, () -> driverController.getHID().getLeftBumperButton(),
+                                "Switch to intake mode");
 
                 dummyScoring.withTransition(manual, () -> true, "Go back to manual");
                 dummyCoralScoring.withTransition(manual, () -> true, "Go back to manual");

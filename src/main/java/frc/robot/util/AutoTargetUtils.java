@@ -162,11 +162,22 @@ public class AutoTargetUtils {
                 "Algae High Offset");
         public static ConfigurableParameter<Double> algaeLowOffset = new ConfigurableParameter<Double>(0.15,
                 "Algae Low Offset");
+        public static ConfigurableParameter<Double> algaeHighRemovalOffset = new ConfigurableParameter<Double>(0.2,
+                "Algae High Removal Offset");
+        public static ConfigurableParameter<Double> algaeLowRemovalOffset = new ConfigurableParameter<Double>(0.2,
+                "Algae Low Removal Offset");
 
         public static Pose2d algae(AlgaeReefLocation location) {
             return location.data().offsetPoseFacing(
                     location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
                     algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get());
+        }
+
+        public static Pose2d algaeRemoval(AlgaeReefLocation location) {
+            return location.data().offsetPoseFacing(
+                    location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
+                    algaeFlipped.get(),
+                    location.upperBranch() ? algaeHighRemovalOffset.get() : algaeLowRemovalOffset.get());
         }
     }
 
