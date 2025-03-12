@@ -71,6 +71,17 @@ public class Vision extends SubsystemBase {
         return inputs[cameraIndex].latestTargetObservation.tx();
     }
 
+    public boolean hasTarget() {
+        boolean hasTarget = false;
+        for (int i = 0; i < io.length; i++) {
+            if (inputs[i].tagIds.length > 0) {
+                hasTarget = true;
+                break;
+            }
+        }
+        return hasTarget;
+    }
+
     @Override
     public void periodic() {
         if (Constants.currentMode == Mode.SIM && !Constants.visionSim) {

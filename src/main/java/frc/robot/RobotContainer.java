@@ -280,7 +280,7 @@ public class RobotContainer {
                                 shoulder.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
                 stateMachine = new StateMachine(driverController, operatorController, buttonBoard, sysidChooser, drive,
-                                elevator, shoulder, endEffector, LEDs, climber);
+                                elevator, shoulder, endEffector, LEDs, climber, vision);
 
                 // Configure the button bindings
                 configureButtonBindings();
