@@ -17,6 +17,8 @@ import static frc.robot.subsystems.vision.VisionConstants.*;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -71,6 +73,19 @@ public class Vision extends SubsystemBase {
         return inputs[cameraIndex].latestTargetObservation.tx();
     }
 
+    private Debouncer hasTargetDebouncer = new Debouncer(0.25, DebounceType.kFalling);
+
+    public boolean hasTarget() {
+        boolean hasTarget = false;
+        for (int i = 0; i < io.length; i++) {
+            if (inputs[i].tagIds.length > 0) {
+                hasTarget = true;
+                break;
+            }
+        }
+        return hasTargetDebouncer.calculate(hasTarget);
+    }
+
     @Override
     public void periodic() {
         if (Constants.currentMode == Mode.SIM && !Constants.visionSim) {
@@ -78,6 +93,7 @@ public class Vision extends SubsystemBase {
                     VecBuilder.fill(0.1, 0.1, 0.1));
             return;
         }
+        Logger.recordOutput("VisionHasTarget", hasTarget());
         for (int i = 0; i < io.length; i++) {
             io[i].updateInputs(inputs[i]);
             Logger.processInputs("Vision/Camera" + i, inputs[i]);

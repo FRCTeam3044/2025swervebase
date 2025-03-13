@@ -980,7 +980,7 @@
         },
         "Coral L2 scoring dist": {
             "comment": "Target distance to score coral on L2",
-            "value": "0.805"
+            "value": "0.795"
         },
         "Turn Module 0/Min": "-1.0",
         "L4 Shoot Out distance": {
@@ -1080,10 +1080,10 @@
         "Elevator L2 Heights/y2": "0.0",
         "Shoulder/Shoulder Target Threshold": "0.07",
         "Elevator L2 Heights/y1": "0.0",
-        "Shoulder L2 Angles/y2": "4.3",
+        "Shoulder L2 Angles/y2": "4.33",
         "Elevator L4 Heights/x1": "0.0",
         "Elevator L4 Heights/x2": "1.0",
-        "Shoulder L2 Angles/y1": "4.3",
+        "Shoulder L2 Angles/y1": "4.33",
         "Intake algae out speed": {
             "comment": "Auto-Generated",
             "value": "0.9"

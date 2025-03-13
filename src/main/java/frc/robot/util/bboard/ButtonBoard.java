@@ -253,6 +253,7 @@ public class ButtonBoard {
         SmartDashboard.putBoolean("ButtonBoard/isProcessor", isProcessor);
         SmartDashboard.putBoolean("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
         SmartDashboard.putBoolean("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
+        SmartDashboard.putString("ButtonBoard/ManualMode", manualMode.toString());
         if (coralReefLocation != null) {
             SmartDashboard.putString("ButtonBoard/CoralReefLocation", coralReefLocation.toString());
         } else {

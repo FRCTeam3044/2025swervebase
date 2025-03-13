@@ -186,12 +186,21 @@ public class AutoTargetUtils {
             LeftOne, LeftTwo, LeftThree, RightOne, RightTwo, RightThree;
 
             private static POIData[] stations = {
-                    POIData.create(1.17152, 7.64678, 1.35439, 7.39497), // LeftOne
+                    // POIData.create(1.17152, 7.64678, 1.35439, 7.39497), // LeftOne (closer to
+                    // center)
+
+                    POIData.create(1.33603549, 7.7662567, 1.49377786, 7.54905214), // LeftOne (further from center)
                     POIData.create(0.84268, 7.40797, 1.00537, 7.18395), // LeftTwo
-                    POIData.create(0.51385, 7.16916, 0.68402, 6.93484), // LeftThree
-                    POIData.create(1.17152, 0.40502, 1.35439, 0.65683), // RightOne
+                    POIData.create(0.34953951, 7.04982505, 0.51385274, 6.82357269), // LeftThree (further from center)
+                    // POIData.create(0.51385, 7.16916, 0.68402, 6.93484), // LeftThree (closer to
+                    // center)
+                    // POIData.create(1.17152, 0.40502, 1.35439, 0.65683), // RightOne (closer to
+                    // center)
+                    POIData.create(1.33593273, 0.28561793, 1.57230098, 0.61108698), // RightOne (further from center)
                     POIData.create(0.84268, 0.64383, 1.00537, 0.86785), // RightTwo
-                    POIData.create(0.51385, 0.88264, 0.68402, 1.11696), // RightThree
+                    POIData.create(0.34943675, 1.00204958, 0.51385274, 1.22844344) // RightThree (further from center)
+                    // POIData.create(0.51385, 0.88264, 0.68402, 1.11696), // RightThree (closer to
+                    // center)
             };
 
             public POIData data() {

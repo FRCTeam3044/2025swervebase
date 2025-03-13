@@ -105,6 +105,7 @@ public class Robot extends LoggedRobot {
     robotContainer = new RobotContainer();
 
     OxConfig.initialize();
+    robotContainer.stateMachine.onStartup();
   }
 
   /** This function is called periodically during all modes. */

@@ -38,6 +38,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.subsystems.shoulder.Shoulder;
+import frc.robot.subsystems.vision.Vision;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.bboard.ButtonBoard;
 import me.nabdev.oxconfig.ConfigurableParameter;
@@ -53,9 +54,9 @@ public class StateMachine extends StateMachineBase {
         public StateMachine(CommandXboxController driverController, CommandXboxController operatorController,
                         ButtonBoard buttonBoard, LoggedDashboardChooser<Command> chooser,
                         Drive drive, Elevator elevator, Shoulder shoulder, EndEffector endEffector, LEDs LEDs,
-                        Climber climber) {
+                        Climber climber, Vision vision) {
                 super();
-                State disabled = new DisabledState(this);
+                State disabled = new DisabledState(this, LEDs, vision);
                 currentState = disabled;
 
                 State teleop = new TeleState(this, buttonBoard, endEffector);
@@ -260,6 +261,7 @@ public class StateMachine extends StateMachineBase {
                 disabled.withModeTransitions(disabled, teleop, test);
 
                 // For SYSID (comment out for normal autos)
+                // MAKE SURE YOU ADD AUTO TO THE REGISTER TO ROOT STATE
                 /*
                  * AutoState auto = new AutoState(this, chooser);
                  * teleop.withModeTransitions(disabled, teleop, auto, test);

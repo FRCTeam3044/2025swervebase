@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.subsystems.LEDs.LEDs;
@@ -43,7 +42,7 @@ public class ScoreL4 extends State {
                 Command far = DriveCommands.pointControlSlow(drive, farTarget, () -> true, () -> true)
                                 .until(() -> DriveCommands.pointControllerConverged);
                 Command close = Commands
-                                .waitUntil(() -> shoulder.isAtCoralTarget(() -> CoralLevel.L4, distToRef)
+                                .waitUntil(() -> shoulder.isAtCoralTargetFast(() -> CoralLevel.L4, distToRef)
                                                 && elevator.isAtTarget())
                                 .andThen(DriveCommands
                                                 .pointControlSlow(drive, buttonBoard::getCoralReefTarget, () -> true,

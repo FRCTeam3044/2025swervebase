@@ -253,10 +253,16 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     }
 
     private Debouncer atCoralDebouncer = new Debouncer(0.2);
+    // private Debouncer atCoralFastDebouncer = new Debouncer(0.07);
 
     public boolean isAtCoralTarget(Supplier<CoralLevel> level, DoubleSupplier robotDist) {
         return atCoralDebouncer.calculate(Math.abs(inputs.leaderShoulderAngleRad
                 - calculateAngleForCoral(level.get(), robotDist.getAsDouble(), false)) < threshold.get());
+    }
+
+    public boolean isAtCoralTargetFast(Supplier<CoralLevel> level, DoubleSupplier robotDist) {
+        return Math.abs(inputs.leaderShoulderAngleRad
+                - calculateAngleForCoral(level.get(), robotDist.getAsDouble(), false)) < threshold.get();
     }
 
     public boolean isAtProcessorTarget() {
