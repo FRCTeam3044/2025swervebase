@@ -14,7 +14,6 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
-import static frc.robot.subsystems.drive.DriveConstants.pointController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -63,6 +62,7 @@ public class DriveCommands {
             "Pathfinding Max Rotation Speed");
 
     public static boolean pointControllerConverged = false;
+    public static boolean pointControllerLooseConverged = false;
     public static boolean pointControllerRotConverged = false;
 
     private DriveCommands() {
@@ -262,6 +262,7 @@ public class DriveCommands {
             Pose2d targetPose = pose.get();
             ChassisSpeeds speeds = DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
                     targetPose.getRotation());
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerTolerance);
             if (DriveConstants.pointController.atReference()) {
                 speeds = new ChassisSpeeds(0, 0, 0);
                 pointControllerConverged = true;
@@ -275,6 +276,13 @@ public class DriveCommands {
                 pointControllerRotConverged = true;
             } else {
                 pointControllerRotConverged = false;
+            }
+
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerLooseTolerance);
+            if (DriveConstants.pointController.atReference()) {
+                pointControllerLooseConverged = true;
+            } else {
+                pointControllerLooseConverged = false;
             }
 
             drive.runVelocity(speeds);
@@ -316,23 +324,27 @@ public class DriveCommands {
             Pose2d targetPose = pose.get();
             ChassisSpeeds speeds = DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
                     targetPose.getRotation());
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerTolerance);
             if (DriveConstants.pointController.atReference()) {
                 speeds = new ChassisSpeeds(0, 0, 0);
                 pointControllerConverged = true;
-                pointControllerRotConverged = true;
+                pointControllerRotConverged = false;
             } else {
                 pointControllerConverged = false;
             }
-            // double time = Math.min(timeSincePointControl.get() / interpolateTime.get(),
-            // 1);
-            // maxVx = MathUtil.interpolate(initialVx, slowMaxSpeed.get(), time);
-            // maxVy = MathUtil.interpolate(initialVy, slowMaxSpeed.get(), time);
 
             if (Math.abs(targetPose.getRotation().minus(drive.getPose().getRotation())
                     .getRadians()) < 1) {
                 pointControllerRotConverged = true;
             } else {
                 pointControllerRotConverged = false;
+            }
+
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerLooseTolerance);
+            if (DriveConstants.pointController.atReference()) {
+                pointControllerLooseConverged = true;
+            } else {
+                pointControllerLooseConverged = false;
             }
 
             if (slowDrive.getAsBoolean()) {
