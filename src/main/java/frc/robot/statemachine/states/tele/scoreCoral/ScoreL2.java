@@ -33,6 +33,6 @@ public class ScoreL2 extends State {
                     && shoulder.isAtCoralTarget(buttonBoard::getCoralReefLevel, distanceToRef)
                     && DriveCommands.pointControllerConverged;
         };
-        t(readyToScore).onTrue(endEffector.coralOut());
+        t(readyToScore).onTrue(endEffector.coralOutSlow());
     }
 }

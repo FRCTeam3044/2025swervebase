@@ -70,6 +70,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Algae Low Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Processor Flipped": {
             "comment": "Face backwards when scoring algae in processor",
             "value": "false"
@@ -262,6 +266,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Intake l2 coral out speed": {
+            "comment": "Auto-Generated",
+            "value": "0.8"
+        },
         "Turn Module 3/D": "0.0",
         "Elevator kG Variable": {
             "comment": "Auto-Generated",
@@ -381,6 +389,10 @@
         },
         "Elevator L1 Heights/x1": "0.0",
         "Drive Module 2/IZone": "0.0",
+        "Algae High Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Servo Tolerance": {
             "comment": "Auto-Generated",
             "value": "5.0"
@@ -517,6 +529,10 @@
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "0.7"
+        },
+        "Algae Low Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
         },
         "Processor Flipped": {
             "comment": "Face backwards when scoring algae in processor",
@@ -710,6 +726,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Intake l2 coral out speed": {
+            "comment": "Auto-Generated",
+            "value": "0.8"
+        },
         "Turn Module 3/D": "0.0",
         "Elevator kG Variable": {
             "comment": "Auto-Generated",
@@ -829,6 +849,10 @@
         },
         "Elevator L1 Heights/x1": "1.0",
         "Drive Module 2/IZone": "0.0",
+        "Algae High Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Servo Tolerance": {
             "comment": "Auto-Generated",
             "value": "5.0"
@@ -965,6 +989,10 @@
             "comment": "Auto-Generated",
             "value": "0.46"
         },
+        "Algae Low Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Processor Flipped": {
             "comment": "Face backwards when scoring algae in processor",
             "value": "true"
@@ -1080,10 +1108,10 @@
         "Elevator L2 Heights/y2": "0.0",
         "Shoulder/Shoulder Target Threshold": "0.07",
         "Elevator L2 Heights/y1": "0.0",
-        "Shoulder L2 Angles/y2": "4.33",
+        "Shoulder L2 Angles/y2": "4.305",
         "Elevator L4 Heights/x1": "0.0",
         "Elevator L4 Heights/x2": "1.0",
-        "Shoulder L2 Angles/y1": "4.33",
+        "Shoulder L2 Angles/y1": "4.305",
         "Intake algae out speed": {
             "comment": "Auto-Generated",
             "value": "0.9"
@@ -1156,6 +1184,10 @@
         "Intake algae in speed": {
             "comment": "Auto-Generated",
             "value": "0.6"
+        },
+        "Intake l2 coral out speed": {
+            "comment": "Auto-Generated",
+            "value": "0.8"
         },
         "Turn Module 3/D": "0.0",
         "Elevator kG Variable": {
@@ -1276,6 +1308,10 @@
         },
         "Elevator L1 Heights/x1": "0.0",
         "Drive Module 2/IZone": "0.0",
+        "Algae High Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Servo Tolerance": {
             "comment": "Auto-Generated",
             "value": "5.0"
