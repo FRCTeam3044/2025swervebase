@@ -17,7 +17,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command setColor(LEDPattern color) {
-        return Commands.run(() -> io.setSolidColor(color), this).withName("Set LEDs");
+        return Commands.run(() -> io.setSolidColorWithAuto(color), this).withName("Set LEDs");
     }
 
     public Command hasCoral() {
@@ -42,7 +42,7 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command setBlinkingColor(Color color) {
-        return Commands.run(() -> io.setBlinkingColor(color)).withName("Blinking LEDs");
+        return Commands.run(() -> io.setBlinkingColorWithAuto(color)).withName("Blinking LEDs (w/ auto )");
     }
 
     public Command intakingAndScoringCoral() {
@@ -54,9 +54,11 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command Default() {
-        // return Commands.run(() -> io.setSpinningColor(Color.kPurple,
-        // Color.kYellow)).withName("Spinning LEDs");
-        return Commands.run(() -> io.setSolidColorWithAuto(LEDPattern.solid(Color.kPurple))).withName("Test LEDs");
+        return Commands.run(() -> io.setSpinningColor(Color.kPurple,
+                Color.kYellow)).withName("Spinning LEDs");
+        // return Commands.run(() ->
+        // io.setSolidColorWithAuto(LEDPattern.solid(Color.kGreen))).withName("Test
+        // LEDs");
     }
 
     public Command simMorseCode() {
