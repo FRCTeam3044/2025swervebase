@@ -19,6 +19,9 @@ public class LEDsIORio implements LEDsIO {
     private final AddressableLED LEDStrip = new AddressableLED(PWM);
     private final AddressableLEDBuffer buffer = new AddressableLEDBuffer(length);
 
+    private final double blinkSpeed = 0.25;
+    private final double spinSpeed = 30;
+
     public LEDsIORio() {
         LEDStrip.setLength(buffer.getLength());
         LEDStrip.setColorOrder(ColorOrder.kRGB);
@@ -31,10 +34,68 @@ public class LEDsIORio implements LEDsIO {
         LEDStrip.setData(buffer);
     }
 
+    private int leftPatternPosition = 0;
+    private int rightPatternPosition = 0;
+    private int updateCounter = 0;
+    private final int UPDATE_FREQUENCY = 15; // Only update position every 3 calls (60ms)
+    private final Color blueColor = new Color(0, 0, 255); // Blue for the converging pattern
+
+    @Override
+    public void setSolidColorWithAuto(LEDPattern color) {
+        // First apply the base pattern
+        color.applyTo(buffer);
+
+        // Then overlay the converging pattern
+        overlayConvergingPattern();
+
+        LEDStrip.setData(buffer);
+    }
+
+    @Override
+    public void setBlinkingColorWithAuto(Color color) {
+        // Create and apply the base blinking pattern
+        LEDPattern base = LEDPattern.solid(color);
+        LEDPattern pattern = base.blink(Seconds.of(blinkSpeed));
+        pattern.applyTo(buffer);
+
+        // Then overlay the converging pattern
+        overlayConvergingPattern();
+
+        LEDStrip.setData(buffer);
+    }
+
+    // Helper method to overlay the converging pattern
+    private void overlayConvergingPattern() {
+        // Slow down the animation by only updating every few calls
+        updateCounter++;
+        if (updateCounter >= UPDATE_FREQUENCY) {
+            updateCounter = 0;
+
+            // Update positions for next frame - move just one position at a time
+            leftPatternPosition = (leftPatternPosition + 1) % 5; // Keep within pattern length
+            rightPatternPosition = (rightPatternPosition - 1 + 5) % 5; // Keep within pattern length
+        }
+
+        // Draw the complete repeating pattern
+        for (int i = 0; i < buffer.getLength(); i++) {
+            // For left side pattern (moving right)
+            if (i <= buffer.getLength() / 2 && i % 5 == leftPatternPosition) {
+                buffer.setLED(i, blueColor);
+            }
+
+            // For right side pattern (moving left)
+            // This creates a separate pattern from the right side
+            // that moves in the opposite direction
+            if (i >= buffer.getLength() / 2 && i % 5 == rightPatternPosition) {
+                buffer.setLED(i, blueColor);
+            }
+        }
+    }
+
     @Override
     public void setBlinkingColor(Color color) {
         LEDPattern base = LEDPattern.solid(color);
-        LEDPattern pattern = base.blink(Seconds.of(0.25));
+        LEDPattern pattern = base.blink(Seconds.of(blinkSpeed));
         pattern.applyTo(buffer);
         LEDStrip.setData(buffer);
     }
@@ -42,7 +103,7 @@ public class LEDsIORio implements LEDsIO {
     @Override
     public void setSpinningColor(Color color1, Color color2) {
         LEDPattern step = LEDPattern.steps(Map.of(0, color1, 0.46, color2, 0.5, color1, 0.96, color2));
-        LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(20));
+        LEDPattern pattern = step.scrollAtRelativeSpeed(Percent.per(Seconds).of(spinSpeed));
         pattern.applyTo(buffer);
         LEDStrip.setData(buffer);
     }

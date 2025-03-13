@@ -20,7 +20,13 @@ public interface LEDsIO {
     public default void setSolidColor(LEDPattern color) {
     };
 
+    public default void setSolidColorWithAuto(LEDPattern color) {
+    };
+
     public default void setBlinkingColor(Color color) {
+    };
+
+    public default void setBlinkingColorWithAuto(Color color) {
     };
 
     public default void setSpinningColor(Color color1, Color color2) {

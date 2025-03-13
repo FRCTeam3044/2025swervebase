@@ -247,6 +247,7 @@ public class StateMachine extends StateMachineBase {
                 disabled.withModeTransitions(disabled, teleop, test);
 
                 // For SYSID (comment out for normal autos)
+                // MAKE SURE YOU ADD AUTO TO THE REGISTER TO ROOT STATE
                 /*
                  * AutoState auto = new AutoState(this, chooser);
                  * teleop.withModeTransitions(disabled, teleop, auto, test);

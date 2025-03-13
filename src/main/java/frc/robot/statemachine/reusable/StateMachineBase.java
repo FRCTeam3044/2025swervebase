@@ -149,4 +149,8 @@ public abstract class StateMachineBase {
         return obj;
 
     }
+
+    public void onStartup() {
+        currentState.onEnter();
+    }
 }

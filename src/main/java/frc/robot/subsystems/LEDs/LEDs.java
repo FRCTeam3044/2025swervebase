@@ -54,7 +54,9 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command Default() {
-        return Commands.run(() -> io.setSpinningColor(Color.kPurple, Color.kYellow)).withName("Spinning LEDs");
+        // return Commands.run(() -> io.setSpinningColor(Color.kPurple,
+        // Color.kYellow)).withName("Spinning LEDs");
+        return Commands.run(() -> io.setSolidColorWithAuto(LEDPattern.solid(Color.kPurple))).withName("Test LEDs");
     }
 
     public Command simMorseCode() {
