@@ -9,7 +9,7 @@ public class DisabledState extends State {
     public DisabledState(StateMachineBase stateMachine, LEDs LEDs, Vision vision) {
         super(stateMachine);
         startWhenActive(LEDs.Default().ignoringDisable(true));
-        t(vision::hasTarget).runWhileTrue(LEDs.aprilTagDetected().ignoringDisable(true))
-                .runWhileFalse(LEDs.Default().ignoringDisable(true));
+        t(vision::hasTarget).whileTrue(LEDs.aprilTagDetected().ignoringDisable(true))
+                .whileFalse(LEDs.Default().ignoringDisable(true));
     }
 }

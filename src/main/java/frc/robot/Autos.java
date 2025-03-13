@@ -33,9 +33,9 @@ public class Autos {
                 scoreCoral(CoralReefLocation.D, CoralLevel.L4, IntakeStation.RightTwo),
                 scoreCoral(CoralReefLocation.C, CoralLevel.L4, IntakeStation.RightTwo)));
         autoChooser.addOption("Left L4", List.of(
-                scoreCoral(CoralReefLocation.H, CoralLevel.L4, IntakeStation.LeftTwo),
-                scoreCoral(CoralReefLocation.I, CoralLevel.L4, IntakeStation.LeftTwo),
-                scoreCoral(CoralReefLocation.J, CoralLevel.L4, IntakeStation.LeftTwo)));
+                scoreCoral(CoralReefLocation.J, CoralLevel.L4, IntakeStation.LeftTwo),
+                scoreCoral(CoralReefLocation.K, CoralLevel.L4, IntakeStation.LeftTwo),
+                scoreCoral(CoralReefLocation.L, CoralLevel.L4, IntakeStation.LeftTwo)));
     }
 
     public record AutoStep(List<SelectButtonInfo<?>> buttons, BooleanSupplier exit) {
