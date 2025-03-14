@@ -21,7 +21,10 @@ public class AutoTargetUtils {
             return create(new Vertex(pos1x, pos1y), new Vertex(pos2x, pos2y));
         }
 
-        public Vector perpindicular() {
+        public Vector perpindicular(boolean flipped) {
+            if (flipped) {
+                return new Vector(normal().y, -normal().x).normalize();
+            }
             return new Vector(-normal().y, normal().x).normalize();
         }
 
@@ -37,8 +40,9 @@ public class AutoTargetUtils {
             return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
         }
 
-        public Pose2d offsetPoseFacing(double distance, boolean flipped, double offset) {
-            Vertex robotPos = pos().moveByVector(normal().scale(distance)).moveByVector(perpindicular().scale(offset));
+        public Pose2d offsetPoseFacing(double distance, boolean flipped, double offset, boolean perpFlipped) {
+            Vertex robotPos = pos().moveByVector(normal().scale(distance))
+                    .moveByVector(perpindicular(perpFlipped).scale(offset));
             double sign = flipped ? 1 : -1;
             Rotation2d rotation = Rotation2d.fromRadians(Math.atan2(sign * normal().y, sign * normal().x));
             return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
@@ -120,14 +124,17 @@ public class AutoTargetUtils {
         }
 
         public static enum AlgaeReefLocation {
-            AB(true), CD(false), EF(true), GH(false), IJ(true), KL(false);
+            AB(true, false), CD(false, true), EF(true, true), GH(false, false), IJ(true, false), KL(false, false);
 
             // False: Between L2-L3
             // True: Between L3-L4
             private final boolean upperBranch;
+            private final boolean flipNormal;
 
-            AlgaeReefLocation(boolean upperBranch) {
+            AlgaeReefLocation(boolean upperBranch, boolean flipNormal) {
                 this.upperBranch = upperBranch;
+                this.flipNormal = flipNormal;
+
             }
 
             public static POIData[] algaes = {
@@ -170,14 +177,16 @@ public class AutoTargetUtils {
         public static Pose2d algae(AlgaeReefLocation location) {
             return location.data().offsetPoseFacing(
                     location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
-                    algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get());
+                    algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get(),
+                    location.flipNormal);
         }
 
         public static Pose2d algaeRemoval(AlgaeReefLocation location) {
             return location.data().offsetPoseFacing(
                     location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
                     algaeFlipped.get(),
-                    location.upperBranch() ? algaeHighRemovalOffset.get() : algaeLowRemovalOffset.get());
+                    location.upperBranch() ? algaeHighRemovalOffset.get() : algaeLowRemovalOffset.get(),
+                    location.flipNormal);
         }
     }
 

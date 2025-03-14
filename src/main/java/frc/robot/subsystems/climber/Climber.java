@@ -30,11 +30,11 @@ public class Climber extends SubsystemBase {
     }
 
     public Command up() {
-        return servoOpen().alongWith(move(() -> speed.get())).finallyDo(() -> io.setServoClosed(true));
+        return servoOpen().alongWith(move(() -> -speed.get())).finallyDo(() -> io.setServoClosed(true));
     }
 
     public Command down() {
-        return Commands.parallel(servoClose(), move(() -> -speed.get()));
+        return move(() -> speed.get());
     }
 
     public Command servoOpen() {

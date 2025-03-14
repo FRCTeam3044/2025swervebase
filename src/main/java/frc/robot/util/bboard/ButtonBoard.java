@@ -80,8 +80,8 @@ public class ButtonBoard {
             new SelectButtonInfo<CoralLevel>(2, 7, CoralLevel.L4));
     public ButtonInfo algaeModeToggle = new ButtonInfo(1, 4);
     private ButtonInfo net = new ButtonInfo(2, 11);
-    private ButtonInfo climbUp = new ButtonInfo(3, 5);
-    private ButtonInfo climbDown = new ButtonInfo(3, 6);
+    private ButtonInfo climbUp = new ButtonInfo(2, 5);
+    private ButtonInfo climbDown = new ButtonInfo(2, 6);
 
     private ButtonInfo extraOne = new ButtonInfo(2, 1);
     private ButtonInfo extraTwo = new ButtonInfo(2, 2);
@@ -243,8 +243,8 @@ public class ButtonBoard {
         Logger.recordOutput("ButtonBoard/IntakeStation", intakeStation);
         Logger.recordOutput("ButtonBoard/IntakeStationPose", intakeStationPose);
         Logger.recordOutput("ButtonBoard/IntakeStationRefPose", intakeStationReferencePose);
-        Logger.recordOutput("ButtonBoard/ClimbUp", boardIO.isPressed(climbUp));
-        Logger.recordOutput("ButtonBoard/ClimbDown", boardIO.isPressed(climbDown));
+        Logger.recordOutput("ButtonBoard/ClimbUp", climbUp());
+        Logger.recordOutput("ButtonBoard/ClimbDown", climbDown());
         Logger.recordOutput("ButtonBoard/ManualMode", manualMode);
         Logger.recordOutput("ButtonBoard/SemiAutoState", semiAutoState);
 

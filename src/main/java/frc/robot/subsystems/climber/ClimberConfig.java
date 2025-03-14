@@ -18,8 +18,8 @@ public class ClimberConfig {
         followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId, true);
         followerConfig.signals.primaryEncoderPositionPeriodMs(500).primaryEncoderVelocityPeriodMs(500);
         leaderConfig.signals.primaryEncoderPositionPeriodMs(500).primaryEncoderVelocityPeriodMs(500);
-        softLimitConfig.forwardSoftLimit(forwardSoftLimit).forwardSoftLimitEnabled(false)
-                .reverseSoftLimit(reverseSoftLimit).reverseSoftLimitEnabled(false);
+        softLimitConfig.forwardSoftLimit(forwardSoftLimit).forwardSoftLimitEnabled(true)
+                .reverseSoftLimit(reverseSoftLimit).reverseSoftLimitEnabled(true);
 
         leaderConfig.apply(softLimitConfig);
     }

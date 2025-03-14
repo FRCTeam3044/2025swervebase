@@ -6,8 +6,8 @@ public class ClimberConstants {
     public static final double motorReduction = 1.0;
     public static final int currentLimit = 40;
 
-    public static final double forwardSoftLimit = 0.0;
-    public static final double reverseSoftLimit = 0.0;
+    public static final double forwardSoftLimit = -35;
+    public static final double reverseSoftLimit = -95.0;
 
     public static final int servoPwmPort = 0;
 }

@@ -1,5 +1,6 @@
 package frc.robot.statemachine.states.tele;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -57,10 +58,13 @@ public class ManualState extends State {
                 driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive).withName("X mode"));
                 driverController.x().onFalse(joystickDrive);
 
+                AtomicBoolean idleShoulder = new AtomicBoolean(true);
                 driverController.b().whileTrue(shoulder.intakeCoral());
-                driverController.y().whileTrue(shoulder.intakeCoral().alongWith(elevator.idle())
-                                .until(() -> elevator.isAtTarget() && !shoulder.inDangerZone())
-                                .andThen(shoulder.climb()));
+                driverController.y().onTrue(Commands.runOnce(() -> idleShoulder.set(!idleShoulder.get())));
+                driverController.y()
+                                .whileTrue(shoulder.intakeCoral().alongWith(elevator.idle())
+                                                .until(() -> elevator.isAtTarget() && !shoulder.inDangerZone())
+                                                .andThen(shoulder.climb()));
 
                 operatorController.leftTrigger().whileTrue(endEffector.algaeIn());
                 operatorController.rightTrigger().whileTrue(endEffector.algaeOut());
@@ -84,9 +88,11 @@ public class ManualState extends State {
 
                 manualElevator.whileTrue(elevator.move(rightY));
                 manualShoulder.whileTrue(shoulder.manualPivot(leftY));
-                manualElevator.or(semiAuto).runWhileFalse(elevator.idle());
+                manualElevator.or(semiAuto).or(driverController.y()).runWhileFalse(elevator.idle());
 
-                manualShoulder.or(semiAuto).or(driverController.b()).runWhileFalse(shoulder.idle());
+                manualShoulder.or(semiAuto).or(driverController.b()).or(driverController.y())
+                                .or(() -> !idleShoulder.get())
+                                .runWhileFalse(shoulder.idle());
 
                 SmartTrigger idle = t(bboard::idleInManual);
                 SmartTrigger intake = t(bboard::intakeInManual);

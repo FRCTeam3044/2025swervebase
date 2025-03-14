@@ -1027,7 +1027,7 @@
         "Turn Module 0/Min": "-1.0",
         "L4 Shoot Out distance": {
             "comment": "Auto-Generated",
-            "value": "0.7"
+            "value": "0.702"
         },
         "Turn Module 2/Max": "1.0",
         "Turn Module 1/FF": "0.0",
@@ -1086,7 +1086,7 @@
         "Drive Module 3/FF": "0.0",
         "Climber Speed": {
             "comment": "Auto-Generated",
-            "value": "0.07"
+            "value": "0.4"
         },
         "Elevator Profiled PID/I": "0.0",
         "Full Alignment Distance Threshold": {

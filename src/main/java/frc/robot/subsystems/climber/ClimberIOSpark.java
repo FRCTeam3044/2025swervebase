@@ -46,11 +46,7 @@ public class ClimberIOSpark implements ClimberIO {
         (values) -> inputs.appliedVolts = values[0] * values[1]);
     ifOk(leaderMotor, leaderMotor::getOutputCurrent, (value) -> inputs.currentAmps = value);
 
-    inputs.servoPosition = servo.getAngle();
-
-    if (leaderMotor.getReverseLimitSwitch().isPressed()) {
-      leaderMotor.getEncoder().setPosition(0);
-    }
+    inputs.servoSpeed = servo.getSpeed();
 
     servo.setSpeed(servoClosed ? -servoOpenSpeed.get() : servoOpenSpeed.get());
   }
