@@ -14,7 +14,6 @@
 package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
-import static frc.robot.subsystems.drive.DriveConstants.pointController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.HolonomicDriveController;

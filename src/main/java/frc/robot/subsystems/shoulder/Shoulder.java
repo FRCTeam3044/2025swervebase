@@ -34,6 +34,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
             "Shoulder Manual L2 Angle");
     private final ConfigurableClassParam<Double> processor = new ConfigurableClassParam<Double>(this, 0.5,
             "Shoulder Processor Angle");
+    private final ConfigurableClassParam<Double> climber = new ConfigurableClassParam<Double>(this, 4.5,
+            "Shoulder Climber Angle");
 
     private final ConfigurableClassParam<Double> stagingL2 = new ConfigurableClassParam<>(this, 0.0,
             "Staging L2 Angle");
@@ -74,7 +76,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
-            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor);
+            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor, climber);
 
     private BooleanSupplier elevatorNotAtTarget;
 
@@ -195,6 +197,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     public Command processor() {
         return toPosition(processor::get).withName("Shoulder Processor");
+    }
+
+    public Command climb() {
+        return toPosition(climber::get).withName("Shoulder Climb");
     }
 
     private double calculateAngleForCoral(CoralLevel level, double robotDist, boolean staging) {

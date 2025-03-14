@@ -19,6 +19,6 @@ public interface ClimberIO {
     public default void setSpeed(double speed) {
     }
 
-    public default void setServoAngle(double angle) {
+    public default void setServoClosed(boolean closed) {
     }
 }

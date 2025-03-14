@@ -58,6 +58,9 @@ public class ManualState extends State {
                 driverController.x().onFalse(joystickDrive);
 
                 driverController.b().whileTrue(shoulder.intakeCoral());
+                driverController.y().whileTrue(shoulder.intakeCoral().alongWith(elevator.idle())
+                                .until(() -> elevator.isAtTarget() && !shoulder.inDangerZone())
+                                .andThen(shoulder.climb()));
 
                 operatorController.leftTrigger().whileTrue(endEffector.algaeIn());
                 operatorController.rightTrigger().whileTrue(endEffector.algaeOut());

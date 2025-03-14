@@ -15,6 +15,10 @@
         "Turn Module 0/FF": "0.0",
         "Elevator Intake Heights/y1": "0.0",
         "Elevator Intake Heights/y2": "0.0",
+        "Servo Open Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Shoulder/Shoulder Processor Angle": "0.5",
         "Staging Distance Threshold": {
             "comment": "Distance to start staging elevator/coral",
@@ -124,6 +128,7 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
+        "Shoulder/Shoulder Climber Angle": "4.5",
         "Drive Module 3/Min": "-1.0",
         "Elevator Target Threshold": {
             "comment": "Auto-Generated",
@@ -475,6 +480,10 @@
         "Turn Module 0/FF": "0.0",
         "Elevator Intake Heights/y1": "1",
         "Elevator Intake Heights/y2": "1",
+        "Servo Open Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Shoulder/Shoulder Processor Angle": "0.5",
         "Staging Distance Threshold": {
             "comment": "Distance to start staging elevator/coral",
@@ -584,6 +593,7 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
+        "Shoulder/Shoulder Climber Angle": "4.5",
         "Drive Module 3/Min": "-1.0",
         "Elevator Target Threshold": {
             "comment": "Auto-Generated",
@@ -934,6 +944,10 @@
         "Turn Module 0/FF": "0.0",
         "Elevator Intake Heights/y1": "0.02",
         "Elevator Intake Heights/y2": "0.0",
+        "Servo Open Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Shoulder/Shoulder Processor Angle": "0.16",
         "Staging Distance Threshold": {
             "comment": "Distance to start staging elevator/coral",
@@ -1043,6 +1057,7 @@
             "comment": "Auto-Generated",
             "value": "3.5"
         },
+        "Shoulder/Shoulder Climber Angle": "4.5",
         "Drive Module 3/Min": "-1.0",
         "Elevator Target Threshold": {
             "comment": "Auto-Generated",
