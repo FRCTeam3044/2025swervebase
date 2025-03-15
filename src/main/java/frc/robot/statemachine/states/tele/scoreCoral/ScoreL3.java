@@ -33,6 +33,6 @@ public class ScoreL3 extends State {
                     && shoulder.isAtCoralTarget(() -> CoralLevel.L3, distanceToRef)
                     && DriveCommands.pointControllerConverged;
         };
-        t(readyToScore).onTrue(endEffector.coralOut());
+        t(readyToScore).onTrue(endEffector.coralOutSlow());
     }
 }

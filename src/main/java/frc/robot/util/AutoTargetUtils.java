@@ -21,6 +21,10 @@ public class AutoTargetUtils {
             return create(new Vertex(pos1x, pos1y), new Vertex(pos2x, pos2y));
         }
 
+        public static POIData createFromRed(double pos1x, double pos1y, double pos2x, double pos2y) {
+            return create(new Vertex(pos1x, pos1y), new Vertex(pos2x, pos2y));
+        }
+
         public Vector perpindicular(boolean flipped) {
             if (flipped) {
                 return new Vector(normal().y, -normal().x).normalize();
@@ -234,13 +238,22 @@ public class AutoTargetUtils {
     }
 
     private static POIData processor = POIData.create(5.965735966001007, 0, 5.965735966001007, 1);
+    private static POIData net = POIData.create(8.79952467, 6.251, 6, 6.251);
+    private static ConfigurableParameter<Double> netDistance = new ConfigurableParameter<Double>(1.0,
+            "Net dist");
     private static ConfigurableParameter<Double> processorDistance = new ConfigurableParameter<Double>(1.0,
             "Processor dist");
     private static ConfigurableParameter<Boolean> processorFlipped = new ConfigurableParameter<Boolean>(false,
             "Processor Flipped");
+    private static ConfigurableParameter<Boolean> netFlipped = new ConfigurableParameter<Boolean>(false,
+            "Net Flipped");
 
     public static Pose2d processor() {
         return processor.poseFacing(processorDistance.get(), processorFlipped.get());
+    }
+
+    public static Pose2d net() {
+        return net.poseFacing(netDistance.get(), netFlipped.get());
     }
 
     public static DoubleSupplier robotDistToPose(Drive drive, Supplier<Pose2d> pose) {

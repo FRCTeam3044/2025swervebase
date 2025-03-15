@@ -398,8 +398,8 @@ public class ButtonBoard {
                 return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.processor()) < processorDistThreshold
                         .get();
             } else {
-                // TODO: Net
-                return false;
+                return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.net()) < processorDistThreshold
+                        .get();
             }
         } else {
             if (coralReefTargetPose == null) {

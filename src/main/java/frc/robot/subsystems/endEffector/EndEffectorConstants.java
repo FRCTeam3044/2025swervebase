@@ -12,6 +12,8 @@ public class EndEffectorConstants {
                         "Intake algae in speed");
         public static final ConfigurableParameter<Double> algaeOutSpeed = new ConfigurableParameter<>(1.0,
                         "Intake algae out speed");
+        public static final ConfigurableParameter<Double> algaeOutSpeedNet = new ConfigurableParameter<>(1.0,
+                        "Intake algae out speed net");
         public static final ConfigurableParameter<Double> coralInSpeed = new ConfigurableParameter<>(1.0,
                         "Intake coral in speed");
         public static final ConfigurableParameter<Double> coralOutSpeed = new ConfigurableParameter<>(1.0,

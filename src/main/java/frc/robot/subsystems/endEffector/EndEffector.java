@@ -42,6 +42,10 @@ public class EndEffector extends SubsystemBase {
         return runIntakeSpeed(() -> -algaeOutSpeed.get()).withName("Run End Effector Algae Out");
     }
 
+    public Command algaeOutNet() {
+        return runIntakeSpeed(() -> -algaeOutSpeedNet.get()).withName("Run End Effector Algae Out (Net)");
+    }
+
     public Command coralIn() {
         return runIntakeSpeed(coralInSpeed::get).withName("Run End Effector Coral In");
     }
