@@ -60,6 +60,9 @@ public class DriveCommands {
             "Pathfinding Max Accel");
     private static ConfigurableParameter<Double> pathfindingRotationMaxSpeed = new ConfigurableParameter<>(Math.PI / 2,
             "Pathfinding Max Rotation Speed");
+    private static ConfigurableParameter<Double> pathfindingRotationMaxSlowSpeed = new ConfigurableParameter<>(
+            Math.PI / 8,
+            "Pathfinding Max Rotation Slow Speed");
 
     public static boolean pointControllerConverged = false;
     public static boolean pointControllerRotConverged = false;
@@ -208,10 +211,14 @@ public class DriveCommands {
                     desiredState.poseMeters.getY(), desiredRotationSupplier.get()));
             ChassisSpeeds targetChassisSpeeds = m_controller.calculate(drive.getPose(), desiredState,
                     desiredRotationSupplier.get());
-            if (!RobotContainer.getInstance().shoulder.inSafeZone())
-                targetChassisSpeeds.omegaRadiansPerSecond = 0;
-            targetChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(targetChassisSpeeds.omegaRadiansPerSecond,
-                    -pathfindingRotationMaxSpeed.get(), pathfindingRotationMaxSpeed.get());
+            if (RobotContainer.getInstance().shoulder.canSpinFast()) {
+                targetChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(targetChassisSpeeds.omegaRadiansPerSecond,
+                        -pathfindingRotationMaxSpeed.get(), pathfindingRotationMaxSpeed.get());
+            } else {
+                targetChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(targetChassisSpeeds.omegaRadiansPerSecond,
+                        -pathfindingRotationMaxSlowSpeed.get(), pathfindingRotationMaxSlowSpeed.get());
+            }
+
             if (useJoystick) {
                 double omega = MathUtil.applyDeadband(joystickRot.getAsDouble(), DEADBAND);
 

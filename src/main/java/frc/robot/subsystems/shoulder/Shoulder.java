@@ -74,6 +74,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ConfigurableClassParam<Double> dangerZoneTwoMax = new ConfigurableClassParam<>(this, 0.0,
             "Danger Zone Two Max Angle (rad)");
 
+    private final ConfigurableClassParam<Double> slowSpinThreshold = new ConfigurableClassParam<>(this, 0.9,
+            "Slow Spin Threshold (rad)");
+
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
             stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor, climber);
@@ -299,5 +302,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     public boolean inSafeZone() {
         return inputs.inSafeZone;
+    }
+
+    public boolean canSpinFast() {
+        return inputs.leaderShoulderAngleRad < slowSpinThreshold.get();
     }
 }
