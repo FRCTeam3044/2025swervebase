@@ -15,6 +15,10 @@
         "Turn Module 0/FF": "0.0",
         "Elevator Intake Heights/y1": "0.0",
         "Elevator Intake Heights/y2": "0.0",
+        "Servo Open Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Shoulder/Shoulder Processor Angle": "0.5",
         "Staging Distance Threshold": {
             "comment": "Distance to start staging elevator/coral",
@@ -70,6 +74,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Algae Low Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Processor Flipped": {
             "comment": "Face backwards when scoring algae in processor",
             "value": "false"
@@ -120,6 +128,7 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
+        "Shoulder/Shoulder Climber Angle": "4.5",
         "Drive Module 3/Min": "-1.0",
         "Elevator Target Threshold": {
             "comment": "Auto-Generated",
@@ -144,6 +153,10 @@
         "Post L4 Scoring Distances": {
             "comment": "Auto-Generated",
             "value": "0.7"
+        },
+        "Net Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
         },
         "Drive Module 3/FF": "0.0",
         "Climber Speed": {
@@ -173,6 +186,10 @@
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Drive Module 2/FF": "0.0",
+        "Net Launch Angle": {
+            "comment": "Auto-Generated",
+            "value": "2.2"
+        },
         "Processor dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -209,6 +226,7 @@
             "comment": "Auto-Generated",
             "value": "0.2"
         },
+        "Elevator/Net Height": "0.668",
         "Pathfinding X Controller/P": "1.0",
         "Point Theta Controller/I": "0.0",
         "Shoulder/Danger Zone One Min Angle (rad)": "0.0",
@@ -249,9 +267,17 @@
             "value": "0.07"
         },
         "Turn Module 0/IZone": "0.0",
+        "Intake algae out speed net": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Intake station dist threshold": {
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
+        },
+        "Net dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
         },
         "Shoulder Low Algae/x2": "0.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -262,6 +288,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Intake l2 coral out speed": {
+            "comment": "Auto-Generated",
+            "value": "0.8"
+        },
         "Turn Module 3/D": "0.0",
         "Elevator kG Variable": {
             "comment": "Auto-Generated",
@@ -269,6 +299,10 @@
         },
         "Shoulder/Staging High Algae Angle": "0.0",
         "Drive Module 3/IZone": "0.0",
+        "Net Stop Angle": {
+            "comment": "Auto-Generated",
+            "value": "2.6"
+        },
         "Test Climber Speed": {
             "comment": "Auto-Generated",
             "value": "0.2"
@@ -381,6 +415,10 @@
         },
         "Elevator L1 Heights/x1": "0.0",
         "Drive Module 2/IZone": "0.0",
+        "Algae High Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Servo Tolerance": {
             "comment": "Auto-Generated",
             "value": "5.0"
@@ -463,6 +501,10 @@
         "Turn Module 0/FF": "0.0",
         "Elevator Intake Heights/y1": "1",
         "Elevator Intake Heights/y2": "1",
+        "Servo Open Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Shoulder/Shoulder Processor Angle": "0.5",
         "Staging Distance Threshold": {
             "comment": "Distance to start staging elevator/coral",
@@ -518,6 +560,10 @@
             "comment": "Auto-Generated",
             "value": "0.7"
         },
+        "Algae Low Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Processor Flipped": {
             "comment": "Face backwards when scoring algae in processor",
             "value": "false"
@@ -568,6 +614,7 @@
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
         },
+        "Shoulder/Shoulder Climber Angle": "4.5",
         "Drive Module 3/Min": "-1.0",
         "Elevator Target Threshold": {
             "comment": "Auto-Generated",
@@ -592,6 +639,10 @@
         "Post L4 Scoring Distances": {
             "comment": "Auto-Generated",
             "value": "0.7"
+        },
+        "Net Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
         },
         "Drive Module 3/FF": "0.0",
         "Climber Speed": {
@@ -621,6 +672,10 @@
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Drive Module 2/FF": "0.0",
+        "Net Launch Angle": {
+            "comment": "Auto-Generated",
+            "value": "2.2"
+        },
         "Processor dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -657,6 +712,7 @@
             "comment": "Auto-Generated",
             "value": "0.2"
         },
+        "Elevator/Net Height": "0.668",
         "Pathfinding X Controller/P": "3.0",
         "Point Theta Controller/I": "0.0",
         "Shoulder/Danger Zone One Min Angle (rad)": "0.0",
@@ -697,9 +753,17 @@
             "value": "0.02"
         },
         "Turn Module 0/IZone": "0.0",
+        "Intake algae out speed net": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Intake station dist threshold": {
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.5"
+        },
+        "Net dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
         },
         "Shoulder Low Algae/x2": "0.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -710,6 +774,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Intake l2 coral out speed": {
+            "comment": "Auto-Generated",
+            "value": "0.8"
+        },
         "Turn Module 3/D": "0.0",
         "Elevator kG Variable": {
             "comment": "Auto-Generated",
@@ -717,6 +785,10 @@
         },
         "Shoulder/Staging High Algae Angle": "0.0",
         "Drive Module 3/IZone": "0.0",
+        "Net Stop Angle": {
+            "comment": "Auto-Generated",
+            "value": "2.6"
+        },
         "Test Climber Speed": {
             "comment": "Auto-Generated",
             "value": "0.2"
@@ -829,6 +901,10 @@
         },
         "Elevator L1 Heights/x1": "1.0",
         "Drive Module 2/IZone": "0.0",
+        "Algae High Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Servo Tolerance": {
             "comment": "Auto-Generated",
             "value": "5.0"
@@ -910,6 +986,10 @@
         "Turn Module 0/FF": "0.0",
         "Elevator Intake Heights/y1": "0.02",
         "Elevator Intake Heights/y2": "0.0",
+        "Servo Open Speed": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Shoulder/Shoulder Processor Angle": "0.16",
         "Staging Distance Threshold": {
             "comment": "Distance to start staging elevator/coral",
@@ -965,6 +1045,10 @@
             "comment": "Auto-Generated",
             "value": "0.46"
         },
+        "Algae Low Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.18"
+        },
         "Processor Flipped": {
             "comment": "Face backwards when scoring algae in processor",
             "value": "true"
@@ -980,12 +1064,12 @@
         },
         "Coral L2 scoring dist": {
             "comment": "Target distance to score coral on L2",
-            "value": "0.805"
+            "value": "0.75"
         },
         "Turn Module 0/Min": "-1.0",
         "L4 Shoot Out distance": {
             "comment": "Auto-Generated",
-            "value": "0.7"
+            "value": "0.702"
         },
         "Turn Module 2/Max": "1.0",
         "Turn Module 1/FF": "0.0",
@@ -1015,6 +1099,7 @@
             "comment": "Auto-Generated",
             "value": "3.5"
         },
+        "Shoulder/Shoulder Climber Angle": "4.5",
         "Drive Module 3/Min": "-1.0",
         "Elevator Target Threshold": {
             "comment": "Auto-Generated",
@@ -1040,10 +1125,14 @@
             "comment": "Auto-Generated",
             "value": "0.75"
         },
+        "Net Flipped": {
+            "comment": "Auto-Generated",
+            "value": "false"
+        },
         "Drive Module 3/FF": "0.0",
         "Climber Speed": {
             "comment": "Auto-Generated",
-            "value": "0.07"
+            "value": "0.4"
         },
         "Elevator Profiled PID/I": "0.0",
         "Full Alignment Distance Threshold": {
@@ -1068,6 +1157,10 @@
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Drive Module 2/FF": "0.0",
+        "Net Launch Angle": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
         "Processor dist": {
             "comment": "Auto-Generated",
             "value": "0.7"
@@ -1080,10 +1173,10 @@
         "Elevator L2 Heights/y2": "0.0",
         "Shoulder/Shoulder Target Threshold": "0.07",
         "Elevator L2 Heights/y1": "0.0",
-        "Shoulder L2 Angles/y2": "4.3",
+        "Shoulder L2 Angles/y2": "4.315",
         "Elevator L4 Heights/x1": "0.0",
         "Elevator L4 Heights/x2": "1.0",
-        "Shoulder L2 Angles/y1": "4.3",
+        "Shoulder L2 Angles/y1": "4.315",
         "Intake algae out speed": {
             "comment": "Auto-Generated",
             "value": "0.9"
@@ -1097,13 +1190,14 @@
             "value": "1.0"
         },
         "Turn Module 1/Min": "-1.0",
-        "Shoulder/Danger Zone Two Min Angle (rad)": "6.27",
+        "Shoulder/Danger Zone Two Min Angle (rad)": "4.78",
         "Point Theta Controller/D": "0.0",
         "Point Theta Controller/P": "4.0",
         "Test Elevator Speed": {
             "comment": "Auto-Generated",
             "value": "0.2"
         },
+        "Elevator/Net Height": "0.668",
         "Pathfinding X Controller/P": "1.5",
         "Point Theta Controller/I": "0.0",
         "Shoulder/Danger Zone One Min Angle (rad)": "0.0",
@@ -1144,9 +1238,17 @@
             "value": "0.07"
         },
         "Turn Module 0/IZone": "0.0",
+        "Intake algae out speed net": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Intake station dist threshold": {
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
             "value": "0.6"
+        },
+        "Net dist": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
         },
         "Shoulder Low Algae/x2": "1.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -1157,6 +1259,10 @@
             "comment": "Auto-Generated",
             "value": "0.6"
         },
+        "Intake l2 coral out speed": {
+            "comment": "Auto-Generated",
+            "value": "0.6"
+        },
         "Turn Module 3/D": "0.0",
         "Elevator kG Variable": {
             "comment": "Auto-Generated",
@@ -1164,6 +1270,10 @@
         },
         "Shoulder/Staging High Algae Angle": "0.0",
         "Drive Module 3/IZone": "0.0",
+        "Net Stop Angle": {
+            "comment": "Auto-Generated",
+            "value": "3"
+        },
         "Test Climber Speed": {
             "comment": "Auto-Generated",
             "value": "0.2"
@@ -1276,6 +1386,10 @@
         },
         "Elevator L1 Heights/x1": "0.0",
         "Drive Module 2/IZone": "0.0",
+        "Algae High Removal Offset": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Servo Tolerance": {
             "comment": "Auto-Generated",
             "value": "5.0"

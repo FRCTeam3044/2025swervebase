@@ -21,7 +21,14 @@ public class AutoTargetUtils {
             return create(new Vertex(pos1x, pos1y), new Vertex(pos2x, pos2y));
         }
 
-        public Vector perpindicular() {
+        public static POIData createFromRed(double pos1x, double pos1y, double pos2x, double pos2y) {
+            return create(new Vertex(pos1x, pos1y), new Vertex(pos2x, pos2y));
+        }
+
+        public Vector perpindicular(boolean flipped) {
+            if (flipped) {
+                return new Vector(normal().y, -normal().x).normalize();
+            }
             return new Vector(-normal().y, normal().x).normalize();
         }
 
@@ -37,8 +44,9 @@ public class AutoTargetUtils {
             return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
         }
 
-        public Pose2d offsetPoseFacing(double distance, boolean flipped, double offset) {
-            Vertex robotPos = pos().moveByVector(normal().scale(distance)).moveByVector(perpindicular().scale(offset));
+        public Pose2d offsetPoseFacing(double distance, boolean flipped, double offset, boolean perpFlipped) {
+            Vertex robotPos = pos().moveByVector(normal().scale(distance))
+                    .moveByVector(perpindicular(perpFlipped).scale(offset));
             double sign = flipped ? 1 : -1;
             Rotation2d rotation = Rotation2d.fromRadians(Math.atan2(sign * normal().y, sign * normal().x));
             return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
@@ -120,14 +128,17 @@ public class AutoTargetUtils {
         }
 
         public static enum AlgaeReefLocation {
-            AB(true), CD(false), EF(true), GH(false), IJ(true), KL(false);
+            AB(true, false), CD(false, true), EF(true, true), GH(false, false), IJ(true, false), KL(false, false);
 
             // False: Between L2-L3
             // True: Between L3-L4
             private final boolean upperBranch;
+            private final boolean flipNormal;
 
-            AlgaeReefLocation(boolean upperBranch) {
+            AlgaeReefLocation(boolean upperBranch, boolean flipNormal) {
                 this.upperBranch = upperBranch;
+                this.flipNormal = flipNormal;
+
             }
 
             public static POIData[] algaes = {
@@ -162,11 +173,24 @@ public class AutoTargetUtils {
                 "Algae High Offset");
         public static ConfigurableParameter<Double> algaeLowOffset = new ConfigurableParameter<Double>(0.15,
                 "Algae Low Offset");
+        public static ConfigurableParameter<Double> algaeHighRemovalOffset = new ConfigurableParameter<Double>(0.2,
+                "Algae High Removal Offset");
+        public static ConfigurableParameter<Double> algaeLowRemovalOffset = new ConfigurableParameter<Double>(0.2,
+                "Algae Low Removal Offset");
 
         public static Pose2d algae(AlgaeReefLocation location) {
             return location.data().offsetPoseFacing(
                     location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
-                    algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get());
+                    algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get(),
+                    location.flipNormal);
+        }
+
+        public static Pose2d algaeRemoval(AlgaeReefLocation location) {
+            return location.data().offsetPoseFacing(
+                    location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
+                    algaeFlipped.get(),
+                    location.upperBranch() ? algaeHighRemovalOffset.get() : algaeLowRemovalOffset.get(),
+                    location.flipNormal);
         }
     }
 
@@ -175,12 +199,21 @@ public class AutoTargetUtils {
             LeftOne, LeftTwo, LeftThree, RightOne, RightTwo, RightThree;
 
             private static POIData[] stations = {
-                    POIData.create(1.17152, 7.64678, 1.35439, 7.39497), // LeftOne
+                    // POIData.create(1.17152, 7.64678, 1.35439, 7.39497), // LeftOne (closer to
+                    // center)
+
+                    POIData.create(1.33603549, 7.7662567, 1.49377786, 7.54905214), // LeftOne (further from center)
                     POIData.create(0.84268, 7.40797, 1.00537, 7.18395), // LeftTwo
-                    POIData.create(0.51385, 7.16916, 0.68402, 6.93484), // LeftThree
-                    POIData.create(1.17152, 0.40502, 1.35439, 0.65683), // RightOne
+                    POIData.create(0.34953951, 7.04982505, 0.51385274, 6.82357269), // LeftThree (further from center)
+                    // POIData.create(0.51385, 7.16916, 0.68402, 6.93484), // LeftThree (closer to
+                    // center)
+                    // POIData.create(1.17152, 0.40502, 1.35439, 0.65683), // RightOne (closer to
+                    // center)
+                    POIData.create(1.33593273, 0.28561793, 1.57230098, 0.61108698), // RightOne (further from center)
                     POIData.create(0.84268, 0.64383, 1.00537, 0.86785), // RightTwo
-                    POIData.create(0.51385, 0.88264, 0.68402, 1.11696), // RightThree
+                    POIData.create(0.34943675, 1.00204958, 0.51385274, 1.22844344) // RightThree (further from center)
+                    // POIData.create(0.51385, 0.88264, 0.68402, 1.11696), // RightThree (closer to
+                    // center)
             };
 
             public POIData data() {
@@ -205,13 +238,22 @@ public class AutoTargetUtils {
     }
 
     private static POIData processor = POIData.create(5.965735966001007, 0, 5.965735966001007, 1);
+    private static POIData net = POIData.create(8.79952467, 6.251, 6, 6.251);
+    private static ConfigurableParameter<Double> netDistance = new ConfigurableParameter<Double>(1.0,
+            "Net dist");
     private static ConfigurableParameter<Double> processorDistance = new ConfigurableParameter<Double>(1.0,
             "Processor dist");
     private static ConfigurableParameter<Boolean> processorFlipped = new ConfigurableParameter<Boolean>(false,
             "Processor Flipped");
+    private static ConfigurableParameter<Boolean> netFlipped = new ConfigurableParameter<Boolean>(false,
+            "Net Flipped");
 
     public static Pose2d processor() {
         return processor.poseFacing(processorDistance.get(), processorFlipped.get());
+    }
+
+    public static Pose2d net() {
+        return net.poseFacing(netDistance.get(), netFlipped.get());
     }
 
     public static DoubleSupplier robotDistToPose(Drive drive, Supplier<Pose2d> pose) {

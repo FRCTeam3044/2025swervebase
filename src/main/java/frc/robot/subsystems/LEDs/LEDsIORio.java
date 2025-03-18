@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.util.AllianceUtil;
 import frc.robot.util.ToMorseCode;
+import frc.robot.util.AllianceUtil.AllianceColor;
 
 public class LEDsIORio implements LEDsIO {
     private final AddressableLED LEDStrip = new AddressableLED(PWM);
@@ -37,8 +39,7 @@ public class LEDsIORio implements LEDsIO {
     private int leftPatternPosition = 0;
     private int rightPatternPosition = 0;
     private int updateCounter = 0;
-    private final int UPDATE_FREQUENCY = 15; // Only update position every 3 calls (60ms)
-    private final Color blueColor = new Color(0, 0, 255); // Blue for the converging pattern
+    private final int UPDATE_FREQUENCY = 8; // Only update position every 3 calls (60ms)
 
     @Override
     public void setSolidColorWithAuto(LEDPattern color) {
@@ -66,6 +67,7 @@ public class LEDsIORio implements LEDsIO {
 
     // Helper method to overlay the converging pattern
     private void overlayConvergingPattern() {
+        Color color = AllianceUtil.getAlliance() == AllianceColor.RED ? Color.kRed : Color.kBlue;
         // Slow down the animation by only updating every few calls
         updateCounter++;
         if (updateCounter >= UPDATE_FREQUENCY) {
@@ -79,15 +81,15 @@ public class LEDsIORio implements LEDsIO {
         // Draw the complete repeating pattern
         for (int i = 0; i < buffer.getLength(); i++) {
             // For left side pattern (moving right)
-            if (i <= buffer.getLength() / 2 && i % 5 == leftPatternPosition) {
-                buffer.setLED(i, blueColor);
+            if (i <= buffer.getLength() / 2 && (i % 5 == leftPatternPosition || i % 5 == (leftPatternPosition - 1))) {
+                buffer.setLED(i, color);
             }
 
             // For right side pattern (moving left)
             // This creates a separate pattern from the right side
             // that moves in the opposite direction
-            if (i >= buffer.getLength() / 2 && i % 5 == rightPatternPosition) {
-                buffer.setLED(i, blueColor);
+            if (i >= buffer.getLength() / 2 && (i % 5 == rightPatternPosition || i % 5 == (leftPatternPosition - 1))) {
+                buffer.setLED(i, color);
             }
         }
     }

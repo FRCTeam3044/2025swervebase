@@ -10,7 +10,7 @@ public interface ClimberIO {
         public double appliedVolts = 0.0;
         public double currentAmps = 0.0;
 
-        public double servoPosition = 0.0;
+        public double servoSpeed = 0.0;
     }
 
     public default void updateInputs(ClimberIOInputs inputs) {
@@ -19,6 +19,6 @@ public interface ClimberIO {
     public default void setSpeed(double speed) {
     }
 
-    public default void setServoAngle(double angle) {
+    public default void setServoClosed(boolean closed) {
     }
 }

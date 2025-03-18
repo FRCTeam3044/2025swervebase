@@ -42,12 +42,20 @@ public class EndEffector extends SubsystemBase {
         return runIntakeSpeed(() -> -algaeOutSpeed.get()).withName("Run End Effector Algae Out");
     }
 
+    public Command algaeOutNet() {
+        return runIntakeSpeed(() -> -algaeOutSpeedNet.get()).withName("Run End Effector Algae Out (Net)");
+    }
+
     public Command coralIn() {
         return runIntakeSpeed(coralInSpeed::get).withName("Run End Effector Coral In");
     }
 
     public Command coralOut() {
         return runIntakeSpeed(() -> -coralOutSpeed.get()).withName("Run End Effector Coral Out");
+    }
+
+    public Command coralOutSlow() {
+        return runIntakeSpeed(() -> -slowCoralOutSpeed.get()).withName("Run End Effector Coral Out Slow");
     }
 
     public boolean hasCoral() {

@@ -13,6 +13,7 @@ import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import frc.robot.util.bboard.ButtonBoard;
+import frc.robot.util.bboard.ButtonBoard.ButtonInfo;
 import frc.robot.util.bboard.ButtonBoard.SelectButtonInfo;
 
 public class Autos {
@@ -33,12 +34,16 @@ public class Autos {
                 scoreCoral(CoralReefLocation.D, CoralLevel.L4, IntakeStation.RightTwo),
                 scoreCoral(CoralReefLocation.C, CoralLevel.L4, IntakeStation.RightTwo)));
         autoChooser.addOption("Left L4", List.of(
-                scoreCoral(CoralReefLocation.H, CoralLevel.L4, IntakeStation.LeftTwo),
-                scoreCoral(CoralReefLocation.I, CoralLevel.L4, IntakeStation.LeftTwo),
-                scoreCoral(CoralReefLocation.J, CoralLevel.L4, IntakeStation.LeftTwo)));
+                scoreCoral(CoralReefLocation.J, CoralLevel.L4, IntakeStation.LeftTwo),
+                scoreCoral(CoralReefLocation.K, CoralLevel.L4, IntakeStation.LeftTwo),
+                scoreCoral(CoralReefLocation.L, CoralLevel.L4, IntakeStation.LeftTwo)));
+        autoChooser.addOption("Back Left", List.of(
+                singleCoral(CoralReefLocation.H, CoralLevel.L4)));
+        autoChooser.addOption("Back Right", List.of(
+                singleCoral(CoralReefLocation.G, CoralLevel.L4)));
     }
 
-    public record AutoStep(List<SelectButtonInfo<?>> buttons, BooleanSupplier exit) {
+    public record AutoStep(List<SelectButtonInfo<?>> buttons, List<ButtonInfo> otherButtons, BooleanSupplier exit) {
     }
 
     public AutoStep scoreCoral(CoralReefLocation location, CoralLevel level, IntakeStation station) {
@@ -46,7 +51,7 @@ public class Autos {
                 intakeStationBtn(station));
         AtomicBoolean hadCoral = new AtomicBoolean(true);
 
-        return new AutoStep(buttons, () -> {
+        return new AutoStep(buttons, List.of(), () -> {
             boolean hasCoral = hasCoralDebouncer.calculate(endEffector.hasCoral());
             if (hasCoral && !hadCoral.get()) {
                 return true;
@@ -54,6 +59,13 @@ public class Autos {
             hadCoral.set(hasCoral);
             return false;
         });
+    }
+
+    public AutoStep singleCoral(CoralReefLocation location, CoralLevel level) {
+        List<SelectButtonInfo<?>> buttons = List.of(coralLocationBtn(location), coralLevelBtn(level));
+        // List<ButtonInfo> otherButtons = List.of(board.algaeModeToggle);
+
+        return new AutoStep(buttons, List.of(), () -> false);
     }
 
     private SelectButtonInfo<CoralReefLocation> coralLocationBtn(CoralReefLocation location) {

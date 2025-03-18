@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Servo;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 import static frc.robot.util.SparkUtil.*;
 
@@ -22,6 +23,10 @@ public class ClimberIOSpark implements ClimberIO {
   private final SparkMax followerMotor = new SparkMax(followerCanId, MotorType.kBrushless);
 
   private final Servo servo = new Servo(servoPwmPort);
+  private boolean servoClosed = true;
+
+  private final ConfigurableParameter<Double> servoOpenSpeed = new ConfigurableParameter<>(1.0,
+      "Servo Open Speed");
 
   public ClimberIOSpark() {
     tryUntilOk(leaderMotor, 5, () -> leaderMotor.configure(ClimberConfig.leaderConfig,
@@ -41,11 +46,9 @@ public class ClimberIOSpark implements ClimberIO {
         (values) -> inputs.appliedVolts = values[0] * values[1]);
     ifOk(leaderMotor, leaderMotor::getOutputCurrent, (value) -> inputs.currentAmps = value);
 
-    inputs.servoPosition = servo.getAngle();
+    inputs.servoSpeed = servo.getSpeed();
 
-    if (leaderMotor.getReverseLimitSwitch().isPressed()) {
-      leaderMotor.getEncoder().setPosition(0);
-    }
+    servo.setSpeed(servoClosed ? -servoOpenSpeed.get() : servoOpenSpeed.get());
   }
 
   @Override
@@ -54,7 +57,7 @@ public class ClimberIOSpark implements ClimberIO {
   }
 
   @Override
-  public void setServoAngle(double angle) {
-    servo.setAngle(angle);
+  public void setServoClosed(boolean closed) {
+    servoClosed = closed;
   }
 }

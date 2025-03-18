@@ -13,10 +13,7 @@ public class Climber extends SubsystemBase {
     private final ClimberIO io;
     private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
-    private final ConfigurableParameter<Double> servoClosed = new ConfigurableParameter<>(0.0, "Servo Closed Position");
-    private final ConfigurableParameter<Double> servoOpen = new ConfigurableParameter<>(1.0, "Servo Open Position");
     private final ConfigurableParameter<Double> speed = new ConfigurableParameter<>(0.5, "Climber Speed");
-    private final ConfigurableParameter<Double> servoTolerance = new ConfigurableParameter<>(5.0, "Servo Tolerance");
 
     public Climber(ClimberIO io) {
         this.io = io;
@@ -33,22 +30,19 @@ public class Climber extends SubsystemBase {
     }
 
     public Command up() {
-        return servoOpen().andThen(move(() -> speed.get())).finallyDo(() -> io.setServoAngle(servoClosed.get()));
+        return servoOpen().alongWith(move(() -> -speed.get())).finallyDo(() -> io.setServoClosed(true));
     }
 
     public Command down() {
-        return Commands.waitUntil(() -> Math.abs(inputs.servoPosition - servoClosed.get()) < servoTolerance.get())
-                .andThen(move(() -> -speed.get()));
+        return move(() -> speed.get());
     }
 
     public Command servoOpen() {
-        return Commands.run(() -> io.setServoAngle(servoOpen.get()), this)
-                .until(() -> Math.abs(inputs.servoPosition - servoOpen.get()) < servoTolerance.get());
+        return Commands.run(() -> io.setServoClosed(false));
     }
 
     public Command servoClose() {
-        return Commands.run(() -> io.setServoAngle(servoClosed.get()), this)
-                .until(() -> Math.abs(inputs.servoPosition - servoClosed.get()) < servoTolerance.get());
+        return Commands.run(() -> io.setServoClosed(true));
     }
 
     public Command servoForward() {

@@ -43,8 +43,9 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
 
     private final ConfigurableClassParam<Double> idleHeight = new ConfigurableClassParam<>(this, 0.5,
             "Elevator Idle Height");
+    private final ConfigurableClassParam<Double> netHeight = new ConfigurableClassParam<>(this, 0.668, "Net Height");
 
-    private final List<ConfigurableClassParam<?>> params = List.of(elevatorTargetThreshold, idleHeight);
+    private final List<ConfigurableClassParam<?>> params = List.of(elevatorTargetThreshold, idleHeight, netHeight);
 
     private final BooleanSupplier shoulderInDangerZone;
 
@@ -99,6 +100,10 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
     public Command toCoral(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {
         return toPosition(() -> getHeightForCoral(level.get(), robotDistance.getAsDouble(), false))
                 .withName("Elevator to CoralLevel");
+    }
+
+    public Command toNet() {
+        return toPosition(netHeight::get).withName("Elevator to Net");
     }
 
     public Command intakeCoral(DoubleSupplier robotDistance) {
