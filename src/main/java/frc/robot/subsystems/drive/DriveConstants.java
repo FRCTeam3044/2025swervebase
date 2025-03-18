@@ -167,7 +167,7 @@ public class DriveConstants {
                         "Point Theta Controller");
         public static final HolonomicDriveController pointController = new HolonomicDriveController(
                         xPointController, yPointController, anglePointController);
-        public static final Pose2d pointControllerTolerance = new Pose2d(0.025, 0.025, new Rotation2d(0.04));
+        public static final Pose2d pointControllerTolerance = new Pose2d(0.027, 0.027, new Rotation2d(0.05));
         public static final Pose2d pointControllerLooseTolerance = new Pose2d(0.04, 0.04, new Rotation2d(0.06));
 
         static {

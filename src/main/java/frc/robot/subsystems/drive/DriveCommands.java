@@ -328,7 +328,7 @@ public class DriveCommands {
             if (DriveConstants.pointController.atReference()) {
                 speeds = new ChassisSpeeds(0, 0, 0);
                 pointControllerConverged = true;
-                pointControllerRotConverged = false;
+                pointControllerRotConverged = true;
             } else {
                 pointControllerConverged = false;
             }
