@@ -30,9 +30,27 @@ public class LEDsIORio implements LEDsIO {
         LEDStrip.start();
     }
 
-    @Override
     public void setSolidColor(LEDPattern color) {
         color.applyTo(buffer);
+        LEDStrip.setData(buffer);
+    }
+
+    @Override
+    public void setSeesAprilTag(boolean coral) {
+        Color color = AllianceUtil.getAlliance() == AllianceColor.RED ? Color.kRed : Color.kBlue;
+        if (AllianceUtil.getAlliance() == AllianceColor.UNKNOWN) {
+            color = Color.kPurple;
+        }
+
+        LEDPattern.solid(Color.kGreen).applyTo(buffer);
+
+        if (coral) {
+            for (int i = 0; i < buffer.getLength(); i++) {
+                if (i % 5 == 0 || i % 5 == 1) {
+                    buffer.setLED(i, color);
+                }
+            }
+        }
         LEDStrip.setData(buffer);
     }
 
