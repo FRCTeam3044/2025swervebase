@@ -16,7 +16,7 @@ public class IntakeCoral extends State {
             Shoulder shoulder, EndEffector endEffector, LEDs LEDs) {
         super(stateMachine);
 
-        startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getIntakeStationTarget));
+        startWhenActive(DriveCommands.pointControlFast(drive, buttonBoard::getIntakeStationTarget));
         startWhenActive(endEffector.coralIn());
         startWhenActive(LEDs.intakingAndScoringCoral());
         startWhenActive(elevator.intakeCoral(buttonBoard.getIntakeStationReferenceDist(drive)));
