@@ -2,7 +2,7 @@
   "HALProvider": {
     "Addressable LEDs": {
       "0": {
-        "columns": 117
+        "columns": 9
       },
       "window": {
         "visible": true
@@ -99,6 +99,9 @@
     }
   },
   "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
     "transitory": {
       "AdvantageKit": {
         "RealOutputs": {

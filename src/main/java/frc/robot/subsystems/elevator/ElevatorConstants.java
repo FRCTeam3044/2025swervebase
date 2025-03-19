@@ -15,7 +15,7 @@ public class ElevatorConstants {
   // public static double kMaxVelocity = 8;
   // public static double kMaxAcceleration = 6;
   public static double kMaxVelocity = 8;
-  public static double kMaxAcceleration = 10;
+  public static double kMaxAcceleration = 20;
   public static double kP = 0;
   public static double kI = 0.0;
   public static double kD = 0.0;
