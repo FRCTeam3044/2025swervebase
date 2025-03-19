@@ -56,8 +56,8 @@ public class GoToScoreCoral extends State {
                 // .withName("Shoulder to CoralLevel"));
                 // staging.whileFalse(shoulder.idle());
                 Command alignElevatorAndShoulder = elevator
-                                .toCoral(() -> CoralLevel.L4, distToRef)
-                                .alongWith(shoulder.scoreCoral(() -> CoralLevel.L4, distToRef, () -> false));
+                                .toCoralNoStop(() -> CoralLevel.L4, distToRef)
+                                .alongWith(shoulder.scoreCoralNoStop(() -> CoralLevel.L4, distToRef, () -> false));
                 t(() -> buttonBoard.getCoralReefLevel() == CoralLevel.L4 && distToTarget.getAsDouble() < l4Dist.get())
                                 .runWhileTrue(alignElevatorAndShoulder)
                                 .runWhileFalse(shoulder.idle().alongWith(elevator.idle()));
