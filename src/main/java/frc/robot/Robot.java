@@ -14,11 +14,13 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Autos.AutoStep;
+import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.util.AllianceUtil;
 import frc.robot.util.AutoTargetUtils.Reef;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
@@ -106,6 +108,9 @@ public class Robot extends LoggedRobot {
 
     OxConfig.initialize();
     robotContainer.stateMachine.onStartup();
+    Logger.recordOutput("test path",
+        DriveCommands.generateTrajectory(robotContainer.drive, new Pose2d(1, 1, new Rotation2d(0)),
+            new Pose2d(2, 1, new Rotation2d(0))));
   }
 
   /** This function is called periodically during all modes. */
@@ -136,6 +141,7 @@ public class Robot extends LoggedRobot {
     // PathfindingDebugUtils.drawLines("Field Map Inflated",
     // DriveConstants.pathfinder.visualizeEdges(),
     // DriveConstants.pathfinder.visualizeInflatedVertices());
+
     ArrayList<Double> distances = new ArrayList<>();
     for (CoralReefLocation location : Reef.CoralReefLocation.values()) {
       Pose2d pose = Reef.coral(location, CoralLevel.L1);

@@ -92,6 +92,11 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
                 (c) -> io.setVoltage(0), () -> false, this).withName("Elevator to position");
     }
 
+    public Command toPositionNoStop(DoubleSupplier height) {
+        return Commands.startRun(io::resetPosControl, () -> io.setPosition(height.getAsDouble()), this)
+                .withName("Elevator to position");
+    }
+
     public Command toCoral(Supplier<CoralLevel> level) {
         return toPosition(() -> getHeightForCoral(level.get(), getCloseDistanceForCoral(level.get()), false))
                 .withName("Elevator to CoralLevel");
@@ -99,6 +104,11 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
 
     public Command toCoral(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {
         return toPosition(() -> getHeightForCoral(level.get(), robotDistance.getAsDouble(), false))
+                .withName("Elevator to CoralLevel");
+    }
+
+    public Command toCoralNoStop(Supplier<CoralLevel> level, DoubleSupplier robotDistance) {
+        return toPositionNoStop(() -> getHeightForCoral(level.get(), robotDistance.getAsDouble(), false))
                 .withName("Elevator to CoralLevel");
     }
 

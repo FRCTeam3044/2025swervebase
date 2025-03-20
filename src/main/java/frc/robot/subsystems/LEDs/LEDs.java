@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.LEDs.LEDsIO.LEDsIOInputs;
 import frc.robot.util.ToMorseCode;
 
@@ -38,7 +39,8 @@ public class LEDs extends SubsystemBase {
     }
 
     public Command aprilTagDetected() {
-        return Commands.run(() -> io.setSolidColor(LEDPattern.solid(Color.kGreen)), this).withName("AprilTag LEDs");
+        return Commands.run(() -> io.setSeesAprilTag(RobotContainer.getInstance().endEffector.hasCoral()), this)
+                .withName("AprilTag LEDs");
     }
 
     public Command setBlinkingColor(Color color) {

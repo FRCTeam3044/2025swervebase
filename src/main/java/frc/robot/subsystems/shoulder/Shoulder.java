@@ -138,6 +138,11 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 .withName("Shoulder to Position");
     }
 
+    public Command toPositionNoStop(DoubleSupplier position) {
+        return Commands.startRun(io::resetPosControl, () -> io.setShoulderAngle(position.getAsDouble()), this)
+                .withName("Shoulder to Position");
+    }
+
     public Command manualPivot(DoubleSupplier desiredSpeed) {
         return Commands
                 .runEnd(() -> io.setShoulderSpeed(desiredSpeed.getAsDouble()), () -> io.setShoulderSpeed(0.0), this)
@@ -146,6 +151,12 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     public Command scoreCoral(Supplier<CoralLevel> level, DoubleSupplier robotDist, BooleanSupplier staging) {
         return toPosition(() -> calculateAngleForCoral(level.get(), robotDist.getAsDouble(), staging.getAsBoolean()))
+                .withName("Shoulder to CoralLevel");
+    }
+
+    public Command scoreCoralNoStop(Supplier<CoralLevel> level, DoubleSupplier robotDist, BooleanSupplier staging) {
+        return toPositionNoStop(
+                () -> calculateAngleForCoral(level.get(), robotDist.getAsDouble(), staging.getAsBoolean()))
                 .withName("Shoulder to CoralLevel");
     }
 

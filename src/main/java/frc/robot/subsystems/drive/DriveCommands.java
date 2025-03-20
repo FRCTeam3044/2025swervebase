@@ -65,6 +65,7 @@ public class DriveCommands {
             "Pathfinding Max Rotation Slow Speed");
 
     public static boolean pointControllerConverged = false;
+    public static boolean pointControllerLooseConverged = false;
     public static boolean pointControllerRotConverged = false;
 
     private DriveCommands() {
@@ -268,6 +269,7 @@ public class DriveCommands {
             Pose2d targetPose = pose.get();
             ChassisSpeeds speeds = DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
                     targetPose.getRotation());
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerTolerance);
             if (DriveConstants.pointController.atReference()) {
                 speeds = new ChassisSpeeds(0, 0, 0);
                 pointControllerConverged = true;
@@ -281,6 +283,52 @@ public class DriveCommands {
                 pointControllerRotConverged = true;
             } else {
                 pointControllerRotConverged = false;
+            }
+
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerLooseTolerance);
+            if (DriveConstants.pointController.atReference()) {
+                pointControllerLooseConverged = true;
+            } else {
+                pointControllerLooseConverged = false;
+            }
+
+            drive.runVelocity(speeds);
+            Logger.recordOutput("PointControllerDist",
+                    drive.getPose().getTranslation().getDistance(targetPose.getTranslation()));
+        }, drive).finallyDo(() -> {
+            pointControllerConverged = false;
+            pointControllerRotConverged = false;
+        }).withName("Point Control");
+    }
+
+    public static Command pointControlFast(Drive drive, Supplier<Pose2d> pose) {
+        return Commands.startRun(() -> {
+            DriveConstants.anglePointControllerFast.reset(drive.getPose().getRotation().getRadians());
+        }, () -> {
+            Pose2d targetPose = pose.get();
+            ChassisSpeeds speeds = DriveConstants.pointControllerFast.calculate(drive.getPose(), targetPose, 0,
+                    targetPose.getRotation());
+            DriveConstants.pointControllerFast.setTolerance(DriveConstants.pointControllerTolerance);
+            if (DriveConstants.pointControllerFast.atReference()) {
+                speeds = new ChassisSpeeds(0, 0, 0);
+                pointControllerConverged = true;
+                pointControllerRotConverged = false;
+            } else {
+                pointControllerConverged = false;
+            }
+
+            if (Math.abs(targetPose.getRotation().minus(drive.getPose().getRotation())
+                    .getRadians()) < 1) {
+                pointControllerRotConverged = true;
+            } else {
+                pointControllerRotConverged = false;
+            }
+
+            DriveConstants.pointControllerFast.setTolerance(DriveConstants.pointControllerLooseTolerance);
+            if (DriveConstants.pointControllerFast.atReference()) {
+                pointControllerLooseConverged = true;
+            } else {
+                pointControllerLooseConverged = false;
             }
 
             drive.runVelocity(speeds);
@@ -322,6 +370,7 @@ public class DriveCommands {
             Pose2d targetPose = pose.get();
             ChassisSpeeds speeds = DriveConstants.pointController.calculate(drive.getPose(), targetPose, 0,
                     targetPose.getRotation());
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerTolerance);
             if (DriveConstants.pointController.atReference()) {
                 speeds = new ChassisSpeeds(0, 0, 0);
                 pointControllerConverged = true;
@@ -329,16 +378,19 @@ public class DriveCommands {
             } else {
                 pointControllerConverged = false;
             }
-            // double time = Math.min(timeSincePointControl.get() / interpolateTime.get(),
-            // 1);
-            // maxVx = MathUtil.interpolate(initialVx, slowMaxSpeed.get(), time);
-            // maxVy = MathUtil.interpolate(initialVy, slowMaxSpeed.get(), time);
 
             if (Math.abs(targetPose.getRotation().minus(drive.getPose().getRotation())
                     .getRadians()) < 1) {
                 pointControllerRotConverged = true;
             } else {
                 pointControllerRotConverged = false;
+            }
+
+            DriveConstants.pointController.setTolerance(DriveConstants.pointControllerLooseTolerance);
+            if (DriveConstants.pointController.atReference()) {
+                pointControllerLooseConverged = true;
+            } else {
+                pointControllerLooseConverged = false;
             }
 
             if (slowDrive.getAsBoolean()) {
@@ -503,16 +555,20 @@ public class DriveCommands {
         double gyroDelta = 0.0;
     }
 
-    private static Trajectory generateTrajectory(Drive drive, Pose2d end) {
+    public static Trajectory generateTrajectory(Drive drive, Pose2d start, Pose2d end) {
         try {
-            Path path = DriveConstants.pathfinder.generatePath(drive.getPose(), end);
+            Path path = DriveConstants.pathfinder.generatePath(start, end);
             TrajectoryConfig config = getTrajectoryConfig(drive, path);
             return path.asTrajectory(config);
         } catch (Exception e) {
-            DriverStation.reportWarning("Failed to generate path: " + drive.getPose() + " to " + end,
+            DriverStation.reportWarning("Failed to generate path: " + start + " to " + end,
                     e.getStackTrace());
             return null;
         }
+    }
+
+    private static Trajectory generateTrajectory(Drive drive, Pose2d end) {
+        return generateTrajectory(drive, drive.getPose(), end);
     }
 
     private static TrajectoryConfig getTrajectoryConfig(Drive drive, Path path) {

@@ -40,7 +40,7 @@ public class ScoreL4 extends State {
                                 .alongWith(shoulder.scoreCoral(() -> CoralLevel.L4, distToRef, () -> false));
 
                 Command far = DriveCommands.pointControlSlow(drive, farTarget, () -> true, () -> true)
-                                .until(() -> DriveCommands.pointControllerConverged);
+                                .until(() -> DriveCommands.pointControllerLooseConverged);
                 Command close = Commands
                                 .waitUntil(() -> shoulder.isAtCoralTargetFast(() -> CoralLevel.L4, distToRef)
                                                 && elevator.isAtTarget())

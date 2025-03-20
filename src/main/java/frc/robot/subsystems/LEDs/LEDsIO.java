@@ -17,7 +17,7 @@ public interface LEDsIO {
         static Time currentTime;
     }
 
-    public default void setSolidColor(LEDPattern color) {
+    public default void setSeesAprilTag(boolean hasColor) {
     };
 
     public default void setSolidColorWithAuto(LEDPattern color) {
