@@ -138,6 +138,13 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                 .withName("Shoulder to Position");
     }
 
+    public Command toPositionNet(DoubleSupplier position) {
+        return new FunctionalCommand(() -> io.resetPosControl(),
+                () -> io.setShoulderAngle(position.getAsDouble(), true),
+                (b) -> io.setVoltage(0), () -> false, this)
+                .withName("Shoulder to Position (net speed)");
+    }
+
     public Command toPositionNoStop(DoubleSupplier position) {
         return Commands.startRun(io::resetPosControl, () -> io.setShoulderAngle(position.getAsDouble()), this)
                 .withName("Shoulder to Position");
@@ -215,6 +222,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     public Command climb() {
         return toPosition(climber::get).withName("Shoulder Climb");
+    }
+
+    public Command net() {
+        return toPositionNet(climber::get).withName("Shoulder Net");
     }
 
     private double calculateAngleForCoral(CoralLevel level, double robotDist, boolean staging) {

@@ -27,6 +27,9 @@ public interface ShoulderIO {
     public default void setShoulderAngle(double angle) {
     };
 
+    public default void setShoulderAngle(double angle, boolean netAcceleration) {
+    };
+
     public default void setShoulderSpeed(double speed) {
     };
 

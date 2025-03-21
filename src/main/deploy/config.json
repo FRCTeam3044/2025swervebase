@@ -70,6 +70,10 @@
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
         "Pathfinding Y Controller/D": "0.0",
+        "Shoulder kV Net": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -142,6 +146,10 @@
             "value": "1.0"
         },
         "Elevator Profiled PID/D": "0.0",
+        "Shoulder kS Net": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Drive Module 0/Max": "1.0",
@@ -353,6 +361,7 @@
             "value": "1.0"
         },
         "Turn Module 0/I": "0.0",
+        "Shoulder Profiled PID Controller (net)/I": "0.0",
         "Processor score dist threshold": {
             "comment": "Target distance from processor to score algae",
             "value": "0.5"
@@ -362,6 +371,7 @@
             "value": "0.5"
         },
         "Turn Module 0/D": "0.0",
+        "Shoulder Profiled PID Controller (net)/P": "0.0",
         "Algae Flipped": {
             "comment": "Face forward or backwards when intaking algae",
             "value": "true"
@@ -441,6 +451,7 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Shoulder Profiled PID Controller (net)/D": "0.0",
         "Shoulder L4 Angles/y2": "0.0",
         "Shoulder Safe Zone Min": {
             "comment": "Auto-Generated",
@@ -495,6 +506,10 @@
         "Turn Module 2/IZone": "0.0",
         "Shoulder High Algae/y2": "0.0",
         "Shoulder High Algae/y1": "0.0",
+        "Shoulder kG Net": {
+            "comment": "Auto-Generated",
+            "value": "1.3055"
+        },
         "Turn Module 2/P": "2.0"
     },
     "mode": "competition",
@@ -569,6 +584,10 @@
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
         "Pathfinding Y Controller/D": "0.0",
+        "Shoulder kV Net": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "0.7"
@@ -641,6 +660,10 @@
             "value": "1.0"
         },
         "Elevator Profiled PID/D": "0.0",
+        "Shoulder kS Net": {
+            "comment": "Auto-Generated",
+            "value": "0.0"
+        },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Drive Module 0/Max": "1.0",
@@ -852,6 +875,7 @@
             "value": "1.0"
         },
         "Turn Module 0/I": "0.0",
+        "Shoulder Profiled PID Controller (net)/I": "0.0",
         "Processor score dist threshold": {
             "comment": "Target distance from processor to score algae",
             "value": "0.5"
@@ -861,6 +885,7 @@
             "value": "0.5"
         },
         "Turn Module 0/D": "0.0",
+        "Shoulder Profiled PID Controller (net)/P": "0.0",
         "Algae Flipped": {
             "comment": "Face forward or backwards when intaking algae",
             "value": "true"
@@ -940,6 +965,7 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Shoulder Profiled PID Controller (net)/D": "0.0",
         "Shoulder L4 Angles/y2": "2.4",
         "Shoulder Safe Zone Min": {
             "comment": "Auto-Generated",
@@ -994,6 +1020,10 @@
         "Turn Module 2/IZone": "0.0",
         "Shoulder High Algae/y2": "0.0",
         "Shoulder High Algae/y1": "0.0",
+        "Shoulder kG Net": {
+            "comment": "Auto-Generated",
+            "value": "1.3055"
+        },
         "Turn Module 2/P": "2.0"
     },
     "competition": {
@@ -1067,6 +1097,10 @@
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
         "Pathfinding Y Controller/D": "0.2",
+        "Shoulder kV Net": {
+            "comment": "Auto-Generated",
+            "value": "1.2"
+        },
         "Intake station dist": {
             "comment": "Auto-Generated",
             "value": "0.46"
@@ -1139,6 +1173,10 @@
             "value": "1.8"
         },
         "Elevator Profiled PID/D": "0.0",
+        "Shoulder kS Net": {
+            "comment": "Auto-Generated",
+            "value": "0.52398"
+        },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "1.0",
         "Drive Module 0/Max": "1.0",
@@ -1188,7 +1226,7 @@
         "Drive Module 2/FF": "0.0",
         "Net Launch Angle": {
             "comment": "Auto-Generated",
-            "value": "1.5"
+            "value": "1.4"
         },
         "Processor dist": {
             "comment": "Auto-Generated",
@@ -1304,7 +1342,7 @@
         "Drive Module 3/IZone": "0.0",
         "Net Stop Angle": {
             "comment": "Auto-Generated",
-            "value": "2"
+            "value": "1.9"
         },
         "Test Climber Speed": {
             "comment": "Auto-Generated",
@@ -1350,6 +1388,7 @@
             "value": "1.0"
         },
         "Turn Module 0/I": "0.0",
+        "Shoulder Profiled PID Controller (net)/I": "0.0",
         "Processor score dist threshold": {
             "comment": "Target distance from processor to score algae",
             "value": "2"
@@ -1359,6 +1398,7 @@
             "value": "0.5"
         },
         "Turn Module 0/D": "0.0",
+        "Shoulder Profiled PID Controller (net)/P": "0.0",
         "Algae Flipped": {
             "comment": "Face forward or backwards when intaking algae",
             "value": "false"
@@ -1438,6 +1478,7 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Shoulder Profiled PID Controller (net)/D": "0.0",
         "Shoulder L4 Angles/y2": "4.05",
         "Shoulder Safe Zone Min": {
             "comment": "Auto-Generated",
@@ -1492,6 +1533,10 @@
         "Turn Module 2/IZone": "0.0",
         "Shoulder High Algae/y2": "3.8",
         "Shoulder High Algae/y1": "3.8",
+        "Shoulder kG Net": {
+            "comment": "Auto-Generated",
+            "value": "1.3287"
+        },
         "Turn Module 2/P": "2.0"
     }
 }

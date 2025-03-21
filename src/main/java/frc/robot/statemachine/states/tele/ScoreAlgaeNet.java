@@ -1,6 +1,5 @@
 package frc.robot.statemachine.states.tele;
 
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
@@ -25,11 +24,7 @@ public class ScoreAlgaeNet extends State {
         startWhenActive(shoulder.intakeCoral());
         startWhenActive(elevator.toNet());
         t(() -> elevator.isAtTarget() && shoulder.inSafeZone())
-                .whileTrue(shoulder.climb().until(() -> shoulder.getShoulderAngle() > stopAngle.get()));
-        startWhenActive(Commands.run(() -> {
-            System.out.println("Shoulder Angle: " + shoulder.getShoulderAngle() + " Launch Angle: "
-                    + launchAngle.get() + " Stop Angle: " + stopAngle.get());
-        }));
+                .whileTrue(shoulder.net().until(() -> shoulder.getShoulderAngle() > stopAngle.get()));
         t(() -> shoulder.getShoulderAngle() > launchAngle.get()).onTrue(endEffector.algaeOutNet());
         t(() -> shoulder.getShoulderAngle() > stopAngle.get()).onTrue(shoulder.idle());
     }

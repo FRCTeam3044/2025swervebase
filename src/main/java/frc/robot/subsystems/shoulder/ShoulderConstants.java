@@ -12,9 +12,11 @@ public class ShoulderConstants {
     public static double kDt = 0.02;
     public static double kMaxVelocity = 6;
     public static double kMaxAcceleration = 7;
-    public static double kP = 0;
+    public static double kMaxNetVelocity = 6;
+    public static double kMaxNetAcceleration = 14;
+    public static double kP = 9;
     public static double kI = 0.0;
-    public static double kD = 0;
+    public static double kD = 0.5;
     public static double kS = 0;
     public static double kG = 1.3055;
     public static double kV = 0;

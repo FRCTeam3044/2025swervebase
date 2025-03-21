@@ -33,8 +33,13 @@ public class ShoulderIOSpark implements ShoulderIO {
 
         private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(kMaxVelocity,
                         kMaxAcceleration);
+        private final TrapezoidProfile.Constraints m_netConstraints = new TrapezoidProfile.Constraints(kMaxNetVelocity,
+                        kMaxNetAcceleration);
         private final ConfigurableProfiledPIDController controller = new ConfigurableProfiledPIDController(kP, kI, kD,
                         m_constraints, "Shoulder Profiled PID Controller");
+        private final ConfigurableProfiledPIDController netController = new ConfigurableProfiledPIDController(kP, kI,
+                        kD,
+                        m_netConstraints, "Shoulder Profiled PID Controller (net)");
         private final ArmFeedforward feedforward = new ArmFeedforward(kS, kG, kV);
         private final ConfigurableParameter<Double> shoulderKs = new ConfigurableParameter<>(kS, "Shoulder kS",
                         feedforward::setKs);
@@ -42,12 +47,21 @@ public class ShoulderIOSpark implements ShoulderIO {
                         feedforward::setKg);
         private final ConfigurableParameter<Double> shoulderKv = new ConfigurableParameter<>(kV, "Shoulder kV",
                         feedforward::setKv);
+
+        private final ArmFeedforward feedforwardNet = new ArmFeedforward(kS, kG, kV);
+        private final ConfigurableParameter<Double> netKs = new ConfigurableParameter<>(kS, "Shoulder kS Net",
+                        feedforwardNet::setKs);
+        private final ConfigurableParameter<Double> netKg = new ConfigurableParameter<>(kG, "Shoulder kG Net",
+                        feedforwardNet::setKg);
+        private final ConfigurableParameter<Double> netKv = new ConfigurableParameter<>(kV, "Shoulder kV Net",
+                        feedforwardNet::setKv);
         private final ConfigurableParameter<Double> safeZoneMin = new ConfigurableParameter<>(0.0,
                         "Shoulder Safe Zone Min");
         private final ConfigurableParameter<Double> safeZoneMax = new ConfigurableParameter<>(Math.PI,
                         "Shoulder Safe Zone Max");
 
         private boolean positionControlMode = false;
+        private boolean netControlMode = false;
         private double currentTargetAngleRad;
 
         public ShoulderIOSpark() {
@@ -92,35 +106,47 @@ public class ShoulderIOSpark implements ShoulderIO {
         }
 
         @Override
-        public void setShoulderAngle(double desiredAngle) {
+        public void setShoulderAngle(double desiredAngle, boolean netAcceleration) {
                 positionControlMode = true;
                 currentTargetAngleRad = desiredAngle;
+                netControlMode = netAcceleration;
+        }
+
+        public void setShoulderAngle(double desiredAngle) {
+                setShoulderAngle(desiredAngle, false);
         }
 
         @Override
         public void resetPosControl() {
                 controller.reset(encoder.getPosition() + kOffsetToHoriz, encoder.getVelocity());
+                netController.reset(encoder.getPosition() + kOffsetToHoriz, encoder.getVelocity());
         }
 
         public void positionControlRio(double desiredAngle) {
-                // double lastSpeed = 0;
-                // double lastTime = Timer.getFPGATimestamp();
                 controller.disableContinuousInput();
-                double pidVal = controller.calculate(encoder.getPosition() + kOffsetToHoriz,
-                                desiredAngle + kOffsetToHoriz);
-                Logger.recordOutput("Shoulder Profile Pos",
-                                controller.getSetpoint().position);
-                Logger.recordOutput("Shoulder Profile vel",
-                                controller.getSetpoint().velocity);
+                if (!netControlMode) {
+                        double pidVal = controller.calculate(encoder.getPosition() + kOffsetToHoriz,
+                                        desiredAngle + kOffsetToHoriz);
+                        Logger.recordOutput("Shoulder Profile Pos",
+                                        controller.getSetpoint().position);
+                        Logger.recordOutput("Shoulder Profile vel",
+                                        controller.getSetpoint().velocity);
+                        leaderMotor.setVoltage(
+                                        Math.min(pidVal, 7) + feedforward.calculate(controller.getSetpoint().position,
+                                                        controller.getSetpoint().velocity));
+                } else {
+                        double pidVal = netController.calculate(encoder.getPosition() + kOffsetToHoriz,
+                                        desiredAngle + kOffsetToHoriz);
+                        Logger.recordOutput("Shoulder Profile Pos",
+                                        netController.getSetpoint().position);
+                        Logger.recordOutput("Shoulder Profile vel",
+                                        netController.getSetpoint().velocity);
+                        leaderMotor.setVoltage(
+                                        Math.min(pidVal, 7)
+                                                        + feedforwardNet.calculate(netController.getSetpoint().position,
+                                                                        netController.getSetpoint().velocity));
 
-                // double acceleration = (controller.getSetpoint().velocity - lastSpeed)
-                // / (Timer.getFPGATimestamp() - lastTime);
-                // leaderMotor.setVoltage(feedforward.calculate(desiredAngle + kOffsetToHoriz,
-                // 0));
-                leaderMotor.setVoltage(Math.min(pidVal, 7) + feedforward.calculate(controller.getSetpoint().position,
-                                controller.getSetpoint().velocity));
-                // lastSpeed = controller.getSetpoint().velocity;
-                // lastTime = Timer.getFPGATimestamp();
+                }
         }
 
         // TOD: check if we can use trapezoid profile itself
