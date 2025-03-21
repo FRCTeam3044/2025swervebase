@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -179,7 +180,9 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     public Command intakeCoral(DoubleSupplier robotDist, BooleanSupplier staging) {
         return toPosition(
-                () -> staging.getAsBoolean() ? stagingIntake.get() : intakeCoral.calculate(robotDist.getAsDouble()))
+                () -> staging.getAsBoolean() ? stagingIntake.get()
+                        : MathUtil.clamp(intakeCoral.calculate(robotDist.getAsDouble()), intakeCoral.getY2(),
+                                intakeCoral.getY1()))
                 .withName("Shoulder to Intake");
     }
 

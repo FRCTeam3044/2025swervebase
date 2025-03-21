@@ -131,7 +131,7 @@ public class DriveConstants {
                         .withTrackLengthTrackWidth(Meters.of(wheelBase), Meters.of(trackWidth))
                         .withSwerveModule(COTS.ofMAXSwerve(driveGearbox, turnGearbox, wheelCOF, 2));
 
-        public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.REEFSCAPE_2025))
+        public static final Pathfinder pathfinder = (new PathfinderBuilder(Field.REEFSCAPE_2025_NO_STATIONS))
                         .setNormalizeCorners(false).setCornerDist(1)
                         .setCornerPointSpacing(0.06)
                         .setRobotLength(mapleBumperSize.in(Meters) + 0.35)

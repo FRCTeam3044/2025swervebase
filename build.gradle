@@ -120,7 +120,7 @@ dependencies {
     def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 
-    implementation 'me.nabdev.pathfinding:oxplorer:0.12.7'
+    implementation 'me.nabdev.pathfinding:oxplorer:0.12.8'
     implementation 'me.nabdev.oxconfig:oxconfig-wpi:1.4.0-SNAPSHOT'
     implementation 'org.json:json:20240303'
 }

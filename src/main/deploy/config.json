@@ -197,6 +197,10 @@
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Drive Module 2/FF": "0.0",
+        "Intake Early Threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
         "Net Launch Angle": {
             "comment": "Auto-Generated",
             "value": "2.2"
@@ -711,6 +715,10 @@
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Drive Module 2/FF": "0.0",
+        "Intake Early Threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.5"
+        },
         "Net Launch Angle": {
             "comment": "Auto-Generated",
             "value": "2.2"
@@ -1224,6 +1232,10 @@
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Drive Module 2/FF": "0.0",
+        "Intake Early Threshold": {
+            "comment": "Auto-Generated",
+            "value": "2.2"
+        },
         "Net Launch Angle": {
             "comment": "Auto-Generated",
             "value": "1.4"
