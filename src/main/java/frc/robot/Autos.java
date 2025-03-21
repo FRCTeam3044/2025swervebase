@@ -30,9 +30,9 @@ public class Autos {
         autoChooser = new LoggedDashboardChooser<>("Auto Routine");
         autoChooser.addDefaultOption("None", List.of());
         autoChooser.addOption("Right L4", List.of(
-                scoreCoral(CoralReefLocation.E, CoralLevel.L4, IntakeStation.RightTwo),
-                scoreCoral(CoralReefLocation.D, CoralLevel.L4, IntakeStation.RightTwo),
-                scoreCoral(CoralReefLocation.C, CoralLevel.L4, IntakeStation.RightTwo)));
+                scoreCoral(CoralReefLocation.E, CoralLevel.L4, IntakeStation.RightOne),
+                scoreCoral(CoralReefLocation.D, CoralLevel.L4, IntakeStation.RightOne),
+                scoreCoral(CoralReefLocation.C, CoralLevel.L4, IntakeStation.RightOne)));
         autoChooser.addOption("Left L4", List.of(
                 scoreCoral(CoralReefLocation.J, CoralLevel.L4, IntakeStation.LeftTwo),
                 scoreCoral(CoralReefLocation.K, CoralLevel.L4, IntakeStation.LeftTwo),
