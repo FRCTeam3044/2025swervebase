@@ -21,8 +21,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Autos.AutoStep;
 import frc.robot.subsystems.drive.DriveCommands;
+import frc.robot.subsystems.endEffector.EndEffectorConstants;
 import frc.robot.util.AllianceUtil;
+import frc.robot.util.AutoTargetUtils;
 import frc.robot.util.AutoTargetUtils.Reef;
+import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import frc.robot.util.bboard.BBoardIOAuto;
@@ -111,6 +114,9 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput("test path",
         DriveCommands.generateTrajectory(robotContainer.drive, new Pose2d(1, 1, new Rotation2d(0)),
             new Pose2d(2, 1, new Rotation2d(0))));
+    System.out.println(EndEffectorConstants.algaeInSpeed.get());
+    System.out.println(AutoTargetUtils.Reef.coral(CoralReefLocation.A, CoralLevel.L4));
+    System.out.println(AutoTargetUtils.Reef.algae(AlgaeReefLocation.AB));
   }
 
   /** This function is called periodically during all modes. */
