@@ -207,6 +207,8 @@ public class StateMachine extends StateMachineBase {
                                                                 && !DriverStation.isAutonomousEnabled(),
                                                 "Intake button released");
 
+                goToReefIntake.withTransition(manual, () -> !buttonBoard.getAlgaeMode(), "Algae Mode Released");
+
                 intakeGamePiece.withTransition(goToIntake, () -> !buttonBoard.closeToIntakeTarget(drive),
                                 "Intake location changed")
                                 .withTransition(manual,

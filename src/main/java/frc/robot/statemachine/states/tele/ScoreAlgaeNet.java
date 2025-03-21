@@ -1,5 +1,9 @@
 package frc.robot.statemachine.states.tele;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.statemachine.reusable.State;
 import frc.robot.statemachine.reusable.StateMachineBase;
 import frc.robot.subsystems.LEDs.LEDs;
@@ -21,9 +25,14 @@ public class ScoreAlgaeNet extends State {
         super(stateMachine);
 
         startWhenActive(DriveCommands.pointControl(drive, AutoTargetUtils::net));
-        startWhenActive(shoulder.intakeCoral());
-        startWhenActive(elevator.toNet());
-        t(() -> elevator.isAtTarget() && shoulder.inSafeZone())
+        BooleanSupplier ready = () -> DriveCommands.pointControllerConverged;
+        AtomicBoolean started = new AtomicBoolean(false);
+
+        startWhenActive(Commands.runOnce(() -> started.set(false)));
+        t(ready).onTrue(shoulder.intakeCoral());
+        t(ready).onTrue(elevator.toNet());
+        t(ready).onTrue(Commands.runOnce(() -> started.set(true)));
+        t(() -> started.get() && elevator.isAtTarget() && shoulder.inSafeZone())
                 .whileTrue(shoulder.net().until(() -> shoulder.getShoulderAngle() > stopAngle.get()));
         t(() -> shoulder.getShoulderAngle() > launchAngle.get()).onTrue(endEffector.algaeOutNet());
         t(() -> shoulder.getShoulderAngle() > stopAngle.get()).onTrue(shoulder.idle());

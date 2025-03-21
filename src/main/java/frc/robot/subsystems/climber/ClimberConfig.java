@@ -14,10 +14,8 @@ public class ClimberConfig {
     public static SoftLimitConfig softLimitConfig = new SoftLimitConfig();
 
     static {
-        leaderConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).inverted(true);
-        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(currentLimit).follow(leaderCanId, true);
-        followerConfig.signals.primaryEncoderPositionPeriodMs(500).primaryEncoderVelocityPeriodMs(500);
-        leaderConfig.signals.primaryEncoderPositionPeriodMs(500).primaryEncoderVelocityPeriodMs(500);
+        leaderConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(currentLimit).inverted(false);
+        followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(currentLimit).follow(leaderCanId, true);
         softLimitConfig.forwardSoftLimit(forwardSoftLimit).forwardSoftLimitEnabled(true)
                 .reverseSoftLimit(reverseSoftLimit).reverseSoftLimitEnabled(true);
 

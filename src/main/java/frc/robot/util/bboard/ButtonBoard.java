@@ -389,7 +389,7 @@ public class ButtonBoard {
             "Processor score dist threshold");
     public ConfigurableParameter<Double> coralReefDistThreshold = new ConfigurableParameter<Double>(0.5,
             "Coral reef score dist threshold");
-    public ConfigurableParameter<Double> netDistThreshold = new ConfigurableParameter<Double>(0.5,
+    public ConfigurableParameter<Double> netDistThreshold = new ConfigurableParameter<Double>(0.4,
             "Net score dist threshold");
 
     public boolean closeToScoringTarget(Drive drive) {
@@ -398,7 +398,7 @@ public class ButtonBoard {
                 return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.processor()) < processorDistThreshold
                         .get();
             } else {
-                return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.net()) < processorDistThreshold
+                return AutoTargetUtils.robotDistToPose(drive, AutoTargetUtils.net()) < netDistThreshold
                         .get();
             }
         } else {

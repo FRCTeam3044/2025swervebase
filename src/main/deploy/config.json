@@ -1311,11 +1311,11 @@
         },
         "Intake station dist threshold": {
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
-            "value": "0.6"
+            "value": "0.8"
         },
         "Net dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "1.65"
         },
         "Shoulder Low Algae/x2": "1.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -1359,7 +1359,7 @@
         },
         "Drive Speed (m/s)": {
             "comment": "Meters per second",
-            "value": "3.8"
+            "value": "4.25"
         },
         "Drive Module 1/FF": "0.0",
         "Elevator kS": {
@@ -1452,7 +1452,7 @@
         },
         "Pathfinding Max Speed": {
             "comment": "Meters per second",
-            "value": "3.6"
+            "value": "4.2"
         },
         "Elevator/Elevator Target Threshold": "0.075",
         "Drive Module 1/Min": "-1.0",
