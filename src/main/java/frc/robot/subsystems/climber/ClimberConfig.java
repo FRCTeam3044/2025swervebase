@@ -16,7 +16,7 @@ public class ClimberConfig {
     static {
         leaderConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(currentLimit).inverted(false);
         followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(currentLimit).follow(leaderCanId, true);
-        softLimitConfig.forwardSoftLimit(forwardSoftLimit).forwardSoftLimitEnabled(true)
+        softLimitConfig.forwardSoftLimit(forwardSoftLimit)// .forwardSoftLimitEnabled(true)
                 .reverseSoftLimit(reverseSoftLimit).reverseSoftLimitEnabled(true);
 
         leaderConfig.apply(softLimitConfig);

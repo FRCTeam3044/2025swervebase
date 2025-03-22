@@ -89,6 +89,7 @@
         "Drive Module 0/I": "0.0",
         "Point Y Controller Fast/I": "0.0",
         "Shoulder/Staging L3 Angle": "0.0",
+        "Elevator/Elevator Staged L4 Height": "0.25",
         "Drive Module 2/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "Drive Module 0/D": "0.0",
@@ -419,6 +420,10 @@
             "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "L4 Start Shoulder dist (auto)": {
+            "comment": "Auto-Generated",
+            "value": "2.6"
+        },
         "Intake station flipped": {
             "comment": "Face backwards when intaking coral",
             "value": "false"
@@ -611,6 +616,7 @@
         "Drive Module 0/I": "0.0",
         "Point Y Controller Fast/I": "0.0",
         "Shoulder/Staging L3 Angle": "1.5",
+        "Elevator/Elevator Staged L4 Height": "0.25",
         "Drive Module 2/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "Drive Module 0/D": "0.0",
@@ -941,6 +947,10 @@
             "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.5"
         },
+        "L4 Start Shoulder dist (auto)": {
+            "comment": "Auto-Generated",
+            "value": "2.6"
+        },
         "Intake station flipped": {
             "comment": "Face backwards when intaking coral",
             "value": "false"
@@ -1132,6 +1142,7 @@
         "Drive Module 0/I": "0.0",
         "Point Y Controller Fast/I": "0.0",
         "Shoulder/Staging L3 Angle": "4.05",
+        "Elevator/Elevator Staged L4 Height": "0.2",
         "Drive Module 2/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "Drive Module 0/D": "0.0",
@@ -1462,6 +1473,10 @@
             "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
             "value": "0.7"
         },
+        "L4 Start Shoulder dist (auto)": {
+            "comment": "Auto-Generated",
+            "value": "3.5"
+        },
         "Intake station flipped": {
             "comment": "Face backwards when intaking coral",
             "value": "true"
@@ -1478,7 +1493,7 @@
             "comment": "Meters per second",
             "value": "4.2"
         },
-        "Elevator/Elevator Target Threshold": "0.075",
+        "Elevator/Elevator Target Threshold": "0.1",
         "Drive Module 1/Min": "-1.0",
         "Elevator L1 Heights/x2": "0.0",
         "Test Elevator Height": {

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.statemachine.StateMachine;
 import frc.robot.statemachine.reusable.State;
@@ -18,6 +19,8 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class GoToScoreCoral extends State {
         private ConfigurableParameter<Double> l4Dist = new ConfigurableParameter<Double>(1.0, "L4 Start Shoulder dist");
+        private ConfigurableParameter<Double> l4DistAuto = new ConfigurableParameter<Double>(2.6,
+                        "L4 Start Shoulder dist (auto)");
 
         public GoToScoreCoral(StateMachine stateMachine, ButtonBoard buttonBoard, Drive drive, Elevator elevator,
                         Shoulder shoulder) {
@@ -59,9 +62,21 @@ public class GoToScoreCoral extends State {
                                 .toCoralNoStop(() -> CoralLevel.L4, distToRef)
                                 .alongWith(shoulder.scoreCoralNoStop(() -> CoralLevel.L4, distToRef, () -> false));
                 t(() -> buttonBoard.getCoralReefLevel() == CoralLevel.L4 && distToTarget.getAsDouble() < l4Dist.get())
-                                .runWhileTrue(alignElevatorAndShoulder)
+                                .runWhileTrue(alignElevatorAndShoulder);
+
+                t(() -> buttonBoard.getCoralReefLevel() == CoralLevel.L4 && distToTarget.getAsDouble() < l4Dist.get())
+                                .or(DriverStation::isAutonomous)
                                 .runWhileFalse(shoulder.idle().alongWith(elevator.idle()));
 
+                t(() -> buttonBoard.getCoralReefLevel() == CoralLevel.L4 && DriverStation.isAutonomous()
+                                && distToTarget.getAsDouble() > l4Dist.get()
+                                && distToTarget.getAsDouble() < l4DistAuto.get())
+                                .whileTrue(shoulder.intakeCoral().alongWith(elevator.stageL4()));
+
+                t(() -> buttonBoard.getCoralReefLevel() == CoralLevel.L4 && DriverStation.isAutonomous()
+                                && distToTarget.getAsDouble() > l4Dist.get()
+                                && distToTarget.getAsDouble() > l4DistAuto.get())
+                                .whileTrue(shoulder.idle().alongWith(elevator.idle()));
                 startWhenActive(shoulder.idle());
                 startWhenActive(elevator.idle());
         }

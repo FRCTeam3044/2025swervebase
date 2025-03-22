@@ -43,9 +43,12 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
 
     private final ConfigurableClassParam<Double> idleHeight = new ConfigurableClassParam<>(this, 0.5,
             "Elevator Idle Height");
+    private final ConfigurableClassParam<Double> stagedL4 = new ConfigurableClassParam<>(this, 0.25,
+            "Elevator Staged L4 Height");
     private final ConfigurableClassParam<Double> netHeight = new ConfigurableClassParam<>(this, 0.668, "Net Height");
 
-    private final List<ConfigurableClassParam<?>> params = List.of(elevatorTargetThreshold, idleHeight, netHeight);
+    private final List<ConfigurableClassParam<?>> params = List.of(elevatorTargetThreshold, idleHeight, netHeight,
+            stagedL4);
 
     private final BooleanSupplier shoulderInDangerZone;
 
@@ -128,6 +131,10 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
 
     public Command stageIntake() {
         return toPosition(intakeCoral::getY2).withName("Elevator to intake");
+    }
+
+    public Command stageL4() {
+        return toPosition(stagedL4::get).withName("Elevator to stage L4");
     }
 
     public Command idle() {

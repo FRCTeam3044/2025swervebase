@@ -182,7 +182,7 @@ public class DriveConstants {
         public static final HolonomicDriveController pointControllerFast = new HolonomicDriveController(
                         xPointControllerFast, yPointControllerFast, anglePointControllerFast);
         public static final Pose2d pointControllerTolerance = new Pose2d(0.027, 0.027, new Rotation2d(0.05));
-        public static final Pose2d pointControllerLooseTolerance = new Pose2d(0.04, 0.04, new Rotation2d(0.06));
+        public static final Pose2d pointControllerLooseTolerance = new Pose2d(0.05, 0.05, new Rotation2d(0.062));
 
         static {
                 pointController.setTolerance(pointControllerTolerance);

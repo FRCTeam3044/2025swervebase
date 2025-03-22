@@ -60,7 +60,8 @@ public class ManualState extends State {
 
                 AtomicBoolean idleShoulder = new AtomicBoolean(true);
                 driverController.b().whileTrue(shoulder.intakeCoral());
-                driverController.y().onTrue(Commands.runOnce(() -> idleShoulder.set(!idleShoulder.get())));
+                driverController.b().onTrue(Commands.runOnce(() -> idleShoulder.set(true)));
+                driverController.y().onTrue(Commands.runOnce(() -> idleShoulder.set(false)));
                 driverController.y()
                                 .whileTrue(shoulder.intakeCoral().alongWith(elevator.idle())
                                                 .until(() -> elevator.isAtTarget() && !shoulder.inDangerZone())
