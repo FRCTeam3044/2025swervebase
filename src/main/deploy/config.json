@@ -281,6 +281,10 @@
             "comment": "Auto-Generated",
             "value": "0.07"
         },
+        "Pathfinding Max Accel (Auto)": {
+            "comment": "Auto-Generated",
+            "value": "5.0"
+        },
         "Turn Module 0/IZone": "0.0",
         "Intake algae out speed net": {
             "comment": "Auto-Generated",
@@ -799,6 +803,10 @@
             "comment": "Auto-Generated",
             "value": "0.02"
         },
+        "Pathfinding Max Accel (Auto)": {
+            "comment": "Auto-Generated",
+            "value": "5.0"
+        },
         "Turn Module 0/IZone": "0.0",
         "Intake algae out speed net": {
             "comment": "Auto-Generated",
@@ -1315,6 +1323,10 @@
         "Shoulder Target Threshold": {
             "comment": "Auto-Generated",
             "value": "0.07"
+        },
+        "Pathfinding Max Accel (Auto)": {
+            "comment": "Auto-Generated",
+            "value": "6.0"
         },
         "Turn Module 0/IZone": "0.0",
         "Intake algae out speed net": {

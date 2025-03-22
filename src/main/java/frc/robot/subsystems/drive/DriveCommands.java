@@ -58,6 +58,8 @@ public class DriveCommands {
             "Pathfinding Max Speed");
     private static ConfigurableParameter<Double> pathfindingMaxAccel = new ConfigurableParameter<>(2.0,
             "Pathfinding Max Accel");
+    private static ConfigurableParameter<Double> pathfindingMaxAccelAuto = new ConfigurableParameter<>(5.0,
+            "Pathfinding Max Accel (Auto)");
     private static ConfigurableParameter<Double> pathfindingRotationMaxSpeed = new ConfigurableParameter<>(Math.PI / 2,
             "Pathfinding Max Rotation Speed");
     private static ConfigurableParameter<Double> pathfindingRotationMaxSlowSpeed = new ConfigurableParameter<>(
@@ -572,7 +574,8 @@ public class DriveCommands {
     }
 
     private static TrajectoryConfig getTrajectoryConfig(Drive drive, Path path) {
-        TrajectoryConfig config = new TrajectoryConfig(pathfindingMaxSpeed.get(), pathfindingMaxAccel.get());
+        TrajectoryConfig config = new TrajectoryConfig(pathfindingMaxSpeed.get(),
+                DriverStation.isAutonomous() ? pathfindingMaxAccelAuto.get() : pathfindingMaxAccel.get());
 
         ChassisSpeeds chassisSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getVelocity(), drive.getRotation());
         Vector velocity = new Vector(chassisSpeed.vxMetersPerSecond,
