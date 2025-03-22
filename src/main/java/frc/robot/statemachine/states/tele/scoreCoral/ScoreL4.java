@@ -50,7 +50,11 @@ public class ScoreL4 extends State {
                                                 .until(() -> DriveCommands.pointControllerConverged).withTimeout(1.2));
 
                 startWhenActive(Commands.sequence(far,
-                                close.alongWith(Commands.waitUntil(() -> distToRef.getAsDouble() < scoreDist.get())
+                                close.alongWith(Commands
+                                                .waitUntil(() -> distToRef.getAsDouble() < scoreDist.get()
+                                                                && elevator.isAtTarget()
+                                                                && shoulder.isAtCoralTargetFast(() -> CoralLevel.L4,
+                                                                                distToRef))
                                                 .andThen(endEffector.algaeOut().asProxy())))
 
                                 .withName("l4 Scoring Sequence"));

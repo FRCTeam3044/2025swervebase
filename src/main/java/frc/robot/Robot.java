@@ -16,6 +16,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Threads;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -117,6 +118,10 @@ public class Robot extends LoggedRobot {
     System.out.println(EndEffectorConstants.algaeInSpeed.get());
     System.out.println(AutoTargetUtils.Reef.coral(CoralReefLocation.A, CoralLevel.L4));
     System.out.println(AutoTargetUtils.Reef.algae(AlgaeReefLocation.AB));
+
+    robotContainer.buttonBoard.setAutoIO(boardIOAuto);
+    boardIOAuto.setSelectPressed(List.of(robotContainer.buttonBoard.reefButtons.get(0),
+        robotContainer.buttonBoard.intakeStationButtons.get(0), robotContainer.buttonBoard.levels.get(3)));
   }
 
   /** This function is called periodically during all modes. */
@@ -179,12 +184,16 @@ public class Robot extends LoggedRobot {
   private int currentAutoStep = 0;
   private BBoardIOAuto boardIOAuto = new BBoardIOAuto();
 
+  private Timer autoTimer = new Timer();
+
   /**
    * This autonomous runs the autonomous command selected by your
    * {@link RobotContainer} class.
    */
   @Override
   public void autonomousInit() {
+    autoTimer.reset();
+    autoTimer.start();
     auto = robotContainer.autos.autoChooser.get();
     robotContainer.buttonBoard.setAutoIO(boardIOAuto);
     currentAutoStep = 0;
@@ -203,6 +212,9 @@ public class Robot extends LoggedRobot {
       currentAutoStep++;
     }
     boardIOAuto.setSelectPressed(current.buttons());
+    if (autoTimer.get() > 14.85) {
+      robotContainer.shoulder.intakeCoral().schedule();
+    }
   }
 
   /** This function is called once when teleop is enabled. */
