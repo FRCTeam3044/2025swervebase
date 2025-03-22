@@ -63,6 +63,13 @@ public class LEDs extends SubsystemBase {
         // LEDs");
     }
 
+    public Command off() {
+        return Commands.run(io::setOff, this).withName("Spinning LEDs");
+        // return Commands.run(() ->
+        // io.setSolidColorWithAuto(LEDPattern.solid(Color.kGreen))).withName("Test
+        // LEDs");
+    }
+
     public Command simMorseCode() {
         return morseCode("3044");
     }

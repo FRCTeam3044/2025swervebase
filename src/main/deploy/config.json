@@ -1142,7 +1142,7 @@
         "Drive Module 0/I": "0.0",
         "Point Y Controller Fast/I": "0.0",
         "Shoulder/Staging L3 Angle": "4.05",
-        "Elevator/Elevator Staged L4 Height": "0.2",
+        "Elevator/Elevator Staged L4 Height": "0.15",
         "Drive Module 2/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "Drive Module 0/D": "0.0",
@@ -1337,7 +1337,7 @@
         },
         "Pathfinding Max Accel (Auto)": {
             "comment": "Auto-Generated",
-            "value": "6.0"
+            "value": "5.0"
         },
         "Turn Module 0/IZone": "0.0",
         "Intake algae out speed net": {

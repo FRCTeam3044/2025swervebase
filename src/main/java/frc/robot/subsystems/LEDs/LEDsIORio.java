@@ -71,6 +71,14 @@ public class LEDsIORio implements LEDsIO {
     }
 
     @Override
+    public void setOff() {
+        // First apply the base pattern
+        LEDPattern.kOff.applyTo(buffer);
+
+        LEDStrip.setData(buffer);
+    }
+
+    @Override
     public void setBlinkingColorWithAuto(Color color) {
         // Create and apply the base blinking pattern
         LEDPattern base = LEDPattern.solid(color);

@@ -23,6 +23,9 @@ public interface LEDsIO {
     public default void setSolidColorWithAuto(LEDPattern color) {
     };
 
+    public default void setOff() {
+    };
+
     public default void setBlinkingColor(Color color) {
     };
 
