@@ -11,8 +11,10 @@ public class DisabledState extends State {
         super(stateMachine);
         SmartDashboard.putBoolean("LEDs in disabled", true);
         startWhenActive(LEDs.Default().ignoringDisable(true));
-        t(vision::hasTarget).whileTrue(LEDs.aprilTagDetected().ignoringDisable(true))
-                .whileFalse(LEDs.Default().ignoringDisable(true));
-        t(() -> !SmartDashboard.getBoolean("LEDs in disabled", true)).whileTrue(LEDs.off());
+        t(() -> vision.hasTarget() && SmartDashboard.getBoolean("LEDs in disabled", true))
+                .whileTrue(LEDs.aprilTagDetected().ignoringDisable(true));
+        t(() -> !vision.hasTarget() && SmartDashboard.getBoolean("LEDs in disabled", true))
+                .whileTrue(LEDs.Default().ignoringDisable(true));
+        t(() -> !SmartDashboard.getBoolean("LEDs in disabled", true)).whileTrue(LEDs.off().ignoringDisable(true));
     }
 }
