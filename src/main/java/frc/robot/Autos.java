@@ -32,15 +32,19 @@ public class Autos {
         autoChooser.addOption("Right L4", List.of(
                 scoreCoral(CoralReefLocation.E, CoralLevel.L4, IntakeStation.RightTwo),
                 scoreCoral(CoralReefLocation.D, CoralLevel.L4, IntakeStation.RightTwo),
-                scoreCoral(CoralReefLocation.C, CoralLevel.L4, IntakeStation.RightTwo)));
+                scoreCoral(CoralReefLocation.C, CoralLevel.L4, IntakeStation.RightTwo),
+                scoreCoral(CoralReefLocation.B, CoralLevel.L4, IntakeStation.RightTwo)));
         autoChooser.addOption("Left L4", List.of(
                 scoreCoral(CoralReefLocation.J, CoralLevel.L4, IntakeStation.LeftTwo),
                 scoreCoral(CoralReefLocation.K, CoralLevel.L4, IntakeStation.LeftTwo),
-                scoreCoral(CoralReefLocation.L, CoralLevel.L4, IntakeStation.LeftTwo)));
+                scoreCoral(CoralReefLocation.L, CoralLevel.L4, IntakeStation.LeftTwo),
+                scoreCoral(CoralReefLocation.A, CoralLevel.L4, IntakeStation.LeftTwo)));
         autoChooser.addOption("Back Left", List.of(
                 singleCoral(CoralReefLocation.H, CoralLevel.L4)));
         autoChooser.addOption("Back Right", List.of(
                 singleCoral(CoralReefLocation.G, CoralLevel.L4)));
+        autoChooser.addOption("Test", List.of(
+                singleCoral(CoralReefLocation.K, CoralLevel.L4)));
     }
 
     public record AutoStep(List<SelectButtonInfo<?>> buttons, List<ButtonInfo> otherButtons, BooleanSupplier exit) {

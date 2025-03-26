@@ -342,8 +342,10 @@ public class DriveCommands {
         }).withName("Point Control");
     }
 
-    private static ConfigurableParameter<Double> slowMaxSpeed = new ConfigurableParameter<Double>(0.1,
+    private static ConfigurableParameter<Double> slowMaxSpeed = new ConfigurableParameter<Double>(0.4,
             "Slow Point Controller Max");
+    private static ConfigurableParameter<Double> slowMaxSpeedAuto = new ConfigurableParameter<Double>(0.5,
+            "Slow Point Controller Max Auto");
     private static ConfigurableParameter<Double> slowMaxRotSpeed = new ConfigurableParameter<Double>(0.1,
             "Slow Point Controller Max Rotation Speed");
 
@@ -395,11 +397,12 @@ public class DriveCommands {
                 pointControllerLooseConverged = false;
             }
 
+            DoubleSupplier slowMax = () -> DriverStation.isAutonomous() ? slowMaxSpeedAuto.get() : slowMaxSpeed.get();
             if (slowDrive.getAsBoolean()) {
-                speeds.vxMetersPerSecond = MathUtil.clamp(speeds.vxMetersPerSecond, -slowMaxSpeed.get(),
-                        slowMaxSpeed.get());
-                speeds.vyMetersPerSecond = MathUtil.clamp(speeds.vyMetersPerSecond, -slowMaxSpeed.get(),
-                        slowMaxSpeed.get());
+                speeds.vxMetersPerSecond = MathUtil.clamp(speeds.vxMetersPerSecond, -slowMax.getAsDouble(),
+                        slowMax.getAsDouble());
+                speeds.vyMetersPerSecond = MathUtil.clamp(speeds.vyMetersPerSecond, -slowMax.getAsDouble(),
+                        slowMax.getAsDouble());
             }
 
             if (slowRot.getAsBoolean()) {
