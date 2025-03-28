@@ -77,8 +77,9 @@ public class StateMachine extends StateMachineBase {
                 ScoreL2 scoreL2 = new ScoreL2(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
                 ScoreL3 scoreL3 = new ScoreL3(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
                 ScoreL4 scoreL4 = new ScoreL4(this, buttonBoard, drive, endEffector, elevator, shoulder, LEDs);
-                ScoreL4Auto scoreL4Auto = new ScoreL4Auto(this, buttonBoard, drive, endEffector, elevator, shoulder,
-                                LEDs);
+                // ScoreL4Auto scoreL4Auto = new ScoreL4Auto(this, buttonBoard, drive,
+                // endEffector, elevator, shoulder,
+                // LEDs);
 
                 ScoreAlgae scoreAlgae = new ScoreAlgae(this);
                 ScoreAlgaeNet scoreAlgaeNet = new ScoreAlgaeNet(this, buttonBoard, drive, endEffector, LEDs, shoulder,
@@ -161,15 +162,15 @@ public class StateMachine extends StateMachineBase {
                                 .withChild(scoreL3, () -> buttonBoard.getCoralReefLevel() == CoralLevel.L3, 0,
                                                 "L3 Selected")
                                 .withChild(scoreL4,
-                                                () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4
-                                                                && !DriverStation.isAutonomous(),
+                                                () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4,
+                                                // && !DriverStation.isAutonomous(),
                                                 0,
-                                                "L4 Selected")
-                                .withChild(scoreL4Auto,
-                                                () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4
-                                                                && DriverStation.isAutonomous(),
-                                                0,
-                                                "L4 Selected (auto)");
+                                                "L4 Selected");
+                // .withChild(scoreL4Auto,
+                // () -> buttonBoard.getCoralReefLevel() == CoralLevel.L4
+                // && DriverStation.isAutonomous(),
+                // 0,
+                // "L4 Selected (auto)");
 
                 // Example, will be button board later
                 manual.withTransition(goToScoringPosition,

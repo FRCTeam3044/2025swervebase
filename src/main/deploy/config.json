@@ -1098,7 +1098,7 @@
             "value": "0.7"
         },
         "Turn Module 0/FF": "0.0",
-        "Elevator Intake Heights/y1": "0.02",
+        "Elevator Intake Heights/y1": "0.01",
         "Elevator Intake Heights/y2": "0.0",
         "Servo Open Speed": {
             "comment": "Auto-Generated",
@@ -1381,7 +1381,7 @@
         },
         "Pathfinding Max Accel (Auto)": {
             "comment": "Auto-Generated",
-            "value": "2.5"
+            "value": "3.2"
         },
         "Turn Module 0/IZone": "0.0",
         "Intake algae out speed net": {
@@ -1394,7 +1394,7 @@
         },
         "Net dist": {
             "comment": "Auto-Generated",
-            "value": "1.65"
+            "value": "1.1"
         },
         "Shoulder Low Algae/x2": "1.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -1408,7 +1408,7 @@
         },
         "Intake l2 coral out speed": {
             "comment": "Auto-Generated",
-            "value": "0.8"
+            "value": "0.75"
         },
         "Point Theta Controller Fast/I": "0.0",
         "Slow Point Controller Max Auto": {
@@ -1613,7 +1613,7 @@
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",
-            "value": "4.05"
+            "value": "1.35"
         },
         "Elevator L3 Heights/y2": "0.0",
         "Elevator L3 Heights/y1": "0.0",

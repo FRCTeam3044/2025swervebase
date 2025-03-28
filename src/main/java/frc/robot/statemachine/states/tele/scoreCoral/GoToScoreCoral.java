@@ -64,7 +64,8 @@ public class GoToScoreCoral extends State {
                                 .toCoralNoStop(() -> CoralLevel.L4, distToRef)
                                 .alongWith(shoulder.scoreCoralNoStop(() -> CoralLevel.L4, distToRef, () -> false));
                 t(() -> buttonBoard.getCoralReefLevel() == CoralLevel.L4 && distToTarget
-                                .getAsDouble() < (DriverStation.isAutonomous() ? l4FullDistAuto.get() : l4Dist.get()))
+                                .getAsDouble() < (/* DriverStation.isAutonomous() ? l4FullDistAuto.get(): */l4Dist
+                                                .get()))
                                 .runWhileTrue(alignElevatorAndShoulder);
 
                 t(() -> buttonBoard.getCoralReefLevel() == CoralLevel.L4 && distToTarget.getAsDouble() < l4Dist.get())

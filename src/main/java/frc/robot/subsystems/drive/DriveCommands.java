@@ -397,7 +397,8 @@ public class DriveCommands {
                 pointControllerLooseConverged = false;
             }
 
-            DoubleSupplier slowMax = () -> DriverStation.isAutonomous() ? slowMaxSpeedAuto.get() : slowMaxSpeed.get();
+            DoubleSupplier slowMax = () -> /* DriverStation.isAutonomous() ? slowMaxSpeedAuto.get() : */slowMaxSpeed
+                    .get();
             if (slowDrive.getAsBoolean()) {
                 speeds.vxMetersPerSecond = MathUtil.clamp(speeds.vxMetersPerSecond, -slowMax.getAsDouble(),
                         slowMax.getAsDouble());
