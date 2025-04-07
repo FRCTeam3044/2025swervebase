@@ -79,7 +79,7 @@ public class ButtonBoard {
             new SelectButtonInfo<CoralLevel>(2, 8, CoralLevel.L3),
             new SelectButtonInfo<CoralLevel>(2, 7, CoralLevel.L4));
     public ButtonInfo algaeModeToggle = new ButtonInfo(1, 4);
-    private ButtonInfo net = new ButtonInfo(2, 11);
+    public ButtonInfo net = new ButtonInfo(2, 11);
     private ButtonInfo climbUp = new ButtonInfo(2, 5);
     private ButtonInfo climbDown = new ButtonInfo(2, 6);
 

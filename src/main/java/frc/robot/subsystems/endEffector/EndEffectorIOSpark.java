@@ -17,14 +17,17 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotContainer;
 
 public class EndEffectorIOSpark implements EndEffectorIO {
     private final SparkMax motor = new SparkMax(canId, MotorType.kBrushless);
     Debouncer stuckDebouncer = new Debouncer(0.1, Debouncer.DebounceType.kBoth);
     Debouncer algaeDebouncer = new Debouncer(0.2, Debouncer.DebounceType.kBoth);
+    Debouncer algaeSensorDebouncer = new Debouncer(1, Debouncer.DebounceType.kFalling);
 
     private DigitalInput coralSwitch = new DigitalInput(2);
+    private DigitalInput algaeSwitch = new DigitalInput(3);
     private RelativeEncoder encoder = motor.getEncoder();
 
     public EndEffectorIOSpark() {
@@ -43,10 +46,12 @@ public class EndEffectorIOSpark implements EndEffectorIO {
                 (values) -> inputs.appliedVoltage = values[0] * values[1]);
 
         inputs.wheelsStuck = checkWheelsStuck(inputs);
-        inputs.limitSwitchPressed = limitSwitchPressed();
+        inputs.coralSwitchPressed = coralSwitchPressed();
+        inputs.algaeSwitchPressed = algaeSwitchPressed();
 
         inputs.hasCoral = hasCoral();
-        inputs.hasAlgae = RobotContainer.getInstance().buttonBoard.extraTwo();
+        inputs.hasAlgae = DriverStation.isAutonomous() ? algaeSensorDebouncer.calculate(inputs.algaeSwitchPressed)
+                : RobotContainer.getInstance().buttonBoard.extraTwo();
     }
 
     @Override
@@ -62,15 +67,19 @@ public class EndEffectorIOSpark implements EndEffectorIO {
     }
 
     private boolean hasCoral() {
-        return limitSwitchPressed();
+        return coralSwitchPressed();
     }
 
     @SuppressWarnings("unused")
     private boolean hasAlgae(EndEffectorIOInputs inputs) {
-        return algaeDebouncer.calculate(inputs.wheelsStuck && !limitSwitchPressed());
+        return algaeDebouncer.calculate(inputs.wheelsStuck && !coralSwitchPressed());
     }
 
-    private boolean limitSwitchPressed() {
+    private boolean coralSwitchPressed() {
         return !coralSwitch.get();
+    }
+
+    private boolean algaeSwitchPressed() {
+        return !algaeSwitch.get();
     }
 }

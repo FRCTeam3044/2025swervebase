@@ -212,6 +212,7 @@ public class Robot extends LoggedRobot {
       currentAutoStep++;
     }
     boardIOAuto.setSelectPressed(current.buttons());
+    boardIOAuto.setPressed(current.otherButtons());
     if (autoTimer.get() > 14.85) {
       robotContainer.shoulder.intakeCoral().schedule();
     }

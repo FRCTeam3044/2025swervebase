@@ -8,6 +8,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.endEffector.EndEffector;
 import frc.robot.util.AutoTargetUtils.IntakeStations.IntakeStation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
@@ -15,6 +16,7 @@ import frc.robot.util.AutoTargetUtils.Reef.CoralReefLocation;
 import frc.robot.util.bboard.ButtonBoard;
 import frc.robot.util.bboard.ButtonBoard.ButtonInfo;
 import frc.robot.util.bboard.ButtonBoard.SelectButtonInfo;
+import me.nabdev.oxconfig.ConfigurableParameter;
 
 public class Autos {
     private final ButtonBoard board;
@@ -22,6 +24,8 @@ public class Autos {
     public final LoggedDashboardChooser<List<AutoStep>> autoChooser;
 
     private Debouncer hasCoralDebouncer = new Debouncer(0.2, DebounceType.kFalling);
+    private ConfigurableParameter<Double> algaeMaxIntakeTime = new ConfigurableParameter<>(2.0,
+            "Algae Max Intake Time (s)");
 
     public Autos(ButtonBoard board, EndEffector endEffector) {
         this.board = board;
@@ -43,11 +47,14 @@ public class Autos {
                 singleCoral(CoralReefLocation.H, CoralLevel.L4)));
         autoChooser.addOption("Back Right", List.of(
                 singleCoral(CoralReefLocation.G, CoralLevel.L4)));
+        autoChooser.addOption("Left Algae", List.of(
+                singleCoralIntakeAlgae(CoralReefLocation.H, CoralLevel.L4)));
         autoChooser.addOption("Test", List.of(
                 singleCoral(CoralReefLocation.K, CoralLevel.L4)));
     }
 
-    public record AutoStep(List<SelectButtonInfo<?>> buttons, List<ButtonInfo> otherButtons, BooleanSupplier exit) {
+    public record AutoStep(List<SelectButtonInfo<?>> buttons, List<ButtonInfo> otherButtons, BooleanSupplier exit,
+            Runnable onEnter) {
     }
 
     public AutoStep scoreCoral(CoralReefLocation location, CoralLevel level, IntakeStation station) {
@@ -62,6 +69,7 @@ public class Autos {
             }
             hadCoral.set(hasCoral);
             return false;
+        }, () -> {
         });
     }
 
@@ -69,7 +77,28 @@ public class Autos {
         List<SelectButtonInfo<?>> buttons = List.of(coralLocationBtn(location), coralLevelBtn(level));
         // List<ButtonInfo> otherButtons = List.of(board.algaeModeToggle);
 
-        return new AutoStep(buttons, List.of(), () -> false);
+        return new AutoStep(buttons, List.of(), () -> false, () -> {
+        });
+    }
+
+    public AutoStep singleCoralIntakeAlgae(CoralReefLocation location, CoralLevel level) {
+        List<SelectButtonInfo<?>> buttons = List.of(coralLocationBtn(location), coralLevelBtn(level));
+        List<ButtonInfo> otherButtons = List.of(board.algaeModeToggle, board.net);
+
+        Timer algaeTimer = new Timer();
+        return new AutoStep(buttons, otherButtons,
+                () -> endEffector.hasAlgae() || algaeTimer.get() > algaeMaxIntakeTime.get(), () -> {
+                    algaeTimer.reset();
+                    algaeTimer.start();
+                });
+    }
+
+    public AutoStep algae(CoralReefLocation location) {
+        List<SelectButtonInfo<?>> buttons = List.of(coralLocationBtn(location));
+        List<ButtonInfo> otherButtons = List.of(board.algaeModeToggle, board.net);
+
+        return new AutoStep(buttons, otherButtons, () -> endEffector.hasAlgae(), () -> {
+        });
     }
 
     private SelectButtonInfo<CoralReefLocation> coralLocationBtn(CoralReefLocation location) {

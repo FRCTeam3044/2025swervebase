@@ -427,6 +427,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Algae Max Intake Time (s)": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Shoulder L4 Angles/y1": "0.0",
         "Coral proximity distance": {
             "comment": "Distance threshold for proximity sensor to think we have coral",
@@ -970,6 +974,10 @@
             "comment": "Auto-Generated",
             "value": "1.0"
         },
+        "Algae Max Intake Time (s)": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
+        },
         "Shoulder L4 Angles/y1": "2.4",
         "Coral proximity distance": {
             "comment": "Distance threshold for proximity sensor to think we have coral",
@@ -1425,7 +1433,7 @@
         "Drive Module 3/IZone": "0.0",
         "Net Stop Angle": {
             "comment": "Auto-Generated",
-            "value": "1.9"
+            "value": "1.8"
         },
         "Test Climber Speed": {
             "comment": "Auto-Generated",
@@ -1511,6 +1519,10 @@
         "Algae Leave Threshold": {
             "comment": "Auto-Generated",
             "value": "1.0"
+        },
+        "Algae Max Intake Time (s)": {
+            "comment": "Auto-Generated",
+            "value": "2.0"
         },
         "Shoulder L4 Angles/y1": "4.05",
         "Coral proximity distance": {

@@ -9,7 +9,8 @@ public interface EndEffectorIO {
         public double currentAmps = 0.0;
         public double velocity = 0.0;
 
-        public boolean limitSwitchPressed = false;
+        public boolean coralSwitchPressed = false;
+        public boolean algaeSwitchPressed = false;
         public boolean wheelsStuck = false;
 
         public boolean hasCoral = false;

@@ -21,8 +21,9 @@ public class GoToScoreCoral extends State {
         private ConfigurableParameter<Double> l4Dist = new ConfigurableParameter<Double>(1.0, "L4 Start Shoulder dist");
         private ConfigurableParameter<Double> l4DistAuto = new ConfigurableParameter<Double>(2.6,
                         "L4 Start Shoulder dist (auto)");
-        private ConfigurableParameter<Double> l4FullDistAuto = new ConfigurableParameter<Double>(2.5,
-                        "L4 Full Shoulder dist (auto)");
+        // private ConfigurableParameter<Double> l4FullDistAuto = new
+        // ConfigurableParameter<Double>(2.5,
+        // "L4 Full Shoulder dist (auto)");
 
         public GoToScoreCoral(StateMachine stateMachine, ButtonBoard buttonBoard, Drive drive, Elevator elevator,
                         Shoulder shoulder) {
