@@ -14,7 +14,7 @@ public class GoToReefIntake extends State {
             Shoulder shoulder, Elevator elevator) {
         super(stateMachine);
 
-        startWhenActive(DriveCommands.goToPoint(drive, buttonBoard::getAlgaeReefTarget));
+        startWhenActive(DriveCommands.goToPoint(drive, buttonBoard::getAlgaeReefFarTarget));
         startWhenActive(LEDs.goingToAlgaeIntake());
         startWhenActive(elevator.idle());
         startWhenActive(shoulder.idle());

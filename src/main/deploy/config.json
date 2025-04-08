@@ -53,6 +53,10 @@
             "comment": "Auto-Generated",
             "value": "0.15"
         },
+        "Algae High Intake Far Distance": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
+        },
         "Shoulder Profiled PID Controller/I": "0.0",
         "Elevator Intake Heights/x1": "0.0",
         "Shoulder Profiled PID Controller/P": "0.0",
@@ -346,6 +350,10 @@
             "comment": "Auto-Generated",
             "value": "0.2"
         },
+        "Algae Low Intake Far Distance": {
+            "comment": "Auto-Generated",
+            "value": "0.7"
+        },
         "Algae High Intake Distance": {
             "comment": "Target distance from reef to intake high algae",
             "value": "1.0"
@@ -599,6 +607,10 @@
         "Algae Low Offset": {
             "comment": "Auto-Generated",
             "value": "0.15"
+        },
+        "Algae High Intake Far Distance": {
+            "comment": "Auto-Generated",
+            "value": "0.5"
         },
         "Shoulder Profiled PID Controller/I": "0.0",
         "Elevator Intake Heights/x1": "0.5",
@@ -893,6 +905,10 @@
             "comment": "Auto-Generated",
             "value": "0.2"
         },
+        "Algae Low Intake Far Distance": {
+            "comment": "Auto-Generated",
+            "value": "0.7"
+        },
         "Algae High Intake Distance": {
             "comment": "Target distance from reef to intake high algae",
             "value": "1.0"
@@ -1097,9 +1113,9 @@
         "Shoulder Intake Angles/x1": "0.475",
         "Elevator High Algae/x2": "1.0",
         "Elevator High Algae/x1": "0.0",
-        "Elevator Low Algae/y2": "0.0013",
+        "Elevator Low Algae/y2": "0.0",
         "Pathfinding X Controller/I": "0.0",
-        "Elevator Low Algae/y1": "0.0013",
+        "Elevator Low Algae/y1": "0.0",
         "Pathfinding X Controller/D": "0.2",
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
@@ -1122,9 +1138,9 @@
             "comment": "Target distance from reef to intake low algae",
             "value": "0.5"
         },
-        "Elevator High Algae/y2": "0.236",
+        "Elevator High Algae/y2": "0.31",
         "Elevator Low Algae/x1": "0.0",
-        "Elevator High Algae/y1": "0.236",
+        "Elevator High Algae/y1": "0.31",
         "Elevator Low Algae/x2": "1.0",
         "Shoulder Intake Angles/y1": "1.26",
         "Shoulder/Shoulder Danger Zone One Max Angle (rad)": "0.0",
@@ -1145,6 +1161,10 @@
         "Algae Low Offset": {
             "comment": "Auto-Generated",
             "value": "0.15"
+        },
+        "Algae High Intake Far Distance": {
+            "comment": "Auto-Generated",
+            "value": "0.65"
         },
         "Shoulder Profiled PID Controller/I": "0",
         "Elevator Intake Heights/x1": "0.475",
@@ -1433,11 +1453,15 @@
         "Drive Module 3/IZone": "0.0",
         "Net Stop Angle": {
             "comment": "Auto-Generated",
-            "value": "1.8"
+            "value": "1.85"
         },
         "Test Climber Speed": {
             "comment": "Auto-Generated",
             "value": "0.2"
+        },
+        "Algae Low Intake Far Distance": {
+            "comment": "Auto-Generated",
+            "value": "0.7"
         },
         "Algae High Intake Distance": {
             "comment": "Target distance from reef to intake high algae",

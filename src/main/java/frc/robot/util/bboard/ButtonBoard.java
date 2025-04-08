@@ -92,6 +92,7 @@ public class ButtonBoard {
     private Pose2d coralReefTargetPose = null;
     private Pose2d coralReefReferencePose = null;
     private Pose2d algaeReefTargetPose = null;
+    private Pose2d algaeReefFarTargetPose = null;
     private Pose2d algaeReefRemovalTargetPose = null;
     private Pose2d algaeReefReferencePose = null;
 
@@ -103,7 +104,7 @@ public class ButtonBoard {
     private IntakeStation intakeStation;
 
     private boolean algaeMode = false;
-    private boolean isProcessor = true;
+    private boolean isProcessor = false;
 
     private ManualMode manualMode = ManualMode.AUTO;
 
@@ -141,6 +142,7 @@ public class ButtonBoard {
             }
             if (coralReefLocation != null) {
                 algaeReefTargetPose = Reef.algae(coralReefLocation.algae());
+                algaeReefFarTargetPose = Reef.farAlgae(coralReefLocation.algae());
                 algaeReefRemovalTargetPose = Reef.algaeRemoval(coralReefLocation.algae());
                 algaeReefReferencePose = coralReefLocation.algae().pose();
             }
@@ -333,6 +335,10 @@ public class ButtonBoard {
 
     public Pose2d getAlgaeReefTarget() {
         return algaeReefTargetPose;
+    }
+
+    public Pose2d getAlgaeReefFarTarget() {
+        return algaeReefFarTargetPose;
     }
 
     public Pose2d getAlgaeReefRemovalTarget() {

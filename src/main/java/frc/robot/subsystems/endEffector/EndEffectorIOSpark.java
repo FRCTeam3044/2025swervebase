@@ -17,7 +17,6 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotContainer;
 
 public class EndEffectorIOSpark implements EndEffectorIO {
@@ -50,8 +49,8 @@ public class EndEffectorIOSpark implements EndEffectorIO {
         inputs.algaeSwitchPressed = algaeSwitchPressed();
 
         inputs.hasCoral = hasCoral();
-        inputs.hasAlgae = DriverStation.isAutonomous() ? algaeSensorDebouncer.calculate(inputs.algaeSwitchPressed)
-                : RobotContainer.getInstance().buttonBoard.extraTwo();
+        inputs.hasAlgae = algaeSensorDebouncer.calculate(inputs.algaeSwitchPressed)
+                || RobotContainer.getInstance().buttonBoard.extraTwo();
     }
 
     @Override

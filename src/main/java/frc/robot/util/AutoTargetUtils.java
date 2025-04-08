@@ -167,6 +167,10 @@ public class AutoTargetUtils {
                 "Algae Low Intake Distance");
         public static ConfigurableParameter<Double> algaeHighDistance = new ConfigurableParameter<Double>(1.0,
                 "Algae High Intake Distance");
+        public static ConfigurableParameter<Double> algaeLowFarDistance = new ConfigurableParameter<Double>(0.7,
+                "Algae Low Intake Far Distance");
+        public static ConfigurableParameter<Double> algaeHighFarDistance = new ConfigurableParameter<Double>(0.5,
+                "Algae High Intake Far Distance");
         public static ConfigurableParameter<Boolean> algaeFlipped = new ConfigurableParameter<Boolean>(false,
                 "Algae Flipped");
         public static ConfigurableParameter<Double> algaeHighOffset = new ConfigurableParameter<Double>(0.1,
@@ -181,6 +185,13 @@ public class AutoTargetUtils {
         public static Pose2d algae(AlgaeReefLocation location) {
             return location.data().offsetPoseFacing(
                     location.upperBranch() ? algaeHighDistance.get() : algaeLowDistance.get(),
+                    algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get(),
+                    location.flipNormal);
+        }
+
+        public static Pose2d farAlgae(AlgaeReefLocation location) {
+            return location.data().offsetPoseFacing(
+                    location.upperBranch() ? algaeHighFarDistance.get() : algaeLowFarDistance.get(),
                     algaeFlipped.get(), location.upperBranch() ? algaeHighOffset.get() : algaeLowOffset.get(),
                     location.flipNormal);
         }

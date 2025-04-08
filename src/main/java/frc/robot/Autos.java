@@ -48,7 +48,7 @@ public class Autos {
         autoChooser.addOption("Back Right", List.of(
                 singleCoral(CoralReefLocation.G, CoralLevel.L4)));
         autoChooser.addOption("Left Algae", List.of(
-                singleCoralIntakeAlgae(CoralReefLocation.H, CoralLevel.L4)));
+                singleCoralIntakeAlgae(CoralReefLocation.H, CoralLevel.L4), algae(CoralReefLocation.I)));
         autoChooser.addOption("Test", List.of(
                 singleCoral(CoralReefLocation.K, CoralLevel.L4)));
     }

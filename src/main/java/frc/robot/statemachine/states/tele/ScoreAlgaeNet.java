@@ -25,7 +25,7 @@ public class ScoreAlgaeNet extends State {
         super(stateMachine);
 
         startWhenActive(DriveCommands.pointControl(drive, AutoTargetUtils::net));
-        BooleanSupplier ready = () -> DriveCommands.pointControllerConverged;
+        BooleanSupplier ready = () -> DriveCommands.pointControllerLooseConverged;
         AtomicBoolean started = new AtomicBoolean(false);
 
         startWhenActive(Commands.runOnce(() -> started.set(false)));

@@ -286,6 +286,12 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
         return Math.abs(inputs.leaderShoulderAngleRad - getStagingAngle(level.get())) < threshold.get();
     }
 
+    public boolean isAtAlgaeIntakeTarget(Supplier<AlgaeReefLocation> algae, DoubleSupplier robotAngle) {
+        return Math.abs(inputs.leaderShoulderAngleRad
+                - (algae.get().upperBranch() ? highAlgae.calculate(robotAngle.getAsDouble())
+                        : lowAlgae.calculate(robotAngle.getAsDouble()))) < threshold.get();
+    }
+
     private Debouncer atCoralDebouncer = new Debouncer(0.2);
     // private Debouncer atCoralFastDebouncer = new Debouncer(0.07);
 
