@@ -19,9 +19,14 @@ public interface ElevatorIO {
         public boolean topHallEffectClosed = false;
         public boolean bottomEffectClosed = false;
         public boolean inPosControlMode = false;
+
+        public boolean lowerDangerZone = false;
+        public boolean upperDangerZone = false;
+        public boolean dangerZoneOverride = false;
+        public boolean effectiveDangerZone = false;
     }
 
-    public default void updateInputs(ElevatorIOInputs inputs, boolean shoulderInDangerZone) {
+    public default void updateInputs(ElevatorIOInputs inputs, boolean lowerDangerZone, boolean upperDangerZone) {
     };
 
     public default void setPosition(double desiredPosition) {

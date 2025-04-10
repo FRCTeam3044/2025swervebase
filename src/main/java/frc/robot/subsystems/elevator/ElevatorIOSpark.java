@@ -20,6 +20,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.RobotContainer;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.oxconfig.sampleClasses.ConfigurableProfiledPIDController;
 
@@ -55,7 +56,8 @@ public class ElevatorIOSpark implements ElevatorIO {
     private double currentTargetMeters;
     private boolean positionControlMode = false;
 
-    private boolean shoulderInDangerZone = false;
+    private boolean lowerDangerZone = false;
+    private boolean upperDangerZone = false;
 
     public ElevatorIOSpark() {
         tryUntilOk(followerMotor, 5, () -> followerMotor.configure(ElevatorConfigs.followerConfig,
@@ -114,7 +116,7 @@ public class ElevatorIOSpark implements ElevatorIO {
     public void setSpeed(double desiredSpeed) {
         positionControlMode = false;
 
-        if (!shoulderInDangerZone) {
+        if (!upperDangerZone && !lowerDangerZone) {
             leaderMotor.set(desiredSpeed);
         }
     }
@@ -123,17 +125,27 @@ public class ElevatorIOSpark implements ElevatorIO {
     public void setVoltage(double voltage) {
         positionControlMode = false;
 
-        if (!shoulderInDangerZone) {
+        if (!lowerDangerZone && !upperDangerZone) {
             leaderMotor.setVoltage(voltage);
         }
     }
 
     @Override
-    public void updateInputs(ElevatorIOInputs inputs, boolean shoulderInDangerZone) {
-        this.shoulderInDangerZone = shoulderInDangerZone;
+    public void updateInputs(ElevatorIOInputs inputs, boolean lowerDangerZone, boolean upperDangerZone) {
+        this.lowerDangerZone = lowerDangerZone;
+        this.upperDangerZone = upperDangerZone;
         double currentTargetRotations = currentTargetMeters / (drumRadius * 2.0 * Math.PI);
 
-        if (shoulderInDangerZone) {
+        Logger.recordOutput("DZoneTest1", currentTargetMeters > inputs.elevatorHeightMeters);
+        Logger.recordOutput("DZoneTest2",
+                RobotContainer.getInstance().stateMachine.currentState.getName().equals("ScoreAlgaeNet"));
+        inputs.dangerZoneOverride = currentTargetMeters > inputs.elevatorHeightMeters
+                && RobotContainer.getInstance().stateMachine.currentState.getName().equals("ScoreAlgaeNet");
+        inputs.lowerDangerZone = lowerDangerZone;
+        inputs.upperDangerZone = upperDangerZone;
+        inputs.effectiveDangerZone = lowerDangerZone || (upperDangerZone && !inputs.dangerZoneOverride);
+
+        if (inputs.effectiveDangerZone) {
             leaderMotor.set(0);
         } else {
             if (positionControlMode)

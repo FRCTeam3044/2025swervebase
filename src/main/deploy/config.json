@@ -159,6 +159,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Launch Height": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Drive Module 0/Max": "1.0",
@@ -715,6 +719,10 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
+        "Launch Height": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "0.0",
         "Drive Module 0/Max": "1.0",
@@ -1270,6 +1278,10 @@
             "comment": "Auto-Generated",
             "value": "0.52398"
         },
+        "Launch Height": {
+            "comment": "Auto-Generated",
+            "value": "0.2"
+        },
         "Shoulder L1 Angles/x1": "0.0",
         "Shoulder L1 Angles/x2": "1.0",
         "Drive Module 0/Max": "1.0",
@@ -1424,7 +1436,7 @@
         },
         "Net dist": {
             "comment": "Auto-Generated",
-            "value": "1.2"
+            "value": "1.5"
         },
         "Shoulder Low Algae/x2": "1.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -1648,7 +1660,7 @@
             "comment": "Target distance to score coral on L1",
             "value": "1.0"
         },
-        "Shoulder/Pre-net angle": "0.92",
+        "Shoulder/Pre-net angle": "0.93",
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",

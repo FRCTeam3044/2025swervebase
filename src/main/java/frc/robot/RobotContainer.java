@@ -148,7 +148,8 @@ public class RobotContainer {
                                                 new VisionIOPhotonVision(VisionConstants.camera2Name,
                                                                 VisionConstants.robotToCamera2));
                                 shoulder = new Shoulder(new ShoulderIOSpark());
-                                elevator = new Elevator(new ElevatorIOSpark(), shoulder::inDangerZone);
+                                elevator = new Elevator(new ElevatorIOSpark(), shoulder::lowerDangerZone,
+                                                shoulder::upperDangerZone);
                                 shoulder.setElevatorNotAtTargetSupplier(elevator::notAtTarget);
                                 endEffector = new EndEffector(new EndEffectorIOSpark());
                                 buttonBoard = new ButtonBoard(new BBoardIOReal());
@@ -197,7 +198,8 @@ public class RobotContainer {
                                                                 driveSimulation::getSimulatedDriveTrainPose));
                                 vision.setPoseSupplier(driveSimulation::getSimulatedDriveTrainPose);
                                 shoulder = new Shoulder(new ShoulderIOSim());
-                                elevator = new Elevator(new ElevatorIOSim(), shoulder::inDangerZone);
+                                elevator = new Elevator(new ElevatorIOSim(), shoulder::lowerDangerZone,
+                                                shoulder::upperDangerZone);
                                 shoulder.setElevatorNotAtTargetSupplier(elevator::notAtTarget);
                                 endEffector = new EndEffector(new EndEffectorIOSim(driverController.getHID()));
                                 buttonBoard = new ButtonBoard(
@@ -227,7 +229,7 @@ public class RobotContainer {
                                 shoulder = new Shoulder(new ShoulderIO() {
                                 });
                                 elevator = new Elevator(new ElevatorIO() {
-                                }, shoulder::inDangerZone);
+                                }, shoulder::lowerDangerZone, shoulder::upperDangerZone);
                                 shoulder.setElevatorNotAtTargetSupplier(elevator::notAtTarget);
                                 endEffector = new EndEffector(new EndEffectorIO() {
                                 });

@@ -19,6 +19,7 @@ import me.nabdev.oxconfig.ConfigurableParameter;
 public class ScoreAlgaeNet extends State {
     private static ConfigurableParameter<Double> launchAngle = new ConfigurableParameter<>(2.2, "Net Launch Angle");
     private static ConfigurableParameter<Double> stopAngle = new ConfigurableParameter<>(2.6, "Net Stop Angle");
+    private static ConfigurableParameter<Double> launchHeight = new ConfigurableParameter<>(0.2, "Launch Height");
 
     public ScoreAlgaeNet(StateMachineBase stateMachine, ButtonBoard buttonBoard, Drive drive,
             EndEffector endEffector, LEDs LEDs, Shoulder shoulder, Elevator elevator) {
@@ -30,9 +31,10 @@ public class ScoreAlgaeNet extends State {
 
         startWhenActive(Commands.runOnce(() -> started.set(false)));
         t(ready).onTrue(shoulder.preNet());
-        t(ready).onTrue(elevator.toNet());
         t(ready).onTrue(Commands.runOnce(() -> started.set(true)));
-        t(() -> started.get() && elevator.isAtTarget() && shoulder.inSafeZone())
+        t(() -> started.get() && shoulder.inSafeZone())
+                .onTrue(elevator.toNet());
+        t(() -> started.get() && shoulder.inSafeZone() && elevator.getElevatorHeight() > launchHeight.get())
                 .whileTrue(shoulder.net().until(() -> shoulder.getShoulderAngle() > stopAngle.get()));
         t(() -> shoulder.getShoulderAngle() > launchAngle.get()).onTrue(endEffector.algaeOutNet());
         t(() -> shoulder.getShoulderAngle() > stopAngle.get()).onTrue(shoulder.idle());

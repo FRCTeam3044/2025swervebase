@@ -51,8 +51,8 @@ public class ElevatorIOSim implements ElevatorIO {
     // }
 
     @Override
-    public void updateInputs(ElevatorIOInputs inputs, boolean shoulderInDangerZone) {
-        this.shoulderInDangerZone = shoulderInDangerZone;
+    public void updateInputs(ElevatorIOInputs inputs, boolean lowerDangerZone, boolean upperDangerZone) {
+        this.shoulderInDangerZone = lowerDangerZone || upperDangerZone;
         m_elevatorSim.setInput(sparkMax.getAppliedOutput() * RobotController.getBatteryVoltage());
         m_elevatorSim.update(0.020);
         RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));

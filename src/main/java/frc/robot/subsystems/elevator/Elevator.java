@@ -50,11 +50,14 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
     private final List<ConfigurableClassParam<?>> params = List.of(elevatorTargetThreshold, idleHeight, netHeight,
             stagedL4);
 
-    private final BooleanSupplier shoulderInDangerZone;
+    private final BooleanSupplier shoulderInLowerDangerZone;
+    private final BooleanSupplier shoulderInUpperDangerZone;
 
-    public Elevator(ElevatorIO io, BooleanSupplier shoulderInDangerZone) {
+    public Elevator(ElevatorIO io, BooleanSupplier shoulderInLowerDangerZone,
+            BooleanSupplier shoulderInUpperDangerZone) {
         this.io = io;
-        this.shoulderInDangerZone = shoulderInDangerZone;
+        this.shoulderInLowerDangerZone = shoulderInLowerDangerZone;
+        this.shoulderInUpperDangerZone = shoulderInUpperDangerZone;
 
         sysId = new SysIdRoutine(
                 new SysIdRoutine.Config(
@@ -80,7 +83,7 @@ public class Elevator extends SubsystemBase implements ConfigurableClass {
 
     @Override
     public void periodic() {
-        io.updateInputs(inputs, shoulderInDangerZone.getAsBoolean());
+        io.updateInputs(inputs, shoulderInLowerDangerZone.getAsBoolean(), shoulderInUpperDangerZone.getAsBoolean());
         Logger.processInputs("Elevator", inputs);
         Logger.recordOutput("Elevator at target", isAtTarget());
     }

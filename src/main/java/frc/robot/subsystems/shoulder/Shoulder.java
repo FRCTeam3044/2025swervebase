@@ -322,6 +322,16 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
                         && inputs.leaderShoulderAngleRad < dangerZoneTwoMax.get());
     }
 
+    public boolean upperDangerZone() {
+        return (inputs.leaderShoulderAngleRad > dangerZoneTwoMin.get()
+                && inputs.leaderShoulderAngleRad < dangerZoneTwoMax.get());
+    }
+
+    public boolean lowerDangerZone() {
+        return (inputs.leaderShoulderAngleRad > dangerZoneOneMin.get()
+                && inputs.leaderShoulderAngleRad < dangerZoneOneMax.get());
+    }
+
     @Override
     public List<ConfigurableClassParam<?>> getParameters() {
         return params;
