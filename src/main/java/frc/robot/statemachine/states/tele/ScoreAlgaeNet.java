@@ -29,7 +29,7 @@ public class ScoreAlgaeNet extends State {
         AtomicBoolean started = new AtomicBoolean(false);
 
         startWhenActive(Commands.runOnce(() -> started.set(false)));
-        t(ready).onTrue(shoulder.intakeCoral());
+        t(ready).onTrue(shoulder.preNet());
         t(ready).onTrue(elevator.toNet());
         t(ready).onTrue(Commands.runOnce(() -> started.set(true)));
         t(() -> started.get() && elevator.isAtTarget() && shoulder.inSafeZone())

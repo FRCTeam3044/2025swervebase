@@ -57,6 +57,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     private final ConfigurableLinearInterpolation intakeCoral = new ConfigurableLinearInterpolation(
             "Shoulder Intake Angles");
+    private final ConfigurableClassParam<Double> preNet = new ConfigurableClassParam<>(this, 0.9,
+            "Pre-net angle");
     private final ConfigurableClassParam<Double> stagingIntake = new ConfigurableClassParam<>(this, 0.0,
             "Staging Intake Angle");
 
@@ -80,7 +82,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
-            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor, climber);
+            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor, climber, preNet);
 
     private BooleanSupplier elevatorNotAtTarget;
 
@@ -209,6 +211,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     public Command intakeCoral() {
         return toPosition(intakeCoral::getY1).withName("Shoulder to Intake");
+    }
+
+    public Command preNet() {
+        return toPosition(preNet::get).withName("Shoulder to Pre Net");
     }
 
     public Command stageIntake() {

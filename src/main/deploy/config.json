@@ -537,6 +537,7 @@
             "comment": "Target distance to score coral on L1",
             "value": "1.0"
         },
+        "Shoulder/Pre-net angle": "0.9",
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",
@@ -1092,6 +1093,7 @@
             "comment": "Target distance to score coral on L1",
             "value": "0.6"
         },
+        "Shoulder/Pre-net angle": "0.9",
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",
@@ -1138,9 +1140,9 @@
             "comment": "Target distance from reef to intake low algae",
             "value": "0.5"
         },
-        "Elevator High Algae/y2": "0.31",
+        "Elevator High Algae/y2": "0.29",
         "Elevator Low Algae/x1": "0.0",
-        "Elevator High Algae/y1": "0.31",
+        "Elevator High Algae/y1": "0.29",
         "Elevator Low Algae/x2": "1.0",
         "Shoulder Intake Angles/y1": "1.26",
         "Shoulder/Shoulder Danger Zone One Max Angle (rad)": "0.0",
@@ -1325,7 +1327,7 @@
         },
         "Net Launch Angle": {
             "comment": "Auto-Generated",
-            "value": "1.4"
+            "value": "1.15"
         },
         "Processor dist": {
             "comment": "Auto-Generated",
@@ -1422,7 +1424,7 @@
         },
         "Net dist": {
             "comment": "Auto-Generated",
-            "value": "1.1"
+            "value": "1.2"
         },
         "Shoulder Low Algae/x2": "1.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -1646,6 +1648,7 @@
             "comment": "Target distance to score coral on L1",
             "value": "1.0"
         },
+        "Shoulder/Pre-net angle": "0.92",
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",

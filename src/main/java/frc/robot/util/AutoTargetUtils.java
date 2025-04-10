@@ -249,7 +249,7 @@ public class AutoTargetUtils {
     }
 
     private static POIData processor = POIData.create(5.965735966001007, 0, 5.965735966001007, 1);
-    private static POIData net = POIData.create(8.79952467, 6.251, 6, 6.251);
+    private static POIData autoNet = POIData.create(8.79952467, 5.05, 6, 5.05);
     private static ConfigurableParameter<Double> netDistance = new ConfigurableParameter<Double>(1.0,
             "Net dist");
     private static ConfigurableParameter<Double> processorDistance = new ConfigurableParameter<Double>(1.0,
@@ -264,7 +264,7 @@ public class AutoTargetUtils {
     }
 
     public static Pose2d net() {
-        return net.poseFacing(netDistance.get(), netFlipped.get());
+        return autoNet.poseFacing(netDistance.get(), netFlipped.get());
     }
 
     public static DoubleSupplier robotDistToPose(Drive drive, Supplier<Pose2d> pose) {
