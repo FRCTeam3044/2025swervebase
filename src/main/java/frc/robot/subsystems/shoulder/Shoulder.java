@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.RobotContainer;
 import frc.robot.util.AutoTargetUtils.Reef.AlgaeReefLocation;
 import frc.robot.util.AutoTargetUtils.Reef.CoralLevel;
 import me.nabdev.oxconfig.ConfigurableClass;
@@ -133,6 +134,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
         io.updateInputs(inputs, elevatorNotAtTarget.getAsBoolean());
         Logger.processInputs("Shoulder", inputs);
         Logger.recordOutput("ShoulderInDangerZone", inDangerZone());
+        Logger.recordOutput("CanSpinFast", canSpinFast());
     }
 
     public Command toPosition(DoubleSupplier position) {
@@ -352,6 +354,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     }
 
     public boolean canSpinFast() {
+        if (RobotContainer.isState("ScoreAlgaeNet") || RobotContainer.isState("GoToScoreNet")
+                || RobotContainer.isState("GoToReefIntake")) {
+            return inSafeZone();
+        }
         return inputs.leaderShoulderAngleRad < slowSpinThreshold.get();
     }
 }

@@ -15,7 +15,7 @@ public class GoToScoreNet extends State {
         super(stateMachine);
 
         startWhenActive(DriveCommands.goToPoint(drive, AutoTargetUtils::net));
-        startWhenActive(elevator.intakeCoral());
+        startWhenActive(elevator.idle());
         startWhenActive(shoulder.idle());
     }
 }

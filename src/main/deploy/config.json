@@ -354,6 +354,10 @@
             "comment": "Auto-Generated",
             "value": "0.2"
         },
+        "Net Shoulder Start Threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Algae Low Intake Far Distance": {
             "comment": "Auto-Generated",
             "value": "0.7"
@@ -914,6 +918,10 @@
             "comment": "Auto-Generated",
             "value": "0.2"
         },
+        "Net Shoulder Start Threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
+        },
         "Algae Low Intake Far Distance": {
             "comment": "Auto-Generated",
             "value": "0.7"
@@ -1436,7 +1444,7 @@
         },
         "Net dist": {
             "comment": "Auto-Generated",
-            "value": "1.5"
+            "value": "1.8"
         },
         "Shoulder Low Algae/x2": "1.0",
         "Shoulder Low Algae/x1": "0.0",
@@ -1472,6 +1480,10 @@
         "Test Climber Speed": {
             "comment": "Auto-Generated",
             "value": "0.2"
+        },
+        "Net Shoulder Start Threshold": {
+            "comment": "Auto-Generated",
+            "value": "1.0"
         },
         "Algae Low Intake Far Distance": {
             "comment": "Auto-Generated",

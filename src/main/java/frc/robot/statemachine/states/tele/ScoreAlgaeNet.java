@@ -21,22 +21,28 @@ public class ScoreAlgaeNet extends State {
     private static ConfigurableParameter<Double> stopAngle = new ConfigurableParameter<>(2.6, "Net Stop Angle");
     private static ConfigurableParameter<Double> launchHeight = new ConfigurableParameter<>(0.2, "Launch Height");
 
+    private static ConfigurableParameter<Double> shoulderStartThreshold = new ConfigurableParameter<>(1.0,
+            "Net Shoulder Start Threshold");
+
     public ScoreAlgaeNet(StateMachineBase stateMachine, ButtonBoard buttonBoard, Drive drive,
             EndEffector endEffector, LEDs LEDs, Shoulder shoulder, Elevator elevator) {
         super(stateMachine);
 
         startWhenActive(DriveCommands.pointControl(drive, AutoTargetUtils::net));
-        BooleanSupplier ready = () -> DriveCommands.pointControllerLooseConverged;
+        BooleanSupplier ready = () -> DriveCommands.pointControllerLooseConverged
+                && shoulder.getShoulderAngle() < shoulderStartThreshold.get();
         AtomicBoolean started = new AtomicBoolean(false);
 
         startWhenActive(Commands.runOnce(() -> started.set(false)));
-        t(ready).onTrue(shoulder.preNet());
+        startWhenActive(shoulder.preNet());
+        startWhenActive(elevator.idle());
         t(ready).onTrue(Commands.runOnce(() -> started.set(true)));
         t(() -> started.get() && shoulder.inSafeZone())
                 .onTrue(elevator.toNet());
         t(() -> started.get() && shoulder.inSafeZone() && elevator.getElevatorHeight() > launchHeight.get())
                 .whileTrue(shoulder.net().until(() -> shoulder.getShoulderAngle() > stopAngle.get()));
-        t(() -> shoulder.getShoulderAngle() > launchAngle.get()).onTrue(endEffector.algaeOutNet());
+        t(() -> started.get() && elevator.getElevatorHeight() > launchHeight.get()
+                && shoulder.getShoulderAngle() > launchAngle.get()).onTrue(endEffector.algaeOutNet());
         t(() -> shoulder.getShoulderAngle() > stopAngle.get()).onTrue(shoulder.idle());
     }
 }

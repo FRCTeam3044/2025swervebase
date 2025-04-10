@@ -396,4 +396,8 @@ public class RobotContainer {
                                                 // The coral is ejected at a 35-degree slope
                                                 Radians.of(shoulder.getShoulderAngle()).plus(Degree.of(90))));
         }
+
+        public static boolean isState(String state) {
+                return getInstance().stateMachine.currentState.getName().equals(state);
+        }
 }
