@@ -135,12 +135,12 @@ public class StateMachine extends StateMachineBase {
                 intakeGamePiece.withChild(intakeCoral, () -> !buttonBoard.getAlgaeMode(), 0, "Coral Mode")
                                 .withChild(intakeAlgae,
                                                 () -> buttonBoard.getAlgaeMode()
-                                                                && (driverController.getHID().getLeftBumperButton()
+                                                                && (!driverController.getHID().getLeftBumperButton()
                                                                                 || DriverStation.isAutonomous()),
                                                 1, "Algae Mode")
                                 .withChild(removeAlgae,
                                                 () -> buttonBoard.getAlgaeMode()
-                                                                && (!driverController.getHID().getLeftBumperButton()
+                                                                && (driverController.getHID().getLeftBumperButton()
                                                                                 && !DriverStation.isAutonomous()),
                                                 1, "Algae Removal Mode");
 
