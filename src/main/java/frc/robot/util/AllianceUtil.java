@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.drive.DriveConstants;
+import me.nabdev.pathfinding.structures.Vertex;
 
 public class AllianceUtil {
     public static enum AllianceColor {
@@ -65,6 +66,12 @@ public class AllianceUtil {
                         Math.PI)));
     }
 
+    public static final Vertex mapBlueVertexToRed(Vertex bluePose) {
+        return new Vertex(
+                DriveConstants.pathfinder.map.fieldx - bluePose.x,
+                DriveConstants.pathfinder.map.fieldy - bluePose.y);
+    }
+
     public static Pose2d getPoseForAlliance(Pose2d bluePose) {
         Pose2d redPose = mapBluePoseToRed(bluePose);
         if (alliance == AllianceColor.BLUE) {
@@ -74,6 +81,22 @@ public class AllianceUtil {
         } else {
             if (robotPose.get().getTranslation().getDistance(bluePose.getTranslation()) < robotPose.get()
                     .getTranslation().getDistance(redPose.getTranslation())) {
+                return bluePose;
+            } else {
+                return redPose;
+            }
+        }
+    }
+
+    public static Vertex getVertexForAlliance(Vertex bluePose) {
+        Vertex redPose = mapBlueVertexToRed(bluePose);
+        if (alliance == AllianceColor.BLUE) {
+            return bluePose;
+        } else if (alliance == AllianceColor.RED) {
+            return redPose;
+        } else {
+            if (robotPose.get().getTranslation().getDistance(bluePose.asPose2d().getTranslation()) < robotPose.get()
+                    .getTranslation().getDistance(redPose.asPose2d().getTranslation())) {
                 return bluePose;
             } else {
                 return redPose;

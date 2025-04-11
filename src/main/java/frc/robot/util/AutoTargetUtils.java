@@ -3,9 +3,11 @@ package frc.robot.util;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.drive.Drive;
 import me.nabdev.oxconfig.ConfigurableParameter;
 import me.nabdev.pathfinding.structures.Vector;
@@ -42,6 +44,11 @@ public class AutoTargetUtils {
             double sign = flipped ? 1 : -1;
             Rotation2d rotation = Rotation2d.fromRadians(Math.atan2(sign * normal().y, sign * normal().x));
             return AllianceUtil.getPoseForAlliance(new Pose2d(robotPos.x, robotPos.y, rotation));
+        }
+
+        public Vertex vertexFacing(double distance) {
+            Vertex robotPos = pos().moveByVector(normal().scale(distance));
+            return AllianceUtil.getVertexForAlliance(robotPos);
         }
 
         public Pose2d offsetPoseFacing(double distance, boolean flipped, double offset, boolean perpFlipped) {
@@ -263,8 +270,35 @@ public class AutoTargetUtils {
         return processor.poseFacing(processorDistance.get(), processorFlipped.get());
     }
 
+    private static Pose2d tempNet = autoNet.poseFacing(netDistance.get(), netFlipped.get());
+
     public static Pose2d net() {
-        return autoNet.poseFacing(netDistance.get(), netFlipped.get());
+        if (DriverStation.isAutonomous()) {
+            return autoNet.poseFacing(netDistance.get(), netFlipped.get());
+        } else {
+            return tempNet;
+        }
+    }
+
+    private static POIData netEnd = POIData.create(8.79952467, 5.0, 6, 5.0);
+    private static POIData netStart = POIData.create(8.79952467, 7.4, 6, 7.4);
+
+    public static void setNetTarget(Drive drive) {
+        Vertex start = netStart.vertexFacing(netDistance.get());
+        Vertex end = netEnd.vertexFacing(netDistance.get());
+        Vertex robot = new Vertex(drive.getPose());
+
+        Vector bargeLine = start.createVectorTo(end);
+        double bargeMag = bargeLine.magnitude();
+        bargeLine = bargeLine.normalize();
+        Vector robotLine = robot.createVectorFrom(start);
+        double dot = robotLine.dotProduct(bargeLine);
+        dot = MathUtil.clamp(dot, 0.0, bargeMag);
+        bargeLine = bargeLine.scale(dot);
+        double facingRad = autoNet.poseFacing(netDistance.get(), netFlipped.get()).getRotation().getRadians();
+        start = start.moveByVector(bargeLine);
+        start.rotation = Rotation2d.fromRadians(facingRad);
+        tempNet = start.asPose2d();
     }
 
     public static DoubleSupplier robotDistToPose(Drive drive, Supplier<Pose2d> pose) {
