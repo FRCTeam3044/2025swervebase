@@ -121,7 +121,7 @@ dependencies {
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 
     implementation 'me.nabdev.pathfinding:oxplorer:0.12.8'
-    implementation 'me.nabdev.oxconfig:oxconfig-wpi:1.4.0-SNAPSHOT'
+    implementation 'me.nabdev.oxconfig:oxconfig-wpi:1.5.1'
     implementation 'org.json:json:20240303'
 }
 

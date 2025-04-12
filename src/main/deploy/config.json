@@ -1,43 +1,43 @@
 {
     "presentation": {
-        "Shoulder Intake Angles/x2": "0.0",
-        "Shoulder Intake Angles/x1": "0.0",
-        "Elevator High Algae/x2": "0.0",
+        "Shoulder Intake Angles/x2": "0.54",
+        "Shoulder Intake Angles/x1": "0.475",
+        "Elevator High Algae/x2": "1.0",
         "Elevator High Algae/x1": "0.0",
         "Elevator Low Algae/y2": "0.0",
         "Pathfinding X Controller/I": "0.0",
         "Elevator Low Algae/y1": "0.0",
-        "Pathfinding X Controller/D": "0.0",
+        "Pathfinding X Controller/D": "0.2",
         "Algae intake reef dist threshold": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.7"
         },
         "Turn Module 0/FF": "0.0",
-        "Elevator Intake Heights/y1": "0.0",
+        "Elevator Intake Heights/y1": "0.01",
         "Elevator Intake Heights/y2": "0.0",
         "Servo Open Speed": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
-        "Shoulder/Shoulder Processor Angle": "0.5",
+        "Shoulder/Shoulder Processor Angle": "0.16",
         "Staging Distance Threshold": {
             "comment": "Distance to start staging elevator/coral",
             "value": "0.0"
         },
-        "Shoulder Intake Angles/y2": "0.0",
+        "Shoulder Intake Angles/y2": "1.23",
         "Algae Low Intake Distance": {
             "comment": "Target distance from reef to intake low algae",
-            "value": "1.0"
+            "value": "0.5"
         },
-        "Elevator High Algae/y2": "0.0",
+        "Elevator High Algae/y2": "0.29",
         "Elevator Low Algae/x1": "0.0",
-        "Elevator High Algae/y1": "0.0",
-        "Elevator Low Algae/x2": "0.0",
-        "Shoulder Intake Angles/y1": "0.0",
+        "Elevator High Algae/y1": "0.29",
+        "Elevator Low Algae/x2": "1.0",
+        "Shoulder Intake Angles/y1": "1.26",
         "Shoulder/Shoulder Danger Zone One Max Angle (rad)": "0.0",
         "Slow Point Controller Max Rotation Speed": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "3"
         },
         "Intake Current threshold": {
             "comment": "Current threshold for whether or not we have something",
@@ -55,12 +55,12 @@
         },
         "Algae High Intake Far Distance": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.65"
         },
         "Shoulder Profiled PID Controller/I": "0.0",
-        "Elevator Intake Heights/x1": "0.0",
+        "Elevator Intake Heights/x1": "0.475",
         "Shoulder Profiled PID Controller/P": "0.0",
-        "Elevator Intake Heights/x2": "0.0",
+        "Elevator Intake Heights/x2": "0.54",
         "Shoulder/Shoulder Danger Zone Two Max Angle (rad)": "0.0",
         "Pathfinding Y Controller/I": "0.0",
         "Shoulder/Staging Intake Angle": "0.0",
@@ -73,38 +73,38 @@
         "Drive Module 0/P": "0.0",
         "Shoulder L1 Angles/y2": "0.0",
         "Shoulder L1 Angles/y1": "0.0",
-        "Pathfinding Y Controller/D": "0.0",
+        "Pathfinding Y Controller/D": "0.2",
         "Shoulder kV Net": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },
         "Intake station dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.46"
         },
         "Algae Low Removal Offset": {
             "comment": "Auto-Generated",
-            "value": "0.2"
+            "value": "0.18"
         },
         "Processor Flipped": {
             "comment": "Face backwards when scoring algae in processor",
-            "value": "false"
+            "value": "true"
         },
         "Drive Module 0/I": "0.0",
         "Point Y Controller Fast/I": "0.0",
-        "Shoulder/Staging L3 Angle": "0.0",
-        "Elevator/Elevator Staged L4 Height": "0.25",
+        "Shoulder/Staging L3 Angle": "4.05",
+        "Elevator/Elevator Staged L4 Height": "0.05",
         "Drive Module 2/Max": "1.0",
         "Pathfinding Theta Controller/D": "0.0",
         "Drive Module 0/D": "0.0",
-        "Point Y Controller Fast/P": "0.0",
+        "Point Y Controller Fast/P": "2",
         "Coral L4 scoring dist": {
             "comment": "Target distance to score coral on L4",
-            "value": "1.0"
+            "value": "0.4"
         },
         "Coral L2 scoring dist": {
             "comment": "Target distance to score coral on L2",
-            "value": "1.0"
+            "value": "0.75"
         },
         "Turn Module 0/Min": "-1.0",
         "L4 Full Shoulder dist (auto)": {
@@ -113,33 +113,33 @@
         },
         "L4 Shoot Out distance": {
             "comment": "Auto-Generated",
-            "value": "0.7"
+            "value": "0.702"
         },
         "Turn Module 2/Max": "1.0",
-        "Point Y Controller Fast/D": "0.0",
+        "Point Y Controller Fast/D": "0.2",
         "Turn Module 1/FF": "0.0",
         "Coral Flipped": {
             "comment": "Face backwards when scoring coral",
-            "value": "true"
+            "value": "false"
         },
         "Shoulder/Staging L4 Angle": "0.0",
         "Shoulder/Shoulder Danger Zone One Min Angle (rad)": "0.0",
-        "Pathfinding Y Controller/P": "1.0",
+        "Pathfinding Y Controller/P": "1.5",
         "Shoulder/Shoulder Danger Zone Two Min Angle (rad)": "0.0",
         "Turn Module 0/P": "2.0",
         "Elevator Test Velocity": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Shoulder L3 Angles/y2": "0.0",
-        "Shoulder L3 Angles/y1": "0.0",
+        "Shoulder L3 Angles/y2": "3.9",
+        "Shoulder L3 Angles/y1": "3.9",
         "Shoulder kG": {
             "comment": "Auto-Generated",
             "value": "1.3055"
         },
         "Shoulder L2 Angles/x1": "0.0",
-        "Elevator/Elevator Idle Height": "0.5",
-        "Shoulder L2 Angles/x2": "0.0",
+        "Elevator/Elevator Idle Height": "0.01",
+        "Shoulder L2 Angles/x2": "1.0",
         "Shoulder Safe Zone Max": {
             "comment": "Auto-Generated",
             "value": "3.141592653589793"
@@ -152,7 +152,7 @@
         },
         "L4 Start Shoulder dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "1.8"
         },
         "Elevator Profiled PID/D": "0.0",
         "Shoulder kS Net": {
@@ -164,7 +164,7 @@
             "value": "0.2"
         },
         "Shoulder L1 Angles/x1": "0.0",
-        "Shoulder L1 Angles/x2": "0.0",
+        "Shoulder L1 Angles/x2": "1.0",
         "Drive Module 0/Max": "1.0",
         "Shoulder kV": {
             "comment": "Auto-Generated",
@@ -176,7 +176,7 @@
         },
         "Post L4 Scoring Distances": {
             "comment": "Auto-Generated",
-            "value": "0.7"
+            "value": "0.75"
         },
         "Net Flipped": {
             "comment": "Auto-Generated",
@@ -185,17 +185,17 @@
         "Drive Module 3/FF": "0.0",
         "Climber Speed": {
             "comment": "Auto-Generated",
-            "value": "0.5"
+            "value": "0.4"
         },
         "Elevator Profiled PID/I": "0.0",
         "Full Alignment Distance Threshold": {
             "comment": "Distance to move shoulder from staging to target",
-            "value": "0.0"
+            "value": "0.1"
         },
         "Shoulder/Staging L2 Angle": "0.0",
-        "Shoulder/Danger Zone Two Max Angle (rad)": "0.0",
+        "Shoulder/Danger Zone Two Max Angle (rad)": "6.28",
         "Elevator Profiled PID/P": "0.0",
-        "Elevator L2 Heights/x2": "0.0",
+        "Elevator L2 Heights/x2": "1.0",
         "elevator/bottomPoint": {
             "comment": "Auto-Generated",
             "value": "0.0"
@@ -205,8 +205,8 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Elevator L4 Heights/y1": "0.0",
-        "Elevator L4 Heights/y2": "0.0",
+        "Elevator L4 Heights/y1": "0.668",
+        "Elevator L4 Heights/y2": "0.668",
         "Turn Module 2/FF": "0.0",
         "Drive Module 1/Max": "1.0",
         "Post L4 Scoring Distances (auto)": {
@@ -216,54 +216,54 @@
         "Drive Module 2/FF": "0.0",
         "Intake Early Threshold": {
             "comment": "Auto-Generated",
-            "value": "1.5"
+            "value": "2.2"
         },
         "Net Launch Angle": {
             "comment": "Auto-Generated",
-            "value": "2.2"
+            "value": "1.07"
         },
         "Processor dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.7"
         },
         "Turn Module 3/Max": "1.0",
         "Coral L3 scoring dist": {
             "comment": "Target distance to score coral on L3",
-            "value": "1.0"
+            "value": "0.6"
         },
         "Elevator L2 Heights/y2": "0.0",
         "Shoulder/Shoulder Target Threshold": "0.07",
         "Elevator L2 Heights/y1": "0.0",
-        "Shoulder L2 Angles/y2": "0.0",
+        "Shoulder L2 Angles/y2": "4.3025",
         "L4 Shoot Out distance (auto)": {
             "comment": "Auto-Generated",
             "value": "0.702"
         },
         "Elevator L4 Heights/x1": "0.0",
-        "Elevator L4 Heights/x2": "0.0",
-        "Shoulder L2 Angles/y1": "0.0",
+        "Elevator L4 Heights/x2": "1.0",
+        "Shoulder L2 Angles/y1": "4.3025",
         "Intake algae out speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.9"
         },
         "Algae High Offset": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "0.15"
         },
         "Algae high scoring dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
         },
         "Turn Module 1/Min": "-1.0",
-        "Shoulder/Danger Zone Two Min Angle (rad)": "0.0",
+        "Shoulder/Danger Zone Two Min Angle (rad)": "4.78",
         "Point Theta Controller/D": "0.0",
-        "Point Theta Controller/P": "6.0",
+        "Point Theta Controller/P": "4.0",
         "Test Elevator Speed": {
             "comment": "Auto-Generated",
             "value": "0.2"
         },
         "Elevator/Net Height": "0.668",
-        "Pathfinding X Controller/P": "1.0",
+        "Pathfinding X Controller/P": "1.5",
         "Point Theta Controller/I": "0.0",
         "Shoulder/Danger Zone One Min Angle (rad)": "0.0",
         "Intake coral in speed": {
@@ -278,16 +278,16 @@
         },
         "Pathfinding Max Accel": {
             "comment": "Auto-Generated",
-            "value": "2.0"
+            "value": "4"
         },
         "Turn Module 2/D": "0.0",
         "Drive Module 3/P": "0.0",
-        "Elevator L3 Heights/x2": "0.0",
+        "Elevator L3 Heights/x2": "1.0",
         "Drive Module 3/D": "0.0",
         "Elevator L3 Heights/x1": "0.0",
         "Drive Module 3/I": "0.0",
-        "Shoulder Low Algae/y1": "0.0",
-        "Shoulder Low Algae/y2": "0.0",
+        "Shoulder Low Algae/y1": "4.0",
+        "Shoulder Low Algae/y2": "4.0",
         "Elevator Idle Height": {
             "comment": "Auto-Generated",
             "value": "1"
@@ -304,7 +304,7 @@
         },
         "Pathfinding Max Accel (Auto)": {
             "comment": "Auto-Generated",
-            "value": "5.0"
+            "value": "3.2"
         },
         "Turn Module 0/IZone": "0.0",
         "Intake algae out speed net": {
@@ -313,25 +313,25 @@
         },
         "Intake station dist threshold": {
             "comment": "Distance to transition from GoToIntakeCoral to IntakeCoral",
-            "value": "0.5"
+            "value": "0.8"
         },
         "Net dist": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "1.24"
         },
-        "Shoulder Low Algae/x2": "0.0",
+        "Shoulder Low Algae/x2": "1.0",
         "Shoulder Low Algae/x1": "0.0",
         "Turn Module 3/P": "2.0",
-        "Shoulder/Danger Zone One Max Angle (rad)": "0.0",
+        "Shoulder/Danger Zone One Max Angle (rad)": "0.8",
         "Turn Module 3/I": "0.0",
         "Point Theta Controller Fast/D": "0.0",
         "Intake algae in speed": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.6"
         },
         "Intake l2 coral out speed": {
             "comment": "Auto-Generated",
-            "value": "0.8"
+            "value": "0.75"
         },
         "Point Theta Controller Fast/I": "0.0",
         "Slow Point Controller Max Auto": {
@@ -343,12 +343,12 @@
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Point Theta Controller Fast/P": "0.0",
+        "Point Theta Controller Fast/P": "4.0",
         "Shoulder/Staging High Algae Angle": "0.0",
         "Drive Module 3/IZone": "0.0",
         "Net Stop Angle": {
             "comment": "Auto-Generated",
-            "value": "2.6"
+            "value": "1.85"
         },
         "Test Climber Speed": {
             "comment": "Auto-Generated",
@@ -364,7 +364,7 @@
         },
         "Algae High Intake Distance": {
             "comment": "Target distance from reef to intake high algae",
-            "value": "1.0"
+            "value": "0.47"
         },
         "Shoulder L3 Angles/x1": "0.0",
         "Elevator kG": {
@@ -373,14 +373,14 @@
         },
         "Drive Speed (m/s)": {
             "comment": "Meters per second",
-            "value": "4.8"
+            "value": "4.25"
         },
         "Drive Module 1/FF": "0.0",
         "Elevator kS": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "Shoulder/Shoulder Idle Angle (rad)": "-1.5707963267948966",
+        "Shoulder/Shoulder Idle Angle (rad)": "0.5",
         "Elevator kV": {
             "comment": "Auto-Generated",
             "value": "0.0"
@@ -390,13 +390,13 @@
             "comment": "Auto-Generated",
             "value": "0.1"
         },
-        "Shoulder L3 Angles/x2": "0.0",
+        "Shoulder L3 Angles/x2": "1.0",
         "Turn Module 2/Min": "-1.0",
         "Elevator kG Variable Threshold": {
             "comment": "Auto-Generated",
             "value": "0.0"
         },
-        "X Point Controller Fast/D": "0.0",
+        "X Point Controller Fast/D": "0.2",
         "Algae low scoring dist": {
             "comment": "Auto-Generated",
             "value": "1.0"
@@ -405,7 +405,7 @@
         "Shoulder Profiled PID Controller (net)/I": "0.0",
         "Processor score dist threshold": {
             "comment": "Target distance from processor to score algae",
-            "value": "0.5"
+            "value": "2"
         },
         "Slow Point Controller Interpolation Time": {
             "comment": "Auto-Generated",
@@ -415,16 +415,16 @@
         "Shoulder Profiled PID Controller (net)/P": "0.0",
         "Algae Flipped": {
             "comment": "Face forward or backwards when intaking algae",
-            "value": "true"
+            "value": "false"
         },
         "Drive Module 1/P": "0.0",
         "Intake Speed threshold": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "200.0"
         },
         "Pathfinding Max Rotation Slow Speed": {
             "comment": "Auto-Generated",
-            "value": "0.39269908169872414"
+            "value": "0.6"
         },
         "Drive Module 1/D": "0.0",
         "Drive Module 0/FF": "0.0",
@@ -437,7 +437,7 @@
         "Shoulder/Staging Low Algae Angle": "0.0",
         "Test Shoulder Speed": {
             "comment": "Auto-Generated",
-            "value": "0.2"
+            "value": "0.95"
         },
         "Algae Leave Threshold": {
             "comment": "Auto-Generated",
@@ -447,26 +447,26 @@
             "comment": "Auto-Generated",
             "value": "2.0"
         },
-        "Shoulder L4 Angles/y1": "0.0",
+        "Shoulder L4 Angles/y1": "4.05",
         "Coral proximity distance": {
             "comment": "Distance threshold for proximity sensor to think we have coral",
             "value": "15.0"
         },
         "Coral reef score dist threshold": {
             "comment": "Distance to transition from GoToScoreCoral to ScoreCoral",
-            "value": "0.5"
+            "value": "0.8"
         },
         "L4 Start Shoulder dist (auto)": {
             "comment": "Auto-Generated",
-            "value": "2.6"
+            "value": "3.5"
         },
         "Intake station flipped": {
             "comment": "Face backwards when intaking coral",
-            "value": "false"
+            "value": "true"
         },
         "Idle Intake Speed": {
             "comment": "Auto-Generated",
-            "value": "-0.05"
+            "value": "0.1"
         },
         "Intake coral out speed": {
             "comment": "Auto-Generated",
@@ -474,17 +474,17 @@
         },
         "Pathfinding Max Speed": {
             "comment": "Meters per second",
-            "value": "4.8"
+            "value": "4.2"
         },
-        "Elevator/Elevator Target Threshold": "0.075",
+        "Elevator/Elevator Target Threshold": "0.1",
         "Drive Module 1/Min": "-1.0",
         "Elevator L1 Heights/x2": "0.0",
         "Test Elevator Height": {
             "comment": "Auto-Generated",
-            "value": "1.0"
+            "value": "0.668"
         },
         "Elevator L1 Heights/x1": "0.0",
-        "X Point Controller Fast/P": "0.0",
+        "X Point Controller Fast/P": "2",
         "Drive Module 2/IZone": "0.0",
         "Algae High Removal Offset": {
             "comment": "Auto-Generated",
@@ -501,7 +501,7 @@
             "value": "1.0"
         },
         "Shoulder Profiled PID Controller (net)/D": "0.0",
-        "Shoulder L4 Angles/y2": "0.0",
+        "Shoulder L4 Angles/y2": "4.05",
         "Shoulder Safe Zone Min": {
             "comment": "Auto-Generated",
             "value": "0.0"
@@ -510,34 +510,34 @@
         "Turn Module 1/I": "0.0",
         "Slow Point Controller Max": {
             "comment": "Auto-Generated",
-            "value": "0.1"
+            "value": "0.4"
         },
         "X Point Controller/I": "0.0",
         "Turn Module 3/Min": "-1.0",
         "Turn Module 1/D": "0.0",
         "Point Y Controller/I": "0.0",
         "Drive Module 2/P": "0.0",
-        "X Point Controller/D": "0.0",
-        "Point Y Controller/D": "0.0",
+        "X Point Controller/D": "0.2",
+        "Point Y Controller/D": "0.2",
         "Drive Module 0/IZone": "0.0",
         "Drive Module 2/D": "0.0",
         "Intake Coral proximity distance": {
             "comment": "Distance threshold for proximity sensor to think we have coral",
             "value": "15.0"
         },
-        "X Point Controller/P": "1.0",
-        "Point Y Controller/P": "1.0",
+        "X Point Controller/P": "2",
+        "Point Y Controller/P": "2",
         "Elevator L1 Heights/y2": "0.0",
         "Elevator L1 Heights/y1": "0.0",
         "Drive Module 2/I": "0.0",
-        "Shoulder High Algae/x2": "0.0",
+        "Shoulder High Algae/x2": "1.0",
         "Shoulder High Algae/x1": "0.0",
         "Pathfinding Max Rotation Speed": {
             "comment": "Auto-Generated",
-            "value": "1.5707963267948966"
+            "value": "2.5"
         },
-        "Shoulder L4 Angles/x2": "0.0",
-        "Shoulder L4 Angles/x1": "0.0",
+        "Shoulder L4 Angles/x2": "0.64",
+        "Shoulder L4 Angles/x1": "0.57",
         "Turn Module 1/IZone": "0.0",
         "Drive Module 1/IZone": "0.0",
         "Turn Module 1/Max": "1.0",
@@ -545,17 +545,17 @@
             "comment": "Target distance to score coral on L1",
             "value": "1.0"
         },
-        "Shoulder/Pre-net angle": "0.9",
+        "Shoulder/Pre-net angle": "0.93",
         "Drive Module 3/Max": "1.0",
         "Test Shoulder Angle": {
             "comment": "Auto-Generated",
-            "value": "0.0"
+            "value": "1.35"
         },
         "Elevator L3 Heights/y2": "0.0",
         "Elevator L3 Heights/y1": "0.0",
         "Turn Module 2/IZone": "0.0",
-        "Shoulder High Algae/y2": "0.0",
-        "Shoulder High Algae/y1": "0.0",
+        "Shoulder High Algae/y2": "3.8",
+        "Shoulder High Algae/y1": "3.8",
         "Shoulder kG Net": {
             "comment": "Auto-Generated",
             "value": "1.3055"
