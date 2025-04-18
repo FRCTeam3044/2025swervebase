@@ -78,6 +78,8 @@ public class ManualState extends State {
                                                 || bboard.processorInManual()));
                 t(bboard::intake).whileTrue(endEffector.algaeIn());
                 t(bboard::outtake).and(slowOuttake.negate()).whileTrue(endEffector.algaeOut());
+                // t(bboard::levelOne).whileTrue(shoulder.levelOne().alongWith(elevator.toLevelOne()));
+                // t(bboard::extraOne).whileTrue(endEffector.levelOneOut());
 
                 DoubleSupplier rightY = () -> -MathUtil.applyDeadband(operatorController.getHID().getRightY(), 0.1);
                 DoubleSupplier leftY = () -> -MathUtil.applyDeadband(operatorController.getHID().getLeftY(), 0.1);

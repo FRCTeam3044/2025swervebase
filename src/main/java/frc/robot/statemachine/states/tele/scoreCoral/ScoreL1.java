@@ -21,16 +21,13 @@ public class ScoreL1 extends State {
         DoubleSupplier distanceToRef = buttonBoard.getCoralReefReferenceDist(drive);
         startWhenActive(DriveCommands.pointControl(drive, buttonBoard::getCoralReefTarget));
 
-        BooleanSupplier staging = () -> !elevator.isAtTarget();
         startWhenActive(elevator.toCoral(buttonBoard::getCoralReefLevel, distanceToRef));
-        startWhenActive(shoulder.scoreCoral(buttonBoard::getCoralReefLevel, distanceToRef, staging));
+        startWhenActive(shoulder.scoreCoral(buttonBoard::getCoralReefLevel));
 
-        DoubleSupplier distanceToTarget = buttonBoard.getCoralReefTargetDist(drive);
         BooleanSupplier readyToScore = () -> {
-            return distanceToTarget.getAsDouble() < stateMachine.alignmentThreshold
-                    .get() && elevator.isAtTarget()
+            return DriveCommands.pointControllerLooseConverged && elevator.isAtTarget()
                     && shoulder.isAtCoralTarget(buttonBoard::getCoralReefLevel, distanceToRef);
         };
-        t(readyToScore).onTrue(endEffector.coralOut());
+        t(readyToScore).onTrue(endEffector.levelOneOut());
     }
 }

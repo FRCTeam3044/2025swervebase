@@ -82,6 +82,7 @@ public class ButtonBoard {
     public ButtonInfo net = new ButtonInfo(2, 11);
     private ButtonInfo climbUp = new ButtonInfo(2, 5);
     private ButtonInfo climbDown = new ButtonInfo(2, 6);
+    public ButtonInfo levelOne = new ButtonInfo(2, 10);
 
     private ButtonInfo extraOne = new ButtonInfo(2, 1);
     private ButtonInfo extraTwo = new ButtonInfo(2, 2);
@@ -505,5 +506,13 @@ public class ButtonBoard {
 
     public boolean extraTwo() {
         return boardIO.isBeingPressed(extraTwo);
+    }
+
+    public boolean extraOne() {
+        return boardIO.isBeingPressed(extraOne);
+    }
+
+    public boolean levelOne() {
+        return boardIO.isBeingPressed(levelOne);
     }
 }

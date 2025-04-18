@@ -31,6 +31,8 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
     private final ConfigurableLinearInterpolation L1 = new ConfigurableLinearInterpolation("Shoulder L1 Angles");
     private final ConfigurableClassParam<Double> stagingL1 = new ConfigurableClassParam<>(this, 0.0,
             "Staging L1 Angle");
+    private final ConfigurableClassParam<Double> l1Angle = new ConfigurableClassParam<>(this, 0.6,
+            "L1 Angle");
     private final ConfigurableLinearInterpolation L2 = new ConfigurableLinearInterpolation("Shoulder L2 Angles");
     private final ConfigurableClassParam<Double> manualL2 = new ConfigurableClassParam<Double>(this, 0.96,
             "Shoulder Manual L2 Angle");
@@ -83,7 +85,7 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     private final List<ConfigurableClassParam<?>> params = List.of(stagingIntake, threshold,
             idle, dangerZoneOneMin, dangerZoneOneMax, dangerZoneTwoMin, dangerZoneTwoMax, stagingHighAlgae,
-            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor, climber, preNet);
+            stagingLowAlgae, stagingL1, stagingL2, stagingL3, stagingL4, manualL2, processor, climber, preNet, l1Angle);
 
     private BooleanSupplier elevatorNotAtTarget;
 
@@ -225,6 +227,10 @@ public class Shoulder extends SubsystemBase implements ConfigurableClass {
 
     public Command idle() {
         return toPosition(idle::get).withName("Shoulder Idle");
+    }
+
+    public Command levelOne() {
+        return toPosition(l1Angle::get).withName("Shoulder L1");
     }
 
     public Command processor() {

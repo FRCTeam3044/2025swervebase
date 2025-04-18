@@ -58,6 +58,10 @@ public class EndEffector extends SubsystemBase {
         return runIntakeSpeed(() -> -slowCoralOutSpeed.get()).withName("Run End Effector Coral Out Slow");
     }
 
+    public Command levelOneOut() {
+        return runIntakeSpeed(() -> -levelOneSpeed.get()).withName("Run End Effector L1 Out");
+    }
+
     public boolean hasCoral() {
         return inputs.hasCoral;
     }

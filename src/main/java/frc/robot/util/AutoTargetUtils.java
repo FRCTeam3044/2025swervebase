@@ -105,6 +105,8 @@ public class AutoTargetUtils {
 
         private static final ConfigurableParameter<Double> coralL1Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L1 scoring dist");
+        private static final ConfigurableParameter<Double> coralL1Offset = new ConfigurableParameter<Double>(0.15,
+                "Coral L1 offset");
         private static final ConfigurableParameter<Double> coralL2Distance = new ConfigurableParameter<Double>(1.0,
                 "Coral L2 scoring dist");
         private static final ConfigurableParameter<Double> coralL3Distance = new ConfigurableParameter<Double>(1.0,
@@ -130,6 +132,10 @@ public class AutoTargetUtils {
         }
 
         public static Pose2d coral(CoralReefLocation location, CoralLevel level) {
+            if (level == CoralLevel.L1) {
+                return location.data().offsetPoseFacing(coralDistance(level), true, coralL1Offset.get(),
+                        location.ordinal() % 2 == 0);
+            }
             return location.data().poseFacing(coralDistance(level),
                     /* level == CoralLevel.L2 ? true : */ flipped.get());
         }

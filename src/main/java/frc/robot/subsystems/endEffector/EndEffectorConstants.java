@@ -20,6 +20,8 @@ public class EndEffectorConstants {
                         "Intake coral out speed");
         public static final ConfigurableParameter<Double> slowCoralOutSpeed = new ConfigurableParameter<>(0.8,
                         "Intake l2 coral out speed");
+        public static final ConfigurableParameter<Double> levelOneSpeed = new ConfigurableParameter<>(0.4,
+                        "Intake l1 coral out speed");
         public static final ConfigurableParameter<Double> coralProximityDistance = new ConfigurableParameter<Double>(
                         15.0,
                         "Intake Coral proximity distance");
