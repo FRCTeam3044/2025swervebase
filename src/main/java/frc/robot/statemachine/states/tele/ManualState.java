@@ -95,23 +95,35 @@ public class ManualState extends State {
                                 .or(() -> !idleShoulder.get())
                                 .runWhileFalse(shoulder.idle());
 
-                SmartTrigger idle = t(bboard::idleInManual);
-                SmartTrigger intake = t(bboard::intakeInManual);
-                SmartTrigger coral = t(bboard::coralInManual);
-                SmartTrigger lowAlgae = t(bboard::lowAlgaeInManual);
-                SmartTrigger highAlgae = t(bboard::highAlgaeInManual);
+                // SmartTrigger idle = t(bboard::idleInManual);
+                // SmartTrigger intake = t(bboard::intakeInManual);
+                // SmartTrigger coral = t(bboard::coralInManual);
+                // SmartTrigger lowAlgae = t(bboard::lowAlgaeInManual);
+                // SmartTrigger highAlgae = t(bboard::highAlgaeInManual);
 
-                BooleanSupplier shouldDoL2Kick = () -> bboard.getCoralReefLevel() == CoralLevel.L2 && bboard.outtake();
+                // BooleanSupplier shouldDoL2Kick = () -> bboard.getCoralReefLevel() ==
+                // CoralLevel.L2 && bboard.outtake();
 
-                semiAuto.and(idle).whileTrue(elevator.idle().alongWith(shoulder.idle()));
-                semiAuto.and(intake).whileTrue(elevator.intakeCoral().alongWith(shoulder.intakeCoral()));
-                semiAuto.and(coral).and(t(shouldDoL2Kick).negate())
-                                .runWhileTrue(elevator.toCoral(bboard::getCoralReefLevel)
-                                                .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
-                semiAuto.and(lowAlgae).whileTrue(elevator.lowAlgae().alongWith(shoulder.lowAlgae()));
-                semiAuto.and(highAlgae).whileTrue(elevator.highAlgae().alongWith(shoulder.highAlgae()));
+                // semiAuto.and(idle).whileTrue(elevator.idle().alongWith(shoulder.idle()));
+                // semiAuto.and(intake).whileTrue(elevator.intakeCoral().alongWith(shoulder.intakeCoral()));
+                // semiAuto.and(coral).and(t(shouldDoL2Kick).negate())
+                // .runWhileTrue(elevator.toCoral(bboard::getCoralReefLevel)
+                // .alongWith(shoulder.scoreCoral(bboard::getCoralReefLevel)));
+                // semiAuto.and(lowAlgae).whileTrue(elevator.lowAlgae().alongWith(shoulder.lowAlgae()));
+                // semiAuto.and(highAlgae).whileTrue(elevator.highAlgae().alongWith(shoulder.highAlgae()));
 
-                semiAuto.and(shouldDoL2Kick).whileTrue(Commands.waitSeconds(0.125).andThen(shoulder.intakeCoral()));
+                // semiAuto.and(shouldDoL2Kick).whileTrue(Commands.waitSeconds(0.125).andThen(shoulder.intakeCoral()));
 
+                driverController.povDown().onTrue(Commands.runOnce(() -> {
+                        bboard.enableSemiAuto();
+                }));
+
+                driverController.povRight().onTrue(elevator.toCoral(() -> CoralLevel.L2)
+                                .alongWith(shoulder.scoreCoral(() -> CoralLevel.L2)));
+
+                driverController.povRight().onTrue(elevator.toCoral(() -> CoralLevel.L2)
+                                .alongWith(shoulder.scoreCoral(() -> CoralLevel.L2)));
+
+                driverController.povLeft().onTrue(elevator.idle().alongWith(shoulder.idle()));
         }
 }

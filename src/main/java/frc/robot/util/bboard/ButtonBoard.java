@@ -467,6 +467,10 @@ public class ButtonBoard {
         return manualMode == ManualMode.SEMI;
     }
 
+    public void enableSemiAuto() {
+        manualMode = ManualMode.SEMI;
+    }
+
     public boolean fullAuto() {
         return manualMode == ManualMode.AUTO;
     }
